@@ -16,38 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.apigateway_v1.types import apigateway
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseApiGatewayServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.apigateway_v1.types import apigateway
-
-from .base import ApiGatewayServiceTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -534,8 +524,8 @@ class ApiGatewayServiceRestStub:
     _interceptor: ApiGatewayServiceRestInterceptor
 
 
-class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
-    """REST backend transport for ApiGatewayService.
+class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
+    """REST backend synchronous transport for ApiGatewayService.
 
     The API Gateway Service is the interface for managing API
     Gateways.
@@ -545,7 +535,6 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -599,21 +588,12 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -678,21 +658,34 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateApi(ApiGatewayServiceRestStub):
+    class _CreateApi(
+        _BaseApiGatewayServiceRestTransport._BaseCreateApi, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateApi")
+            return hash("ApiGatewayServiceRestTransport.CreateApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "apiId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -722,45 +715,32 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/apis",
-                    "body": "api",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_api(request, metadata)
-            pb_request = apigateway.CreateApiRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseCreateApi._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_api(request, metadata)
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseCreateApi._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiGatewayServiceRestTransport._BaseCreateApi._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseCreateApi._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ApiGatewayServiceRestTransport._CreateApi._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -774,21 +754,35 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_create_api(resp)
             return resp
 
-    class _CreateApiConfig(ApiGatewayServiceRestStub):
+    class _CreateApiConfig(
+        _BaseApiGatewayServiceRestTransport._BaseCreateApiConfig,
+        ApiGatewayServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateApiConfig")
+            return hash("ApiGatewayServiceRestTransport.CreateApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "apiConfigId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -818,47 +812,34 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/apis/*}/configs",
-                    "body": "api_config",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseCreateApiConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_api_config(
                 request, metadata
             )
-            pb_request = apigateway.CreateApiConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseCreateApiConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseApiGatewayServiceRestTransport._BaseCreateApiConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseCreateApiConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ApiGatewayServiceRestTransport._CreateApiConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -872,21 +853,35 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_create_api_config(resp)
             return resp
 
-    class _CreateGateway(ApiGatewayServiceRestStub):
+    class _CreateGateway(
+        _BaseApiGatewayServiceRestTransport._BaseCreateGateway,
+        ApiGatewayServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateGateway")
+            return hash("ApiGatewayServiceRestTransport.CreateGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "gatewayId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -916,45 +911,32 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/gateways",
-                    "body": "gateway",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_gateway(request, metadata)
-            pb_request = apigateway.CreateGatewayRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseCreateGateway._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_gateway(request, metadata)
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseCreateGateway._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiGatewayServiceRestTransport._BaseCreateGateway._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseCreateGateway._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ApiGatewayServiceRestTransport._CreateGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -968,19 +950,33 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_create_gateway(resp)
             return resp
 
-    class _DeleteApi(ApiGatewayServiceRestStub):
+    class _DeleteApi(
+        _BaseApiGatewayServiceRestTransport._BaseDeleteApi, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteApi")
+            return hash("ApiGatewayServiceRestTransport.DeleteApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1010,38 +1006,27 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/apis/*}",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseDeleteApi._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_api(request, metadata)
-            pb_request = apigateway.DeleteApiRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseDeleteApi._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseDeleteApi._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._DeleteApi._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1055,19 +1040,34 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_delete_api(resp)
             return resp
 
-    class _DeleteApiConfig(ApiGatewayServiceRestStub):
+    class _DeleteApiConfig(
+        _BaseApiGatewayServiceRestTransport._BaseDeleteApiConfig,
+        ApiGatewayServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteApiConfig")
+            return hash("ApiGatewayServiceRestTransport.DeleteApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1097,40 +1097,29 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/apis/*/configs/*}",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseDeleteApiConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_api_config(
                 request, metadata
             )
-            pb_request = apigateway.DeleteApiConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseDeleteApiConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseDeleteApiConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._DeleteApiConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1144,19 +1133,34 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_delete_api_config(resp)
             return resp
 
-    class _DeleteGateway(ApiGatewayServiceRestStub):
+    class _DeleteGateway(
+        _BaseApiGatewayServiceRestTransport._BaseDeleteGateway,
+        ApiGatewayServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteGateway")
+            return hash("ApiGatewayServiceRestTransport.DeleteGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1186,38 +1190,27 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/gateways/*}",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseDeleteGateway._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_gateway(request, metadata)
-            pb_request = apigateway.DeleteGatewayRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseDeleteGateway._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseDeleteGateway._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._DeleteGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1231,19 +1224,33 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_delete_gateway(resp)
             return resp
 
-    class _GetApi(ApiGatewayServiceRestStub):
+    class _GetApi(
+        _BaseApiGatewayServiceRestTransport._BaseGetApi, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetApi")
+            return hash("ApiGatewayServiceRestTransport.GetApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1272,38 +1279,31 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/apis/*}",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseGetApi._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_api(request, metadata)
-            pb_request = apigateway.GetApiRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseApiGatewayServiceRestTransport._BaseGetApi._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseApiGatewayServiceRestTransport._BaseGetApi._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._GetApi._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1319,19 +1319,33 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_get_api(resp)
             return resp
 
-    class _GetApiConfig(ApiGatewayServiceRestStub):
+    class _GetApiConfig(
+        _BaseApiGatewayServiceRestTransport._BaseGetApiConfig, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetApiConfig")
+            return hash("ApiGatewayServiceRestTransport.GetApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1361,38 +1375,27 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/apis/*/configs/*}",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseGetApiConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_api_config(request, metadata)
-            pb_request = apigateway.GetApiConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseGetApiConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseGetApiConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._GetApiConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1408,19 +1411,33 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_get_api_config(resp)
             return resp
 
-    class _GetGateway(ApiGatewayServiceRestStub):
+    class _GetGateway(
+        _BaseApiGatewayServiceRestTransport._BaseGetGateway, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetGateway")
+            return hash("ApiGatewayServiceRestTransport.GetGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1453,38 +1470,27 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/gateways/*}",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseGetGateway._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_gateway(request, metadata)
-            pb_request = apigateway.GetGatewayRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseGetGateway._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseGetGateway._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._GetGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1500,19 +1506,34 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_get_gateway(resp)
             return resp
 
-    class _ListApiConfigs(ApiGatewayServiceRestStub):
+    class _ListApiConfigs(
+        _BaseApiGatewayServiceRestTransport._BaseListApiConfigs,
+        ApiGatewayServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListApiConfigs")
+            return hash("ApiGatewayServiceRestTransport.ListApiConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1541,40 +1562,29 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/apis/*}/configs",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseListApiConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_api_configs(
                 request, metadata
             )
-            pb_request = apigateway.ListApiConfigsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseListApiConfigs._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseListApiConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._ListApiConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1590,19 +1600,33 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_list_api_configs(resp)
             return resp
 
-    class _ListApis(ApiGatewayServiceRestStub):
+    class _ListApis(
+        _BaseApiGatewayServiceRestTransport._BaseListApis, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListApis")
+            return hash("ApiGatewayServiceRestTransport.ListApis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1631,38 +1655,27 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/apis",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseListApis._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_apis(request, metadata)
-            pb_request = apigateway.ListApisRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseListApis._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseListApis._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._ListApis._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1678,19 +1691,33 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_list_apis(resp)
             return resp
 
-    class _ListGateways(ApiGatewayServiceRestStub):
+    class _ListGateways(
+        _BaseApiGatewayServiceRestTransport._BaseListGateways, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListGateways")
+            return hash("ApiGatewayServiceRestTransport.ListGateways")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1719,38 +1746,27 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/gateways",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseListGateways._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_gateways(request, metadata)
-            pb_request = apigateway.ListGatewaysRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseListGateways._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseListGateways._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ApiGatewayServiceRestTransport._ListGateways._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1766,19 +1782,34 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_list_gateways(resp)
             return resp
 
-    class _UpdateApi(ApiGatewayServiceRestStub):
+    class _UpdateApi(
+        _BaseApiGatewayServiceRestTransport._BaseUpdateApi, ApiGatewayServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateApi")
+            return hash("ApiGatewayServiceRestTransport.UpdateApi")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1808,45 +1839,32 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{api.name=projects/*/locations/*/apis/*}",
-                    "body": "api",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_api(request, metadata)
-            pb_request = apigateway.UpdateApiRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseUpdateApi._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_api(request, metadata)
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseUpdateApi._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiGatewayServiceRestTransport._BaseUpdateApi._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseUpdateApi._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ApiGatewayServiceRestTransport._UpdateApi._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1860,19 +1878,35 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_update_api(resp)
             return resp
 
-    class _UpdateApiConfig(ApiGatewayServiceRestStub):
+    class _UpdateApiConfig(
+        _BaseApiGatewayServiceRestTransport._BaseUpdateApiConfig,
+        ApiGatewayServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateApiConfig")
+            return hash("ApiGatewayServiceRestTransport.UpdateApiConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1902,47 +1936,34 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{api_config.name=projects/*/locations/*/apis/*/configs/*}",
-                    "body": "api_config",
-                },
-            ]
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseUpdateApiConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_api_config(
                 request, metadata
             )
-            pb_request = apigateway.UpdateApiConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseUpdateApiConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseApiGatewayServiceRestTransport._BaseUpdateApiConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseUpdateApiConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ApiGatewayServiceRestTransport._UpdateApiConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1956,19 +1977,35 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
             resp = self._interceptor.post_update_api_config(resp)
             return resp
 
-    class _UpdateGateway(ApiGatewayServiceRestStub):
+    class _UpdateGateway(
+        _BaseApiGatewayServiceRestTransport._BaseUpdateGateway,
+        ApiGatewayServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateGateway")
+            return hash("ApiGatewayServiceRestTransport.UpdateGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1998,45 +2035,32 @@ class ApiGatewayServiceRestTransport(ApiGatewayServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{gateway.name=projects/*/locations/*/gateways/*}",
-                    "body": "gateway",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_gateway(request, metadata)
-            pb_request = apigateway.UpdateGatewayRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseApiGatewayServiceRestTransport._BaseUpdateGateway._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_gateway(request, metadata)
+            transcoded_request = _BaseApiGatewayServiceRestTransport._BaseUpdateGateway._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseApiGatewayServiceRestTransport._BaseUpdateGateway._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseApiGatewayServiceRestTransport._BaseUpdateGateway._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ApiGatewayServiceRestTransport._UpdateGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -39,19 +56,11 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.dlp_v2.services.dlp_service import (
     DlpServiceAsyncClient,
@@ -62,8 +71,22 @@ from google.cloud.dlp_v2.services.dlp_service import (
 from google.cloud.dlp_v2.types import dlp, storage
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1119,25 +1142,6 @@ def test_inspect_content(request_type, transport: str = "grpc"):
     assert isinstance(response, dlp.InspectContentResponse)
 
 
-def test_inspect_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.inspect_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.InspectContentRequest()
-
-
 def test_inspect_content_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1206,27 +1210,6 @@ def test_inspect_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_inspect_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.InspectContentResponse()
-        )
-        response = await client.inspect_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.InspectContentRequest()
-
-
-@pytest.mark.asyncio
 async def test_inspect_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1234,7 +1217,7 @@ async def test_inspect_content_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1273,7 +1256,7 @@ async def test_inspect_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.InspectContentRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1336,7 +1319,7 @@ def test_inspect_content_field_headers():
 @pytest.mark.asyncio
 async def test_inspect_content_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1401,25 +1384,6 @@ def test_redact_image(request_type, transport: str = "grpc"):
     assert isinstance(response, dlp.RedactImageResponse)
     assert response.redacted_image == b"redacted_image_blob"
     assert response.extracted_text == "extracted_text_value"
-
-
-def test_redact_image_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.redact_image()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.RedactImageRequest()
 
 
 def test_redact_image_non_empty_request_with_auto_populated_field():
@@ -1488,30 +1452,6 @@ def test_redact_image_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_redact_image_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.RedactImageResponse(
-                redacted_image=b"redacted_image_blob",
-                extracted_text="extracted_text_value",
-            )
-        )
-        response = await client.redact_image()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.RedactImageRequest()
-
-
-@pytest.mark.asyncio
 async def test_redact_image_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1519,7 +1459,7 @@ async def test_redact_image_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1558,7 +1498,7 @@ async def test_redact_image_async(
     transport: str = "grpc_asyncio", request_type=dlp.RedactImageRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1626,7 +1566,7 @@ def test_redact_image_field_headers():
 @pytest.mark.asyncio
 async def test_redact_image_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1688,27 +1628,6 @@ def test_deidentify_content(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyContentResponse)
-
-
-def test_deidentify_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.deidentify_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.deidentify_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeidentifyContentRequest()
 
 
 def test_deidentify_content_non_empty_request_with_auto_populated_field():
@@ -1787,29 +1706,6 @@ def test_deidentify_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_deidentify_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.deidentify_content), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DeidentifyContentResponse()
-        )
-        response = await client.deidentify_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeidentifyContentRequest()
-
-
-@pytest.mark.asyncio
 async def test_deidentify_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1817,7 +1713,7 @@ async def test_deidentify_content_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1856,7 +1752,7 @@ async def test_deidentify_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeidentifyContentRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1923,7 +1819,7 @@ def test_deidentify_content_field_headers():
 @pytest.mark.asyncio
 async def test_deidentify_content_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1987,27 +1883,6 @@ def test_reidentify_content(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ReidentifyContentResponse)
-
-
-def test_reidentify_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.reidentify_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.reidentify_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ReidentifyContentRequest()
 
 
 def test_reidentify_content_non_empty_request_with_auto_populated_field():
@@ -2086,29 +1961,6 @@ def test_reidentify_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_reidentify_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.reidentify_content), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ReidentifyContentResponse()
-        )
-        response = await client.reidentify_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ReidentifyContentRequest()
-
-
-@pytest.mark.asyncio
 async def test_reidentify_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2116,7 +1968,7 @@ async def test_reidentify_content_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2155,7 +2007,7 @@ async def test_reidentify_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.ReidentifyContentRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2222,7 +2074,7 @@ def test_reidentify_content_field_headers():
 @pytest.mark.asyncio
 async def test_reidentify_content_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2284,25 +2136,6 @@ def test_list_info_types(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ListInfoTypesResponse)
-
-
-def test_list_info_types_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_info_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInfoTypesRequest()
 
 
 def test_list_info_types_non_empty_request_with_auto_populated_field():
@@ -2375,27 +2208,6 @@ def test_list_info_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_info_types_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListInfoTypesResponse()
-        )
-        response = await client.list_info_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInfoTypesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_info_types_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2403,7 +2215,7 @@ async def test_list_info_types_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2442,7 +2254,7 @@ async def test_list_info_types_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListInfoTypesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2514,7 +2326,7 @@ def test_list_info_types_flattened_error():
 @pytest.mark.asyncio
 async def test_list_info_types_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2543,7 +2355,7 @@ async def test_list_info_types_flattened_async():
 @pytest.mark.asyncio
 async def test_list_info_types_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2595,27 +2407,6 @@ def test_create_inspect_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_create_inspect_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_inspect_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateInspectTemplateRequest()
 
 
 def test_create_inspect_template_non_empty_request_with_auto_populated_field():
@@ -2693,33 +2484,6 @@ def test_create_inspect_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_inspect_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_inspect_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.InspectTemplate(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.create_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateInspectTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_inspect_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2727,7 +2491,7 @@ async def test_create_inspect_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2766,7 +2530,7 @@ async def test_create_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2840,7 +2604,7 @@ def test_create_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_create_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2917,7 +2681,7 @@ def test_create_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_create_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2950,7 +2714,7 @@ async def test_create_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_create_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3003,27 +2767,6 @@ def test_update_inspect_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_update_inspect_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_inspect_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateInspectTemplateRequest()
 
 
 def test_update_inspect_template_non_empty_request_with_auto_populated_field():
@@ -3097,33 +2840,6 @@ def test_update_inspect_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_inspect_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_inspect_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.InspectTemplate(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.update_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateInspectTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_inspect_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3131,7 +2847,7 @@ async def test_update_inspect_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3170,7 +2886,7 @@ async def test_update_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3244,7 +2960,7 @@ def test_update_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_update_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3326,7 +3042,7 @@ def test_update_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_update_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3363,7 +3079,7 @@ async def test_update_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_update_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3417,27 +3133,6 @@ def test_get_inspect_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_get_inspect_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_inspect_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetInspectTemplateRequest()
 
 
 def test_get_inspect_template_non_empty_request_with_auto_populated_field():
@@ -3510,33 +3205,6 @@ def test_get_inspect_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_inspect_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_inspect_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.InspectTemplate(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.get_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetInspectTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_inspect_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3544,7 +3212,7 @@ async def test_get_inspect_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3583,7 +3251,7 @@ async def test_get_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3657,7 +3325,7 @@ def test_get_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_get_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3729,7 +3397,7 @@ def test_get_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_get_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3758,7 +3426,7 @@ async def test_get_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_get_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3806,27 +3474,6 @@ def test_list_inspect_templates(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInspectTemplatesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_inspect_templates_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_inspect_templates), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_inspect_templates()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInspectTemplatesRequest()
 
 
 def test_list_inspect_templates_non_empty_request_with_auto_populated_field():
@@ -3906,31 +3553,6 @@ def test_list_inspect_templates_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_inspect_templates_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_inspect_templates), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListInspectTemplatesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_inspect_templates()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListInspectTemplatesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_inspect_templates_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3938,7 +3560,7 @@ async def test_list_inspect_templates_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3977,7 +3599,7 @@ async def test_list_inspect_templates_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListInspectTemplatesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4047,7 +3669,7 @@ def test_list_inspect_templates_field_headers():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4121,7 +3743,7 @@ def test_list_inspect_templates_flattened_error():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4152,7 +3774,7 @@ async def test_list_inspect_templates_flattened_async():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4266,7 +3888,7 @@ def test_list_inspect_templates_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_inspect_templates_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4318,7 +3940,7 @@ async def test_list_inspect_templates_async_pager():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4401,27 +4023,6 @@ def test_delete_inspect_template(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_inspect_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_inspect_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteInspectTemplateRequest()
-
-
 def test_delete_inspect_template_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4493,27 +4094,6 @@ def test_delete_inspect_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_inspect_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_inspect_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_inspect_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteInspectTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_inspect_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4521,7 +4101,7 @@ async def test_delete_inspect_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4560,7 +4140,7 @@ async def test_delete_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4625,7 +4205,7 @@ def test_delete_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_delete_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4697,7 +4277,7 @@ def test_delete_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4726,7 +4306,7 @@ async def test_delete_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4778,27 +4358,6 @@ def test_create_deidentify_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_create_deidentify_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deidentify_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDeidentifyTemplateRequest()
 
 
 def test_create_deidentify_template_non_empty_request_with_auto_populated_field():
@@ -4876,33 +4435,6 @@ def test_create_deidentify_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_deidentify_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deidentify_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DeidentifyTemplate(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.create_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDeidentifyTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_deidentify_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4910,7 +4442,7 @@ async def test_create_deidentify_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4949,7 +4481,7 @@ async def test_create_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5023,7 +4555,7 @@ def test_create_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_create_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5102,7 +4634,7 @@ def test_create_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_create_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5137,7 +4669,7 @@ async def test_create_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_create_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5190,27 +4722,6 @@ def test_update_deidentify_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_update_deidentify_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deidentify_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDeidentifyTemplateRequest()
 
 
 def test_update_deidentify_template_non_empty_request_with_auto_populated_field():
@@ -5284,33 +4795,6 @@ def test_update_deidentify_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_deidentify_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deidentify_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DeidentifyTemplate(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.update_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDeidentifyTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_deidentify_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5318,7 +4802,7 @@ async def test_update_deidentify_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5357,7 +4841,7 @@ async def test_update_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5431,7 +4915,7 @@ def test_update_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_update_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5515,7 +4999,7 @@ def test_update_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_update_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5554,7 +5038,7 @@ async def test_update_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_update_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5608,27 +5092,6 @@ def test_get_deidentify_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_get_deidentify_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_deidentify_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDeidentifyTemplateRequest()
 
 
 def test_get_deidentify_template_non_empty_request_with_auto_populated_field():
@@ -5702,33 +5165,6 @@ def test_get_deidentify_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_deidentify_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_deidentify_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DeidentifyTemplate(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.get_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDeidentifyTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_deidentify_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5736,7 +5172,7 @@ async def test_get_deidentify_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5775,7 +5211,7 @@ async def test_get_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5849,7 +5285,7 @@ def test_get_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_get_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5923,7 +5359,7 @@ def test_get_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_get_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5954,7 +5390,7 @@ async def test_get_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_get_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6002,27 +5438,6 @@ def test_list_deidentify_templates(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeidentifyTemplatesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_deidentify_templates_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_deidentify_templates), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_deidentify_templates()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDeidentifyTemplatesRequest()
 
 
 def test_list_deidentify_templates_non_empty_request_with_auto_populated_field():
@@ -6102,31 +5517,6 @@ def test_list_deidentify_templates_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_deidentify_templates_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_deidentify_templates), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListDeidentifyTemplatesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_deidentify_templates()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDeidentifyTemplatesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_deidentify_templates_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6134,7 +5524,7 @@ async def test_list_deidentify_templates_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6173,7 +5563,7 @@ async def test_list_deidentify_templates_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListDeidentifyTemplatesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6243,7 +5633,7 @@ def test_list_deidentify_templates_field_headers():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6317,7 +5707,7 @@ def test_list_deidentify_templates_flattened_error():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6348,7 +5738,7 @@ async def test_list_deidentify_templates_flattened_async():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6464,7 +5854,7 @@ def test_list_deidentify_templates_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6516,7 +5906,7 @@ async def test_list_deidentify_templates_async_pager():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6599,27 +5989,6 @@ def test_delete_deidentify_template(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_deidentify_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deidentify_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDeidentifyTemplateRequest()
-
-
 def test_delete_deidentify_template_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6691,27 +6060,6 @@ def test_delete_deidentify_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_deidentify_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deidentify_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_deidentify_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDeidentifyTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_deidentify_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6719,7 +6067,7 @@ async def test_delete_deidentify_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6758,7 +6106,7 @@ async def test_delete_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6823,7 +6171,7 @@ def test_delete_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_delete_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6895,7 +6243,7 @@ def test_delete_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6924,7 +6272,7 @@ async def test_delete_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6978,27 +6326,6 @@ def test_create_job_trigger(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-def test_create_job_trigger_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_job_trigger), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateJobTriggerRequest()
 
 
 def test_create_job_trigger_non_empty_request_with_auto_populated_field():
@@ -7075,34 +6402,6 @@ def test_create_job_trigger_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_job_trigger_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_job_trigger), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.JobTrigger(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                status=dlp.JobTrigger.Status.HEALTHY,
-            )
-        )
-        response = await client.create_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateJobTriggerRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_job_trigger_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7110,7 +6409,7 @@ async def test_create_job_trigger_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7149,7 +6448,7 @@ async def test_create_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7225,7 +6524,7 @@ def test_create_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_create_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7302,7 +6601,7 @@ def test_create_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_create_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7335,7 +6634,7 @@ async def test_create_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_create_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7390,27 +6689,6 @@ def test_update_job_trigger(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-def test_update_job_trigger_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_job_trigger), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateJobTriggerRequest()
 
 
 def test_update_job_trigger_non_empty_request_with_auto_populated_field():
@@ -7483,34 +6761,6 @@ def test_update_job_trigger_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_job_trigger_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_job_trigger), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.JobTrigger(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                status=dlp.JobTrigger.Status.HEALTHY,
-            )
-        )
-        response = await client.update_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateJobTriggerRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_job_trigger_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7518,7 +6768,7 @@ async def test_update_job_trigger_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7557,7 +6807,7 @@ async def test_update_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7633,7 +6883,7 @@ def test_update_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_update_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7715,7 +6965,7 @@ def test_update_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_update_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7752,7 +7002,7 @@ async def test_update_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_update_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7799,27 +7049,6 @@ def test_hybrid_inspect_job_trigger(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
-
-
-def test_hybrid_inspect_job_trigger_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.hybrid_inspect_job_trigger), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.hybrid_inspect_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectJobTriggerRequest()
 
 
 def test_hybrid_inspect_job_trigger_non_empty_request_with_auto_populated_field():
@@ -7893,29 +7122,6 @@ def test_hybrid_inspect_job_trigger_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_hybrid_inspect_job_trigger_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.hybrid_inspect_job_trigger), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.HybridInspectResponse()
-        )
-        response = await client.hybrid_inspect_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectJobTriggerRequest()
-
-
-@pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7923,7 +7129,7 @@ async def test_hybrid_inspect_job_trigger_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7962,7 +7168,7 @@ async def test_hybrid_inspect_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.HybridInspectJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8029,7 +7235,7 @@ def test_hybrid_inspect_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8103,7 +7309,7 @@ def test_hybrid_inspect_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8134,7 +7340,7 @@ async def test_hybrid_inspect_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8186,25 +7392,6 @@ def test_get_job_trigger(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-def test_get_job_trigger_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetJobTriggerRequest()
 
 
 def test_get_job_trigger_non_empty_request_with_auto_populated_field():
@@ -8271,32 +7458,6 @@ def test_get_job_trigger_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_job_trigger_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.JobTrigger(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                status=dlp.JobTrigger.Status.HEALTHY,
-            )
-        )
-        response = await client.get_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetJobTriggerRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_job_trigger_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8304,7 +7465,7 @@ async def test_get_job_trigger_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8343,7 +7504,7 @@ async def test_get_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8415,7 +7576,7 @@ def test_get_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_get_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8483,7 +7644,7 @@ def test_get_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_get_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8510,7 +7671,7 @@ async def test_get_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_get_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8558,27 +7719,6 @@ def test_list_job_triggers(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobTriggersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_job_triggers_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_job_triggers), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_job_triggers()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListJobTriggersRequest()
 
 
 def test_list_job_triggers_non_empty_request_with_auto_populated_field():
@@ -8657,31 +7797,6 @@ def test_list_job_triggers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_job_triggers_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_job_triggers), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListJobTriggersResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_job_triggers()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListJobTriggersRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_job_triggers_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8689,7 +7804,7 @@ async def test_list_job_triggers_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8728,7 +7843,7 @@ async def test_list_job_triggers_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListJobTriggersRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8798,7 +7913,7 @@ def test_list_job_triggers_field_headers():
 @pytest.mark.asyncio
 async def test_list_job_triggers_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8872,7 +7987,7 @@ def test_list_job_triggers_flattened_error():
 @pytest.mark.asyncio
 async def test_list_job_triggers_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8903,7 +8018,7 @@ async def test_list_job_triggers_flattened_async():
 @pytest.mark.asyncio
 async def test_list_job_triggers_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9017,7 +8132,7 @@ def test_list_job_triggers_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_job_triggers_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9069,7 +8184,7 @@ async def test_list_job_triggers_async_pager():
 @pytest.mark.asyncio
 async def test_list_job_triggers_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9152,27 +8267,6 @@ def test_delete_job_trigger(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_job_trigger_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_job_trigger), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteJobTriggerRequest()
-
-
 def test_delete_job_trigger_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -9243,27 +8337,6 @@ def test_delete_job_trigger_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_job_trigger_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_job_trigger), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteJobTriggerRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_job_trigger_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9271,7 +8344,7 @@ async def test_delete_job_trigger_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9310,7 +8383,7 @@ async def test_delete_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9375,7 +8448,7 @@ def test_delete_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_delete_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9447,7 +8520,7 @@ def test_delete_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9476,7 +8549,7 @@ async def test_delete_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9530,27 +8603,6 @@ def test_activate_job_trigger(request_type, transport: str = "grpc"):
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-def test_activate_job_trigger_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_job_trigger), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.activate_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ActivateJobTriggerRequest()
 
 
 def test_activate_job_trigger_non_empty_request_with_auto_populated_field():
@@ -9623,34 +8675,6 @@ def test_activate_job_trigger_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_activate_job_trigger_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.activate_job_trigger), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DlpJob(
-                name="name_value",
-                type_=dlp.DlpJobType.INSPECT_JOB,
-                state=dlp.DlpJob.JobState.PENDING,
-                job_trigger_name="job_trigger_name_value",
-            )
-        )
-        response = await client.activate_job_trigger()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ActivateJobTriggerRequest()
-
-
-@pytest.mark.asyncio
 async def test_activate_job_trigger_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9658,7 +8682,7 @@ async def test_activate_job_trigger_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9697,7 +8721,7 @@ async def test_activate_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.ActivateJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9773,7 +8797,7 @@ def test_activate_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_activate_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9844,27 +8868,6 @@ def test_create_discovery_config(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.inspect_templates == ["inspect_templates_value"]
     assert response.status == dlp.DiscoveryConfig.Status.RUNNING
-
-
-def test_create_discovery_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_discovery_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDiscoveryConfigRequest()
 
 
 def test_create_discovery_config_non_empty_request_with_auto_populated_field():
@@ -9940,34 +8943,6 @@ def test_create_discovery_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_discovery_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_discovery_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DiscoveryConfig(
-                name="name_value",
-                display_name="display_name_value",
-                inspect_templates=["inspect_templates_value"],
-                status=dlp.DiscoveryConfig.Status.RUNNING,
-            )
-        )
-        response = await client.create_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDiscoveryConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_discovery_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9975,7 +8950,7 @@ async def test_create_discovery_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10014,7 +8989,7 @@ async def test_create_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10090,7 +9065,7 @@ def test_create_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10167,7 +9142,7 @@ def test_create_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10200,7 +9175,7 @@ async def test_create_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10255,27 +9230,6 @@ def test_update_discovery_config(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.inspect_templates == ["inspect_templates_value"]
     assert response.status == dlp.DiscoveryConfig.Status.RUNNING
-
-
-def test_update_discovery_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_discovery_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDiscoveryConfigRequest()
 
 
 def test_update_discovery_config_non_empty_request_with_auto_populated_field():
@@ -10349,34 +9303,6 @@ def test_update_discovery_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_discovery_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_discovery_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DiscoveryConfig(
-                name="name_value",
-                display_name="display_name_value",
-                inspect_templates=["inspect_templates_value"],
-                status=dlp.DiscoveryConfig.Status.RUNNING,
-            )
-        )
-        response = await client.update_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateDiscoveryConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_discovery_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10384,7 +9310,7 @@ async def test_update_discovery_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10423,7 +9349,7 @@ async def test_update_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10499,7 +9425,7 @@ def test_update_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10581,7 +9507,7 @@ def test_update_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10618,7 +9544,7 @@ async def test_update_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10674,27 +9600,6 @@ def test_get_discovery_config(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.inspect_templates == ["inspect_templates_value"]
     assert response.status == dlp.DiscoveryConfig.Status.RUNNING
-
-
-def test_get_discovery_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_discovery_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDiscoveryConfigRequest()
 
 
 def test_get_discovery_config_non_empty_request_with_auto_populated_field():
@@ -10767,34 +9672,6 @@ def test_get_discovery_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_discovery_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_discovery_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DiscoveryConfig(
-                name="name_value",
-                display_name="display_name_value",
-                inspect_templates=["inspect_templates_value"],
-                status=dlp.DiscoveryConfig.Status.RUNNING,
-            )
-        )
-        response = await client.get_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDiscoveryConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_discovery_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10802,7 +9679,7 @@ async def test_get_discovery_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10841,7 +9718,7 @@ async def test_get_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10917,7 +9794,7 @@ def test_get_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10989,7 +9866,7 @@ def test_get_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11018,7 +9895,7 @@ async def test_get_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11066,27 +9943,6 @@ def test_list_discovery_configs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveryConfigsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_discovery_configs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_discovery_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_discovery_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDiscoveryConfigsRequest()
 
 
 def test_list_discovery_configs_non_empty_request_with_auto_populated_field():
@@ -11164,31 +10020,6 @@ def test_list_discovery_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_discovery_configs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_discovery_configs), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListDiscoveryConfigsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_discovery_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDiscoveryConfigsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_discovery_configs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11196,7 +10027,7 @@ async def test_list_discovery_configs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11235,7 +10066,7 @@ async def test_list_discovery_configs_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListDiscoveryConfigsRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11305,7 +10136,7 @@ def test_list_discovery_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11379,7 +10210,7 @@ def test_list_discovery_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11410,7 +10241,7 @@ async def test_list_discovery_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11524,7 +10355,7 @@ def test_list_discovery_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_discovery_configs_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11576,7 +10407,7 @@ async def test_list_discovery_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11659,27 +10490,6 @@ def test_delete_discovery_config(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_discovery_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_discovery_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDiscoveryConfigRequest()
-
-
 def test_delete_discovery_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -11751,27 +10561,6 @@ def test_delete_discovery_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_discovery_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_discovery_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_discovery_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDiscoveryConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_discovery_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11779,7 +10568,7 @@ async def test_delete_discovery_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11818,7 +10607,7 @@ async def test_delete_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11883,7 +10672,7 @@ def test_delete_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11955,7 +10744,7 @@ def test_delete_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11984,7 +10773,7 @@ async def test_delete_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12036,25 +10825,6 @@ def test_create_dlp_job(request_type, transport: str = "grpc"):
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-def test_create_dlp_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDlpJobRequest()
 
 
 def test_create_dlp_job_non_empty_request_with_auto_populated_field():
@@ -12125,32 +10895,6 @@ def test_create_dlp_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_dlp_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DlpJob(
-                name="name_value",
-                type_=dlp.DlpJobType.INSPECT_JOB,
-                state=dlp.DlpJob.JobState.PENDING,
-                job_trigger_name="job_trigger_name_value",
-            )
-        )
-        response = await client.create_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateDlpJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_dlp_job_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12158,7 +10902,7 @@ async def test_create_dlp_job_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12197,7 +10941,7 @@ async def test_create_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12269,7 +11013,7 @@ def test_create_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_create_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12372,7 +11116,7 @@ def test_create_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_create_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12420,7 +11164,7 @@ async def test_create_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_create_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12480,25 +11224,6 @@ def test_list_dlp_jobs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDlpJobsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_dlp_jobs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_dlp_jobs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDlpJobsRequest()
 
 
 def test_list_dlp_jobs_non_empty_request_with_auto_populated_field():
@@ -12573,29 +11298,6 @@ def test_list_dlp_jobs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_dlp_jobs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListDlpJobsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_dlp_jobs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListDlpJobsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_dlp_jobs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12603,7 +11305,7 @@ async def test_list_dlp_jobs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12642,7 +11344,7 @@ async def test_list_dlp_jobs_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListDlpJobsRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12708,7 +11410,7 @@ def test_list_dlp_jobs_field_headers():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12778,7 +11480,7 @@ def test_list_dlp_jobs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12807,7 +11509,7 @@ async def test_list_dlp_jobs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12917,7 +11619,7 @@ def test_list_dlp_jobs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12967,7 +11669,7 @@ async def test_list_dlp_jobs_async_pager():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13055,25 +11757,6 @@ def test_get_dlp_job(request_type, transport: str = "grpc"):
     assert response.job_trigger_name == "job_trigger_name_value"
 
 
-def test_get_dlp_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDlpJobRequest()
-
-
 def test_get_dlp_job_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -13138,32 +11821,6 @@ def test_get_dlp_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_dlp_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.DlpJob(
-                name="name_value",
-                type_=dlp.DlpJobType.INSPECT_JOB,
-                state=dlp.DlpJob.JobState.PENDING,
-                job_trigger_name="job_trigger_name_value",
-            )
-        )
-        response = await client.get_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetDlpJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_dlp_job_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13171,7 +11828,7 @@ async def test_get_dlp_job_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13210,7 +11867,7 @@ async def test_get_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13282,7 +11939,7 @@ def test_get_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_get_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13350,7 +12007,7 @@ def test_get_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_get_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13377,7 +12034,7 @@ async def test_get_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_get_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13420,25 +12077,6 @@ def test_delete_dlp_job(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_dlp_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDlpJobRequest()
 
 
 def test_delete_dlp_job_non_empty_request_with_auto_populated_field():
@@ -13505,25 +12143,6 @@ def test_delete_dlp_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_dlp_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteDlpJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_dlp_job_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13531,7 +12150,7 @@ async def test_delete_dlp_job_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13570,7 +12189,7 @@ async def test_delete_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13631,7 +12250,7 @@ def test_delete_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_delete_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13699,7 +12318,7 @@ def test_delete_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13726,7 +12345,7 @@ async def test_delete_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13769,25 +12388,6 @@ def test_cancel_dlp_job(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_cancel_dlp_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.cancel_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CancelDlpJobRequest()
 
 
 def test_cancel_dlp_job_non_empty_request_with_auto_populated_field():
@@ -13854,25 +12454,6 @@ def test_cancel_dlp_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_cancel_dlp_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.cancel_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CancelDlpJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_cancel_dlp_job_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13880,7 +12461,7 @@ async def test_cancel_dlp_job_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13919,7 +12500,7 @@ async def test_cancel_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.CancelDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13980,7 +12561,7 @@ def test_cancel_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14043,27 +12624,6 @@ def test_create_stored_info_type(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-def test_create_stored_info_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_stored_info_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateStoredInfoTypeRequest()
 
 
 def test_create_stored_info_type_non_empty_request_with_auto_populated_field():
@@ -14141,31 +12701,6 @@ def test_create_stored_info_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_stored_info_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_stored_info_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.StoredInfoType(
-                name="name_value",
-            )
-        )
-        response = await client.create_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateStoredInfoTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_stored_info_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14173,7 +12708,7 @@ async def test_create_stored_info_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14212,7 +12747,7 @@ async def test_create_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14282,7 +12817,7 @@ def test_create_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_create_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14359,7 +12894,7 @@ def test_create_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_create_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14392,7 +12927,7 @@ async def test_create_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_create_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14441,27 +12976,6 @@ def test_update_stored_info_type(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-def test_update_stored_info_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_stored_info_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateStoredInfoTypeRequest()
 
 
 def test_update_stored_info_type_non_empty_request_with_auto_populated_field():
@@ -14535,31 +13049,6 @@ def test_update_stored_info_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_stored_info_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_stored_info_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.StoredInfoType(
-                name="name_value",
-            )
-        )
-        response = await client.update_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateStoredInfoTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_stored_info_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14567,7 +13056,7 @@ async def test_update_stored_info_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14606,7 +13095,7 @@ async def test_update_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14676,7 +13165,7 @@ def test_update_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_update_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14758,7 +13247,7 @@ def test_update_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_update_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14795,7 +13284,7 @@ async def test_update_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_update_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14845,27 +13334,6 @@ def test_get_stored_info_type(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-def test_get_stored_info_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_stored_info_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetStoredInfoTypeRequest()
 
 
 def test_get_stored_info_type_non_empty_request_with_auto_populated_field():
@@ -14938,31 +13406,6 @@ def test_get_stored_info_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_stored_info_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_stored_info_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.StoredInfoType(
-                name="name_value",
-            )
-        )
-        response = await client.get_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetStoredInfoTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_stored_info_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14970,7 +13413,7 @@ async def test_get_stored_info_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15009,7 +13452,7 @@ async def test_get_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15079,7 +13522,7 @@ def test_get_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_get_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15151,7 +13594,7 @@ def test_get_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_get_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15180,7 +13623,7 @@ async def test_get_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_get_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15228,27 +13671,6 @@ def test_list_stored_info_types(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStoredInfoTypesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_stored_info_types_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_stored_info_types), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_stored_info_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListStoredInfoTypesRequest()
 
 
 def test_list_stored_info_types_non_empty_request_with_auto_populated_field():
@@ -15328,31 +13750,6 @@ def test_list_stored_info_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_stored_info_types_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_stored_info_types), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListStoredInfoTypesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_stored_info_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListStoredInfoTypesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_stored_info_types_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15360,7 +13757,7 @@ async def test_list_stored_info_types_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15399,7 +13796,7 @@ async def test_list_stored_info_types_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListStoredInfoTypesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15469,7 +13866,7 @@ def test_list_stored_info_types_field_headers():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15543,7 +13940,7 @@ def test_list_stored_info_types_flattened_error():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15574,7 +13971,7 @@ async def test_list_stored_info_types_flattened_async():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15688,7 +14085,7 @@ def test_list_stored_info_types_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_stored_info_types_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15740,7 +14137,7 @@ async def test_list_stored_info_types_async_pager():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15823,27 +14220,6 @@ def test_delete_stored_info_type(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_stored_info_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_stored_info_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteStoredInfoTypeRequest()
-
-
 def test_delete_stored_info_type_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -15915,27 +14291,6 @@ def test_delete_stored_info_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_stored_info_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_stored_info_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_stored_info_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteStoredInfoTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_stored_info_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15943,7 +14298,7 @@ async def test_delete_stored_info_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15982,7 +14337,7 @@ async def test_delete_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16047,7 +14402,7 @@ def test_delete_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_delete_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16119,7 +14474,7 @@ def test_delete_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16148,7 +14503,7 @@ async def test_delete_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -16196,27 +14551,6 @@ def test_list_project_data_profiles(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProjectDataProfilesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_project_data_profiles_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_project_data_profiles), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_project_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListProjectDataProfilesRequest()
 
 
 def test_list_project_data_profiles_non_empty_request_with_auto_populated_field():
@@ -16296,31 +14630,6 @@ def test_list_project_data_profiles_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_project_data_profiles_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_project_data_profiles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListProjectDataProfilesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_project_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListProjectDataProfilesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_project_data_profiles_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -16328,7 +14637,7 @@ async def test_list_project_data_profiles_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -16367,7 +14676,7 @@ async def test_list_project_data_profiles_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListProjectDataProfilesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16437,7 +14746,7 @@ def test_list_project_data_profiles_field_headers():
 @pytest.mark.asyncio
 async def test_list_project_data_profiles_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16511,7 +14820,7 @@ def test_list_project_data_profiles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_project_data_profiles_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16542,7 +14851,7 @@ async def test_list_project_data_profiles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_project_data_profiles_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -16658,7 +14967,7 @@ def test_list_project_data_profiles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_project_data_profiles_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16710,7 +15019,7 @@ async def test_list_project_data_profiles_async_pager():
 @pytest.mark.asyncio
 async def test_list_project_data_profiles_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16796,27 +15105,6 @@ def test_list_table_data_profiles(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_table_data_profiles_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_table_data_profiles), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_table_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListTableDataProfilesRequest()
-
-
 def test_list_table_data_profiles_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -16894,31 +15182,6 @@ def test_list_table_data_profiles_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_table_data_profiles_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_table_data_profiles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListTableDataProfilesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_table_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListTableDataProfilesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_table_data_profiles_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -16926,7 +15189,7 @@ async def test_list_table_data_profiles_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -16965,7 +15228,7 @@ async def test_list_table_data_profiles_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListTableDataProfilesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17035,7 +15298,7 @@ def test_list_table_data_profiles_field_headers():
 @pytest.mark.asyncio
 async def test_list_table_data_profiles_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17109,7 +15372,7 @@ def test_list_table_data_profiles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_table_data_profiles_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17140,7 +15403,7 @@ async def test_list_table_data_profiles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_table_data_profiles_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -17256,7 +15519,7 @@ def test_list_table_data_profiles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_table_data_profiles_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17308,7 +15571,7 @@ async def test_list_table_data_profiles_async_pager():
 @pytest.mark.asyncio
 async def test_list_table_data_profiles_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17394,27 +15657,6 @@ def test_list_column_data_profiles(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_column_data_profiles_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_column_data_profiles), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_column_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListColumnDataProfilesRequest()
-
-
 def test_list_column_data_profiles_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -17492,31 +15734,6 @@ def test_list_column_data_profiles_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_column_data_profiles_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_column_data_profiles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListColumnDataProfilesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_column_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListColumnDataProfilesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_column_data_profiles_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -17524,7 +15741,7 @@ async def test_list_column_data_profiles_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -17563,7 +15780,7 @@ async def test_list_column_data_profiles_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListColumnDataProfilesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17633,7 +15850,7 @@ def test_list_column_data_profiles_field_headers():
 @pytest.mark.asyncio
 async def test_list_column_data_profiles_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17707,7 +15924,7 @@ def test_list_column_data_profiles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_column_data_profiles_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17738,7 +15955,7 @@ async def test_list_column_data_profiles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_column_data_profiles_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -17854,7 +16071,7 @@ def test_list_column_data_profiles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_column_data_profiles_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17906,7 +16123,7 @@ async def test_list_column_data_profiles_async_pager():
 @pytest.mark.asyncio
 async def test_list_column_data_profiles_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17998,27 +16215,6 @@ def test_get_project_data_profile(request_type, transport: str = "grpc"):
     assert response.file_store_data_profile_count == 3069
 
 
-def test_get_project_data_profile_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_project_data_profile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_project_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetProjectDataProfileRequest()
-
-
 def test_get_project_data_profile_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -18090,34 +16286,6 @@ def test_get_project_data_profile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_project_data_profile_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_project_data_profile), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ProjectDataProfile(
-                name="name_value",
-                project_id="project_id_value",
-                table_data_profile_count=2521,
-                file_store_data_profile_count=3069,
-            )
-        )
-        response = await client.get_project_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetProjectDataProfileRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_project_data_profile_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -18125,7 +16293,7 @@ async def test_get_project_data_profile_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -18164,7 +16332,7 @@ async def test_get_project_data_profile_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetProjectDataProfileRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -18240,7 +16408,7 @@ def test_get_project_data_profile_field_headers():
 @pytest.mark.asyncio
 async def test_get_project_data_profile_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18314,7 +16482,7 @@ def test_get_project_data_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_get_project_data_profile_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -18345,7 +16513,7 @@ async def test_get_project_data_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_get_project_data_profile_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -18393,27 +16561,6 @@ def test_list_file_store_data_profiles(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFileStoreDataProfilesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_file_store_data_profiles_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_file_store_data_profiles), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_file_store_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListFileStoreDataProfilesRequest()
 
 
 def test_list_file_store_data_profiles_non_empty_request_with_auto_populated_field():
@@ -18493,31 +16640,6 @@ def test_list_file_store_data_profiles_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_file_store_data_profiles_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_file_store_data_profiles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListFileStoreDataProfilesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_file_store_data_profiles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListFileStoreDataProfilesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_file_store_data_profiles_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -18525,7 +16647,7 @@ async def test_list_file_store_data_profiles_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -18564,7 +16686,7 @@ async def test_list_file_store_data_profiles_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListFileStoreDataProfilesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -18634,7 +16756,7 @@ def test_list_file_store_data_profiles_field_headers():
 @pytest.mark.asyncio
 async def test_list_file_store_data_profiles_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18708,7 +16830,7 @@ def test_list_file_store_data_profiles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_file_store_data_profiles_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -18739,7 +16861,7 @@ async def test_list_file_store_data_profiles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_file_store_data_profiles_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -18855,7 +16977,7 @@ def test_list_file_store_data_profiles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_file_store_data_profiles_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -18907,7 +17029,7 @@ async def test_list_file_store_data_profiles_async_pager():
 @pytest.mark.asyncio
 async def test_list_file_store_data_profiles_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -19016,27 +17138,6 @@ def test_get_file_store_data_profile(request_type, transport: str = "grpc"):
     assert response.file_store_is_empty is True
 
 
-def test_get_file_store_data_profile_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_file_store_data_profile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_file_store_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetFileStoreDataProfileRequest()
-
-
 def test_get_file_store_data_profile_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -19108,41 +17209,6 @@ def test_get_file_store_data_profile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_file_store_data_profile_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_file_store_data_profile), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.FileStoreDataProfile(
-                name="name_value",
-                project_data_profile="project_data_profile_value",
-                project_id="project_id_value",
-                file_store_location="file_store_location_value",
-                data_storage_locations=["data_storage_locations_value"],
-                location_type="location_type_value",
-                file_store_path="file_store_path_value",
-                full_resource="full_resource_value",
-                state=dlp.FileStoreDataProfile.State.RUNNING,
-                resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
-                file_store_is_empty=True,
-            )
-        )
-        response = await client.get_file_store_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetFileStoreDataProfileRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_file_store_data_profile_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -19150,7 +17216,7 @@ async def test_get_file_store_data_profile_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -19189,7 +17255,7 @@ async def test_get_file_store_data_profile_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetFileStoreDataProfileRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19282,7 +17348,7 @@ def test_get_file_store_data_profile_field_headers():
 @pytest.mark.asyncio
 async def test_get_file_store_data_profile_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19356,7 +17422,7 @@ def test_get_file_store_data_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_get_file_store_data_profile_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -19387,7 +17453,7 @@ async def test_get_file_store_data_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_get_file_store_data_profile_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -19432,27 +17498,6 @@ def test_delete_file_store_data_profile(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_file_store_data_profile_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_file_store_data_profile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_file_store_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteFileStoreDataProfileRequest()
 
 
 def test_delete_file_store_data_profile_non_empty_request_with_auto_populated_field():
@@ -19526,27 +17571,6 @@ def test_delete_file_store_data_profile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_file_store_data_profile_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_file_store_data_profile), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_file_store_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteFileStoreDataProfileRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_file_store_data_profile_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -19554,7 +17578,7 @@ async def test_delete_file_store_data_profile_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -19593,7 +17617,7 @@ async def test_delete_file_store_data_profile_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteFileStoreDataProfileRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19658,7 +17682,7 @@ def test_delete_file_store_data_profile_field_headers():
 @pytest.mark.asyncio
 async def test_delete_file_store_data_profile_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19730,7 +17754,7 @@ def test_delete_file_store_data_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_file_store_data_profile_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -19759,7 +17783,7 @@ async def test_delete_file_store_data_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_file_store_data_profile_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -19838,27 +17862,6 @@ def test_get_table_data_profile(request_type, transport: str = "grpc"):
     )
 
 
-def test_get_table_data_profile_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_table_data_profile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_table_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetTableDataProfileRequest()
-
-
 def test_get_table_data_profile_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -19930,44 +17933,6 @@ def test_get_table_data_profile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_table_data_profile_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_table_data_profile), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.TableDataProfile(
-                name="name_value",
-                project_data_profile="project_data_profile_value",
-                dataset_project_id="dataset_project_id_value",
-                dataset_location="dataset_location_value",
-                dataset_id="dataset_id_value",
-                table_id="table_id_value",
-                full_resource="full_resource_value",
-                state=dlp.TableDataProfile.State.RUNNING,
-                scanned_column_count=2129,
-                failed_column_count=2010,
-                table_size_bytes=1704,
-                row_count=992,
-                encryption_status=dlp.EncryptionStatus.ENCRYPTION_GOOGLE_MANAGED,
-                resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
-            )
-        )
-        response = await client.get_table_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetTableDataProfileRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_table_data_profile_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -19975,7 +17940,7 @@ async def test_get_table_data_profile_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -20014,7 +17979,7 @@ async def test_get_table_data_profile_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetTableDataProfileRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -20113,7 +18078,7 @@ def test_get_table_data_profile_field_headers():
 @pytest.mark.asyncio
 async def test_get_table_data_profile_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -20187,7 +18152,7 @@ def test_get_table_data_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_get_table_data_profile_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -20218,7 +18183,7 @@ async def test_get_table_data_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_get_table_data_profile_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -20303,27 +18268,6 @@ def test_get_column_data_profile(request_type, transport: str = "grpc"):
     )
 
 
-def test_get_column_data_profile_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_column_data_profile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_column_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetColumnDataProfileRequest()
-
-
 def test_get_column_data_profile_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -20395,44 +18339,6 @@ def test_get_column_data_profile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_column_data_profile_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_column_data_profile), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ColumnDataProfile(
-                name="name_value",
-                state=dlp.ColumnDataProfile.State.RUNNING,
-                table_data_profile="table_data_profile_value",
-                table_full_resource="table_full_resource_value",
-                dataset_project_id="dataset_project_id_value",
-                dataset_location="dataset_location_value",
-                dataset_id="dataset_id_value",
-                table_id="table_id_value",
-                column="column_value",
-                estimated_null_percentage=dlp.NullPercentageLevel.NULL_PERCENTAGE_VERY_LOW,
-                estimated_uniqueness_score=dlp.UniquenessScoreLevel.UNIQUENESS_SCORE_LOW,
-                free_text_score=0.16010000000000002,
-                column_type=dlp.ColumnDataProfile.ColumnDataType.TYPE_INT64,
-                policy_state=dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED,
-            )
-        )
-        response = await client.get_column_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetColumnDataProfileRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_column_data_profile_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -20440,7 +18346,7 @@ async def test_get_column_data_profile_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -20479,7 +18385,7 @@ async def test_get_column_data_profile_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetColumnDataProfileRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -20584,7 +18490,7 @@ def test_get_column_data_profile_field_headers():
 @pytest.mark.asyncio
 async def test_get_column_data_profile_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -20658,7 +18564,7 @@ def test_get_column_data_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_get_column_data_profile_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -20689,7 +18595,7 @@ async def test_get_column_data_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_get_column_data_profile_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -20734,27 +18640,6 @@ def test_delete_table_data_profile(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_table_data_profile_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_table_data_profile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_table_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteTableDataProfileRequest()
 
 
 def test_delete_table_data_profile_non_empty_request_with_auto_populated_field():
@@ -20828,27 +18713,6 @@ def test_delete_table_data_profile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_table_data_profile_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_table_data_profile), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_table_data_profile()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteTableDataProfileRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_table_data_profile_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -20856,7 +18720,7 @@ async def test_delete_table_data_profile_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -20895,7 +18759,7 @@ async def test_delete_table_data_profile_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteTableDataProfileRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -20960,7 +18824,7 @@ def test_delete_table_data_profile_field_headers():
 @pytest.mark.asyncio
 async def test_delete_table_data_profile_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21032,7 +18896,7 @@ def test_delete_table_data_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_table_data_profile_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -21061,7 +18925,7 @@ async def test_delete_table_data_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_table_data_profile_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -21106,27 +18970,6 @@ def test_hybrid_inspect_dlp_job(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
-
-
-def test_hybrid_inspect_dlp_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.hybrid_inspect_dlp_job), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.hybrid_inspect_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectDlpJobRequest()
 
 
 def test_hybrid_inspect_dlp_job_non_empty_request_with_auto_populated_field():
@@ -21200,29 +19043,6 @@ def test_hybrid_inspect_dlp_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_hybrid_inspect_dlp_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.hybrid_inspect_dlp_job), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.HybridInspectResponse()
-        )
-        response = await client.hybrid_inspect_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.HybridInspectDlpJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_hybrid_inspect_dlp_job_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -21230,7 +19050,7 @@ async def test_hybrid_inspect_dlp_job_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -21269,7 +19089,7 @@ async def test_hybrid_inspect_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.HybridInspectDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -21336,7 +19156,7 @@ def test_hybrid_inspect_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21410,7 +19230,7 @@ def test_hybrid_inspect_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -21441,7 +19261,7 @@ async def test_hybrid_inspect_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -21484,25 +19304,6 @@ def test_finish_dlp_job(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_finish_dlp_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.finish_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.FinishDlpJobRequest()
 
 
 def test_finish_dlp_job_non_empty_request_with_auto_populated_field():
@@ -21569,25 +19370,6 @@ def test_finish_dlp_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_finish_dlp_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.finish_dlp_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.FinishDlpJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_finish_dlp_job_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -21595,7 +19377,7 @@ async def test_finish_dlp_job_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -21634,7 +19416,7 @@ async def test_finish_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.FinishDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -21695,7 +19477,7 @@ def test_finish_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_finish_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21760,27 +19542,6 @@ def test_create_connection(request_type, transport: str = "grpc"):
     assert isinstance(response, dlp.Connection)
     assert response.name == "name_value"
     assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
-
-
-def test_create_connection_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_connection), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateConnectionRequest()
 
 
 def test_create_connection_non_empty_request_with_auto_populated_field():
@@ -21851,32 +19612,6 @@ def test_create_connection_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_connection_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_connection), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.Connection(
-                name="name_value",
-                state=dlp.ConnectionState.MISSING_CREDENTIALS,
-            )
-        )
-        response = await client.create_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.CreateConnectionRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_connection_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -21884,7 +19619,7 @@ async def test_create_connection_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -21923,7 +19658,7 @@ async def test_create_connection_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateConnectionRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -21995,7 +19730,7 @@ def test_create_connection_field_headers():
 @pytest.mark.asyncio
 async def test_create_connection_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22072,7 +19807,7 @@ def test_create_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_create_connection_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -22105,7 +19840,7 @@ async def test_create_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_create_connection_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -22154,25 +19889,6 @@ def test_get_connection(request_type, transport: str = "grpc"):
     assert isinstance(response, dlp.Connection)
     assert response.name == "name_value"
     assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
-
-
-def test_get_connection_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetConnectionRequest()
 
 
 def test_get_connection_non_empty_request_with_auto_populated_field():
@@ -22239,30 +19955,6 @@ def test_get_connection_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_connection_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.Connection(
-                name="name_value",
-                state=dlp.ConnectionState.MISSING_CREDENTIALS,
-            )
-        )
-        response = await client.get_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.GetConnectionRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_connection_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -22270,7 +19962,7 @@ async def test_get_connection_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -22309,7 +20001,7 @@ async def test_get_connection_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetConnectionRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -22377,7 +20069,7 @@ def test_get_connection_field_headers():
 @pytest.mark.asyncio
 async def test_get_connection_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22445,7 +20137,7 @@ def test_get_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_get_connection_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -22472,7 +20164,7 @@ async def test_get_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_get_connection_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -22518,25 +20210,6 @@ def test_list_connections(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_connections_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_connections()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListConnectionsRequest()
 
 
 def test_list_connections_non_empty_request_with_auto_populated_field():
@@ -22609,29 +20282,6 @@ def test_list_connections_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_connections_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.ListConnectionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_connections()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.ListConnectionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_connections_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -22639,7 +20289,7 @@ async def test_list_connections_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -22678,7 +20328,7 @@ async def test_list_connections_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListConnectionsRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -22744,7 +20394,7 @@ def test_list_connections_field_headers():
 @pytest.mark.asyncio
 async def test_list_connections_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22814,7 +20464,7 @@ def test_list_connections_flattened_error():
 @pytest.mark.asyncio
 async def test_list_connections_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -22843,7 +20493,7 @@ async def test_list_connections_flattened_async():
 @pytest.mark.asyncio
 async def test_list_connections_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -22953,7 +20603,7 @@ def test_list_connections_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_connections_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -23003,7 +20653,7 @@ async def test_list_connections_async_pager():
 @pytest.mark.asyncio
 async def test_list_connections_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -23087,27 +20737,6 @@ def test_search_connections(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_search_connections_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_connections), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.search_connections()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.SearchConnectionsRequest()
-
-
 def test_search_connections_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -23182,31 +20811,6 @@ def test_search_connections_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_connections_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_connections), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.SearchConnectionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.search_connections()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.SearchConnectionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_search_connections_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -23214,7 +20818,7 @@ async def test_search_connections_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -23253,7 +20857,7 @@ async def test_search_connections_async(
     transport: str = "grpc_asyncio", request_type=dlp.SearchConnectionsRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -23323,7 +20927,7 @@ def test_search_connections_field_headers():
 @pytest.mark.asyncio
 async def test_search_connections_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -23397,7 +21001,7 @@ def test_search_connections_flattened_error():
 @pytest.mark.asyncio
 async def test_search_connections_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -23428,7 +21032,7 @@ async def test_search_connections_flattened_async():
 @pytest.mark.asyncio
 async def test_search_connections_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -23542,7 +21146,7 @@ def test_search_connections_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_connections_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -23594,7 +21198,7 @@ async def test_search_connections_async_pager():
 @pytest.mark.asyncio
 async def test_search_connections_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -23677,27 +21281,6 @@ def test_delete_connection(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_connection_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_connection), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteConnectionRequest()
-
-
 def test_delete_connection_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -23766,27 +21349,6 @@ def test_delete_connection_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_connection_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_connection), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.DeleteConnectionRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_connection_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -23794,7 +21356,7 @@ async def test_delete_connection_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -23833,7 +21395,7 @@ async def test_delete_connection_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteConnectionRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -23898,7 +21460,7 @@ def test_delete_connection_field_headers():
 @pytest.mark.asyncio
 async def test_delete_connection_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -23970,7 +21532,7 @@ def test_delete_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_connection_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -23999,7 +21561,7 @@ async def test_delete_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_connection_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -24049,27 +21611,6 @@ def test_update_connection(request_type, transport: str = "grpc"):
     assert isinstance(response, dlp.Connection)
     assert response.name == "name_value"
     assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
-
-
-def test_update_connection_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_connection), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateConnectionRequest()
 
 
 def test_update_connection_non_empty_request_with_auto_populated_field():
@@ -24140,32 +21681,6 @@ def test_update_connection_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_connection_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_connection), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dlp.Connection(
-                name="name_value",
-                state=dlp.ConnectionState.MISSING_CREDENTIALS,
-            )
-        )
-        response = await client.update_connection()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == dlp.UpdateConnectionRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_connection_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -24173,7 +21688,7 @@ async def test_update_connection_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DlpServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -24212,7 +21727,7 @@ async def test_update_connection_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateConnectionRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24284,7 +21799,7 @@ def test_update_connection_field_headers():
 @pytest.mark.asyncio
 async def test_update_connection_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -24356,7 +21871,7 @@ def test_update_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_update_connection_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -24385,7 +21900,7 @@ async def test_update_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_update_connection_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -24395,43 +21910,6 @@ async def test_update_connection_flattened_error_async():
             dlp.UpdateConnectionRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.InspectContentRequest,
-        dict,
-    ],
-)
-def test_inspect_content_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.InspectContentResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.InspectContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.inspect_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.InspectContentResponse)
 
 
 def test_inspect_content_rest_use_cached_wrapped_rpc():
@@ -24470,133 +21948,6 @@ def test_inspect_content_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_inspect_content_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_inspect_content"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_inspect_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.InspectContentRequest.pb(dlp.InspectContentRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.InspectContentResponse.to_json(
-            dlp.InspectContentResponse()
-        )
-
-        request = dlp.InspectContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.InspectContentResponse()
-
-        client.inspect_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_inspect_content_rest_bad_request(
-    transport: str = "rest", request_type=dlp.InspectContentRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.inspect_content(request)
-
-
-def test_inspect_content_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.RedactImageRequest,
-        dict,
-    ],
-)
-def test_redact_image_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.RedactImageResponse(
-            redacted_image=b"redacted_image_blob",
-            extracted_text="extracted_text_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.RedactImageResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.redact_image(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.RedactImageResponse)
-    assert response.redacted_image == b"redacted_image_blob"
-    assert response.extracted_text == "extracted_text_value"
-
-
 def test_redact_image_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -24631,128 +21982,6 @@ def test_redact_image_rest_use_cached_wrapped_rpc():
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_redact_image_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_redact_image"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_redact_image"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.RedactImageRequest.pb(dlp.RedactImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.RedactImageResponse.to_json(
-            dlp.RedactImageResponse()
-        )
-
-        request = dlp.RedactImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.RedactImageResponse()
-
-        client.redact_image(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_redact_image_rest_bad_request(
-    transport: str = "rest", request_type=dlp.RedactImageRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.redact_image(request)
-
-
-def test_redact_image_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeidentifyContentRequest,
-        dict,
-    ],
-)
-def test_deidentify_content_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DeidentifyContentResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DeidentifyContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.deidentify_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DeidentifyContentResponse)
 
 
 def test_deidentify_content_rest_use_cached_wrapped_rpc():
@@ -24793,128 +22022,6 @@ def test_deidentify_content_rest_use_cached_wrapped_rpc():
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_deidentify_content_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_deidentify_content"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_deidentify_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.DeidentifyContentRequest.pb(dlp.DeidentifyContentRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DeidentifyContentResponse.to_json(
-            dlp.DeidentifyContentResponse()
-        )
-
-        request = dlp.DeidentifyContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DeidentifyContentResponse()
-
-        client.deidentify_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_deidentify_content_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeidentifyContentRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.deidentify_content(request)
-
-
-def test_deidentify_content_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ReidentifyContentRequest,
-        dict,
-    ],
-)
-def test_reidentify_content_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ReidentifyContentResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ReidentifyContentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.reidentify_content(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.ReidentifyContentResponse)
 
 
 def test_reidentify_content_rest_use_cached_wrapped_rpc():
@@ -25041,128 +22148,6 @@ def test_reidentify_content_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_reidentify_content_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_reidentify_content"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_reidentify_content"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ReidentifyContentRequest.pb(dlp.ReidentifyContentRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ReidentifyContentResponse.to_json(
-            dlp.ReidentifyContentResponse()
-        )
-
-        request = dlp.ReidentifyContentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ReidentifyContentResponse()
-
-        client.reidentify_content(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_reidentify_content_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ReidentifyContentRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.reidentify_content(request)
-
-
-def test_reidentify_content_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListInfoTypesRequest,
-        dict,
-    ],
-)
-def test_list_info_types_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListInfoTypesResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListInfoTypesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_info_types(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.ListInfoTypesResponse)
-
-
 def test_list_info_types_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -25197,85 +22182,6 @@ def test_list_info_types_rest_use_cached_wrapped_rpc():
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_info_types_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_info_types"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_info_types"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListInfoTypesRequest.pb(dlp.ListInfoTypesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListInfoTypesResponse.to_json(
-            dlp.ListInfoTypesResponse()
-        )
-
-        request = dlp.ListInfoTypesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListInfoTypesResponse()
-
-        client.list_info_types(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_info_types_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListInfoTypesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_info_types(request)
 
 
 def test_list_info_types_rest_flattened():
@@ -25331,56 +22237,6 @@ def test_list_info_types_rest_flattened_error(transport: str = "rest"):
             dlp.ListInfoTypesRequest(),
             parent="parent_value",
         )
-
-
-def test_list_info_types_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CreateInspectTemplateRequest,
-        dict,
-    ],
-)
-def test_create_inspect_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.InspectTemplate(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.InspectTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_inspect_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.InspectTemplate)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_create_inspect_template_rest_use_cached_wrapped_rpc():
@@ -25516,85 +22372,6 @@ def test_create_inspect_template_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_inspect_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_create_inspect_template"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_create_inspect_template"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.CreateInspectTemplateRequest.pb(
-            dlp.CreateInspectTemplateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
-
-        request = dlp.CreateInspectTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.InspectTemplate()
-
-        client.create_inspect_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_inspect_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CreateInspectTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_inspect_template(request)
-
-
 def test_create_inspect_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25652,58 +22429,6 @@ def test_create_inspect_template_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             inspect_template=dlp.InspectTemplate(name="name_value"),
         )
-
-
-def test_create_inspect_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.UpdateInspectTemplateRequest,
-        dict,
-    ],
-)
-def test_update_inspect_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.InspectTemplate(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.InspectTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_inspect_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.InspectTemplate)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_update_inspect_template_rest_use_cached_wrapped_rpc():
@@ -25831,87 +22556,6 @@ def test_update_inspect_template_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_inspect_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_update_inspect_template"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_update_inspect_template"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.UpdateInspectTemplateRequest.pb(
-            dlp.UpdateInspectTemplateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
-
-        request = dlp.UpdateInspectTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.InspectTemplate()
-
-        client.update_inspect_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_inspect_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.UpdateInspectTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_inspect_template(request)
-
-
 def test_update_inspect_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25973,58 +22617,6 @@ def test_update_inspect_template_rest_flattened_error(transport: str = "rest"):
             inspect_template=dlp.InspectTemplate(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_inspect_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetInspectTemplateRequest,
-        dict,
-    ],
-)
-def test_get_inspect_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.InspectTemplate(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.InspectTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_inspect_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.InspectTemplate)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_get_inspect_template_rest_use_cached_wrapped_rpc():
@@ -26150,85 +22742,6 @@ def test_get_inspect_template_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_inspect_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_inspect_template"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_inspect_template"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetInspectTemplateRequest.pb(dlp.GetInspectTemplateRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
-
-        request = dlp.GetInspectTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.InspectTemplate()
-
-        client.get_inspect_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_inspect_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetInspectTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_inspect_template(request)
-
-
 def test_get_inspect_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26286,52 +22799,6 @@ def test_get_inspect_template_rest_flattened_error(transport: str = "rest"):
             dlp.GetInspectTemplateRequest(),
             name="name_value",
         )
-
-
-def test_get_inspect_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListInspectTemplatesRequest,
-        dict,
-    ],
-)
-def test_list_inspect_templates_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListInspectTemplatesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListInspectTemplatesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_inspect_templates(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListInspectTemplatesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_inspect_templates_rest_use_cached_wrapped_rpc():
@@ -26477,87 +22944,6 @@ def test_list_inspect_templates_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_inspect_templates_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_inspect_templates"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_inspect_templates"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListInspectTemplatesRequest.pb(
-            dlp.ListInspectTemplatesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListInspectTemplatesResponse.to_json(
-            dlp.ListInspectTemplatesResponse()
-        )
-
-        request = dlp.ListInspectTemplatesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListInspectTemplatesResponse()
-
-        client.list_inspect_templates(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_inspect_templates_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListInspectTemplatesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_inspect_templates(request)
-
-
 def test_list_inspect_templates_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26674,43 +23060,6 @@ def test_list_inspect_templates_rest_pager(transport: str = "rest"):
         pages = list(client.list_inspect_templates(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteInspectTemplateRequest,
-        dict,
-    ],
-)
-def test_delete_inspect_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_inspect_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_inspect_template_rest_use_cached_wrapped_rpc():
@@ -26834,81 +23183,6 @@ def test_delete_inspect_template_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_inspect_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_inspect_template"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteInspectTemplateRequest.pb(
-            dlp.DeleteInspectTemplateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteInspectTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_inspect_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_inspect_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteInspectTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_inspect_template(request)
-
-
 def test_delete_inspect_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26964,56 +23238,6 @@ def test_delete_inspect_template_rest_flattened_error(transport: str = "rest"):
             dlp.DeleteInspectTemplateRequest(),
             name="name_value",
         )
-
-
-def test_delete_inspect_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CreateDeidentifyTemplateRequest,
-        dict,
-    ],
-)
-def test_create_deidentify_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DeidentifyTemplate(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DeidentifyTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_deidentify_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DeidentifyTemplate)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_create_deidentify_template_rest_use_cached_wrapped_rpc():
@@ -27149,87 +23373,6 @@ def test_create_deidentify_template_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_deidentify_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_create_deidentify_template"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_create_deidentify_template"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.CreateDeidentifyTemplateRequest.pb(
-            dlp.CreateDeidentifyTemplateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DeidentifyTemplate.to_json(
-            dlp.DeidentifyTemplate()
-        )
-
-        request = dlp.CreateDeidentifyTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DeidentifyTemplate()
-
-        client.create_deidentify_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_deidentify_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CreateDeidentifyTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_deidentify_template(request)
-
-
 def test_create_deidentify_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27287,56 +23430,6 @@ def test_create_deidentify_template_rest_flattened_error(transport: str = "rest"
             parent="parent_value",
             deidentify_template=dlp.DeidentifyTemplate(name="name_value"),
         )
-
-
-def test_create_deidentify_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.UpdateDeidentifyTemplateRequest,
-        dict,
-    ],
-)
-def test_update_deidentify_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DeidentifyTemplate(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DeidentifyTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_deidentify_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DeidentifyTemplate)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_update_deidentify_template_rest_use_cached_wrapped_rpc():
@@ -27464,87 +23557,6 @@ def test_update_deidentify_template_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_deidentify_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_update_deidentify_template"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_update_deidentify_template"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.UpdateDeidentifyTemplateRequest.pb(
-            dlp.UpdateDeidentifyTemplateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DeidentifyTemplate.to_json(
-            dlp.DeidentifyTemplate()
-        )
-
-        request = dlp.UpdateDeidentifyTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DeidentifyTemplate()
-
-        client.update_deidentify_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_deidentify_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.UpdateDeidentifyTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_deidentify_template(request)
-
-
 def test_update_deidentify_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27604,56 +23616,6 @@ def test_update_deidentify_template_rest_flattened_error(transport: str = "rest"
             deidentify_template=dlp.DeidentifyTemplate(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_deidentify_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetDeidentifyTemplateRequest,
-        dict,
-    ],
-)
-def test_get_deidentify_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DeidentifyTemplate(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DeidentifyTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_deidentify_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DeidentifyTemplate)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_get_deidentify_template_rest_use_cached_wrapped_rpc():
@@ -27780,87 +23742,6 @@ def test_get_deidentify_template_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_deidentify_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_deidentify_template"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_deidentify_template"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetDeidentifyTemplateRequest.pb(
-            dlp.GetDeidentifyTemplateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DeidentifyTemplate.to_json(
-            dlp.DeidentifyTemplate()
-        )
-
-        request = dlp.GetDeidentifyTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DeidentifyTemplate()
-
-        client.get_deidentify_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_deidentify_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetDeidentifyTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_deidentify_template(request)
-
-
 def test_get_deidentify_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27916,52 +23797,6 @@ def test_get_deidentify_template_rest_flattened_error(transport: str = "rest"):
             dlp.GetDeidentifyTemplateRequest(),
             name="name_value",
         )
-
-
-def test_get_deidentify_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListDeidentifyTemplatesRequest,
-        dict,
-    ],
-)
-def test_list_deidentify_templates_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListDeidentifyTemplatesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListDeidentifyTemplatesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_deidentify_templates(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDeidentifyTemplatesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_deidentify_templates_rest_use_cached_wrapped_rpc():
@@ -28107,87 +23942,6 @@ def test_list_deidentify_templates_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_deidentify_templates_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_deidentify_templates"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_deidentify_templates"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListDeidentifyTemplatesRequest.pb(
-            dlp.ListDeidentifyTemplatesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListDeidentifyTemplatesResponse.to_json(
-            dlp.ListDeidentifyTemplatesResponse()
-        )
-
-        request = dlp.ListDeidentifyTemplatesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListDeidentifyTemplatesResponse()
-
-        client.list_deidentify_templates(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_deidentify_templates_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListDeidentifyTemplatesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_deidentify_templates(request)
-
-
 def test_list_deidentify_templates_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28306,41 +24060,6 @@ def test_list_deidentify_templates_rest_pager(transport: str = "rest"):
         pages = list(client.list_deidentify_templates(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteDeidentifyTemplateRequest,
-        dict,
-    ],
-)
-def test_delete_deidentify_template_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_deidentify_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_deidentify_template_rest_use_cached_wrapped_rpc():
@@ -28464,79 +24183,6 @@ def test_delete_deidentify_template_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_deidentify_template_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_deidentify_template"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteDeidentifyTemplateRequest.pb(
-            dlp.DeleteDeidentifyTemplateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteDeidentifyTemplateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_deidentify_template(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_deidentify_template_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteDeidentifyTemplateRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_deidentify_template(request)
-
-
 def test_delete_deidentify_template_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28590,58 +24236,6 @@ def test_delete_deidentify_template_rest_flattened_error(transport: str = "rest"
             dlp.DeleteDeidentifyTemplateRequest(),
             name="name_value",
         )
-
-
-def test_delete_deidentify_template_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CreateJobTriggerRequest,
-        dict,
-    ],
-)
-def test_create_job_trigger_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.JobTrigger(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            status=dlp.JobTrigger.Status.HEALTHY,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.JobTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_job_trigger(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.JobTrigger)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.status == dlp.JobTrigger.Status.HEALTHY
 
 
 def test_create_job_trigger_rest_use_cached_wrapped_rpc():
@@ -28776,83 +24370,6 @@ def test_create_job_trigger_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_job_trigger_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_create_job_trigger"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_create_job_trigger"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.CreateJobTriggerRequest.pb(dlp.CreateJobTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.JobTrigger.to_json(dlp.JobTrigger())
-
-        request = dlp.CreateJobTriggerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.JobTrigger()
-
-        client.create_job_trigger(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_job_trigger_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CreateJobTriggerRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_job_trigger(request)
-
-
 def test_create_job_trigger_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28908,58 +24425,6 @@ def test_create_job_trigger_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             job_trigger=dlp.JobTrigger(name="name_value"),
         )
-
-
-def test_create_job_trigger_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.UpdateJobTriggerRequest,
-        dict,
-    ],
-)
-def test_update_job_trigger_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.JobTrigger(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            status=dlp.JobTrigger.Status.HEALTHY,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.JobTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_job_trigger(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.JobTrigger)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.status == dlp.JobTrigger.Status.HEALTHY
 
 
 def test_update_job_trigger_rest_use_cached_wrapped_rpc():
@@ -29086,83 +24551,6 @@ def test_update_job_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_job_trigger_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_update_job_trigger"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_update_job_trigger"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.UpdateJobTriggerRequest.pb(dlp.UpdateJobTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.JobTrigger.to_json(dlp.JobTrigger())
-
-        request = dlp.UpdateJobTriggerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.JobTrigger()
-
-        client.update_job_trigger(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_job_trigger_rest_bad_request(
-    transport: str = "rest", request_type=dlp.UpdateJobTriggerRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_job_trigger(request)
-
-
 def test_update_job_trigger_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29220,49 +24608,6 @@ def test_update_job_trigger_rest_flattened_error(transport: str = "rest"):
             job_trigger=dlp.JobTrigger(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_job_trigger_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.HybridInspectJobTriggerRequest,
-        dict,
-    ],
-)
-def test_hybrid_inspect_job_trigger_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/jobTriggers/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.HybridInspectResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.HybridInspectResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.hybrid_inspect_job_trigger(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.HybridInspectResponse)
 
 
 def test_hybrid_inspect_job_trigger_rest_use_cached_wrapped_rpc():
@@ -29390,87 +24735,6 @@ def test_hybrid_inspect_job_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_hybrid_inspect_job_trigger_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_hybrid_inspect_job_trigger"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_hybrid_inspect_job_trigger"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.HybridInspectJobTriggerRequest.pb(
-            dlp.HybridInspectJobTriggerRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.HybridInspectResponse.to_json(
-            dlp.HybridInspectResponse()
-        )
-
-        request = dlp.HybridInspectJobTriggerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.HybridInspectResponse()
-
-        client.hybrid_inspect_job_trigger(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_hybrid_inspect_job_trigger_rest_bad_request(
-    transport: str = "rest", request_type=dlp.HybridInspectJobTriggerRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/jobTriggers/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.hybrid_inspect_job_trigger(request)
-
-
 def test_hybrid_inspect_job_trigger_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29528,58 +24792,6 @@ def test_hybrid_inspect_job_trigger_rest_flattened_error(transport: str = "rest"
             dlp.HybridInspectJobTriggerRequest(),
             name="name_value",
         )
-
-
-def test_hybrid_inspect_job_trigger_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetJobTriggerRequest,
-        dict,
-    ],
-)
-def test_get_job_trigger_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.JobTrigger(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            status=dlp.JobTrigger.Status.HEALTHY,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.JobTrigger.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_job_trigger(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.JobTrigger)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.status == dlp.JobTrigger.Status.HEALTHY
 
 
 def test_get_job_trigger_rest_use_cached_wrapped_rpc():
@@ -29699,83 +24911,6 @@ def test_get_job_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_job_trigger_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_job_trigger"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_job_trigger"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetJobTriggerRequest.pb(dlp.GetJobTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.JobTrigger.to_json(dlp.JobTrigger())
-
-        request = dlp.GetJobTriggerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.JobTrigger()
-
-        client.get_job_trigger(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_job_trigger_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetJobTriggerRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_job_trigger(request)
-
-
 def test_get_job_trigger_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29829,52 +24964,6 @@ def test_get_job_trigger_rest_flattened_error(transport: str = "rest"):
             dlp.GetJobTriggerRequest(),
             name="name_value",
         )
-
-
-def test_get_job_trigger_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListJobTriggersRequest,
-        dict,
-    ],
-)
-def test_list_job_triggers_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListJobTriggersResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListJobTriggersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_job_triggers(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListJobTriggersPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_job_triggers_rest_use_cached_wrapped_rpc():
@@ -30021,85 +25110,6 @@ def test_list_job_triggers_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_job_triggers_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_job_triggers"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_job_triggers"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListJobTriggersRequest.pb(dlp.ListJobTriggersRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListJobTriggersResponse.to_json(
-            dlp.ListJobTriggersResponse()
-        )
-
-        request = dlp.ListJobTriggersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListJobTriggersResponse()
-
-        client.list_job_triggers(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_job_triggers_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListJobTriggersRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_job_triggers(request)
-
-
 def test_list_job_triggers_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -30214,41 +25224,6 @@ def test_list_job_triggers_rest_pager(transport: str = "rest"):
         pages = list(client.list_job_triggers(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteJobTriggerRequest,
-        dict,
-    ],
-)
-def test_delete_job_trigger_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_job_trigger(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_job_trigger_rest_use_cached_wrapped_rpc():
@@ -30371,77 +25346,6 @@ def test_delete_job_trigger_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_job_trigger_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_job_trigger"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteJobTriggerRequest.pb(dlp.DeleteJobTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteJobTriggerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_job_trigger(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_job_trigger_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteJobTriggerRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_job_trigger(request)
-
-
 def test_delete_job_trigger_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -30493,58 +25397,6 @@ def test_delete_job_trigger_rest_flattened_error(transport: str = "rest"):
             dlp.DeleteJobTriggerRequest(),
             name="name_value",
         )
-
-
-def test_delete_job_trigger_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ActivateJobTriggerRequest,
-        dict,
-    ],
-)
-def test_activate_job_trigger_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DlpJob(
-            name="name_value",
-            type_=dlp.DlpJobType.INSPECT_JOB,
-            state=dlp.DlpJob.JobState.PENDING,
-            job_trigger_name="job_trigger_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DlpJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.activate_job_trigger(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DlpJob)
-    assert response.name == "name_value"
-    assert response.type_ == dlp.DlpJobType.INSPECT_JOB
-    assert response.state == dlp.DlpJob.JobState.PENDING
-    assert response.job_trigger_name == "job_trigger_name_value"
 
 
 def test_activate_job_trigger_rest_use_cached_wrapped_rpc():
@@ -30669,135 +25521,6 @@ def test_activate_job_trigger_rest_unset_required_fields():
 
     unset_fields = transport.activate_job_trigger._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_activate_job_trigger_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_activate_job_trigger"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_activate_job_trigger"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ActivateJobTriggerRequest.pb(dlp.ActivateJobTriggerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DlpJob.to_json(dlp.DlpJob())
-
-        request = dlp.ActivateJobTriggerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DlpJob()
-
-        client.activate_job_trigger(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_activate_job_trigger_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ActivateJobTriggerRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.activate_job_trigger(request)
-
-
-def test_activate_job_trigger_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CreateDiscoveryConfigRequest,
-        dict,
-    ],
-)
-def test_create_discovery_config_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DiscoveryConfig(
-            name="name_value",
-            display_name="display_name_value",
-            inspect_templates=["inspect_templates_value"],
-            status=dlp.DiscoveryConfig.Status.RUNNING,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DiscoveryConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_discovery_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DiscoveryConfig)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.inspect_templates == ["inspect_templates_value"]
-    assert response.status == dlp.DiscoveryConfig.Status.RUNNING
 
 
 def test_create_discovery_config_rest_use_cached_wrapped_rpc():
@@ -30933,85 +25656,6 @@ def test_create_discovery_config_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_discovery_config_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_create_discovery_config"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_create_discovery_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.CreateDiscoveryConfigRequest.pb(
-            dlp.CreateDiscoveryConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
-
-        request = dlp.CreateDiscoveryConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DiscoveryConfig()
-
-        client.create_discovery_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_discovery_config_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CreateDiscoveryConfigRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_discovery_config(request)
-
-
 def test_create_discovery_config_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -31069,60 +25713,6 @@ def test_create_discovery_config_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             discovery_config=dlp.DiscoveryConfig(name="name_value"),
         )
-
-
-def test_create_discovery_config_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.UpdateDiscoveryConfigRequest,
-        dict,
-    ],
-)
-def test_update_discovery_config_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DiscoveryConfig(
-            name="name_value",
-            display_name="display_name_value",
-            inspect_templates=["inspect_templates_value"],
-            status=dlp.DiscoveryConfig.Status.RUNNING,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DiscoveryConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_discovery_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DiscoveryConfig)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.inspect_templates == ["inspect_templates_value"]
-    assert response.status == dlp.DiscoveryConfig.Status.RUNNING
 
 
 def test_update_discovery_config_rest_use_cached_wrapped_rpc():
@@ -31258,87 +25848,6 @@ def test_update_discovery_config_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_discovery_config_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_update_discovery_config"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_update_discovery_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.UpdateDiscoveryConfigRequest.pb(
-            dlp.UpdateDiscoveryConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
-
-        request = dlp.UpdateDiscoveryConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DiscoveryConfig()
-
-        client.update_discovery_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_discovery_config_rest_bad_request(
-    transport: str = "rest", request_type=dlp.UpdateDiscoveryConfigRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_discovery_config(request)
-
-
 def test_update_discovery_config_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -31400,60 +25909,6 @@ def test_update_discovery_config_rest_flattened_error(transport: str = "rest"):
             discovery_config=dlp.DiscoveryConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_discovery_config_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetDiscoveryConfigRequest,
-        dict,
-    ],
-)
-def test_get_discovery_config_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DiscoveryConfig(
-            name="name_value",
-            display_name="display_name_value",
-            inspect_templates=["inspect_templates_value"],
-            status=dlp.DiscoveryConfig.Status.RUNNING,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DiscoveryConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_discovery_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DiscoveryConfig)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.inspect_templates == ["inspect_templates_value"]
-    assert response.status == dlp.DiscoveryConfig.Status.RUNNING
 
 
 def test_get_discovery_config_rest_use_cached_wrapped_rpc():
@@ -31579,85 +26034,6 @@ def test_get_discovery_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_discovery_config_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_discovery_config"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_discovery_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetDiscoveryConfigRequest.pb(dlp.GetDiscoveryConfigRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
-
-        request = dlp.GetDiscoveryConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DiscoveryConfig()
-
-        client.get_discovery_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_discovery_config_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetDiscoveryConfigRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_discovery_config(request)
-
-
 def test_get_discovery_config_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -31715,52 +26091,6 @@ def test_get_discovery_config_rest_flattened_error(transport: str = "rest"):
             dlp.GetDiscoveryConfigRequest(),
             name="name_value",
         )
-
-
-def test_get_discovery_config_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListDiscoveryConfigsRequest,
-        dict,
-    ],
-)
-def test_list_discovery_configs_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListDiscoveryConfigsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListDiscoveryConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_discovery_configs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDiscoveryConfigsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_discovery_configs_rest_use_cached_wrapped_rpc():
@@ -31904,87 +26234,6 @@ def test_list_discovery_configs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_discovery_configs_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_discovery_configs"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_discovery_configs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListDiscoveryConfigsRequest.pb(
-            dlp.ListDiscoveryConfigsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListDiscoveryConfigsResponse.to_json(
-            dlp.ListDiscoveryConfigsResponse()
-        )
-
-        request = dlp.ListDiscoveryConfigsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListDiscoveryConfigsResponse()
-
-        client.list_discovery_configs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_discovery_configs_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListDiscoveryConfigsRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_discovery_configs(request)
-
-
 def test_list_discovery_configs_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -32101,43 +26350,6 @@ def test_list_discovery_configs_rest_pager(transport: str = "rest"):
         pages = list(client.list_discovery_configs(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteDiscoveryConfigRequest,
-        dict,
-    ],
-)
-def test_delete_discovery_config_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_discovery_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_discovery_config_rest_use_cached_wrapped_rpc():
@@ -32261,81 +26473,6 @@ def test_delete_discovery_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_discovery_config_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_discovery_config"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteDiscoveryConfigRequest.pb(
-            dlp.DeleteDiscoveryConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteDiscoveryConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_discovery_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_discovery_config_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteDiscoveryConfigRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_discovery_config(request)
-
-
 def test_delete_discovery_config_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -32391,58 +26528,6 @@ def test_delete_discovery_config_rest_flattened_error(transport: str = "rest"):
             dlp.DeleteDiscoveryConfigRequest(),
             name="name_value",
         )
-
-
-def test_delete_discovery_config_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CreateDlpJobRequest,
-        dict,
-    ],
-)
-def test_create_dlp_job_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DlpJob(
-            name="name_value",
-            type_=dlp.DlpJobType.INSPECT_JOB,
-            state=dlp.DlpJob.JobState.PENDING,
-            job_trigger_name="job_trigger_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DlpJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_dlp_job(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DlpJob)
-    assert response.name == "name_value"
-    assert response.type_ == dlp.DlpJobType.INSPECT_JOB
-    assert response.state == dlp.DlpJob.JobState.PENDING
-    assert response.job_trigger_name == "job_trigger_name_value"
 
 
 def test_create_dlp_job_rest_use_cached_wrapped_rpc():
@@ -32563,83 +26648,6 @@ def test_create_dlp_job_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_dlp_job_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_create_dlp_job"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_create_dlp_job"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.CreateDlpJobRequest.pb(dlp.CreateDlpJobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DlpJob.to_json(dlp.DlpJob())
-
-        request = dlp.CreateDlpJobRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DlpJob()
-
-        client.create_dlp_job(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_dlp_job_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CreateDlpJobRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_dlp_job(request)
-
-
 def test_create_dlp_job_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -32707,52 +26715,6 @@ def test_create_dlp_job_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_create_dlp_job_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListDlpJobsRequest,
-        dict,
-    ],
-)
-def test_list_dlp_jobs_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListDlpJobsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListDlpJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_dlp_jobs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDlpJobsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_dlp_jobs_rest_use_cached_wrapped_rpc():
@@ -32895,85 +26857,6 @@ def test_list_dlp_jobs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_dlp_jobs_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_dlp_jobs"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_dlp_jobs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListDlpJobsRequest.pb(dlp.ListDlpJobsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListDlpJobsResponse.to_json(
-            dlp.ListDlpJobsResponse()
-        )
-
-        request = dlp.ListDlpJobsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListDlpJobsResponse()
-
-        client.list_dlp_jobs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_dlp_jobs_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListDlpJobsRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_dlp_jobs(request)
-
-
 def test_list_dlp_jobs_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33088,52 +26971,6 @@ def test_list_dlp_jobs_rest_pager(transport: str = "rest"):
         pages = list(client.list_dlp_jobs(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetDlpJobRequest,
-        dict,
-    ],
-)
-def test_get_dlp_job_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.DlpJob(
-            name="name_value",
-            type_=dlp.DlpJobType.INSPECT_JOB,
-            state=dlp.DlpJob.JobState.PENDING,
-            job_trigger_name="job_trigger_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.DlpJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_dlp_job(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.DlpJob)
-    assert response.name == "name_value"
-    assert response.type_ == dlp.DlpJobType.INSPECT_JOB
-    assert response.state == dlp.DlpJob.JobState.PENDING
-    assert response.job_trigger_name == "job_trigger_name_value"
 
 
 def test_get_dlp_job_rest_use_cached_wrapped_rpc():
@@ -33253,83 +27090,6 @@ def test_get_dlp_job_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_dlp_job_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_dlp_job"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_dlp_job"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetDlpJobRequest.pb(dlp.GetDlpJobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.DlpJob.to_json(dlp.DlpJob())
-
-        request = dlp.GetDlpJobRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.DlpJob()
-
-        client.get_dlp_job(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_dlp_job_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetDlpJobRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_dlp_job(request)
-
-
 def test_get_dlp_job_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33383,47 +27143,6 @@ def test_get_dlp_job_rest_flattened_error(transport: str = "rest"):
             dlp.GetDlpJobRequest(),
             name="name_value",
         )
-
-
-def test_get_dlp_job_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteDlpJobRequest,
-        dict,
-    ],
-)
-def test_delete_dlp_job_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_dlp_job(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_dlp_job_rest_use_cached_wrapped_rpc():
@@ -33540,77 +27259,6 @@ def test_delete_dlp_job_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_dlp_job_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_dlp_job"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteDlpJobRequest.pb(dlp.DeleteDlpJobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteDlpJobRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_dlp_job(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_dlp_job_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteDlpJobRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_dlp_job(request)
-
-
 def test_delete_dlp_job_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33662,47 +27310,6 @@ def test_delete_dlp_job_rest_flattened_error(transport: str = "rest"):
             dlp.DeleteDlpJobRequest(),
             name="name_value",
         )
-
-
-def test_delete_dlp_job_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CancelDlpJobRequest,
-        dict,
-    ],
-)
-def test_cancel_dlp_job_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.cancel_dlp_job(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_cancel_dlp_job_rest_use_cached_wrapped_rpc():
@@ -33818,123 +27425,6 @@ def test_cancel_dlp_job_rest_unset_required_fields():
 
     unset_fields = transport.cancel_dlp_job._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_cancel_dlp_job_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_cancel_dlp_job"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.CancelDlpJobRequest.pb(dlp.CancelDlpJobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.CancelDlpJobRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.cancel_dlp_job(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_cancel_dlp_job_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CancelDlpJobRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_dlp_job(request)
-
-
-def test_cancel_dlp_job_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CreateStoredInfoTypeRequest,
-        dict,
-    ],
-)
-def test_create_stored_info_type_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.StoredInfoType(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.StoredInfoType.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_stored_info_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.StoredInfoType)
-    assert response.name == "name_value"
 
 
 def test_create_stored_info_type_rest_use_cached_wrapped_rpc():
@@ -34070,85 +27560,6 @@ def test_create_stored_info_type_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_stored_info_type_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_create_stored_info_type"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_create_stored_info_type"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.CreateStoredInfoTypeRequest.pb(
-            dlp.CreateStoredInfoTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
-
-        request = dlp.CreateStoredInfoTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.StoredInfoType()
-
-        client.create_stored_info_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_stored_info_type_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CreateStoredInfoTypeRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_stored_info_type(request)
-
-
 def test_create_stored_info_type_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34205,52 +27616,6 @@ def test_create_stored_info_type_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             config=dlp.StoredInfoTypeConfig(display_name="display_name_value"),
         )
-
-
-def test_create_stored_info_type_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.UpdateStoredInfoTypeRequest,
-        dict,
-    ],
-)
-def test_update_stored_info_type_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.StoredInfoType(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.StoredInfoType.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_stored_info_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.StoredInfoType)
-    assert response.name == "name_value"
 
 
 def test_update_stored_info_type_rest_use_cached_wrapped_rpc():
@@ -34378,85 +27743,6 @@ def test_update_stored_info_type_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_stored_info_type_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_update_stored_info_type"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_update_stored_info_type"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.UpdateStoredInfoTypeRequest.pb(
-            dlp.UpdateStoredInfoTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
-
-        request = dlp.UpdateStoredInfoTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.StoredInfoType()
-
-        client.update_stored_info_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_stored_info_type_rest_bad_request(
-    transport: str = "rest", request_type=dlp.UpdateStoredInfoTypeRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_stored_info_type(request)
-
-
 def test_update_stored_info_type_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34515,52 +27801,6 @@ def test_update_stored_info_type_rest_flattened_error(transport: str = "rest"):
             config=dlp.StoredInfoTypeConfig(display_name="display_name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_stored_info_type_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetStoredInfoTypeRequest,
-        dict,
-    ],
-)
-def test_get_stored_info_type_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.StoredInfoType(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.StoredInfoType.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_stored_info_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.StoredInfoType)
-    assert response.name == "name_value"
 
 
 def test_get_stored_info_type_rest_use_cached_wrapped_rpc():
@@ -34686,83 +27926,6 @@ def test_get_stored_info_type_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_stored_info_type_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_stored_info_type"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_stored_info_type"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetStoredInfoTypeRequest.pb(dlp.GetStoredInfoTypeRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
-
-        request = dlp.GetStoredInfoTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.StoredInfoType()
-
-        client.get_stored_info_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_stored_info_type_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetStoredInfoTypeRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_stored_info_type(request)
-
-
 def test_get_stored_info_type_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34817,52 +27980,6 @@ def test_get_stored_info_type_rest_flattened_error(transport: str = "rest"):
             dlp.GetStoredInfoTypeRequest(),
             name="name_value",
         )
-
-
-def test_get_stored_info_type_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListStoredInfoTypesRequest,
-        dict,
-    ],
-)
-def test_list_stored_info_types_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListStoredInfoTypesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListStoredInfoTypesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_stored_info_types(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListStoredInfoTypesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_stored_info_types_rest_use_cached_wrapped_rpc():
@@ -35008,85 +28125,6 @@ def test_list_stored_info_types_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_stored_info_types_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_stored_info_types"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_stored_info_types"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListStoredInfoTypesRequest.pb(dlp.ListStoredInfoTypesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListStoredInfoTypesResponse.to_json(
-            dlp.ListStoredInfoTypesResponse()
-        )
-
-        request = dlp.ListStoredInfoTypesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListStoredInfoTypesResponse()
-
-        client.list_stored_info_types(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_stored_info_types_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListStoredInfoTypesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_stored_info_types(request)
-
-
 def test_list_stored_info_types_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -35202,41 +28240,6 @@ def test_list_stored_info_types_rest_pager(transport: str = "rest"):
         pages = list(client.list_stored_info_types(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteStoredInfoTypeRequest,
-        dict,
-    ],
-)
-def test_delete_stored_info_type_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_stored_info_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_stored_info_type_rest_use_cached_wrapped_rpc():
@@ -35360,79 +28363,6 @@ def test_delete_stored_info_type_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_stored_info_type_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_stored_info_type"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteStoredInfoTypeRequest.pb(
-            dlp.DeleteStoredInfoTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteStoredInfoTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_stored_info_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_stored_info_type_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteStoredInfoTypeRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_stored_info_type(request)
-
-
 def test_delete_stored_info_type_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -35485,52 +28415,6 @@ def test_delete_stored_info_type_rest_flattened_error(transport: str = "rest"):
             dlp.DeleteStoredInfoTypeRequest(),
             name="name_value",
         )
-
-
-def test_delete_stored_info_type_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListProjectDataProfilesRequest,
-        dict,
-    ],
-)
-def test_list_project_data_profiles_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListProjectDataProfilesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListProjectDataProfilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_project_data_profiles(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListProjectDataProfilesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_project_data_profiles_rest_use_cached_wrapped_rpc():
@@ -35676,87 +28560,6 @@ def test_list_project_data_profiles_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_project_data_profiles_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_project_data_profiles"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_project_data_profiles"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListProjectDataProfilesRequest.pb(
-            dlp.ListProjectDataProfilesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListProjectDataProfilesResponse.to_json(
-            dlp.ListProjectDataProfilesResponse()
-        )
-
-        request = dlp.ListProjectDataProfilesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListProjectDataProfilesResponse()
-
-        client.list_project_data_profiles(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_project_data_profiles_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListProjectDataProfilesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_project_data_profiles(request)
-
-
 def test_list_project_data_profiles_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -35875,46 +28678,6 @@ def test_list_project_data_profiles_rest_pager(transport: str = "rest"):
         pages = list(client.list_project_data_profiles(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListTableDataProfilesRequest,
-        dict,
-    ],
-)
-def test_list_table_data_profiles_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListTableDataProfilesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListTableDataProfilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_table_data_profiles(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListTableDataProfilesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_table_data_profiles_rest_use_cached_wrapped_rpc():
@@ -36060,87 +28823,6 @@ def test_list_table_data_profiles_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_table_data_profiles_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_table_data_profiles"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_table_data_profiles"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListTableDataProfilesRequest.pb(
-            dlp.ListTableDataProfilesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListTableDataProfilesResponse.to_json(
-            dlp.ListTableDataProfilesResponse()
-        )
-
-        request = dlp.ListTableDataProfilesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListTableDataProfilesResponse()
-
-        client.list_table_data_profiles(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_table_data_profiles_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListTableDataProfilesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_table_data_profiles(request)
-
-
 def test_list_table_data_profiles_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -36257,46 +28939,6 @@ def test_list_table_data_profiles_rest_pager(transport: str = "rest"):
         pages = list(client.list_table_data_profiles(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListColumnDataProfilesRequest,
-        dict,
-    ],
-)
-def test_list_column_data_profiles_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListColumnDataProfilesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListColumnDataProfilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_column_data_profiles(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListColumnDataProfilesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_column_data_profiles_rest_use_cached_wrapped_rpc():
@@ -36442,87 +29084,6 @@ def test_list_column_data_profiles_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_column_data_profiles_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_column_data_profiles"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_column_data_profiles"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListColumnDataProfilesRequest.pb(
-            dlp.ListColumnDataProfilesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListColumnDataProfilesResponse.to_json(
-            dlp.ListColumnDataProfilesResponse()
-        )
-
-        request = dlp.ListColumnDataProfilesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListColumnDataProfilesResponse()
-
-        client.list_column_data_profiles(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_column_data_profiles_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListColumnDataProfilesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_column_data_profiles(request)
-
-
 def test_list_column_data_profiles_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -36641,54 +29202,6 @@ def test_list_column_data_profiles_rest_pager(transport: str = "rest"):
         pages = list(client.list_column_data_profiles(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetProjectDataProfileRequest,
-        dict,
-    ],
-)
-def test_get_project_data_profile_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/projectDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ProjectDataProfile(
-            name="name_value",
-            project_id="project_id_value",
-            table_data_profile_count=2521,
-            file_store_data_profile_count=3069,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ProjectDataProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_project_data_profile(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.ProjectDataProfile)
-    assert response.name == "name_value"
-    assert response.project_id == "project_id_value"
-    assert response.table_data_profile_count == 2521
-    assert response.file_store_data_profile_count == 3069
 
 
 def test_get_project_data_profile_rest_use_cached_wrapped_rpc():
@@ -36815,89 +29328,6 @@ def test_get_project_data_profile_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_project_data_profile_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_project_data_profile"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_project_data_profile"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetProjectDataProfileRequest.pb(
-            dlp.GetProjectDataProfileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ProjectDataProfile.to_json(
-            dlp.ProjectDataProfile()
-        )
-
-        request = dlp.GetProjectDataProfileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ProjectDataProfile()
-
-        client.get_project_data_profile(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_project_data_profile_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetProjectDataProfileRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/projectDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_project_data_profile(request)
-
-
 def test_get_project_data_profile_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -36955,52 +29385,6 @@ def test_get_project_data_profile_rest_flattened_error(transport: str = "rest"):
             dlp.GetProjectDataProfileRequest(),
             name="name_value",
         )
-
-
-def test_get_project_data_profile_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListFileStoreDataProfilesRequest,
-        dict,
-    ],
-)
-def test_list_file_store_data_profiles_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListFileStoreDataProfilesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListFileStoreDataProfilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_file_store_data_profiles(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListFileStoreDataProfilesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_file_store_data_profiles_rest_use_cached_wrapped_rpc():
@@ -37148,87 +29532,6 @@ def test_list_file_store_data_profiles_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_file_store_data_profiles_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_file_store_data_profiles"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_file_store_data_profiles"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListFileStoreDataProfilesRequest.pb(
-            dlp.ListFileStoreDataProfilesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListFileStoreDataProfilesResponse.to_json(
-            dlp.ListFileStoreDataProfilesResponse()
-        )
-
-        request = dlp.ListFileStoreDataProfilesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListFileStoreDataProfilesResponse()
-
-        client.list_file_store_data_profiles(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_file_store_data_profiles_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListFileStoreDataProfilesRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_file_store_data_profiles(request)
-
-
 def test_list_file_store_data_profiles_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -37347,71 +29650,6 @@ def test_list_file_store_data_profiles_rest_pager(transport: str = "rest"):
         pages = list(client.list_file_store_data_profiles(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetFileStoreDataProfileRequest,
-        dict,
-    ],
-)
-def test_get_file_store_data_profile_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.FileStoreDataProfile(
-            name="name_value",
-            project_data_profile="project_data_profile_value",
-            project_id="project_id_value",
-            file_store_location="file_store_location_value",
-            data_storage_locations=["data_storage_locations_value"],
-            location_type="location_type_value",
-            file_store_path="file_store_path_value",
-            full_resource="full_resource_value",
-            state=dlp.FileStoreDataProfile.State.RUNNING,
-            resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
-            file_store_is_empty=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.FileStoreDataProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_file_store_data_profile(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.FileStoreDataProfile)
-    assert response.name == "name_value"
-    assert response.project_data_profile == "project_data_profile_value"
-    assert response.project_id == "project_id_value"
-    assert response.file_store_location == "file_store_location_value"
-    assert response.data_storage_locations == ["data_storage_locations_value"]
-    assert response.location_type == "location_type_value"
-    assert response.file_store_path == "file_store_path_value"
-    assert response.full_resource == "full_resource_value"
-    assert response.state == dlp.FileStoreDataProfile.State.RUNNING
-    assert (
-        response.resource_visibility
-        == dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC
-    )
-    assert response.file_store_is_empty is True
 
 
 def test_get_file_store_data_profile_rest_use_cached_wrapped_rpc():
@@ -37538,89 +29776,6 @@ def test_get_file_store_data_profile_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_file_store_data_profile_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_file_store_data_profile"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_file_store_data_profile"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetFileStoreDataProfileRequest.pb(
-            dlp.GetFileStoreDataProfileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.FileStoreDataProfile.to_json(
-            dlp.FileStoreDataProfile()
-        )
-
-        request = dlp.GetFileStoreDataProfileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.FileStoreDataProfile()
-
-        client.get_file_store_data_profile(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_file_store_data_profile_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetFileStoreDataProfileRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_file_store_data_profile(request)
-
-
 def test_get_file_store_data_profile_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -37678,49 +29833,6 @@ def test_get_file_store_data_profile_rest_flattened_error(transport: str = "rest
             dlp.GetFileStoreDataProfileRequest(),
             name="name_value",
         )
-
-
-def test_get_file_store_data_profile_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteFileStoreDataProfileRequest,
-        dict,
-    ],
-)
-def test_delete_file_store_data_profile_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_file_store_data_profile(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_file_store_data_profile_rest_use_cached_wrapped_rpc():
@@ -37846,81 +29958,6 @@ def test_delete_file_store_data_profile_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_file_store_data_profile_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_file_store_data_profile"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteFileStoreDataProfileRequest.pb(
-            dlp.DeleteFileStoreDataProfileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteFileStoreDataProfileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_file_store_data_profile(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_file_store_data_profile_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteFileStoreDataProfileRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_file_store_data_profile(request)
-
-
 def test_delete_file_store_data_profile_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -37976,83 +30013,6 @@ def test_delete_file_store_data_profile_rest_flattened_error(transport: str = "r
             dlp.DeleteFileStoreDataProfileRequest(),
             name="name_value",
         )
-
-
-def test_delete_file_store_data_profile_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetTableDataProfileRequest,
-        dict,
-    ],
-)
-def test_get_table_data_profile_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.TableDataProfile(
-            name="name_value",
-            project_data_profile="project_data_profile_value",
-            dataset_project_id="dataset_project_id_value",
-            dataset_location="dataset_location_value",
-            dataset_id="dataset_id_value",
-            table_id="table_id_value",
-            full_resource="full_resource_value",
-            state=dlp.TableDataProfile.State.RUNNING,
-            scanned_column_count=2129,
-            failed_column_count=2010,
-            table_size_bytes=1704,
-            row_count=992,
-            encryption_status=dlp.EncryptionStatus.ENCRYPTION_GOOGLE_MANAGED,
-            resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.TableDataProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_table_data_profile(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.TableDataProfile)
-    assert response.name == "name_value"
-    assert response.project_data_profile == "project_data_profile_value"
-    assert response.dataset_project_id == "dataset_project_id_value"
-    assert response.dataset_location == "dataset_location_value"
-    assert response.dataset_id == "dataset_id_value"
-    assert response.table_id == "table_id_value"
-    assert response.full_resource == "full_resource_value"
-    assert response.state == dlp.TableDataProfile.State.RUNNING
-    assert response.scanned_column_count == 2129
-    assert response.failed_column_count == 2010
-    assert response.table_size_bytes == 1704
-    assert response.row_count == 992
-    assert response.encryption_status == dlp.EncryptionStatus.ENCRYPTION_GOOGLE_MANAGED
-    assert (
-        response.resource_visibility
-        == dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC
-    )
 
 
 def test_get_table_data_profile_rest_use_cached_wrapped_rpc():
@@ -38179,85 +30139,6 @@ def test_get_table_data_profile_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_table_data_profile_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_table_data_profile"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_table_data_profile"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetTableDataProfileRequest.pb(dlp.GetTableDataProfileRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.TableDataProfile.to_json(dlp.TableDataProfile())
-
-        request = dlp.GetTableDataProfileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.TableDataProfile()
-
-        client.get_table_data_profile(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_table_data_profile_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetTableDataProfileRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_table_data_profile(request)
-
-
 def test_get_table_data_profile_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -38315,89 +30196,6 @@ def test_get_table_data_profile_rest_flattened_error(transport: str = "rest"):
             dlp.GetTableDataProfileRequest(),
             name="name_value",
         )
-
-
-def test_get_table_data_profile_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetColumnDataProfileRequest,
-        dict,
-    ],
-)
-def test_get_column_data_profile_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/columnDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ColumnDataProfile(
-            name="name_value",
-            state=dlp.ColumnDataProfile.State.RUNNING,
-            table_data_profile="table_data_profile_value",
-            table_full_resource="table_full_resource_value",
-            dataset_project_id="dataset_project_id_value",
-            dataset_location="dataset_location_value",
-            dataset_id="dataset_id_value",
-            table_id="table_id_value",
-            column="column_value",
-            estimated_null_percentage=dlp.NullPercentageLevel.NULL_PERCENTAGE_VERY_LOW,
-            estimated_uniqueness_score=dlp.UniquenessScoreLevel.UNIQUENESS_SCORE_LOW,
-            free_text_score=0.16010000000000002,
-            column_type=dlp.ColumnDataProfile.ColumnDataType.TYPE_INT64,
-            policy_state=dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ColumnDataProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_column_data_profile(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.ColumnDataProfile)
-    assert response.name == "name_value"
-    assert response.state == dlp.ColumnDataProfile.State.RUNNING
-    assert response.table_data_profile == "table_data_profile_value"
-    assert response.table_full_resource == "table_full_resource_value"
-    assert response.dataset_project_id == "dataset_project_id_value"
-    assert response.dataset_location == "dataset_location_value"
-    assert response.dataset_id == "dataset_id_value"
-    assert response.table_id == "table_id_value"
-    assert response.column == "column_value"
-    assert (
-        response.estimated_null_percentage
-        == dlp.NullPercentageLevel.NULL_PERCENTAGE_VERY_LOW
-    )
-    assert (
-        response.estimated_uniqueness_score
-        == dlp.UniquenessScoreLevel.UNIQUENESS_SCORE_LOW
-    )
-    assert math.isclose(response.free_text_score, 0.16010000000000002, rel_tol=1e-6)
-    assert response.column_type == dlp.ColumnDataProfile.ColumnDataType.TYPE_INT64
-    assert (
-        response.policy_state
-        == dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED
-    )
 
 
 def test_get_column_data_profile_rest_use_cached_wrapped_rpc():
@@ -38524,89 +30322,6 @@ def test_get_column_data_profile_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_column_data_profile_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_column_data_profile"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_column_data_profile"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetColumnDataProfileRequest.pb(
-            dlp.GetColumnDataProfileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ColumnDataProfile.to_json(
-            dlp.ColumnDataProfile()
-        )
-
-        request = dlp.GetColumnDataProfileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ColumnDataProfile()
-
-        client.get_column_data_profile(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_column_data_profile_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetColumnDataProfileRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/columnDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_column_data_profile(request)
-
-
 def test_get_column_data_profile_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -38664,49 +30379,6 @@ def test_get_column_data_profile_rest_flattened_error(transport: str = "rest"):
             dlp.GetColumnDataProfileRequest(),
             name="name_value",
         )
-
-
-def test_get_column_data_profile_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteTableDataProfileRequest,
-        dict,
-    ],
-)
-def test_delete_table_data_profile_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_table_data_profile(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_table_data_profile_rest_use_cached_wrapped_rpc():
@@ -38830,81 +30502,6 @@ def test_delete_table_data_profile_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_table_data_profile_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_table_data_profile"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteTableDataProfileRequest.pb(
-            dlp.DeleteTableDataProfileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteTableDataProfileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_table_data_profile(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_table_data_profile_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteTableDataProfileRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_table_data_profile(request)
-
-
 def test_delete_table_data_profile_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -38960,49 +30557,6 @@ def test_delete_table_data_profile_rest_flattened_error(transport: str = "rest")
             dlp.DeleteTableDataProfileRequest(),
             name="name_value",
         )
-
-
-def test_delete_table_data_profile_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.HybridInspectDlpJobRequest,
-        dict,
-    ],
-)
-def test_hybrid_inspect_dlp_job_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.HybridInspectResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.HybridInspectResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.hybrid_inspect_dlp_job(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.HybridInspectResponse)
 
 
 def test_hybrid_inspect_dlp_job_rest_use_cached_wrapped_rpc():
@@ -39130,85 +30684,6 @@ def test_hybrid_inspect_dlp_job_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_hybrid_inspect_dlp_job_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_hybrid_inspect_dlp_job"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_hybrid_inspect_dlp_job"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.HybridInspectDlpJobRequest.pb(dlp.HybridInspectDlpJobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.HybridInspectResponse.to_json(
-            dlp.HybridInspectResponse()
-        )
-
-        request = dlp.HybridInspectDlpJobRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.HybridInspectResponse()
-
-        client.hybrid_inspect_dlp_job(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_hybrid_inspect_dlp_job_rest_bad_request(
-    transport: str = "rest", request_type=dlp.HybridInspectDlpJobRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.hybrid_inspect_dlp_job(request)
-
-
 def test_hybrid_inspect_dlp_job_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -39264,47 +30739,6 @@ def test_hybrid_inspect_dlp_job_rest_flattened_error(transport: str = "rest"):
             dlp.HybridInspectDlpJobRequest(),
             name="name_value",
         )
-
-
-def test_hybrid_inspect_dlp_job_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.FinishDlpJobRequest,
-        dict,
-    ],
-)
-def test_finish_dlp_job_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.finish_dlp_job(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_finish_dlp_job_rest_use_cached_wrapped_rpc():
@@ -39420,125 +30854,6 @@ def test_finish_dlp_job_rest_unset_required_fields():
 
     unset_fields = transport.finish_dlp_job._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_finish_dlp_job_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_finish_dlp_job"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.FinishDlpJobRequest.pb(dlp.FinishDlpJobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.FinishDlpJobRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.finish_dlp_job(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_finish_dlp_job_rest_bad_request(
-    transport: str = "rest", request_type=dlp.FinishDlpJobRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.finish_dlp_job(request)
-
-
-def test_finish_dlp_job_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.CreateConnectionRequest,
-        dict,
-    ],
-)
-def test_create_connection_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.Connection(
-            name="name_value",
-            state=dlp.ConnectionState.MISSING_CREDENTIALS,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.Connection.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_connection(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.Connection)
-    assert response.name == "name_value"
-    assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
 
 
 def test_create_connection_rest_use_cached_wrapped_rpc():
@@ -39671,83 +30986,6 @@ def test_create_connection_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_connection_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_create_connection"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_create_connection"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.CreateConnectionRequest.pb(dlp.CreateConnectionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.Connection.to_json(dlp.Connection())
-
-        request = dlp.CreateConnectionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.Connection()
-
-        client.create_connection(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_connection_rest_bad_request(
-    transport: str = "rest", request_type=dlp.CreateConnectionRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_connection(request)
-
-
 def test_create_connection_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -39805,54 +31043,6 @@ def test_create_connection_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             connection=dlp.Connection(name="name_value"),
         )
-
-
-def test_create_connection_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.GetConnectionRequest,
-        dict,
-    ],
-)
-def test_get_connection_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.Connection(
-            name="name_value",
-            state=dlp.ConnectionState.MISSING_CREDENTIALS,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.Connection.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_connection(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.Connection)
-    assert response.name == "name_value"
-    assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
 
 
 def test_get_connection_rest_use_cached_wrapped_rpc():
@@ -39972,83 +31162,6 @@ def test_get_connection_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_connection_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_get_connection"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_get_connection"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.GetConnectionRequest.pb(dlp.GetConnectionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.Connection.to_json(dlp.Connection())
-
-        request = dlp.GetConnectionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.Connection()
-
-        client.get_connection(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_connection_rest_bad_request(
-    transport: str = "rest", request_type=dlp.GetConnectionRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_connection(request)
-
-
 def test_get_connection_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -40106,52 +31219,6 @@ def test_get_connection_rest_flattened_error(transport: str = "rest"):
             dlp.GetConnectionRequest(),
             name="name_value",
         )
-
-
-def test_get_connection_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.ListConnectionsRequest,
-        dict,
-    ],
-)
-def test_list_connections_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.ListConnectionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.ListConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_connections(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListConnectionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_connections_rest_use_cached_wrapped_rpc():
@@ -40290,85 +31357,6 @@ def test_list_connections_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_connections_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_list_connections"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_list_connections"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.ListConnectionsRequest.pb(dlp.ListConnectionsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.ListConnectionsResponse.to_json(
-            dlp.ListConnectionsResponse()
-        )
-
-        request = dlp.ListConnectionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.ListConnectionsResponse()
-
-        client.list_connections(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_connections_rest_bad_request(
-    transport: str = "rest", request_type=dlp.ListConnectionsRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_connections(request)
-
-
 def test_list_connections_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -40485,46 +31473,6 @@ def test_list_connections_rest_pager(transport: str = "rest"):
         pages = list(client.list_connections(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.SearchConnectionsRequest,
-        dict,
-    ],
-)
-def test_search_connections_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.SearchConnectionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.SearchConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.search_connections(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchConnectionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_search_connections_rest_use_cached_wrapped_rpc():
@@ -40667,85 +31615,6 @@ def test_search_connections_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_connections_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_search_connections"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_search_connections"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.SearchConnectionsRequest.pb(dlp.SearchConnectionsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.SearchConnectionsResponse.to_json(
-            dlp.SearchConnectionsResponse()
-        )
-
-        request = dlp.SearchConnectionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.SearchConnectionsResponse()
-
-        client.search_connections(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_connections_rest_bad_request(
-    transport: str = "rest", request_type=dlp.SearchConnectionsRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_connections(request)
-
-
 def test_search_connections_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -40862,41 +31731,6 @@ def test_search_connections_rest_pager(transport: str = "rest"):
         pages = list(client.search_connections(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.DeleteConnectionRequest,
-        dict,
-    ],
-)
-def test_delete_connection_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_connection(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_connection_rest_use_cached_wrapped_rpc():
@@ -41017,77 +31851,6 @@ def test_delete_connection_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_connection_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_delete_connection"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = dlp.DeleteConnectionRequest.pb(dlp.DeleteConnectionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = dlp.DeleteConnectionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_connection(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_connection_rest_bad_request(
-    transport: str = "rest", request_type=dlp.DeleteConnectionRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_connection(request)
-
-
 def test_delete_connection_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -41143,54 +31906,6 @@ def test_delete_connection_rest_flattened_error(transport: str = "rest"):
             dlp.DeleteConnectionRequest(),
             name="name_value",
         )
-
-
-def test_delete_connection_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        dlp.UpdateConnectionRequest,
-        dict,
-    ],
-)
-def test_update_connection_rest(request_type):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dlp.Connection(
-            name="name_value",
-            state=dlp.ConnectionState.MISSING_CREDENTIALS,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dlp.Connection.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_connection(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dlp.Connection)
-    assert response.name == "name_value"
-    assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
 
 
 def test_update_connection_rest_use_cached_wrapped_rpc():
@@ -41323,83 +32038,6 @@ def test_update_connection_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_connection_rest_interceptors(null_interceptor):
-    transport = transports.DlpServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DlpServiceRestInterceptor(),
-    )
-    client = DlpServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "post_update_connection"
-    ) as post, mock.patch.object(
-        transports.DlpServiceRestInterceptor, "pre_update_connection"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = dlp.UpdateConnectionRequest.pb(dlp.UpdateConnectionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dlp.Connection.to_json(dlp.Connection())
-
-        request = dlp.UpdateConnectionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dlp.Connection()
-
-        client.update_connection(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_connection_rest_bad_request(
-    transport: str = "rest", request_type=dlp.UpdateConnectionRequest
-):
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_connection(request)
-
-
 def test_update_connection_rest_flattened():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -41457,12 +32095,6 @@ def test_update_connection_rest_flattened_error(transport: str = "rest"):
             dlp.UpdateConnectionRequest(),
             name="name_value",
         )
-
-
-def test_update_connection_rest_error():
-    client = DlpServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -41557,18 +32189,10605 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = DlpServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_inspect_content_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
+        call.return_value = dlp.InspectContentResponse()
+        client.inspect_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.InspectContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_redact_image_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
+        call.return_value = dlp.RedactImageResponse()
+        client.redact_image(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.RedactImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_deidentify_content_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deidentify_content), "__call__"
+    ) as call:
+        call.return_value = dlp.DeidentifyContentResponse()
+        client.deidentify_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeidentifyContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reidentify_content_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reidentify_content), "__call__"
+    ) as call:
+        call.return_value = dlp.ReidentifyContentResponse()
+        client.reidentify_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ReidentifyContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_info_types_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
+        call.return_value = dlp.ListInfoTypesResponse()
+        client.list_info_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListInfoTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_inspect_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_inspect_template), "__call__"
+    ) as call:
+        call.return_value = dlp.InspectTemplate()
+        client.create_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_inspect_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_inspect_template), "__call__"
+    ) as call:
+        call.return_value = dlp.InspectTemplate()
+        client.update_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_inspect_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_inspect_template), "__call__"
+    ) as call:
+        call.return_value = dlp.InspectTemplate()
+        client.get_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_inspect_templates_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_inspect_templates), "__call__"
+    ) as call:
+        call.return_value = dlp.ListInspectTemplatesResponse()
+        client.list_inspect_templates(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListInspectTemplatesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_inspect_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_inspect_template), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_deidentify_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deidentify_template), "__call__"
+    ) as call:
+        call.return_value = dlp.DeidentifyTemplate()
+        client.create_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_deidentify_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deidentify_template), "__call__"
+    ) as call:
+        call.return_value = dlp.DeidentifyTemplate()
+        client.update_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_deidentify_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_deidentify_template), "__call__"
+    ) as call:
+        call.return_value = dlp.DeidentifyTemplate()
+        client.get_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_deidentify_templates_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deidentify_templates), "__call__"
+    ) as call:
+        call.return_value = dlp.ListDeidentifyTemplatesResponse()
+        client.list_deidentify_templates(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDeidentifyTemplatesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_deidentify_template_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deidentify_template), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_job_trigger_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_trigger), "__call__"
+    ) as call:
+        call.return_value = dlp.JobTrigger()
+        client.create_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_job_trigger_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_job_trigger), "__call__"
+    ) as call:
+        call.return_value = dlp.JobTrigger()
+        client.update_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_hybrid_inspect_job_trigger_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_job_trigger), "__call__"
+    ) as call:
+        call.return_value = dlp.HybridInspectResponse()
+        client.hybrid_inspect_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.HybridInspectJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_job_trigger_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
+        call.return_value = dlp.JobTrigger()
+        client.get_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_job_triggers_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_triggers), "__call__"
+    ) as call:
+        call.return_value = dlp.ListJobTriggersResponse()
+        client.list_job_triggers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListJobTriggersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_job_trigger_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_trigger), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_activate_job_trigger_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_job_trigger), "__call__"
+    ) as call:
+        call.return_value = dlp.DlpJob()
+        client.activate_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ActivateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_discovery_config_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_discovery_config), "__call__"
+    ) as call:
+        call.return_value = dlp.DiscoveryConfig()
+        client.create_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_discovery_config_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_discovery_config), "__call__"
+    ) as call:
+        call.return_value = dlp.DiscoveryConfig()
+        client.update_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_discovery_config_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovery_config), "__call__"
+    ) as call:
+        call.return_value = dlp.DiscoveryConfig()
+        client.get_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_discovery_configs_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovery_configs), "__call__"
+    ) as call:
+        call.return_value = dlp.ListDiscoveryConfigsResponse()
+        client.list_discovery_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDiscoveryConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_discovery_config_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_discovery_config), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dlp_job_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
+        call.return_value = dlp.DlpJob()
+        client.create_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_dlp_jobs_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
+        call.return_value = dlp.ListDlpJobsResponse()
+        client.list_dlp_jobs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDlpJobsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dlp_job_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
+        call.return_value = dlp.DlpJob()
+        client.get_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dlp_job_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
+        call.return_value = None
+        client.delete_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_cancel_dlp_job_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
+        call.return_value = None
+        client.cancel_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CancelDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_stored_info_type_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_stored_info_type), "__call__"
+    ) as call:
+        call.return_value = dlp.StoredInfoType()
+        client.create_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_stored_info_type_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_stored_info_type), "__call__"
+    ) as call:
+        call.return_value = dlp.StoredInfoType()
+        client.update_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_stored_info_type_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stored_info_type), "__call__"
+    ) as call:
+        call.return_value = dlp.StoredInfoType()
+        client.get_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_stored_info_types_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stored_info_types), "__call__"
+    ) as call:
+        call.return_value = dlp.ListStoredInfoTypesResponse()
+        client.list_stored_info_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListStoredInfoTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_stored_info_type_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_stored_info_type), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_project_data_profiles_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_data_profiles), "__call__"
+    ) as call:
+        call.return_value = dlp.ListProjectDataProfilesResponse()
+        client.list_project_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListProjectDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_table_data_profiles_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_table_data_profiles), "__call__"
+    ) as call:
+        call.return_value = dlp.ListTableDataProfilesResponse()
+        client.list_table_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListTableDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_column_data_profiles_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_data_profiles), "__call__"
+    ) as call:
+        call.return_value = dlp.ListColumnDataProfilesResponse()
+        client.list_column_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListColumnDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_project_data_profile_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_data_profile), "__call__"
+    ) as call:
+        call.return_value = dlp.ProjectDataProfile()
+        client.get_project_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetProjectDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_file_store_data_profiles_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_file_store_data_profiles), "__call__"
+    ) as call:
+        call.return_value = dlp.ListFileStoreDataProfilesResponse()
+        client.list_file_store_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListFileStoreDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_file_store_data_profile_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_file_store_data_profile), "__call__"
+    ) as call:
+        call.return_value = dlp.FileStoreDataProfile()
+        client.get_file_store_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetFileStoreDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_file_store_data_profile_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_file_store_data_profile), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_file_store_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteFileStoreDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_table_data_profile_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_table_data_profile), "__call__"
+    ) as call:
+        call.return_value = dlp.TableDataProfile()
+        client.get_table_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetTableDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_column_data_profile_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_column_data_profile), "__call__"
+    ) as call:
+        call.return_value = dlp.ColumnDataProfile()
+        client.get_column_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetColumnDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_table_data_profile_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_table_data_profile), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_table_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteTableDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_hybrid_inspect_dlp_job_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_dlp_job), "__call__"
+    ) as call:
+        call.return_value = dlp.HybridInspectResponse()
+        client.hybrid_inspect_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.HybridInspectDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_finish_dlp_job_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
+        call.return_value = None
+        client.finish_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.FinishDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_connection_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connection), "__call__"
+    ) as call:
+        call.return_value = dlp.Connection()
+        client.create_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_connection_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
+        call.return_value = dlp.Connection()
+        client.get_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_connections_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
+        call.return_value = dlp.ListConnectionsResponse()
+        client.list_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_connections_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_connections), "__call__"
+    ) as call:
+        call.return_value = dlp.SearchConnectionsResponse()
+        client.search_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.SearchConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_connection_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connection), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_connection_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connection), "__call__"
+    ) as call:
+        call.return_value = dlp.Connection()
+        client.update_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = DlpServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_inspect_content_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectContentResponse()
+        )
+        await client.inspect_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.InspectContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_redact_image_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.RedactImageResponse(
+                redacted_image=b"redacted_image_blob",
+                extracted_text="extracted_text_value",
+            )
+        )
+        await client.redact_image(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.RedactImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_deidentify_content_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deidentify_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyContentResponse()
+        )
+        await client.deidentify_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeidentifyContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_reidentify_content_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reidentify_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ReidentifyContentResponse()
+        )
+        await client.reidentify_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ReidentifyContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_info_types_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListInfoTypesResponse()
+        )
+        await client.list_info_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListInfoTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_inspect_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.create_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_inspect_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.update_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_inspect_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.InspectTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.get_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_inspect_templates_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_inspect_templates), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListInspectTemplatesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_inspect_templates(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListInspectTemplatesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_inspect_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_inspect_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_deidentify_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.create_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_deidentify_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.update_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_deidentify_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DeidentifyTemplate(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.get_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_deidentify_templates_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deidentify_templates), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListDeidentifyTemplatesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_deidentify_templates(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDeidentifyTemplatesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_deidentify_template_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deidentify_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_job_trigger_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.JobTrigger(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                status=dlp.JobTrigger.Status.HEALTHY,
+            )
+        )
+        await client.create_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_job_trigger_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.JobTrigger(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                status=dlp.JobTrigger.Status.HEALTHY,
+            )
+        )
+        await client.update_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_hybrid_inspect_job_trigger_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.HybridInspectResponse()
+        )
+        await client.hybrid_inspect_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.HybridInspectJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_job_trigger_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.JobTrigger(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                status=dlp.JobTrigger.Status.HEALTHY,
+            )
+        )
+        await client.get_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_job_triggers_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_triggers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListJobTriggersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_job_triggers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListJobTriggersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_job_trigger_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_activate_job_trigger_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_job_trigger), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DlpJob(
+                name="name_value",
+                type_=dlp.DlpJobType.INSPECT_JOB,
+                state=dlp.DlpJob.JobState.PENDING,
+                job_trigger_name="job_trigger_name_value",
+            )
+        )
+        await client.activate_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ActivateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_discovery_config_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DiscoveryConfig(
+                name="name_value",
+                display_name="display_name_value",
+                inspect_templates=["inspect_templates_value"],
+                status=dlp.DiscoveryConfig.Status.RUNNING,
+            )
+        )
+        await client.create_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_discovery_config_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DiscoveryConfig(
+                name="name_value",
+                display_name="display_name_value",
+                inspect_templates=["inspect_templates_value"],
+                status=dlp.DiscoveryConfig.Status.RUNNING,
+            )
+        )
+        await client.update_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_discovery_config_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DiscoveryConfig(
+                name="name_value",
+                display_name="display_name_value",
+                inspect_templates=["inspect_templates_value"],
+                status=dlp.DiscoveryConfig.Status.RUNNING,
+            )
+        )
+        await client.get_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_discovery_configs_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovery_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListDiscoveryConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_discovery_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDiscoveryConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_discovery_config_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_discovery_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_dlp_job_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DlpJob(
+                name="name_value",
+                type_=dlp.DlpJobType.INSPECT_JOB,
+                state=dlp.DlpJob.JobState.PENDING,
+                job_trigger_name="job_trigger_name_value",
+            )
+        )
+        await client.create_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_dlp_jobs_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListDlpJobsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_dlp_jobs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDlpJobsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_dlp_job_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.DlpJob(
+                name="name_value",
+                type_=dlp.DlpJobType.INSPECT_JOB,
+                state=dlp.DlpJob.JobState.PENDING,
+                job_trigger_name="job_trigger_name_value",
+            )
+        )
+        await client.get_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_dlp_job_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_cancel_dlp_job_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CancelDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_stored_info_type_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.StoredInfoType(
+                name="name_value",
+            )
+        )
+        await client.create_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_stored_info_type_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.StoredInfoType(
+                name="name_value",
+            )
+        )
+        await client.update_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_stored_info_type_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.StoredInfoType(
+                name="name_value",
+            )
+        )
+        await client.get_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_stored_info_types_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stored_info_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListStoredInfoTypesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_stored_info_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListStoredInfoTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_stored_info_type_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_stored_info_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_project_data_profiles_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_data_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListProjectDataProfilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_project_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListProjectDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_table_data_profiles_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_table_data_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListTableDataProfilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_table_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListTableDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_column_data_profiles_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_data_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListColumnDataProfilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_column_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListColumnDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_project_data_profile_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ProjectDataProfile(
+                name="name_value",
+                project_id="project_id_value",
+                table_data_profile_count=2521,
+                file_store_data_profile_count=3069,
+            )
+        )
+        await client.get_project_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetProjectDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_file_store_data_profiles_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_file_store_data_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListFileStoreDataProfilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_file_store_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListFileStoreDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_file_store_data_profile_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_file_store_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.FileStoreDataProfile(
+                name="name_value",
+                project_data_profile="project_data_profile_value",
+                project_id="project_id_value",
+                file_store_location="file_store_location_value",
+                data_storage_locations=["data_storage_locations_value"],
+                location_type="location_type_value",
+                file_store_path="file_store_path_value",
+                full_resource="full_resource_value",
+                state=dlp.FileStoreDataProfile.State.RUNNING,
+                resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
+                file_store_is_empty=True,
+            )
+        )
+        await client.get_file_store_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetFileStoreDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_file_store_data_profile_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_file_store_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_file_store_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteFileStoreDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_table_data_profile_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_table_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.TableDataProfile(
+                name="name_value",
+                project_data_profile="project_data_profile_value",
+                dataset_project_id="dataset_project_id_value",
+                dataset_location="dataset_location_value",
+                dataset_id="dataset_id_value",
+                table_id="table_id_value",
+                full_resource="full_resource_value",
+                state=dlp.TableDataProfile.State.RUNNING,
+                scanned_column_count=2129,
+                failed_column_count=2010,
+                table_size_bytes=1704,
+                row_count=992,
+                encryption_status=dlp.EncryptionStatus.ENCRYPTION_GOOGLE_MANAGED,
+                resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
+            )
+        )
+        await client.get_table_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetTableDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_column_data_profile_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_column_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ColumnDataProfile(
+                name="name_value",
+                state=dlp.ColumnDataProfile.State.RUNNING,
+                table_data_profile="table_data_profile_value",
+                table_full_resource="table_full_resource_value",
+                dataset_project_id="dataset_project_id_value",
+                dataset_location="dataset_location_value",
+                dataset_id="dataset_id_value",
+                table_id="table_id_value",
+                column="column_value",
+                estimated_null_percentage=dlp.NullPercentageLevel.NULL_PERCENTAGE_VERY_LOW,
+                estimated_uniqueness_score=dlp.UniquenessScoreLevel.UNIQUENESS_SCORE_LOW,
+                free_text_score=0.16010000000000002,
+                column_type=dlp.ColumnDataProfile.ColumnDataType.TYPE_INT64,
+                policy_state=dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED,
+            )
+        )
+        await client.get_column_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetColumnDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_table_data_profile_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_table_data_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_table_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteTableDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_hybrid_inspect_dlp_job_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_dlp_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.HybridInspectResponse()
+        )
+        await client.hybrid_inspect_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.HybridInspectDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_finish_dlp_job_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.finish_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.FinishDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_connection_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.Connection(
+                name="name_value",
+                state=dlp.ConnectionState.MISSING_CREDENTIALS,
+            )
+        )
+        await client.create_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_connection_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.Connection(
+                name="name_value",
+                state=dlp.ConnectionState.MISSING_CREDENTIALS,
+            )
+        )
+        await client.get_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_connections_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListConnectionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_search_connections_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.SearchConnectionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.search_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.SearchConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_connection_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_connection_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.Connection(
+                name="name_value",
+                state=dlp.ConnectionState.MISSING_CREDENTIALS,
+            )
+        )
+        await client.update_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = DlpServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_inspect_content_rest_bad_request(request_type=dlp.InspectContentRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.inspect_content(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        dlp.InspectContentRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = DlpServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_inspect_content_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.InspectContentResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.InspectContentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.inspect_content(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.InspectContentResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_inspect_content_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_inspect_content"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_inspect_content"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.InspectContentRequest.pb(dlp.InspectContentRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.InspectContentResponse.to_json(dlp.InspectContentResponse())
+        req.return_value.content = return_value
+
+        request = dlp.InspectContentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.InspectContentResponse()
+
+        client.inspect_content(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_redact_image_rest_bad_request(request_type=dlp.RedactImageRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.redact_image(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.RedactImageRequest,
+        dict,
+    ],
+)
+def test_redact_image_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.RedactImageResponse(
+            redacted_image=b"redacted_image_blob",
+            extracted_text="extracted_text_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.RedactImageResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.redact_image(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.RedactImageResponse)
+    assert response.redacted_image == b"redacted_image_blob"
+    assert response.extracted_text == "extracted_text_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_redact_image_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_redact_image"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_redact_image"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.RedactImageRequest.pb(dlp.RedactImageRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.RedactImageResponse.to_json(dlp.RedactImageResponse())
+        req.return_value.content = return_value
+
+        request = dlp.RedactImageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.RedactImageResponse()
+
+        client.redact_image(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_deidentify_content_rest_bad_request(request_type=dlp.DeidentifyContentRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.deidentify_content(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeidentifyContentRequest,
+        dict,
+    ],
+)
+def test_deidentify_content_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DeidentifyContentResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DeidentifyContentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.deidentify_content(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DeidentifyContentResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_deidentify_content_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_deidentify_content"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_deidentify_content"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.DeidentifyContentRequest.pb(dlp.DeidentifyContentRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DeidentifyContentResponse.to_json(
+            dlp.DeidentifyContentResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.DeidentifyContentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DeidentifyContentResponse()
+
+        client.deidentify_content(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_reidentify_content_rest_bad_request(request_type=dlp.ReidentifyContentRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.reidentify_content(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ReidentifyContentRequest,
+        dict,
+    ],
+)
+def test_reidentify_content_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ReidentifyContentResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ReidentifyContentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.reidentify_content(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ReidentifyContentResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reidentify_content_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_reidentify_content"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_reidentify_content"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ReidentifyContentRequest.pb(dlp.ReidentifyContentRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ReidentifyContentResponse.to_json(
+            dlp.ReidentifyContentResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ReidentifyContentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ReidentifyContentResponse()
+
+        client.reidentify_content(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_info_types_rest_bad_request(request_type=dlp.ListInfoTypesRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_info_types(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListInfoTypesRequest,
+        dict,
+    ],
+)
+def test_list_info_types_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListInfoTypesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListInfoTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_info_types(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ListInfoTypesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_info_types_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_info_types"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_info_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListInfoTypesRequest.pb(dlp.ListInfoTypesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListInfoTypesResponse.to_json(dlp.ListInfoTypesResponse())
+        req.return_value.content = return_value
+
+        request = dlp.ListInfoTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListInfoTypesResponse()
+
+        client.list_info_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_inspect_template_rest_bad_request(
+    request_type=dlp.CreateInspectTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_inspect_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateInspectTemplateRequest,
+        dict,
+    ],
+)
+def test_create_inspect_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.InspectTemplate(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.InspectTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_inspect_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.InspectTemplate)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_inspect_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_inspect_template"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_create_inspect_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.CreateInspectTemplateRequest.pb(
+            dlp.CreateInspectTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
+        req.return_value.content = return_value
+
+        request = dlp.CreateInspectTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.InspectTemplate()
+
+        client.create_inspect_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_inspect_template_rest_bad_request(
+    request_type=dlp.UpdateInspectTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_inspect_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateInspectTemplateRequest,
+        dict,
+    ],
+)
+def test_update_inspect_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.InspectTemplate(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.InspectTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_inspect_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.InspectTemplate)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_inspect_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_inspect_template"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_update_inspect_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.UpdateInspectTemplateRequest.pb(
+            dlp.UpdateInspectTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
+        req.return_value.content = return_value
+
+        request = dlp.UpdateInspectTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.InspectTemplate()
+
+        client.update_inspect_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_inspect_template_rest_bad_request(
+    request_type=dlp.GetInspectTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_inspect_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetInspectTemplateRequest,
+        dict,
+    ],
+)
+def test_get_inspect_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.InspectTemplate(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.InspectTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_inspect_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.InspectTemplate)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_inspect_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_inspect_template"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_inspect_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetInspectTemplateRequest.pb(dlp.GetInspectTemplateRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
+        req.return_value.content = return_value
+
+        request = dlp.GetInspectTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.InspectTemplate()
+
+        client.get_inspect_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_inspect_templates_rest_bad_request(
+    request_type=dlp.ListInspectTemplatesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_inspect_templates(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListInspectTemplatesRequest,
+        dict,
+    ],
+)
+def test_list_inspect_templates_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListInspectTemplatesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListInspectTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_inspect_templates(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInspectTemplatesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_inspect_templates_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_inspect_templates"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_inspect_templates"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListInspectTemplatesRequest.pb(
+            dlp.ListInspectTemplatesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListInspectTemplatesResponse.to_json(
+            dlp.ListInspectTemplatesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListInspectTemplatesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListInspectTemplatesResponse()
+
+        client.list_inspect_templates(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_inspect_template_rest_bad_request(
+    request_type=dlp.DeleteInspectTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_inspect_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteInspectTemplateRequest,
+        dict,
+    ],
+)
+def test_delete_inspect_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/inspectTemplates/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_inspect_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_inspect_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_inspect_template"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteInspectTemplateRequest.pb(
+            dlp.DeleteInspectTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteInspectTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_inspect_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_deidentify_template_rest_bad_request(
+    request_type=dlp.CreateDeidentifyTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_deidentify_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateDeidentifyTemplateRequest,
+        dict,
+    ],
+)
+def test_create_deidentify_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DeidentifyTemplate(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DeidentifyTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_deidentify_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DeidentifyTemplate)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_deidentify_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_deidentify_template"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_create_deidentify_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.CreateDeidentifyTemplateRequest.pb(
+            dlp.CreateDeidentifyTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DeidentifyTemplate.to_json(dlp.DeidentifyTemplate())
+        req.return_value.content = return_value
+
+        request = dlp.CreateDeidentifyTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DeidentifyTemplate()
+
+        client.create_deidentify_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_deidentify_template_rest_bad_request(
+    request_type=dlp.UpdateDeidentifyTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_deidentify_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateDeidentifyTemplateRequest,
+        dict,
+    ],
+)
+def test_update_deidentify_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DeidentifyTemplate(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DeidentifyTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_deidentify_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DeidentifyTemplate)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_deidentify_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_deidentify_template"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_update_deidentify_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.UpdateDeidentifyTemplateRequest.pb(
+            dlp.UpdateDeidentifyTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DeidentifyTemplate.to_json(dlp.DeidentifyTemplate())
+        req.return_value.content = return_value
+
+        request = dlp.UpdateDeidentifyTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DeidentifyTemplate()
+
+        client.update_deidentify_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_deidentify_template_rest_bad_request(
+    request_type=dlp.GetDeidentifyTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_deidentify_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetDeidentifyTemplateRequest,
+        dict,
+    ],
+)
+def test_get_deidentify_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DeidentifyTemplate(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DeidentifyTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_deidentify_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DeidentifyTemplate)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_deidentify_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_deidentify_template"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_deidentify_template"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetDeidentifyTemplateRequest.pb(
+            dlp.GetDeidentifyTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DeidentifyTemplate.to_json(dlp.DeidentifyTemplate())
+        req.return_value.content = return_value
+
+        request = dlp.GetDeidentifyTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DeidentifyTemplate()
+
+        client.get_deidentify_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_deidentify_templates_rest_bad_request(
+    request_type=dlp.ListDeidentifyTemplatesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_deidentify_templates(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListDeidentifyTemplatesRequest,
+        dict,
+    ],
+)
+def test_list_deidentify_templates_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListDeidentifyTemplatesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListDeidentifyTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_deidentify_templates(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDeidentifyTemplatesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_deidentify_templates_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_deidentify_templates"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_deidentify_templates"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListDeidentifyTemplatesRequest.pb(
+            dlp.ListDeidentifyTemplatesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListDeidentifyTemplatesResponse.to_json(
+            dlp.ListDeidentifyTemplatesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListDeidentifyTemplatesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListDeidentifyTemplatesResponse()
+
+        client.list_deidentify_templates(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_deidentify_template_rest_bad_request(
+    request_type=dlp.DeleteDeidentifyTemplateRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_deidentify_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteDeidentifyTemplateRequest,
+        dict,
+    ],
+)
+def test_delete_deidentify_template_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/deidentifyTemplates/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_deidentify_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_deidentify_template_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_deidentify_template"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteDeidentifyTemplateRequest.pb(
+            dlp.DeleteDeidentifyTemplateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteDeidentifyTemplateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_deidentify_template(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_job_trigger_rest_bad_request(request_type=dlp.CreateJobTriggerRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_job_trigger(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateJobTriggerRequest,
+        dict,
+    ],
+)
+def test_create_job_trigger_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.JobTrigger(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            status=dlp.JobTrigger.Status.HEALTHY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.JobTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.JobTrigger)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.status == dlp.JobTrigger.Status.HEALTHY
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_job_trigger_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_job_trigger"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_create_job_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.CreateJobTriggerRequest.pb(dlp.CreateJobTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.JobTrigger.to_json(dlp.JobTrigger())
+        req.return_value.content = return_value
+
+        request = dlp.CreateJobTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.JobTrigger()
+
+        client.create_job_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_job_trigger_rest_bad_request(request_type=dlp.UpdateJobTriggerRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_job_trigger(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateJobTriggerRequest,
+        dict,
+    ],
+)
+def test_update_job_trigger_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.JobTrigger(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            status=dlp.JobTrigger.Status.HEALTHY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.JobTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_job_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.JobTrigger)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.status == dlp.JobTrigger.Status.HEALTHY
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_job_trigger_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_job_trigger"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_update_job_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.UpdateJobTriggerRequest.pb(dlp.UpdateJobTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.JobTrigger.to_json(dlp.JobTrigger())
+        req.return_value.content = return_value
+
+        request = dlp.UpdateJobTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.JobTrigger()
+
+        client.update_job_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_hybrid_inspect_job_trigger_rest_bad_request(
+    request_type=dlp.HybridInspectJobTriggerRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobTriggers/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.hybrid_inspect_job_trigger(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.HybridInspectJobTriggerRequest,
+        dict,
+    ],
+)
+def test_hybrid_inspect_job_trigger_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/jobTriggers/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.HybridInspectResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.HybridInspectResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.hybrid_inspect_job_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.HybridInspectResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_hybrid_inspect_job_trigger_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_hybrid_inspect_job_trigger"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_hybrid_inspect_job_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.HybridInspectJobTriggerRequest.pb(
+            dlp.HybridInspectJobTriggerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.HybridInspectResponse.to_json(dlp.HybridInspectResponse())
+        req.return_value.content = return_value
+
+        request = dlp.HybridInspectJobTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.HybridInspectResponse()
+
+        client.hybrid_inspect_job_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_job_trigger_rest_bad_request(request_type=dlp.GetJobTriggerRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_job_trigger(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetJobTriggerRequest,
+        dict,
+    ],
+)
+def test_get_job_trigger_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.JobTrigger(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            status=dlp.JobTrigger.Status.HEALTHY,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.JobTrigger.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_job_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.JobTrigger)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.status == dlp.JobTrigger.Status.HEALTHY
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_job_trigger_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_job_trigger"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_job_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetJobTriggerRequest.pb(dlp.GetJobTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.JobTrigger.to_json(dlp.JobTrigger())
+        req.return_value.content = return_value
+
+        request = dlp.GetJobTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.JobTrigger()
+
+        client.get_job_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_job_triggers_rest_bad_request(request_type=dlp.ListJobTriggersRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_job_triggers(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListJobTriggersRequest,
+        dict,
+    ],
+)
+def test_list_job_triggers_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListJobTriggersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListJobTriggersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_job_triggers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListJobTriggersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_job_triggers_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_job_triggers"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_job_triggers"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListJobTriggersRequest.pb(dlp.ListJobTriggersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListJobTriggersResponse.to_json(
+            dlp.ListJobTriggersResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListJobTriggersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListJobTriggersResponse()
+
+        client.list_job_triggers(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_job_trigger_rest_bad_request(request_type=dlp.DeleteJobTriggerRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_job_trigger(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteJobTriggerRequest,
+        dict,
+    ],
+)
+def test_delete_job_trigger_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_job_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_job_trigger_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_job_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteJobTriggerRequest.pb(dlp.DeleteJobTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteJobTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_job_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_activate_job_trigger_rest_bad_request(
+    request_type=dlp.ActivateJobTriggerRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.activate_job_trigger(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ActivateJobTriggerRequest,
+        dict,
+    ],
+)
+def test_activate_job_trigger_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/jobTriggers/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DlpJob(
+            name="name_value",
+            type_=dlp.DlpJobType.INSPECT_JOB,
+            state=dlp.DlpJob.JobState.PENDING,
+            job_trigger_name="job_trigger_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DlpJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.activate_job_trigger(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DlpJob)
+    assert response.name == "name_value"
+    assert response.type_ == dlp.DlpJobType.INSPECT_JOB
+    assert response.state == dlp.DlpJob.JobState.PENDING
+    assert response.job_trigger_name == "job_trigger_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_activate_job_trigger_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_activate_job_trigger"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_activate_job_trigger"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ActivateJobTriggerRequest.pb(dlp.ActivateJobTriggerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DlpJob.to_json(dlp.DlpJob())
+        req.return_value.content = return_value
+
+        request = dlp.ActivateJobTriggerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DlpJob()
+
+        client.activate_job_trigger(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_discovery_config_rest_bad_request(
+    request_type=dlp.CreateDiscoveryConfigRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_discovery_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateDiscoveryConfigRequest,
+        dict,
+    ],
+)
+def test_create_discovery_config_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DiscoveryConfig(
+            name="name_value",
+            display_name="display_name_value",
+            inspect_templates=["inspect_templates_value"],
+            status=dlp.DiscoveryConfig.Status.RUNNING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DiscoveryConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_discovery_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DiscoveryConfig)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.inspect_templates == ["inspect_templates_value"]
+    assert response.status == dlp.DiscoveryConfig.Status.RUNNING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_discovery_config_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_discovery_config"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_create_discovery_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.CreateDiscoveryConfigRequest.pb(
+            dlp.CreateDiscoveryConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
+        req.return_value.content = return_value
+
+        request = dlp.CreateDiscoveryConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DiscoveryConfig()
+
+        client.create_discovery_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_discovery_config_rest_bad_request(
+    request_type=dlp.UpdateDiscoveryConfigRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_discovery_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateDiscoveryConfigRequest,
+        dict,
+    ],
+)
+def test_update_discovery_config_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DiscoveryConfig(
+            name="name_value",
+            display_name="display_name_value",
+            inspect_templates=["inspect_templates_value"],
+            status=dlp.DiscoveryConfig.Status.RUNNING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DiscoveryConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_discovery_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DiscoveryConfig)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.inspect_templates == ["inspect_templates_value"]
+    assert response.status == dlp.DiscoveryConfig.Status.RUNNING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_discovery_config_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_discovery_config"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_update_discovery_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.UpdateDiscoveryConfigRequest.pb(
+            dlp.UpdateDiscoveryConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
+        req.return_value.content = return_value
+
+        request = dlp.UpdateDiscoveryConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DiscoveryConfig()
+
+        client.update_discovery_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_discovery_config_rest_bad_request(
+    request_type=dlp.GetDiscoveryConfigRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_discovery_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetDiscoveryConfigRequest,
+        dict,
+    ],
+)
+def test_get_discovery_config_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DiscoveryConfig(
+            name="name_value",
+            display_name="display_name_value",
+            inspect_templates=["inspect_templates_value"],
+            status=dlp.DiscoveryConfig.Status.RUNNING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DiscoveryConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_discovery_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DiscoveryConfig)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.inspect_templates == ["inspect_templates_value"]
+    assert response.status == dlp.DiscoveryConfig.Status.RUNNING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_discovery_config_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_discovery_config"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_discovery_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetDiscoveryConfigRequest.pb(dlp.GetDiscoveryConfigRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
+        req.return_value.content = return_value
+
+        request = dlp.GetDiscoveryConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DiscoveryConfig()
+
+        client.get_discovery_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_discovery_configs_rest_bad_request(
+    request_type=dlp.ListDiscoveryConfigsRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_discovery_configs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListDiscoveryConfigsRequest,
+        dict,
+    ],
+)
+def test_list_discovery_configs_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListDiscoveryConfigsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListDiscoveryConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_discovery_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDiscoveryConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_discovery_configs_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_discovery_configs"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_discovery_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListDiscoveryConfigsRequest.pb(
+            dlp.ListDiscoveryConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListDiscoveryConfigsResponse.to_json(
+            dlp.ListDiscoveryConfigsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListDiscoveryConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListDiscoveryConfigsResponse()
+
+        client.list_discovery_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_discovery_config_rest_bad_request(
+    request_type=dlp.DeleteDiscoveryConfigRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_discovery_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteDiscoveryConfigRequest,
+        dict,
+    ],
+)
+def test_delete_discovery_config_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/discoveryConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_discovery_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_discovery_config_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_discovery_config"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteDiscoveryConfigRequest.pb(
+            dlp.DeleteDiscoveryConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteDiscoveryConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_discovery_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_dlp_job_rest_bad_request(request_type=dlp.CreateDlpJobRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_dlp_job(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateDlpJobRequest,
+        dict,
+    ],
+)
+def test_create_dlp_job_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DlpJob(
+            name="name_value",
+            type_=dlp.DlpJobType.INSPECT_JOB,
+            state=dlp.DlpJob.JobState.PENDING,
+            job_trigger_name="job_trigger_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DlpJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_dlp_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DlpJob)
+    assert response.name == "name_value"
+    assert response.type_ == dlp.DlpJobType.INSPECT_JOB
+    assert response.state == dlp.DlpJob.JobState.PENDING
+    assert response.job_trigger_name == "job_trigger_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_dlp_job_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_dlp_job"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_create_dlp_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.CreateDlpJobRequest.pb(dlp.CreateDlpJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DlpJob.to_json(dlp.DlpJob())
+        req.return_value.content = return_value
+
+        request = dlp.CreateDlpJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DlpJob()
+
+        client.create_dlp_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_dlp_jobs_rest_bad_request(request_type=dlp.ListDlpJobsRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_dlp_jobs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListDlpJobsRequest,
+        dict,
+    ],
+)
+def test_list_dlp_jobs_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListDlpJobsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListDlpJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_dlp_jobs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDlpJobsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_dlp_jobs_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_dlp_jobs"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_dlp_jobs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListDlpJobsRequest.pb(dlp.ListDlpJobsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListDlpJobsResponse.to_json(dlp.ListDlpJobsResponse())
+        req.return_value.content = return_value
+
+        request = dlp.ListDlpJobsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListDlpJobsResponse()
+
+        client.list_dlp_jobs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_dlp_job_rest_bad_request(request_type=dlp.GetDlpJobRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_dlp_job(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetDlpJobRequest,
+        dict,
+    ],
+)
+def test_get_dlp_job_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.DlpJob(
+            name="name_value",
+            type_=dlp.DlpJobType.INSPECT_JOB,
+            state=dlp.DlpJob.JobState.PENDING,
+            job_trigger_name="job_trigger_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.DlpJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_dlp_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.DlpJob)
+    assert response.name == "name_value"
+    assert response.type_ == dlp.DlpJobType.INSPECT_JOB
+    assert response.state == dlp.DlpJob.JobState.PENDING
+    assert response.job_trigger_name == "job_trigger_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_dlp_job_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_dlp_job"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_dlp_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetDlpJobRequest.pb(dlp.GetDlpJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.DlpJob.to_json(dlp.DlpJob())
+        req.return_value.content = return_value
+
+        request = dlp.GetDlpJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.DlpJob()
+
+        client.get_dlp_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_dlp_job_rest_bad_request(request_type=dlp.DeleteDlpJobRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_dlp_job(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteDlpJobRequest,
+        dict,
+    ],
+)
+def test_delete_dlp_job_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_dlp_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_dlp_job_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_dlp_job"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteDlpJobRequest.pb(dlp.DeleteDlpJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteDlpJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_dlp_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_cancel_dlp_job_rest_bad_request(request_type=dlp.CancelDlpJobRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.cancel_dlp_job(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CancelDlpJobRequest,
+        dict,
+    ],
+)
+def test_cancel_dlp_job_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/dlpJobs/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.cancel_dlp_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_cancel_dlp_job_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_cancel_dlp_job"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.CancelDlpJobRequest.pb(dlp.CancelDlpJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.CancelDlpJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.cancel_dlp_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_stored_info_type_rest_bad_request(
+    request_type=dlp.CreateStoredInfoTypeRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_stored_info_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateStoredInfoTypeRequest,
+        dict,
+    ],
+)
+def test_create_stored_info_type_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.StoredInfoType(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.StoredInfoType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_stored_info_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.StoredInfoType)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_stored_info_type_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_stored_info_type"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_create_stored_info_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.CreateStoredInfoTypeRequest.pb(
+            dlp.CreateStoredInfoTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
+        req.return_value.content = return_value
+
+        request = dlp.CreateStoredInfoTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.StoredInfoType()
+
+        client.create_stored_info_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_stored_info_type_rest_bad_request(
+    request_type=dlp.UpdateStoredInfoTypeRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_stored_info_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateStoredInfoTypeRequest,
+        dict,
+    ],
+)
+def test_update_stored_info_type_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.StoredInfoType(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.StoredInfoType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_stored_info_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.StoredInfoType)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_stored_info_type_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_stored_info_type"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_update_stored_info_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.UpdateStoredInfoTypeRequest.pb(
+            dlp.UpdateStoredInfoTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
+        req.return_value.content = return_value
+
+        request = dlp.UpdateStoredInfoTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.StoredInfoType()
+
+        client.update_stored_info_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_stored_info_type_rest_bad_request(
+    request_type=dlp.GetStoredInfoTypeRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_stored_info_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetStoredInfoTypeRequest,
+        dict,
+    ],
+)
+def test_get_stored_info_type_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.StoredInfoType(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.StoredInfoType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_stored_info_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.StoredInfoType)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_stored_info_type_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_stored_info_type"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_stored_info_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetStoredInfoTypeRequest.pb(dlp.GetStoredInfoTypeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
+        req.return_value.content = return_value
+
+        request = dlp.GetStoredInfoTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.StoredInfoType()
+
+        client.get_stored_info_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_stored_info_types_rest_bad_request(
+    request_type=dlp.ListStoredInfoTypesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_stored_info_types(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListStoredInfoTypesRequest,
+        dict,
+    ],
+)
+def test_list_stored_info_types_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListStoredInfoTypesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListStoredInfoTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_stored_info_types(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListStoredInfoTypesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_stored_info_types_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_stored_info_types"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_stored_info_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListStoredInfoTypesRequest.pb(dlp.ListStoredInfoTypesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListStoredInfoTypesResponse.to_json(
+            dlp.ListStoredInfoTypesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListStoredInfoTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListStoredInfoTypesResponse()
+
+        client.list_stored_info_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_stored_info_type_rest_bad_request(
+    request_type=dlp.DeleteStoredInfoTypeRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_stored_info_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteStoredInfoTypeRequest,
+        dict,
+    ],
+)
+def test_delete_stored_info_type_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/storedInfoTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_stored_info_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_stored_info_type_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_stored_info_type"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteStoredInfoTypeRequest.pb(
+            dlp.DeleteStoredInfoTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteStoredInfoTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_stored_info_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_project_data_profiles_rest_bad_request(
+    request_type=dlp.ListProjectDataProfilesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_project_data_profiles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListProjectDataProfilesRequest,
+        dict,
+    ],
+)
+def test_list_project_data_profiles_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListProjectDataProfilesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListProjectDataProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_project_data_profiles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProjectDataProfilesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_project_data_profiles_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_project_data_profiles"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_project_data_profiles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListProjectDataProfilesRequest.pb(
+            dlp.ListProjectDataProfilesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListProjectDataProfilesResponse.to_json(
+            dlp.ListProjectDataProfilesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListProjectDataProfilesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListProjectDataProfilesResponse()
+
+        client.list_project_data_profiles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_table_data_profiles_rest_bad_request(
+    request_type=dlp.ListTableDataProfilesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_table_data_profiles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListTableDataProfilesRequest,
+        dict,
+    ],
+)
+def test_list_table_data_profiles_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListTableDataProfilesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListTableDataProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_table_data_profiles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTableDataProfilesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_table_data_profiles_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_table_data_profiles"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_table_data_profiles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListTableDataProfilesRequest.pb(
+            dlp.ListTableDataProfilesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListTableDataProfilesResponse.to_json(
+            dlp.ListTableDataProfilesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListTableDataProfilesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListTableDataProfilesResponse()
+
+        client.list_table_data_profiles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_column_data_profiles_rest_bad_request(
+    request_type=dlp.ListColumnDataProfilesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_column_data_profiles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListColumnDataProfilesRequest,
+        dict,
+    ],
+)
+def test_list_column_data_profiles_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListColumnDataProfilesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListColumnDataProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_column_data_profiles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListColumnDataProfilesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_column_data_profiles_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_column_data_profiles"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_column_data_profiles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListColumnDataProfilesRequest.pb(
+            dlp.ListColumnDataProfilesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListColumnDataProfilesResponse.to_json(
+            dlp.ListColumnDataProfilesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListColumnDataProfilesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListColumnDataProfilesResponse()
+
+        client.list_column_data_profiles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_project_data_profile_rest_bad_request(
+    request_type=dlp.GetProjectDataProfileRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/projectDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_project_data_profile(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetProjectDataProfileRequest,
+        dict,
+    ],
+)
+def test_get_project_data_profile_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/projectDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ProjectDataProfile(
+            name="name_value",
+            project_id="project_id_value",
+            table_data_profile_count=2521,
+            file_store_data_profile_count=3069,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ProjectDataProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_project_data_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ProjectDataProfile)
+    assert response.name == "name_value"
+    assert response.project_id == "project_id_value"
+    assert response.table_data_profile_count == 2521
+    assert response.file_store_data_profile_count == 3069
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_project_data_profile_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_project_data_profile"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_project_data_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetProjectDataProfileRequest.pb(
+            dlp.GetProjectDataProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ProjectDataProfile.to_json(dlp.ProjectDataProfile())
+        req.return_value.content = return_value
+
+        request = dlp.GetProjectDataProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ProjectDataProfile()
+
+        client.get_project_data_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_file_store_data_profiles_rest_bad_request(
+    request_type=dlp.ListFileStoreDataProfilesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_file_store_data_profiles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListFileStoreDataProfilesRequest,
+        dict,
+    ],
+)
+def test_list_file_store_data_profiles_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListFileStoreDataProfilesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListFileStoreDataProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_file_store_data_profiles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFileStoreDataProfilesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_file_store_data_profiles_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_file_store_data_profiles"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_file_store_data_profiles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListFileStoreDataProfilesRequest.pb(
+            dlp.ListFileStoreDataProfilesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListFileStoreDataProfilesResponse.to_json(
+            dlp.ListFileStoreDataProfilesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListFileStoreDataProfilesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListFileStoreDataProfilesResponse()
+
+        client.list_file_store_data_profiles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_file_store_data_profile_rest_bad_request(
+    request_type=dlp.GetFileStoreDataProfileRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_file_store_data_profile(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetFileStoreDataProfileRequest,
+        dict,
+    ],
+)
+def test_get_file_store_data_profile_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.FileStoreDataProfile(
+            name="name_value",
+            project_data_profile="project_data_profile_value",
+            project_id="project_id_value",
+            file_store_location="file_store_location_value",
+            data_storage_locations=["data_storage_locations_value"],
+            location_type="location_type_value",
+            file_store_path="file_store_path_value",
+            full_resource="full_resource_value",
+            state=dlp.FileStoreDataProfile.State.RUNNING,
+            resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
+            file_store_is_empty=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.FileStoreDataProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_file_store_data_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.FileStoreDataProfile)
+    assert response.name == "name_value"
+    assert response.project_data_profile == "project_data_profile_value"
+    assert response.project_id == "project_id_value"
+    assert response.file_store_location == "file_store_location_value"
+    assert response.data_storage_locations == ["data_storage_locations_value"]
+    assert response.location_type == "location_type_value"
+    assert response.file_store_path == "file_store_path_value"
+    assert response.full_resource == "full_resource_value"
+    assert response.state == dlp.FileStoreDataProfile.State.RUNNING
+    assert (
+        response.resource_visibility
+        == dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC
+    )
+    assert response.file_store_is_empty is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_file_store_data_profile_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_file_store_data_profile"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_file_store_data_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetFileStoreDataProfileRequest.pb(
+            dlp.GetFileStoreDataProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.FileStoreDataProfile.to_json(dlp.FileStoreDataProfile())
+        req.return_value.content = return_value
+
+        request = dlp.GetFileStoreDataProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.FileStoreDataProfile()
+
+        client.get_file_store_data_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_file_store_data_profile_rest_bad_request(
+    request_type=dlp.DeleteFileStoreDataProfileRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_file_store_data_profile(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteFileStoreDataProfileRequest,
+        dict,
+    ],
+)
+def test_delete_file_store_data_profile_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/fileStoreDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_file_store_data_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_file_store_data_profile_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_file_store_data_profile"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteFileStoreDataProfileRequest.pb(
+            dlp.DeleteFileStoreDataProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteFileStoreDataProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_file_store_data_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_get_table_data_profile_rest_bad_request(
+    request_type=dlp.GetTableDataProfileRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_table_data_profile(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetTableDataProfileRequest,
+        dict,
+    ],
+)
+def test_get_table_data_profile_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.TableDataProfile(
+            name="name_value",
+            project_data_profile="project_data_profile_value",
+            dataset_project_id="dataset_project_id_value",
+            dataset_location="dataset_location_value",
+            dataset_id="dataset_id_value",
+            table_id="table_id_value",
+            full_resource="full_resource_value",
+            state=dlp.TableDataProfile.State.RUNNING,
+            scanned_column_count=2129,
+            failed_column_count=2010,
+            table_size_bytes=1704,
+            row_count=992,
+            encryption_status=dlp.EncryptionStatus.ENCRYPTION_GOOGLE_MANAGED,
+            resource_visibility=dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.TableDataProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_table_data_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.TableDataProfile)
+    assert response.name == "name_value"
+    assert response.project_data_profile == "project_data_profile_value"
+    assert response.dataset_project_id == "dataset_project_id_value"
+    assert response.dataset_location == "dataset_location_value"
+    assert response.dataset_id == "dataset_id_value"
+    assert response.table_id == "table_id_value"
+    assert response.full_resource == "full_resource_value"
+    assert response.state == dlp.TableDataProfile.State.RUNNING
+    assert response.scanned_column_count == 2129
+    assert response.failed_column_count == 2010
+    assert response.table_size_bytes == 1704
+    assert response.row_count == 992
+    assert response.encryption_status == dlp.EncryptionStatus.ENCRYPTION_GOOGLE_MANAGED
+    assert (
+        response.resource_visibility
+        == dlp.ResourceVisibility.RESOURCE_VISIBILITY_PUBLIC
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_table_data_profile_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_table_data_profile"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_table_data_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetTableDataProfileRequest.pb(dlp.GetTableDataProfileRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.TableDataProfile.to_json(dlp.TableDataProfile())
+        req.return_value.content = return_value
+
+        request = dlp.GetTableDataProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.TableDataProfile()
+
+        client.get_table_data_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_column_data_profile_rest_bad_request(
+    request_type=dlp.GetColumnDataProfileRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/columnDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_column_data_profile(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetColumnDataProfileRequest,
+        dict,
+    ],
+)
+def test_get_column_data_profile_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/columnDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ColumnDataProfile(
+            name="name_value",
+            state=dlp.ColumnDataProfile.State.RUNNING,
+            table_data_profile="table_data_profile_value",
+            table_full_resource="table_full_resource_value",
+            dataset_project_id="dataset_project_id_value",
+            dataset_location="dataset_location_value",
+            dataset_id="dataset_id_value",
+            table_id="table_id_value",
+            column="column_value",
+            estimated_null_percentage=dlp.NullPercentageLevel.NULL_PERCENTAGE_VERY_LOW,
+            estimated_uniqueness_score=dlp.UniquenessScoreLevel.UNIQUENESS_SCORE_LOW,
+            free_text_score=0.16010000000000002,
+            column_type=dlp.ColumnDataProfile.ColumnDataType.TYPE_INT64,
+            policy_state=dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ColumnDataProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_column_data_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ColumnDataProfile)
+    assert response.name == "name_value"
+    assert response.state == dlp.ColumnDataProfile.State.RUNNING
+    assert response.table_data_profile == "table_data_profile_value"
+    assert response.table_full_resource == "table_full_resource_value"
+    assert response.dataset_project_id == "dataset_project_id_value"
+    assert response.dataset_location == "dataset_location_value"
+    assert response.dataset_id == "dataset_id_value"
+    assert response.table_id == "table_id_value"
+    assert response.column == "column_value"
+    assert (
+        response.estimated_null_percentage
+        == dlp.NullPercentageLevel.NULL_PERCENTAGE_VERY_LOW
+    )
+    assert (
+        response.estimated_uniqueness_score
+        == dlp.UniquenessScoreLevel.UNIQUENESS_SCORE_LOW
+    )
+    assert math.isclose(response.free_text_score, 0.16010000000000002, rel_tol=1e-6)
+    assert response.column_type == dlp.ColumnDataProfile.ColumnDataType.TYPE_INT64
+    assert (
+        response.policy_state
+        == dlp.ColumnDataProfile.ColumnPolicyState.COLUMN_POLICY_TAGGED
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_column_data_profile_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_column_data_profile"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_column_data_profile"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetColumnDataProfileRequest.pb(
+            dlp.GetColumnDataProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ColumnDataProfile.to_json(dlp.ColumnDataProfile())
+        req.return_value.content = return_value
+
+        request = dlp.GetColumnDataProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ColumnDataProfile()
+
+        client.get_column_data_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_table_data_profile_rest_bad_request(
+    request_type=dlp.DeleteTableDataProfileRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_table_data_profile(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteTableDataProfileRequest,
+        dict,
+    ],
+)
+def test_delete_table_data_profile_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/tableDataProfiles/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_table_data_profile(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_table_data_profile_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_table_data_profile"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteTableDataProfileRequest.pb(
+            dlp.DeleteTableDataProfileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteTableDataProfileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_table_data_profile(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_hybrid_inspect_dlp_job_rest_bad_request(
+    request_type=dlp.HybridInspectDlpJobRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.hybrid_inspect_dlp_job(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.HybridInspectDlpJobRequest,
+        dict,
+    ],
+)
+def test_hybrid_inspect_dlp_job_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.HybridInspectResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.HybridInspectResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.hybrid_inspect_dlp_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.HybridInspectResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_hybrid_inspect_dlp_job_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_hybrid_inspect_dlp_job"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_hybrid_inspect_dlp_job"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.HybridInspectDlpJobRequest.pb(dlp.HybridInspectDlpJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.HybridInspectResponse.to_json(dlp.HybridInspectResponse())
+        req.return_value.content = return_value
+
+        request = dlp.HybridInspectDlpJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.HybridInspectResponse()
+
+        client.hybrid_inspect_dlp_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_finish_dlp_job_rest_bad_request(request_type=dlp.FinishDlpJobRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.finish_dlp_job(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.FinishDlpJobRequest,
+        dict,
+    ],
+)
+def test_finish_dlp_job_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dlpJobs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.finish_dlp_job(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_finish_dlp_job_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_finish_dlp_job"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.FinishDlpJobRequest.pb(dlp.FinishDlpJobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.FinishDlpJobRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.finish_dlp_job(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_connection_rest_bad_request(request_type=dlp.CreateConnectionRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_connection(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateConnectionRequest,
+        dict,
+    ],
+)
+def test_create_connection_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.Connection(
+            name="name_value",
+            state=dlp.ConnectionState.MISSING_CREDENTIALS,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.Connection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.Connection)
+    assert response.name == "name_value"
+    assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_connection_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_create_connection"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_create_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.CreateConnectionRequest.pb(dlp.CreateConnectionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.Connection.to_json(dlp.Connection())
+        req.return_value.content = return_value
+
+        request = dlp.CreateConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.Connection()
+
+        client.create_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_connection_rest_bad_request(request_type=dlp.GetConnectionRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_connection(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetConnectionRequest,
+        dict,
+    ],
+)
+def test_get_connection_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.Connection(
+            name="name_value",
+            state=dlp.ConnectionState.MISSING_CREDENTIALS,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.Connection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.Connection)
+    assert response.name == "name_value"
+    assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_connection_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_get_connection"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_get_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.GetConnectionRequest.pb(dlp.GetConnectionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.Connection.to_json(dlp.Connection())
+        req.return_value.content = return_value
+
+        request = dlp.GetConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.Connection()
+
+        client.get_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_connections_rest_bad_request(request_type=dlp.ListConnectionsRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_connections(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListConnectionsRequest,
+        dict,
+    ],
+)
+def test_list_connections_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListConnectionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_connections(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListConnectionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_connections_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_list_connections"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_list_connections"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.ListConnectionsRequest.pb(dlp.ListConnectionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.ListConnectionsResponse.to_json(
+            dlp.ListConnectionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListConnectionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListConnectionsResponse()
+
+        client.list_connections(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_connections_rest_bad_request(request_type=dlp.SearchConnectionsRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_connections(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.SearchConnectionsRequest,
+        dict,
+    ],
+)
+def test_search_connections_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.SearchConnectionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.SearchConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_connections(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchConnectionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_connections_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_search_connections"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_search_connections"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.SearchConnectionsRequest.pb(dlp.SearchConnectionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.SearchConnectionsResponse.to_json(
+            dlp.SearchConnectionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.SearchConnectionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.SearchConnectionsResponse()
+
+        client.search_connections(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_connection_rest_bad_request(request_type=dlp.DeleteConnectionRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_connection(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteConnectionRequest,
+        dict,
+    ],
+)
+def test_delete_connection_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_connection_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_delete_connection"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = dlp.DeleteConnectionRequest.pb(dlp.DeleteConnectionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = dlp.DeleteConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_update_connection_rest_bad_request(request_type=dlp.UpdateConnectionRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_connection(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateConnectionRequest,
+        dict,
+    ],
+)
+def test_update_connection_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/connections/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.Connection(
+            name="name_value",
+            state=dlp.ConnectionState.MISSING_CREDENTIALS,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.Connection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_connection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.Connection)
+    assert response.name == "name_value"
+    assert response.state == dlp.ConnectionState.MISSING_CREDENTIALS
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_connection_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "post_update_connection"
+    ) as post, mock.patch.object(
+        transports.DlpServiceRestInterceptor, "pre_update_connection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = dlp.UpdateConnectionRequest.pb(dlp.UpdateConnectionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dlp.Connection.to_json(dlp.Connection())
+        req.return_value.content = return_value
+
+        request = dlp.UpdateConnectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.Connection()
+
+        client.update_connection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_inspect_content_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
+        client.inspect_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.InspectContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_redact_image_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
+        client.redact_image(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.RedactImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_deidentify_content_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deidentify_content), "__call__"
+    ) as call:
+        client.deidentify_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeidentifyContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reidentify_content_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reidentify_content), "__call__"
+    ) as call:
+        client.reidentify_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ReidentifyContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_info_types_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
+        client.list_info_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListInfoTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_inspect_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_inspect_template), "__call__"
+    ) as call:
+        client.create_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_inspect_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_inspect_template), "__call__"
+    ) as call:
+        client.update_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_inspect_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_inspect_template), "__call__"
+    ) as call:
+        client.get_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_inspect_templates_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_inspect_templates), "__call__"
+    ) as call:
+        client.list_inspect_templates(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListInspectTemplatesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_inspect_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_inspect_template), "__call__"
+    ) as call:
+        client.delete_inspect_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteInspectTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_deidentify_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deidentify_template), "__call__"
+    ) as call:
+        client.create_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_deidentify_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deidentify_template), "__call__"
+    ) as call:
+        client.update_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_deidentify_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_deidentify_template), "__call__"
+    ) as call:
+        client.get_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_deidentify_templates_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deidentify_templates), "__call__"
+    ) as call:
+        client.list_deidentify_templates(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDeidentifyTemplatesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_deidentify_template_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deidentify_template), "__call__"
+    ) as call:
+        client.delete_deidentify_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDeidentifyTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_job_trigger_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_trigger), "__call__"
+    ) as call:
+        client.create_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_job_trigger_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_job_trigger), "__call__"
+    ) as call:
+        client.update_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_hybrid_inspect_job_trigger_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_job_trigger), "__call__"
+    ) as call:
+        client.hybrid_inspect_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.HybridInspectJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_job_trigger_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
+        client.get_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_job_triggers_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_triggers), "__call__"
+    ) as call:
+        client.list_job_triggers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListJobTriggersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_job_trigger_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_trigger), "__call__"
+    ) as call:
+        client.delete_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_activate_job_trigger_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_job_trigger), "__call__"
+    ) as call:
+        client.activate_job_trigger(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ActivateJobTriggerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_discovery_config_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_discovery_config), "__call__"
+    ) as call:
+        client.create_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_discovery_config_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_discovery_config), "__call__"
+    ) as call:
+        client.update_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_discovery_config_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_discovery_config), "__call__"
+    ) as call:
+        client.get_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_discovery_configs_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_discovery_configs), "__call__"
+    ) as call:
+        client.list_discovery_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDiscoveryConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_discovery_config_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_discovery_config), "__call__"
+    ) as call:
+        client.delete_discovery_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDiscoveryConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dlp_job_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
+        client.create_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_dlp_jobs_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
+        client.list_dlp_jobs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListDlpJobsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dlp_job_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
+        client.get_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dlp_job_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
+        client.delete_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_cancel_dlp_job_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
+        client.cancel_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CancelDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_stored_info_type_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_stored_info_type), "__call__"
+    ) as call:
+        client.create_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_stored_info_type_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_stored_info_type), "__call__"
+    ) as call:
+        client.update_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_stored_info_type_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stored_info_type), "__call__"
+    ) as call:
+        client.get_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_stored_info_types_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stored_info_types), "__call__"
+    ) as call:
+        client.list_stored_info_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListStoredInfoTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_stored_info_type_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_stored_info_type), "__call__"
+    ) as call:
+        client.delete_stored_info_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteStoredInfoTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_project_data_profiles_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_project_data_profiles), "__call__"
+    ) as call:
+        client.list_project_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListProjectDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_table_data_profiles_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_table_data_profiles), "__call__"
+    ) as call:
+        client.list_table_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListTableDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_column_data_profiles_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_data_profiles), "__call__"
+    ) as call:
+        client.list_column_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListColumnDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_project_data_profile_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_data_profile), "__call__"
+    ) as call:
+        client.get_project_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetProjectDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_file_store_data_profiles_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_file_store_data_profiles), "__call__"
+    ) as call:
+        client.list_file_store_data_profiles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListFileStoreDataProfilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_file_store_data_profile_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_file_store_data_profile), "__call__"
+    ) as call:
+        client.get_file_store_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetFileStoreDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_file_store_data_profile_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_file_store_data_profile), "__call__"
+    ) as call:
+        client.delete_file_store_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteFileStoreDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_table_data_profile_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_table_data_profile), "__call__"
+    ) as call:
+        client.get_table_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetTableDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_column_data_profile_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_column_data_profile), "__call__"
+    ) as call:
+        client.get_column_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetColumnDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_table_data_profile_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_table_data_profile), "__call__"
+    ) as call:
+        client.delete_table_data_profile(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteTableDataProfileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_hybrid_inspect_dlp_job_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_dlp_job), "__call__"
+    ) as call:
+        client.hybrid_inspect_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.HybridInspectDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_finish_dlp_job_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
+        client.finish_dlp_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.FinishDlpJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_connection_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connection), "__call__"
+    ) as call:
+        client.create_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_connection_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_connection), "__call__") as call:
+        client.get_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_connections_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_connections), "__call__") as call:
+        client.list_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_connections_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_connections), "__call__"
+    ) as call:
+        client.search_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.SearchConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_connection_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connection), "__call__"
+    ) as call:
+        client.delete_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteConnectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_connection_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connection), "__call__"
+    ) as call:
+        client.update_connection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateConnectionRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -42656,36 +43875,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = DlpServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = DlpServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

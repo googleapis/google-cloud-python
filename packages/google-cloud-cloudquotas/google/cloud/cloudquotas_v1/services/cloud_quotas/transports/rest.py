@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.cloudquotas_v1.types import cloudquotas, resources
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseCloudQuotasRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.cloudquotas_v1.types import cloudquotas, resources
-
-from .base import CloudQuotasTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -261,8 +258,8 @@ class CloudQuotasRestStub:
     _interceptor: CloudQuotasRestInterceptor
 
 
-class CloudQuotasRestTransport(CloudQuotasTransport):
-    """REST backend transport for CloudQuotas.
+class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
+    """REST backend synchronous transport for CloudQuotas.
 
     The Cloud Quotas API is an infrastructure service for Google
     Cloud that lets service consumers list and manage their resource
@@ -280,7 +277,6 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -334,21 +330,12 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -359,19 +346,34 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
         self._interceptor = interceptor or CloudQuotasRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateQuotaPreference(CloudQuotasRestStub):
+    class _CreateQuotaPreference(
+        _BaseCloudQuotasRestTransport._BaseCreateQuotaPreference, CloudQuotasRestStub
+    ):
         def __hash__(self):
-            return hash("CreateQuotaPreference")
+            return hash("CloudQuotasRestTransport.CreateQuotaPreference")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -404,57 +406,34 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/quotaPreferences",
-                    "body": "quota_preference",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/locations/*}/quotaPreferences",
-                    "body": "quota_preference",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/locations/*}/quotaPreferences",
-                    "body": "quota_preference",
-                },
-            ]
+            http_options = (
+                _BaseCloudQuotasRestTransport._BaseCreateQuotaPreference._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_quota_preference(
                 request, metadata
             )
-            pb_request = cloudquotas.CreateQuotaPreferenceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseCloudQuotasRestTransport._BaseCreateQuotaPreference._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseCloudQuotasRestTransport._BaseCreateQuotaPreference._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseCloudQuotasRestTransport._BaseCreateQuotaPreference._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = CloudQuotasRestTransport._CreateQuotaPreference._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -470,19 +449,33 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
             resp = self._interceptor.post_create_quota_preference(resp)
             return resp
 
-    class _GetQuotaInfo(CloudQuotasRestStub):
+    class _GetQuotaInfo(
+        _BaseCloudQuotasRestTransport._BaseGetQuotaInfo, CloudQuotasRestStub
+    ):
         def __hash__(self):
-            return hash("GetQuotaInfo")
+            return hash("CloudQuotasRestTransport.GetQuotaInfo")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -511,46 +504,31 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/services/*/quotaInfos/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*/services/*/quotaInfos/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/locations/*/services/*/quotaInfos/*}",
-                },
-            ]
+            http_options = (
+                _BaseCloudQuotasRestTransport._BaseGetQuotaInfo._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_quota_info(request, metadata)
-            pb_request = cloudquotas.GetQuotaInfoRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseCloudQuotasRestTransport._BaseGetQuotaInfo._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseCloudQuotasRestTransport._BaseGetQuotaInfo._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = CloudQuotasRestTransport._GetQuotaInfo._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -566,19 +544,33 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
             resp = self._interceptor.post_get_quota_info(resp)
             return resp
 
-    class _GetQuotaPreference(CloudQuotasRestStub):
+    class _GetQuotaPreference(
+        _BaseCloudQuotasRestTransport._BaseGetQuotaPreference, CloudQuotasRestStub
+    ):
         def __hash__(self):
-            return hash("GetQuotaPreference")
+            return hash("CloudQuotasRestTransport.GetQuotaPreference")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -610,48 +602,29 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/quotaPreferences/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*/quotaPreferences/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/locations/*/quotaPreferences/*}",
-                },
-            ]
+            http_options = (
+                _BaseCloudQuotasRestTransport._BaseGetQuotaPreference._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_quota_preference(
                 request, metadata
             )
-            pb_request = cloudquotas.GetQuotaPreferenceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseCloudQuotasRestTransport._BaseGetQuotaPreference._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseCloudQuotasRestTransport._BaseGetQuotaPreference._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = CloudQuotasRestTransport._GetQuotaPreference._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -667,19 +640,33 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
             resp = self._interceptor.post_get_quota_preference(resp)
             return resp
 
-    class _ListQuotaInfos(CloudQuotasRestStub):
+    class _ListQuotaInfos(
+        _BaseCloudQuotasRestTransport._BaseListQuotaInfos, CloudQuotasRestStub
+    ):
         def __hash__(self):
-            return hash("ListQuotaInfos")
+            return hash("CloudQuotasRestTransport.ListQuotaInfos")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -708,48 +695,29 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/services/*}/quotaInfos",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/locations/*/services/*}/quotaInfos",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/locations/*/services/*}/quotaInfos",
-                },
-            ]
+            http_options = (
+                _BaseCloudQuotasRestTransport._BaseListQuotaInfos._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_quota_infos(
                 request, metadata
             )
-            pb_request = cloudquotas.ListQuotaInfosRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseCloudQuotasRestTransport._BaseListQuotaInfos._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseCloudQuotasRestTransport._BaseListQuotaInfos._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = CloudQuotasRestTransport._ListQuotaInfos._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -765,19 +733,33 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
             resp = self._interceptor.post_list_quota_infos(resp)
             return resp
 
-    class _ListQuotaPreferences(CloudQuotasRestStub):
+    class _ListQuotaPreferences(
+        _BaseCloudQuotasRestTransport._BaseListQuotaPreferences, CloudQuotasRestStub
+    ):
         def __hash__(self):
-            return hash("ListQuotaPreferences")
+            return hash("CloudQuotasRestTransport.ListQuotaPreferences")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -806,48 +788,29 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/quotaPreferences",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/locations/*}/quotaPreferences",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/locations/*}/quotaPreferences",
-                },
-            ]
+            http_options = (
+                _BaseCloudQuotasRestTransport._BaseListQuotaPreferences._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_quota_preferences(
                 request, metadata
             )
-            pb_request = cloudquotas.ListQuotaPreferencesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseCloudQuotasRestTransport._BaseListQuotaPreferences._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseCloudQuotasRestTransport._BaseListQuotaPreferences._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = CloudQuotasRestTransport._ListQuotaPreferences._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -863,19 +826,34 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
             resp = self._interceptor.post_list_quota_preferences(resp)
             return resp
 
-    class _UpdateQuotaPreference(CloudQuotasRestStub):
+    class _UpdateQuotaPreference(
+        _BaseCloudQuotasRestTransport._BaseUpdateQuotaPreference, CloudQuotasRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateQuotaPreference")
+            return hash("CloudQuotasRestTransport.UpdateQuotaPreference")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -908,57 +886,34 @@ class CloudQuotasRestTransport(CloudQuotasTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{quota_preference.name=projects/*/locations/*/quotaPreferences/*}",
-                    "body": "quota_preference",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{quota_preference.name=folders/*/locations/*/quotaPreferences/*}",
-                    "body": "quota_preference",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{quota_preference.name=organizations/*/locations/*/quotaPreferences/*}",
-                    "body": "quota_preference",
-                },
-            ]
+            http_options = (
+                _BaseCloudQuotasRestTransport._BaseUpdateQuotaPreference._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_quota_preference(
                 request, metadata
             )
-            pb_request = cloudquotas.UpdateQuotaPreferenceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseCloudQuotasRestTransport._BaseUpdateQuotaPreference._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseCloudQuotasRestTransport._BaseUpdateQuotaPreference._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseCloudQuotasRestTransport._BaseUpdateQuotaPreference._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = CloudQuotasRestTransport._UpdateQuotaPreference._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

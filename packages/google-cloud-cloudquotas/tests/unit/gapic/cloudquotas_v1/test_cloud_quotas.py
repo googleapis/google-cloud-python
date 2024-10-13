@@ -22,22 +22,12 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
+from google.api_core import api_core_version
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -45,6 +35,25 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.cloud.cloudquotas_v1.services.cloud_quotas import (
     CloudQuotasAsyncClient,
@@ -55,8 +64,22 @@ from google.cloud.cloudquotas_v1.services.cloud_quotas import (
 from google.cloud.cloudquotas_v1.types import cloudquotas, resources
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1119,25 +1142,6 @@ def test_list_quota_infos(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_quota_infos_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_quota_infos()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaInfosRequest()
-
-
 def test_list_quota_infos_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1206,29 +1210,6 @@ def test_list_quota_infos_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_quota_infos_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloudquotas.ListQuotaInfosResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_quota_infos()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaInfosRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_quota_infos_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1236,7 +1217,7 @@ async def test_list_quota_infos_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudQuotasAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1275,7 +1256,7 @@ async def test_list_quota_infos_async(
     transport: str = "grpc_asyncio", request_type=cloudquotas.ListQuotaInfosRequest
 ):
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1341,7 +1322,7 @@ def test_list_quota_infos_field_headers():
 @pytest.mark.asyncio
 async def test_list_quota_infos_field_headers_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1411,7 +1392,7 @@ def test_list_quota_infos_flattened_error():
 @pytest.mark.asyncio
 async def test_list_quota_infos_flattened_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1440,7 +1421,7 @@ async def test_list_quota_infos_flattened_async():
 @pytest.mark.asyncio
 async def test_list_quota_infos_flattened_error_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1550,7 +1531,7 @@ def test_list_quota_infos_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_quota_infos_async_pager():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1600,7 +1581,7 @@ async def test_list_quota_infos_async_pager():
 @pytest.mark.asyncio
 async def test_list_quota_infos_async_pages():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1708,25 +1689,6 @@ def test_get_quota_info(request_type, transport: str = "grpc"):
     assert response.service_request_quota_uri == "service_request_quota_uri_value"
 
 
-def test_get_quota_info_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_quota_info()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaInfoRequest()
-
-
 def test_get_quota_info_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1791,42 +1753,6 @@ def test_get_quota_info_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_quota_info_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.QuotaInfo(
-                name="name_value",
-                quota_id="quota_id_value",
-                metric="metric_value",
-                service="service_value",
-                is_precise=True,
-                refresh_interval="refresh_interval_value",
-                container_type=resources.QuotaInfo.ContainerType.PROJECT,
-                dimensions=["dimensions_value"],
-                metric_display_name="metric_display_name_value",
-                quota_display_name="quota_display_name_value",
-                metric_unit="metric_unit_value",
-                is_fixed=True,
-                is_concurrent=True,
-                service_request_quota_uri="service_request_quota_uri_value",
-            )
-        )
-        response = await client.get_quota_info()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaInfoRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_quota_info_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1834,7 +1760,7 @@ async def test_get_quota_info_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudQuotasAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1873,7 +1799,7 @@ async def test_get_quota_info_async(
     transport: str = "grpc_asyncio", request_type=cloudquotas.GetQuotaInfoRequest
 ):
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1965,7 +1891,7 @@ def test_get_quota_info_field_headers():
 @pytest.mark.asyncio
 async def test_get_quota_info_field_headers_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2033,7 +1959,7 @@ def test_get_quota_info_flattened_error():
 @pytest.mark.asyncio
 async def test_get_quota_info_flattened_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2060,7 +1986,7 @@ async def test_get_quota_info_flattened_async():
 @pytest.mark.asyncio
 async def test_get_quota_info_flattened_error_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2110,27 +2036,6 @@ def test_list_quota_preferences(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListQuotaPreferencesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_quota_preferences_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_quota_preferences), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_quota_preferences()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaPreferencesRequest()
 
 
 def test_list_quota_preferences_non_empty_request_with_auto_populated_field():
@@ -2210,32 +2115,6 @@ def test_list_quota_preferences_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_quota_preferences_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_quota_preferences), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloudquotas.ListQuotaPreferencesResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_quota_preferences()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.ListQuotaPreferencesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_quota_preferences_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2243,7 +2122,7 @@ async def test_list_quota_preferences_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudQuotasAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2283,7 +2162,7 @@ async def test_list_quota_preferences_async(
     request_type=cloudquotas.ListQuotaPreferencesRequest,
 ):
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2355,7 +2234,7 @@ def test_list_quota_preferences_field_headers():
 @pytest.mark.asyncio
 async def test_list_quota_preferences_field_headers_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2429,7 +2308,7 @@ def test_list_quota_preferences_flattened_error():
 @pytest.mark.asyncio
 async def test_list_quota_preferences_flattened_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2460,7 +2339,7 @@ async def test_list_quota_preferences_flattened_async():
 @pytest.mark.asyncio
 async def test_list_quota_preferences_flattened_error_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2574,7 +2453,7 @@ def test_list_quota_preferences_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_quota_preferences_async_pager():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2626,7 +2505,7 @@ async def test_list_quota_preferences_async_pager():
 @pytest.mark.asyncio
 async def test_list_quota_preferences_async_pages():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2724,27 +2603,6 @@ def test_get_quota_preference(request_type, transport: str = "grpc"):
     assert response.contact_email == "contact_email_value"
 
 
-def test_get_quota_preference_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_quota_preference), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_quota_preference()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaPreferenceRequest()
-
-
 def test_get_quota_preference_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2815,37 +2673,6 @@ def test_get_quota_preference_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_quota_preference_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_quota_preference), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.QuotaPreference(
-                name="name_value",
-                etag="etag_value",
-                service="service_value",
-                quota_id="quota_id_value",
-                reconciling=True,
-                justification="justification_value",
-                contact_email="contact_email_value",
-            )
-        )
-        response = await client.get_quota_preference()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.GetQuotaPreferenceRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_quota_preference_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2853,7 +2680,7 @@ async def test_get_quota_preference_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudQuotasAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2892,7 +2719,7 @@ async def test_get_quota_preference_async(
     transport: str = "grpc_asyncio", request_type=cloudquotas.GetQuotaPreferenceRequest
 ):
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2974,7 +2801,7 @@ def test_get_quota_preference_field_headers():
 @pytest.mark.asyncio
 async def test_get_quota_preference_field_headers_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3048,7 +2875,7 @@ def test_get_quota_preference_flattened_error():
 @pytest.mark.asyncio
 async def test_get_quota_preference_flattened_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3079,7 +2906,7 @@ async def test_get_quota_preference_flattened_async():
 @pytest.mark.asyncio
 async def test_get_quota_preference_flattened_error_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3139,27 +2966,6 @@ def test_create_quota_preference(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.justification == "justification_value"
     assert response.contact_email == "contact_email_value"
-
-
-def test_create_quota_preference_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_quota_preference), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_quota_preference()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.CreateQuotaPreferenceRequest()
 
 
 def test_create_quota_preference_non_empty_request_with_auto_populated_field():
@@ -3235,37 +3041,6 @@ def test_create_quota_preference_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_quota_preference_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_quota_preference), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.QuotaPreference(
-                name="name_value",
-                etag="etag_value",
-                service="service_value",
-                quota_id="quota_id_value",
-                reconciling=True,
-                justification="justification_value",
-                contact_email="contact_email_value",
-            )
-        )
-        response = await client.create_quota_preference()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.CreateQuotaPreferenceRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_quota_preference_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3273,7 +3048,7 @@ async def test_create_quota_preference_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudQuotasAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3313,7 +3088,7 @@ async def test_create_quota_preference_async(
     request_type=cloudquotas.CreateQuotaPreferenceRequest,
 ):
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3395,7 +3170,7 @@ def test_create_quota_preference_field_headers():
 @pytest.mark.asyncio
 async def test_create_quota_preference_field_headers_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3479,7 +3254,7 @@ def test_create_quota_preference_flattened_error():
 @pytest.mark.asyncio
 async def test_create_quota_preference_flattened_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3518,7 +3293,7 @@ async def test_create_quota_preference_flattened_async():
 @pytest.mark.asyncio
 async def test_create_quota_preference_flattened_error_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3580,27 +3355,6 @@ def test_update_quota_preference(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.justification == "justification_value"
     assert response.contact_email == "contact_email_value"
-
-
-def test_update_quota_preference_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_quota_preference), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_quota_preference()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
 
 
 def test_update_quota_preference_non_empty_request_with_auto_populated_field():
@@ -3670,37 +3424,6 @@ def test_update_quota_preference_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_quota_preference_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_quota_preference), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.QuotaPreference(
-                name="name_value",
-                etag="etag_value",
-                service="service_value",
-                quota_id="quota_id_value",
-                reconciling=True,
-                justification="justification_value",
-                contact_email="contact_email_value",
-            )
-        )
-        response = await client.update_quota_preference()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudquotas.UpdateQuotaPreferenceRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_quota_preference_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3708,7 +3431,7 @@ async def test_update_quota_preference_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudQuotasAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3748,7 +3471,7 @@ async def test_update_quota_preference_async(
     request_type=cloudquotas.UpdateQuotaPreferenceRequest,
 ):
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3830,7 +3553,7 @@ def test_update_quota_preference_field_headers():
 @pytest.mark.asyncio
 async def test_update_quota_preference_field_headers_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3909,7 +3632,7 @@ def test_update_quota_preference_flattened_error():
 @pytest.mark.asyncio
 async def test_update_quota_preference_flattened_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3944,7 +3667,7 @@ async def test_update_quota_preference_flattened_async():
 @pytest.mark.asyncio
 async def test_update_quota_preference_flattened_error_async():
     client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3955,46 +3678,6 @@ async def test_update_quota_preference_flattened_error_async():
             quota_preference=resources.QuotaPreference(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cloudquotas.ListQuotaInfosRequest,
-        dict,
-    ],
-)
-def test_list_quota_infos_rest(request_type):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = cloudquotas.ListQuotaInfosResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = cloudquotas.ListQuotaInfosResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_quota_infos(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListQuotaInfosPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_quota_infos_rest_use_cached_wrapped_rpc():
@@ -4133,87 +3816,6 @@ def test_list_quota_infos_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_quota_infos_rest_interceptors(null_interceptor):
-    transport = transports.CloudQuotasRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudQuotasRestInterceptor(),
-    )
-    client = CloudQuotasClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "post_list_quota_infos"
-    ) as post, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "pre_list_quota_infos"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloudquotas.ListQuotaInfosRequest.pb(
-            cloudquotas.ListQuotaInfosRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloudquotas.ListQuotaInfosResponse.to_json(
-            cloudquotas.ListQuotaInfosResponse()
-        )
-
-        request = cloudquotas.ListQuotaInfosRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloudquotas.ListQuotaInfosResponse()
-
-        client.list_quota_infos(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_quota_infos_rest_bad_request(
-    transport: str = "rest", request_type=cloudquotas.ListQuotaInfosRequest
-):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_quota_infos(request)
-
-
 def test_list_quota_infos_rest_flattened():
     client = CloudQuotasClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4338,74 +3940,6 @@ def test_list_quota_infos_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cloudquotas.GetQuotaInfoRequest,
-        dict,
-    ],
-)
-def test_get_quota_info_rest(request_type):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/quotaInfos/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.QuotaInfo(
-            name="name_value",
-            quota_id="quota_id_value",
-            metric="metric_value",
-            service="service_value",
-            is_precise=True,
-            refresh_interval="refresh_interval_value",
-            container_type=resources.QuotaInfo.ContainerType.PROJECT,
-            dimensions=["dimensions_value"],
-            metric_display_name="metric_display_name_value",
-            quota_display_name="quota_display_name_value",
-            metric_unit="metric_unit_value",
-            is_fixed=True,
-            is_concurrent=True,
-            service_request_quota_uri="service_request_quota_uri_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.QuotaInfo.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_quota_info(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.QuotaInfo)
-    assert response.name == "name_value"
-    assert response.quota_id == "quota_id_value"
-    assert response.metric == "metric_value"
-    assert response.service == "service_value"
-    assert response.is_precise is True
-    assert response.refresh_interval == "refresh_interval_value"
-    assert response.container_type == resources.QuotaInfo.ContainerType.PROJECT
-    assert response.dimensions == ["dimensions_value"]
-    assert response.metric_display_name == "metric_display_name_value"
-    assert response.quota_display_name == "quota_display_name_value"
-    assert response.metric_unit == "metric_unit_value"
-    assert response.is_fixed is True
-    assert response.is_concurrent is True
-    assert response.service_request_quota_uri == "service_request_quota_uri_value"
-
-
 def test_get_quota_info_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4525,87 +4059,6 @@ def test_get_quota_info_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_quota_info_rest_interceptors(null_interceptor):
-    transport = transports.CloudQuotasRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudQuotasRestInterceptor(),
-    )
-    client = CloudQuotasClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "post_get_quota_info"
-    ) as post, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "pre_get_quota_info"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloudquotas.GetQuotaInfoRequest.pb(
-            cloudquotas.GetQuotaInfoRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.QuotaInfo.to_json(resources.QuotaInfo())
-
-        request = cloudquotas.GetQuotaInfoRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.QuotaInfo()
-
-        client.get_quota_info(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_quota_info_rest_bad_request(
-    transport: str = "rest", request_type=cloudquotas.GetQuotaInfoRequest
-):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/services/sample3/quotaInfos/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_quota_info(request)
-
-
 def test_get_quota_info_rest_flattened():
     client = CloudQuotasClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4663,54 +4116,6 @@ def test_get_quota_info_rest_flattened_error(transport: str = "rest"):
             cloudquotas.GetQuotaInfoRequest(),
             name="name_value",
         )
-
-
-def test_get_quota_info_rest_error():
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cloudquotas.ListQuotaPreferencesRequest,
-        dict,
-    ],
-)
-def test_list_quota_preferences_rest(request_type):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = cloudquotas.ListQuotaPreferencesResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = cloudquotas.ListQuotaPreferencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_quota_preferences(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListQuotaPreferencesPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_quota_preferences_rest_use_cached_wrapped_rpc():
@@ -4856,87 +4261,6 @@ def test_list_quota_preferences_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_quota_preferences_rest_interceptors(null_interceptor):
-    transport = transports.CloudQuotasRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudQuotasRestInterceptor(),
-    )
-    client = CloudQuotasClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "post_list_quota_preferences"
-    ) as post, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "pre_list_quota_preferences"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloudquotas.ListQuotaPreferencesRequest.pb(
-            cloudquotas.ListQuotaPreferencesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloudquotas.ListQuotaPreferencesResponse.to_json(
-            cloudquotas.ListQuotaPreferencesResponse()
-        )
-
-        request = cloudquotas.ListQuotaPreferencesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloudquotas.ListQuotaPreferencesResponse()
-
-        client.list_quota_preferences(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_quota_preferences_rest_bad_request(
-    transport: str = "rest", request_type=cloudquotas.ListQuotaPreferencesRequest
-):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_quota_preferences(request)
-
-
 def test_list_quota_preferences_rest_flattened():
     client = CloudQuotasClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5055,60 +4379,6 @@ def test_list_quota_preferences_rest_pager(transport: str = "rest"):
         pages = list(client.list_quota_preferences(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cloudquotas.GetQuotaPreferenceRequest,
-        dict,
-    ],
-)
-def test_get_quota_preference_rest(request_type):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.QuotaPreference(
-            name="name_value",
-            etag="etag_value",
-            service="service_value",
-            quota_id="quota_id_value",
-            reconciling=True,
-            justification="justification_value",
-            contact_email="contact_email_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.QuotaPreference.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_quota_preference(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.QuotaPreference)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
-    assert response.service == "service_value"
-    assert response.quota_id == "quota_id_value"
-    assert response.reconciling is True
-    assert response.justification == "justification_value"
-    assert response.contact_email == "contact_email_value"
 
 
 def test_get_quota_preference_rest_use_cached_wrapped_rpc():
@@ -5234,89 +4504,6 @@ def test_get_quota_preference_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_quota_preference_rest_interceptors(null_interceptor):
-    transport = transports.CloudQuotasRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudQuotasRestInterceptor(),
-    )
-    client = CloudQuotasClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "post_get_quota_preference"
-    ) as post, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "pre_get_quota_preference"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloudquotas.GetQuotaPreferenceRequest.pb(
-            cloudquotas.GetQuotaPreferenceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.QuotaPreference.to_json(
-            resources.QuotaPreference()
-        )
-
-        request = cloudquotas.GetQuotaPreferenceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.QuotaPreference()
-
-        client.get_quota_preference(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_quota_preference_rest_bad_request(
-    transport: str = "rest", request_type=cloudquotas.GetQuotaPreferenceRequest
-):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_quota_preference(request)
-
-
 def test_get_quota_preference_rest_flattened():
     client = CloudQuotasClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5374,153 +4561,6 @@ def test_get_quota_preference_rest_flattened_error(transport: str = "rest"):
             cloudquotas.GetQuotaPreferenceRequest(),
             name="name_value",
         )
-
-
-def test_get_quota_preference_rest_error():
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cloudquotas.CreateQuotaPreferenceRequest,
-        dict,
-    ],
-)
-def test_create_quota_preference_rest(request_type):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["quota_preference"] = {
-        "name": "name_value",
-        "dimensions": {},
-        "quota_config": {
-            "preferred_value": 1595,
-            "state_detail": "state_detail_value",
-            "granted_value": {"value": 541},
-            "trace_id": "trace_id_value",
-            "annotations": {},
-            "request_origin": 1,
-        },
-        "etag": "etag_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "service": "service_value",
-        "quota_id": "quota_id_value",
-        "reconciling": True,
-        "justification": "justification_value",
-        "contact_email": "contact_email_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = cloudquotas.CreateQuotaPreferenceRequest.meta.fields[
-        "quota_preference"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["quota_preference"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["quota_preference"][field])):
-                    del request_init["quota_preference"][field][i][subfield]
-            else:
-                del request_init["quota_preference"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.QuotaPreference(
-            name="name_value",
-            etag="etag_value",
-            service="service_value",
-            quota_id="quota_id_value",
-            reconciling=True,
-            justification="justification_value",
-            contact_email="contact_email_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.QuotaPreference.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_quota_preference(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.QuotaPreference)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
-    assert response.service == "service_value"
-    assert response.quota_id == "quota_id_value"
-    assert response.reconciling is True
-    assert response.justification == "justification_value"
-    assert response.contact_email == "contact_email_value"
 
 
 def test_create_quota_preference_rest_use_cached_wrapped_rpc():
@@ -5668,87 +4708,6 @@ def test_create_quota_preference_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_quota_preference_rest_interceptors(null_interceptor):
-    transport = transports.CloudQuotasRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudQuotasRestInterceptor(),
-    )
-    client = CloudQuotasClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "post_create_quota_preference"
-    ) as post, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "pre_create_quota_preference"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloudquotas.CreateQuotaPreferenceRequest.pb(
-            cloudquotas.CreateQuotaPreferenceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.QuotaPreference.to_json(
-            resources.QuotaPreference()
-        )
-
-        request = cloudquotas.CreateQuotaPreferenceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.QuotaPreference()
-
-        client.create_quota_preference(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_quota_preference_rest_bad_request(
-    transport: str = "rest", request_type=cloudquotas.CreateQuotaPreferenceRequest
-):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_quota_preference(request)
-
-
 def test_create_quota_preference_rest_flattened():
     client = CloudQuotasClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5808,157 +4767,6 @@ def test_create_quota_preference_rest_flattened_error(transport: str = "rest"):
             quota_preference=resources.QuotaPreference(name="name_value"),
             quota_preference_id="quota_preference_id_value",
         )
-
-
-def test_create_quota_preference_rest_error():
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cloudquotas.UpdateQuotaPreferenceRequest,
-        dict,
-    ],
-)
-def test_update_quota_preference_rest(request_type):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "quota_preference": {
-            "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
-        }
-    }
-    request_init["quota_preference"] = {
-        "name": "projects/sample1/locations/sample2/quotaPreferences/sample3",
-        "dimensions": {},
-        "quota_config": {
-            "preferred_value": 1595,
-            "state_detail": "state_detail_value",
-            "granted_value": {"value": 541},
-            "trace_id": "trace_id_value",
-            "annotations": {},
-            "request_origin": 1,
-        },
-        "etag": "etag_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "service": "service_value",
-        "quota_id": "quota_id_value",
-        "reconciling": True,
-        "justification": "justification_value",
-        "contact_email": "contact_email_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = cloudquotas.UpdateQuotaPreferenceRequest.meta.fields[
-        "quota_preference"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["quota_preference"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["quota_preference"][field])):
-                    del request_init["quota_preference"][field][i][subfield]
-            else:
-                del request_init["quota_preference"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.QuotaPreference(
-            name="name_value",
-            etag="etag_value",
-            service="service_value",
-            quota_id="quota_id_value",
-            reconciling=True,
-            justification="justification_value",
-            contact_email="contact_email_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.QuotaPreference.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_quota_preference(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.QuotaPreference)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
-    assert response.service == "service_value"
-    assert response.quota_id == "quota_id_value"
-    assert response.reconciling is True
-    assert response.justification == "justification_value"
-    assert response.contact_email == "contact_email_value"
 
 
 def test_update_quota_preference_rest_use_cached_wrapped_rpc():
@@ -6100,91 +4908,6 @@ def test_update_quota_preference_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_quota_preference_rest_interceptors(null_interceptor):
-    transport = transports.CloudQuotasRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudQuotasRestInterceptor(),
-    )
-    client = CloudQuotasClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "post_update_quota_preference"
-    ) as post, mock.patch.object(
-        transports.CloudQuotasRestInterceptor, "pre_update_quota_preference"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloudquotas.UpdateQuotaPreferenceRequest.pb(
-            cloudquotas.UpdateQuotaPreferenceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.QuotaPreference.to_json(
-            resources.QuotaPreference()
-        )
-
-        request = cloudquotas.UpdateQuotaPreferenceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.QuotaPreference()
-
-        client.update_quota_preference(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_quota_preference_rest_bad_request(
-    transport: str = "rest", request_type=cloudquotas.UpdateQuotaPreferenceRequest
-):
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "quota_preference": {
-            "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_quota_preference(request)
-
-
 def test_update_quota_preference_rest_flattened():
     client = CloudQuotasClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6246,12 +4969,6 @@ def test_update_quota_preference_rest_flattened_error(transport: str = "rest"):
             quota_preference=resources.QuotaPreference(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_quota_preference_rest_error():
-    client = CloudQuotasClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -6346,18 +5063,1484 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = CloudQuotasClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_quota_infos_empty_call_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
+        call.return_value = cloudquotas.ListQuotaInfosResponse()
+        client.list_quota_infos(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.ListQuotaInfosRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_quota_info_empty_call_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
+        call.return_value = resources.QuotaInfo()
+        client.get_quota_info(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.GetQuotaInfoRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_quota_preferences_empty_call_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_quota_preferences), "__call__"
+    ) as call:
+        call.return_value = cloudquotas.ListQuotaPreferencesResponse()
+        client.list_quota_preferences(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.ListQuotaPreferencesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_quota_preference_empty_call_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_quota_preference), "__call__"
+    ) as call:
+        call.return_value = resources.QuotaPreference()
+        client.get_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.GetQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_quota_preference_empty_call_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_quota_preference), "__call__"
+    ) as call:
+        call.return_value = resources.QuotaPreference()
+        client.create_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.CreateQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_quota_preference_empty_call_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_quota_preference), "__call__"
+    ) as call:
+        call.return_value = resources.QuotaPreference()
+        client.update_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.UpdateQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = CloudQuotasAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_quota_infos_empty_call_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudquotas.ListQuotaInfosResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_quota_infos(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.ListQuotaInfosRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_quota_info_empty_call_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaInfo(
+                name="name_value",
+                quota_id="quota_id_value",
+                metric="metric_value",
+                service="service_value",
+                is_precise=True,
+                refresh_interval="refresh_interval_value",
+                container_type=resources.QuotaInfo.ContainerType.PROJECT,
+                dimensions=["dimensions_value"],
+                metric_display_name="metric_display_name_value",
+                quota_display_name="quota_display_name_value",
+                metric_unit="metric_unit_value",
+                is_fixed=True,
+                is_concurrent=True,
+                service_request_quota_uri="service_request_quota_uri_value",
+            )
+        )
+        await client.get_quota_info(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.GetQuotaInfoRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_quota_preferences_empty_call_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_quota_preferences), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudquotas.ListQuotaPreferencesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_quota_preferences(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.ListQuotaPreferencesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_quota_preference_empty_call_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_quota_preference), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaPreference(
+                name="name_value",
+                etag="etag_value",
+                service="service_value",
+                quota_id="quota_id_value",
+                reconciling=True,
+                justification="justification_value",
+                contact_email="contact_email_value",
+            )
+        )
+        await client.get_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.GetQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_quota_preference_empty_call_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_quota_preference), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaPreference(
+                name="name_value",
+                etag="etag_value",
+                service="service_value",
+                quota_id="quota_id_value",
+                reconciling=True,
+                justification="justification_value",
+                contact_email="contact_email_value",
+            )
+        )
+        await client.create_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.CreateQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_quota_preference_empty_call_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_quota_preference), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QuotaPreference(
+                name="name_value",
+                etag="etag_value",
+                service="service_value",
+                quota_id="quota_id_value",
+                reconciling=True,
+                justification="justification_value",
+                contact_email="contact_email_value",
+            )
+        )
+        await client.update_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.UpdateQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = CloudQuotasClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_quota_infos_rest_bad_request(
+    request_type=cloudquotas.ListQuotaInfosRequest,
+):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_quota_infos(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        cloudquotas.ListQuotaInfosRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = CloudQuotasClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_quota_infos_rest_call_success(request_type):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudquotas.ListQuotaInfosResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloudquotas.ListQuotaInfosResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_quota_infos(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQuotaInfosPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_quota_infos_rest_interceptors(null_interceptor):
+    transport = transports.CloudQuotasRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudQuotasRestInterceptor(),
+    )
+    client = CloudQuotasClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_list_quota_infos"
+    ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "pre_list_quota_infos"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudquotas.ListQuotaInfosRequest.pb(
+            cloudquotas.ListQuotaInfosRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloudquotas.ListQuotaInfosResponse.to_json(
+            cloudquotas.ListQuotaInfosResponse()
+        )
+        req.return_value.content = return_value
+
+        request = cloudquotas.ListQuotaInfosRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudquotas.ListQuotaInfosResponse()
+
+        client.list_quota_infos(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_quota_info_rest_bad_request(request_type=cloudquotas.GetQuotaInfoRequest):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/quotaInfos/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_quota_info(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.GetQuotaInfoRequest,
+        dict,
+    ],
+)
+def test_get_quota_info_rest_call_success(request_type):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/services/sample3/quotaInfos/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QuotaInfo(
+            name="name_value",
+            quota_id="quota_id_value",
+            metric="metric_value",
+            service="service_value",
+            is_precise=True,
+            refresh_interval="refresh_interval_value",
+            container_type=resources.QuotaInfo.ContainerType.PROJECT,
+            dimensions=["dimensions_value"],
+            metric_display_name="metric_display_name_value",
+            quota_display_name="quota_display_name_value",
+            metric_unit="metric_unit_value",
+            is_fixed=True,
+            is_concurrent=True,
+            service_request_quota_uri="service_request_quota_uri_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QuotaInfo.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_quota_info(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QuotaInfo)
+    assert response.name == "name_value"
+    assert response.quota_id == "quota_id_value"
+    assert response.metric == "metric_value"
+    assert response.service == "service_value"
+    assert response.is_precise is True
+    assert response.refresh_interval == "refresh_interval_value"
+    assert response.container_type == resources.QuotaInfo.ContainerType.PROJECT
+    assert response.dimensions == ["dimensions_value"]
+    assert response.metric_display_name == "metric_display_name_value"
+    assert response.quota_display_name == "quota_display_name_value"
+    assert response.metric_unit == "metric_unit_value"
+    assert response.is_fixed is True
+    assert response.is_concurrent is True
+    assert response.service_request_quota_uri == "service_request_quota_uri_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_quota_info_rest_interceptors(null_interceptor):
+    transport = transports.CloudQuotasRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudQuotasRestInterceptor(),
+    )
+    client = CloudQuotasClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_get_quota_info"
+    ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "pre_get_quota_info"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudquotas.GetQuotaInfoRequest.pb(
+            cloudquotas.GetQuotaInfoRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QuotaInfo.to_json(resources.QuotaInfo())
+        req.return_value.content = return_value
+
+        request = cloudquotas.GetQuotaInfoRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QuotaInfo()
+
+        client.get_quota_info(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_quota_preferences_rest_bad_request(
+    request_type=cloudquotas.ListQuotaPreferencesRequest,
+):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_quota_preferences(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.ListQuotaPreferencesRequest,
+        dict,
+    ],
+)
+def test_list_quota_preferences_rest_call_success(request_type):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudquotas.ListQuotaPreferencesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloudquotas.ListQuotaPreferencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_quota_preferences(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQuotaPreferencesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_quota_preferences_rest_interceptors(null_interceptor):
+    transport = transports.CloudQuotasRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudQuotasRestInterceptor(),
+    )
+    client = CloudQuotasClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_list_quota_preferences"
+    ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "pre_list_quota_preferences"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudquotas.ListQuotaPreferencesRequest.pb(
+            cloudquotas.ListQuotaPreferencesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloudquotas.ListQuotaPreferencesResponse.to_json(
+            cloudquotas.ListQuotaPreferencesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = cloudquotas.ListQuotaPreferencesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudquotas.ListQuotaPreferencesResponse()
+
+        client.list_quota_preferences(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_quota_preference_rest_bad_request(
+    request_type=cloudquotas.GetQuotaPreferenceRequest,
+):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_quota_preference(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.GetQuotaPreferenceRequest,
+        dict,
+    ],
+)
+def test_get_quota_preference_rest_call_success(request_type):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QuotaPreference(
+            name="name_value",
+            etag="etag_value",
+            service="service_value",
+            quota_id="quota_id_value",
+            reconciling=True,
+            justification="justification_value",
+            contact_email="contact_email_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QuotaPreference.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_quota_preference(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QuotaPreference)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.service == "service_value"
+    assert response.quota_id == "quota_id_value"
+    assert response.reconciling is True
+    assert response.justification == "justification_value"
+    assert response.contact_email == "contact_email_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_quota_preference_rest_interceptors(null_interceptor):
+    transport = transports.CloudQuotasRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudQuotasRestInterceptor(),
+    )
+    client = CloudQuotasClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_get_quota_preference"
+    ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "pre_get_quota_preference"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudquotas.GetQuotaPreferenceRequest.pb(
+            cloudquotas.GetQuotaPreferenceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QuotaPreference.to_json(resources.QuotaPreference())
+        req.return_value.content = return_value
+
+        request = cloudquotas.GetQuotaPreferenceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QuotaPreference()
+
+        client.get_quota_preference(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_quota_preference_rest_bad_request(
+    request_type=cloudquotas.CreateQuotaPreferenceRequest,
+):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_quota_preference(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.CreateQuotaPreferenceRequest,
+        dict,
+    ],
+)
+def test_create_quota_preference_rest_call_success(request_type):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["quota_preference"] = {
+        "name": "name_value",
+        "dimensions": {},
+        "quota_config": {
+            "preferred_value": 1595,
+            "state_detail": "state_detail_value",
+            "granted_value": {"value": 541},
+            "trace_id": "trace_id_value",
+            "annotations": {},
+            "request_origin": 1,
+        },
+        "etag": "etag_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "service": "service_value",
+        "quota_id": "quota_id_value",
+        "reconciling": True,
+        "justification": "justification_value",
+        "contact_email": "contact_email_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudquotas.CreateQuotaPreferenceRequest.meta.fields[
+        "quota_preference"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["quota_preference"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["quota_preference"][field])):
+                    del request_init["quota_preference"][field][i][subfield]
+            else:
+                del request_init["quota_preference"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QuotaPreference(
+            name="name_value",
+            etag="etag_value",
+            service="service_value",
+            quota_id="quota_id_value",
+            reconciling=True,
+            justification="justification_value",
+            contact_email="contact_email_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QuotaPreference.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_quota_preference(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QuotaPreference)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.service == "service_value"
+    assert response.quota_id == "quota_id_value"
+    assert response.reconciling is True
+    assert response.justification == "justification_value"
+    assert response.contact_email == "contact_email_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_quota_preference_rest_interceptors(null_interceptor):
+    transport = transports.CloudQuotasRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudQuotasRestInterceptor(),
+    )
+    client = CloudQuotasClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_create_quota_preference"
+    ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "pre_create_quota_preference"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudquotas.CreateQuotaPreferenceRequest.pb(
+            cloudquotas.CreateQuotaPreferenceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QuotaPreference.to_json(resources.QuotaPreference())
+        req.return_value.content = return_value
+
+        request = cloudquotas.CreateQuotaPreferenceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QuotaPreference()
+
+        client.create_quota_preference(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_quota_preference_rest_bad_request(
+    request_type=cloudquotas.UpdateQuotaPreferenceRequest,
+):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "quota_preference": {
+            "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_quota_preference(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudquotas.UpdateQuotaPreferenceRequest,
+        dict,
+    ],
+)
+def test_update_quota_preference_rest_call_success(request_type):
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "quota_preference": {
+            "name": "projects/sample1/locations/sample2/quotaPreferences/sample3"
+        }
+    }
+    request_init["quota_preference"] = {
+        "name": "projects/sample1/locations/sample2/quotaPreferences/sample3",
+        "dimensions": {},
+        "quota_config": {
+            "preferred_value": 1595,
+            "state_detail": "state_detail_value",
+            "granted_value": {"value": 541},
+            "trace_id": "trace_id_value",
+            "annotations": {},
+            "request_origin": 1,
+        },
+        "etag": "etag_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "service": "service_value",
+        "quota_id": "quota_id_value",
+        "reconciling": True,
+        "justification": "justification_value",
+        "contact_email": "contact_email_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloudquotas.UpdateQuotaPreferenceRequest.meta.fields[
+        "quota_preference"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["quota_preference"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["quota_preference"][field])):
+                    del request_init["quota_preference"][field][i][subfield]
+            else:
+                del request_init["quota_preference"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QuotaPreference(
+            name="name_value",
+            etag="etag_value",
+            service="service_value",
+            quota_id="quota_id_value",
+            reconciling=True,
+            justification="justification_value",
+            contact_email="contact_email_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QuotaPreference.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_quota_preference(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QuotaPreference)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.service == "service_value"
+    assert response.quota_id == "quota_id_value"
+    assert response.reconciling is True
+    assert response.justification == "justification_value"
+    assert response.contact_email == "contact_email_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_quota_preference_rest_interceptors(null_interceptor):
+    transport = transports.CloudQuotasRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudQuotasRestInterceptor(),
+    )
+    client = CloudQuotasClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "post_update_quota_preference"
+    ) as post, mock.patch.object(
+        transports.CloudQuotasRestInterceptor, "pre_update_quota_preference"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudquotas.UpdateQuotaPreferenceRequest.pb(
+            cloudquotas.UpdateQuotaPreferenceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QuotaPreference.to_json(resources.QuotaPreference())
+        req.return_value.content = return_value
+
+        request = cloudquotas.UpdateQuotaPreferenceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QuotaPreference()
+
+        client.update_quota_preference(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_quota_infos_empty_call_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_quota_infos), "__call__") as call:
+        client.list_quota_infos(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.ListQuotaInfosRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_quota_info_empty_call_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_quota_info), "__call__") as call:
+        client.get_quota_info(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.GetQuotaInfoRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_quota_preferences_empty_call_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_quota_preferences), "__call__"
+    ) as call:
+        client.list_quota_preferences(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.ListQuotaPreferencesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_quota_preference_empty_call_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_quota_preference), "__call__"
+    ) as call:
+        client.get_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.GetQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_quota_preference_empty_call_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_quota_preference), "__call__"
+    ) as call:
+        client.create_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.CreateQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_quota_preference_empty_call_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_quota_preference), "__call__"
+    ) as call:
+        client.update_quota_preference(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloudquotas.UpdateQuotaPreferenceRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -6975,36 +7158,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = CloudQuotasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = CloudQuotasAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = CloudQuotasClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = CloudQuotasClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

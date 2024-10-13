@@ -22,20 +22,12 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -43,6 +35,23 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.cloudcontrolspartner_v1beta.services.cloud_controls_partner_core import (
     CloudControlsPartnerCoreAsyncClient,
@@ -60,8 +69,22 @@ from google.cloud.cloudcontrolspartner_v1beta.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1254,25 +1277,6 @@ def test_get_workload(request_type, transport: str = "grpc"):
     )
 
 
-def test_get_workload_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_workload()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customer_workloads.GetWorkloadRequest()
-
-
 def test_get_workload_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1337,35 +1341,6 @@ def test_get_workload_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_workload_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            customer_workloads.Workload(
-                name="name_value",
-                folder_id=936,
-                folder="folder_value",
-                is_onboarded=True,
-                key_management_project_id="key_management_project_id_value",
-                location="location_value",
-                partner=customer_workloads.Workload.Partner.PARTNER_LOCAL_CONTROLS_BY_S3NS,
-            )
-        )
-        response = await client.get_workload()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customer_workloads.GetWorkloadRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_workload_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1373,7 +1348,7 @@ async def test_get_workload_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1412,7 +1387,7 @@ async def test_get_workload_async(
     transport: str = "grpc_asyncio", request_type=customer_workloads.GetWorkloadRequest
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1493,7 +1468,7 @@ def test_get_workload_field_headers():
 @pytest.mark.asyncio
 async def test_get_workload_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1563,7 +1538,7 @@ def test_get_workload_flattened_error():
 @pytest.mark.asyncio
 async def test_get_workload_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1592,7 +1567,7 @@ async def test_get_workload_flattened_async():
 @pytest.mark.asyncio
 async def test_get_workload_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1640,25 +1615,6 @@ def test_list_workloads(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListWorkloadsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_workloads_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_workloads()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customer_workloads.ListWorkloadsRequest()
 
 
 def test_list_workloads_non_empty_request_with_auto_populated_field():
@@ -1731,30 +1687,6 @@ def test_list_workloads_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_workloads_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            customer_workloads.ListWorkloadsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_workloads()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customer_workloads.ListWorkloadsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_workloads_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1762,7 +1694,7 @@ async def test_list_workloads_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1802,7 +1734,7 @@ async def test_list_workloads_async(
     request_type=customer_workloads.ListWorkloadsRequest,
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1870,7 +1802,7 @@ def test_list_workloads_field_headers():
 @pytest.mark.asyncio
 async def test_list_workloads_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1940,7 +1872,7 @@ def test_list_workloads_flattened_error():
 @pytest.mark.asyncio
 async def test_list_workloads_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1969,7 +1901,7 @@ async def test_list_workloads_flattened_async():
 @pytest.mark.asyncio
 async def test_list_workloads_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2079,7 +2011,7 @@ def test_list_workloads_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_workloads_async_pager():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2129,7 +2061,7 @@ async def test_list_workloads_async_pager():
 @pytest.mark.asyncio
 async def test_list_workloads_async_pages():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2215,25 +2147,6 @@ def test_get_customer(request_type, transport: str = "grpc"):
     assert response.is_onboarded is True
 
 
-def test_get_customer_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_customer()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.GetCustomerRequest()
-
-
 def test_get_customer_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2298,31 +2211,6 @@ def test_get_customer_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_customer_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            customers.Customer(
-                name="name_value",
-                display_name="display_name_value",
-                is_onboarded=True,
-            )
-        )
-        response = await client.get_customer()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.GetCustomerRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_customer_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2330,7 +2218,7 @@ async def test_get_customer_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2369,7 +2257,7 @@ async def test_get_customer_async(
     transport: str = "grpc_asyncio", request_type=customers.GetCustomerRequest
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2439,7 +2327,7 @@ def test_get_customer_field_headers():
 @pytest.mark.asyncio
 async def test_get_customer_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2507,7 +2395,7 @@ def test_get_customer_flattened_error():
 @pytest.mark.asyncio
 async def test_get_customer_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2534,7 +2422,7 @@ async def test_get_customer_flattened_async():
 @pytest.mark.asyncio
 async def test_get_customer_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2582,25 +2470,6 @@ def test_list_customers(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListCustomersPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_customers_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_customers()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.ListCustomersRequest()
 
 
 def test_list_customers_non_empty_request_with_auto_populated_field():
@@ -2673,30 +2542,6 @@ def test_list_customers_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_customers_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            customers.ListCustomersResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_customers()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.ListCustomersRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_customers_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2704,7 +2549,7 @@ async def test_list_customers_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2743,7 +2588,7 @@ async def test_list_customers_async(
     transport: str = "grpc_asyncio", request_type=customers.ListCustomersRequest
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2811,7 +2656,7 @@ def test_list_customers_field_headers():
 @pytest.mark.asyncio
 async def test_list_customers_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2881,7 +2726,7 @@ def test_list_customers_flattened_error():
 @pytest.mark.asyncio
 async def test_list_customers_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2910,7 +2755,7 @@ async def test_list_customers_flattened_async():
 @pytest.mark.asyncio
 async def test_list_customers_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3020,7 +2865,7 @@ def test_list_customers_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_customers_async_pager():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3070,7 +2915,7 @@ async def test_list_customers_async_pager():
 @pytest.mark.asyncio
 async def test_list_customers_async_pages():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3154,27 +2999,6 @@ def test_get_ekm_connections(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
 
 
-def test_get_ekm_connections_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ekm_connections), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_ekm_connections()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_connections.GetEkmConnectionsRequest()
-
-
 def test_get_ekm_connections_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3245,31 +3069,6 @@ def test_get_ekm_connections_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_ekm_connections_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_ekm_connections), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ekm_connections.EkmConnections(
-                name="name_value",
-            )
-        )
-        response = await client.get_ekm_connections()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_connections.GetEkmConnectionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_ekm_connections_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3277,7 +3076,7 @@ async def test_get_ekm_connections_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3317,7 +3116,7 @@ async def test_get_ekm_connections_async(
     request_type=ekm_connections.GetEkmConnectionsRequest,
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3387,7 +3186,7 @@ def test_get_ekm_connections_field_headers():
 @pytest.mark.asyncio
 async def test_get_ekm_connections_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3461,7 +3260,7 @@ def test_get_ekm_connections_flattened_error():
 @pytest.mark.asyncio
 async def test_get_ekm_connections_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3492,7 +3291,7 @@ async def test_get_ekm_connections_flattened_async():
 @pytest.mark.asyncio
 async def test_get_ekm_connections_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3546,27 +3345,6 @@ def test_get_partner_permissions(request_type, transport: str = "grpc"):
     assert response.partner_permissions == [
         partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
     ]
-
-
-def test_get_partner_permissions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_partner_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_partner_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == partner_permissions.GetPartnerPermissionsRequest()
 
 
 def test_get_partner_permissions_non_empty_request_with_auto_populated_field():
@@ -3640,34 +3418,6 @@ def test_get_partner_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_partner_permissions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_partner_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            partner_permissions.PartnerPermissions(
-                name="name_value",
-                partner_permissions=[
-                    partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
-                ],
-            )
-        )
-        response = await client.get_partner_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == partner_permissions.GetPartnerPermissionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_partner_permissions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3675,7 +3425,7 @@ async def test_get_partner_permissions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3715,7 +3465,7 @@ async def test_get_partner_permissions_async(
     request_type=partner_permissions.GetPartnerPermissionsRequest,
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3791,7 +3541,7 @@ def test_get_partner_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_get_partner_permissions_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3865,7 +3615,7 @@ def test_get_partner_permissions_flattened_error():
 @pytest.mark.asyncio
 async def test_get_partner_permissions_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3896,7 +3646,7 @@ async def test_get_partner_permissions_flattened_async():
 @pytest.mark.asyncio
 async def test_get_partner_permissions_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3946,27 +3696,6 @@ def test_list_access_approval_requests(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListAccessApprovalRequestsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_access_approval_requests_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_access_approval_requests), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_access_approval_requests()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == access_approval_requests.ListAccessApprovalRequestsRequest()
 
 
 def test_list_access_approval_requests_non_empty_request_with_auto_populated_field():
@@ -4046,32 +3775,6 @@ def test_list_access_approval_requests_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_access_approval_requests_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_access_approval_requests), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            access_approval_requests.ListAccessApprovalRequestsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_access_approval_requests()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == access_approval_requests.ListAccessApprovalRequestsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_access_approval_requests_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4079,7 +3782,7 @@ async def test_list_access_approval_requests_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4119,7 +3822,7 @@ async def test_list_access_approval_requests_async(
     request_type=access_approval_requests.ListAccessApprovalRequestsRequest,
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4193,7 +3896,7 @@ def test_list_access_approval_requests_field_headers():
 @pytest.mark.asyncio
 async def test_list_access_approval_requests_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4269,7 +3972,7 @@ def test_list_access_approval_requests_flattened_error():
 @pytest.mark.asyncio
 async def test_list_access_approval_requests_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4302,7 +4005,7 @@ async def test_list_access_approval_requests_flattened_async():
 @pytest.mark.asyncio
 async def test_list_access_approval_requests_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4421,7 +4124,7 @@ def test_list_access_approval_requests_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_access_approval_requests_async_pager():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4476,7 +4179,7 @@ async def test_list_access_approval_requests_async_pager():
 @pytest.mark.asyncio
 async def test_list_access_approval_requests_async_pages():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4564,25 +4267,6 @@ def test_get_partner(request_type, transport: str = "grpc"):
     assert response.partner_project_id == "partner_project_id_value"
 
 
-def test_get_partner_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_partner), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_partner()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == partners.GetPartnerRequest()
-
-
 def test_get_partner_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4647,31 +4331,6 @@ def test_get_partner_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_partner_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_partner), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            partners.Partner(
-                name="name_value",
-                operated_cloud_regions=["operated_cloud_regions_value"],
-                partner_project_id="partner_project_id_value",
-            )
-        )
-        response = await client.get_partner()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == partners.GetPartnerRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_partner_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4679,7 +4338,7 @@ async def test_get_partner_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudControlsPartnerCoreAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4718,7 +4377,7 @@ async def test_get_partner_async(
     transport: str = "grpc_asyncio", request_type=partners.GetPartnerRequest
 ):
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4788,7 +4447,7 @@ def test_get_partner_field_headers():
 @pytest.mark.asyncio
 async def test_get_partner_field_headers_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4856,7 +4515,7 @@ def test_get_partner_flattened_error():
 @pytest.mark.asyncio
 async def test_get_partner_flattened_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4883,7 +4542,7 @@ async def test_get_partner_flattened_async():
 @pytest.mark.asyncio
 async def test_get_partner_flattened_error_async():
     client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4893,63 +4552,6 @@ async def test_get_partner_flattened_error_async():
             partners.GetPartnerRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        customer_workloads.GetWorkloadRequest,
-        dict,
-    ],
-)
-def test_get_workload_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = customer_workloads.Workload(
-            name="name_value",
-            folder_id=936,
-            folder="folder_value",
-            is_onboarded=True,
-            key_management_project_id="key_management_project_id_value",
-            location="location_value",
-            partner=customer_workloads.Workload.Partner.PARTNER_LOCAL_CONTROLS_BY_S3NS,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = customer_workloads.Workload.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_workload(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, customer_workloads.Workload)
-    assert response.name == "name_value"
-    assert response.folder_id == 936
-    assert response.folder == "folder_value"
-    assert response.is_onboarded is True
-    assert response.key_management_project_id == "key_management_project_id_value"
-    assert response.location == "location_value"
-    assert (
-        response.partner
-        == customer_workloads.Workload.Partner.PARTNER_LOCAL_CONTROLS_BY_S3NS
-    )
 
 
 def test_get_workload_rest_use_cached_wrapped_rpc():
@@ -5071,89 +4673,6 @@ def test_get_workload_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_workload_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_workload"
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_workload"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = customer_workloads.GetWorkloadRequest.pb(
-            customer_workloads.GetWorkloadRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = customer_workloads.Workload.to_json(
-            customer_workloads.Workload()
-        )
-
-        request = customer_workloads.GetWorkloadRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = customer_workloads.Workload()
-
-        client.get_workload(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_workload_rest_bad_request(
-    transport: str = "rest", request_type=customer_workloads.GetWorkloadRequest
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_workload(request)
-
-
 def test_get_workload_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5211,56 +4730,6 @@ def test_get_workload_rest_flattened_error(transport: str = "rest"):
             customer_workloads.GetWorkloadRequest(),
             name="name_value",
         )
-
-
-def test_get_workload_rest_error():
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        customer_workloads.ListWorkloadsRequest,
-        dict,
-    ],
-)
-def test_list_workloads_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "organizations/sample1/locations/sample2/customers/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = customer_workloads.ListWorkloadsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = customer_workloads.ListWorkloadsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_workloads(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListWorkloadsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workloads_rest_use_cached_wrapped_rpc():
@@ -5401,89 +4870,6 @@ def test_list_workloads_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_workloads_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "post_list_workloads"
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "pre_list_workloads"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = customer_workloads.ListWorkloadsRequest.pb(
-            customer_workloads.ListWorkloadsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = customer_workloads.ListWorkloadsResponse.to_json(
-            customer_workloads.ListWorkloadsResponse()
-        )
-
-        request = customer_workloads.ListWorkloadsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = customer_workloads.ListWorkloadsResponse()
-
-        client.list_workloads(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_workloads_rest_bad_request(
-    transport: str = "rest", request_type=customer_workloads.ListWorkloadsRequest
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "organizations/sample1/locations/sample2/customers/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_workloads(request)
-
-
 def test_list_workloads_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5608,50 +4994,6 @@ def test_list_workloads_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        customers.GetCustomerRequest,
-        dict,
-    ],
-)
-def test_get_customer_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/locations/sample2/customers/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = customers.Customer(
-            name="name_value",
-            display_name="display_name_value",
-            is_onboarded=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = customers.Customer.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_customer(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, customers.Customer)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.is_onboarded is True
-
-
 def test_get_customer_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5769,83 +5111,6 @@ def test_get_customer_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_customer_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_customer"
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_customer"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = customers.GetCustomerRequest.pb(customers.GetCustomerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = customers.Customer.to_json(customers.Customer())
-
-        request = customers.GetCustomerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = customers.Customer()
-
-        client.get_customer(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_customer_rest_bad_request(
-    transport: str = "rest", request_type=customers.GetCustomerRequest
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/locations/sample2/customers/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_customer(request)
-
-
 def test_get_customer_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5903,54 +5168,6 @@ def test_get_customer_rest_flattened_error(transport: str = "rest"):
             customers.GetCustomerRequest(),
             name="name_value",
         )
-
-
-def test_get_customer_rest_error():
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        customers.ListCustomersRequest,
-        dict,
-    ],
-)
-def test_list_customers_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = customers.ListCustomersResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = customers.ListCustomersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_customers(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListCustomersPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_customers_rest_use_cached_wrapped_rpc():
@@ -6091,85 +5308,6 @@ def test_list_customers_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_customers_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "post_list_customers"
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "pre_list_customers"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = customers.ListCustomersRequest.pb(customers.ListCustomersRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = customers.ListCustomersResponse.to_json(
-            customers.ListCustomersResponse()
-        )
-
-        request = customers.ListCustomersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = customers.ListCustomersResponse()
-
-        client.list_customers(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_customers_rest_bad_request(
-    transport: str = "rest", request_type=customers.ListCustomersRequest
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_customers(request)
-
-
 def test_list_customers_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6286,48 +5424,6 @@ def test_list_customers_rest_pager(transport: str = "rest"):
         pages = list(client.list_customers(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        ekm_connections.GetEkmConnectionsRequest,
-        dict,
-    ],
-)
-def test_get_ekm_connections_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/ekmConnections"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = ekm_connections.EkmConnections(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = ekm_connections.EkmConnections.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_ekm_connections(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, ekm_connections.EkmConnections)
-    assert response.name == "name_value"
 
 
 def test_get_ekm_connections_rest_use_cached_wrapped_rpc():
@@ -6453,89 +5549,6 @@ def test_get_ekm_connections_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_ekm_connections_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_ekm_connections"
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_ekm_connections"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = ekm_connections.GetEkmConnectionsRequest.pb(
-            ekm_connections.GetEkmConnectionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = ekm_connections.EkmConnections.to_json(
-            ekm_connections.EkmConnections()
-        )
-
-        request = ekm_connections.GetEkmConnectionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = ekm_connections.EkmConnections()
-
-        client.get_ekm_connections(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_ekm_connections_rest_bad_request(
-    transport: str = "rest", request_type=ekm_connections.GetEkmConnectionsRequest
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/ekmConnections"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_ekm_connections(request)
-
-
 def test_get_ekm_connections_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6593,60 +5606,6 @@ def test_get_ekm_connections_rest_flattened_error(transport: str = "rest"):
             ekm_connections.GetEkmConnectionsRequest(),
             name="name_value",
         )
-
-
-def test_get_ekm_connections_rest_error():
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        partner_permissions.GetPartnerPermissionsRequest,
-        dict,
-    ],
-)
-def test_get_partner_permissions_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/partnerPermissions"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = partner_permissions.PartnerPermissions(
-            name="name_value",
-            partner_permissions=[
-                partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
-            ],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = partner_permissions.PartnerPermissions.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_partner_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, partner_permissions.PartnerPermissions)
-    assert response.name == "name_value"
-    assert response.partner_permissions == [
-        partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
-    ]
 
 
 def test_get_partner_permissions_rest_use_cached_wrapped_rpc():
@@ -6773,92 +5732,6 @@ def test_get_partner_permissions_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_partner_permissions_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor,
-        "post_get_partner_permissions",
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor,
-        "pre_get_partner_permissions",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = partner_permissions.GetPartnerPermissionsRequest.pb(
-            partner_permissions.GetPartnerPermissionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = partner_permissions.PartnerPermissions.to_json(
-            partner_permissions.PartnerPermissions()
-        )
-
-        request = partner_permissions.GetPartnerPermissionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = partner_permissions.PartnerPermissions()
-
-        client.get_partner_permissions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_partner_permissions_rest_bad_request(
-    transport: str = "rest",
-    request_type=partner_permissions.GetPartnerPermissionsRequest,
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/partnerPermissions"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_partner_permissions(request)
-
-
 def test_get_partner_permissions_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6916,58 +5789,6 @@ def test_get_partner_permissions_rest_flattened_error(transport: str = "rest"):
             partner_permissions.GetPartnerPermissionsRequest(),
             name="name_value",
         )
-
-
-def test_get_partner_permissions_rest_error():
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        access_approval_requests.ListAccessApprovalRequestsRequest,
-        dict,
-    ],
-)
-def test_list_access_approval_requests_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = access_approval_requests.ListAccessApprovalRequestsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = access_approval_requests.ListAccessApprovalRequestsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_access_approval_requests(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAccessApprovalRequestsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_access_approval_requests_rest_use_cached_wrapped_rpc():
@@ -7119,96 +5940,6 @@ def test_list_access_approval_requests_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_access_approval_requests_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor,
-        "post_list_access_approval_requests",
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor,
-        "pre_list_access_approval_requests",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = access_approval_requests.ListAccessApprovalRequestsRequest.pb(
-            access_approval_requests.ListAccessApprovalRequestsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            access_approval_requests.ListAccessApprovalRequestsResponse.to_json(
-                access_approval_requests.ListAccessApprovalRequestsResponse()
-            )
-        )
-
-        request = access_approval_requests.ListAccessApprovalRequestsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = (
-            access_approval_requests.ListAccessApprovalRequestsResponse()
-        )
-
-        client.list_access_approval_requests(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_access_approval_requests_rest_bad_request(
-    transport: str = "rest",
-    request_type=access_approval_requests.ListAccessApprovalRequestsRequest,
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_access_approval_requests(request)
-
-
 def test_list_access_approval_requests_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7339,50 +6070,6 @@ def test_list_access_approval_requests_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        partners.GetPartnerRequest,
-        dict,
-    ],
-)
-def test_get_partner_rest(request_type):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/locations/sample2/partner"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = partners.Partner(
-            name="name_value",
-            operated_cloud_regions=["operated_cloud_regions_value"],
-            partner_project_id="partner_project_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = partners.Partner.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_partner(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, partners.Partner)
-    assert response.name == "name_value"
-    assert response.operated_cloud_regions == ["operated_cloud_regions_value"]
-    assert response.partner_project_id == "partner_project_id_value"
-
-
 def test_get_partner_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7500,83 +6187,6 @@ def test_get_partner_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_partner_rest_interceptors(null_interceptor):
-    transport = transports.CloudControlsPartnerCoreRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CloudControlsPartnerCoreRestInterceptor(),
-    )
-    client = CloudControlsPartnerCoreClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_partner"
-    ) as post, mock.patch.object(
-        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_partner"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = partners.GetPartnerRequest.pb(partners.GetPartnerRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = partners.Partner.to_json(partners.Partner())
-
-        request = partners.GetPartnerRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = partners.Partner()
-
-        client.get_partner(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_partner_rest_bad_request(
-    transport: str = "rest", request_type=partners.GetPartnerRequest
-):
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/locations/sample2/partner"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_partner(request)
-
-
 def test_get_partner_rest_flattened():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7632,12 +6242,6 @@ def test_get_partner_rest_flattened_error(transport: str = "rest"):
             partners.GetPartnerRequest(),
             name="name_value",
         )
-
-
-def test_get_partner_rest_error():
-    client = CloudControlsPartnerCoreClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -7732,18 +6336,1643 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = CloudControlsPartnerCoreClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workload_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
+        call.return_value = customer_workloads.Workload()
+        client.get_workload(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customer_workloads.GetWorkloadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workloads_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
+        call.return_value = customer_workloads.ListWorkloadsResponse()
+        client.list_workloads(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customer_workloads.ListWorkloadsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_customer_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
+        call.return_value = customers.Customer()
+        client.get_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.GetCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_customers_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
+        call.return_value = customers.ListCustomersResponse()
+        client.list_customers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.ListCustomersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_ekm_connections_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ekm_connections), "__call__"
+    ) as call:
+        call.return_value = ekm_connections.EkmConnections()
+        client.get_ekm_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ekm_connections.GetEkmConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_partner_permissions_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_partner_permissions), "__call__"
+    ) as call:
+        call.return_value = partner_permissions.PartnerPermissions()
+        client.get_partner_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = partner_permissions.GetPartnerPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_access_approval_requests_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_access_approval_requests), "__call__"
+    ) as call:
+        call.return_value = (
+            access_approval_requests.ListAccessApprovalRequestsResponse()
+        )
+        client.list_access_approval_requests(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = access_approval_requests.ListAccessApprovalRequestsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_partner_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_partner), "__call__") as call:
+        call.return_value = partners.Partner()
+        client.get_partner(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = partners.GetPartnerRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = CloudControlsPartnerCoreAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_workload_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customer_workloads.Workload(
+                name="name_value",
+                folder_id=936,
+                folder="folder_value",
+                is_onboarded=True,
+                key_management_project_id="key_management_project_id_value",
+                location="location_value",
+                partner=customer_workloads.Workload.Partner.PARTNER_LOCAL_CONTROLS_BY_S3NS,
+            )
+        )
+        await client.get_workload(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customer_workloads.GetWorkloadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_workloads_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customer_workloads.ListWorkloadsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_workloads(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customer_workloads.ListWorkloadsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_customer_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                display_name="display_name_value",
+                is_onboarded=True,
+            )
+        )
+        await client.get_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.GetCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_customers_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.ListCustomersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_customers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.ListCustomersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_ekm_connections_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ekm_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ekm_connections.EkmConnections(
+                name="name_value",
+            )
+        )
+        await client.get_ekm_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ekm_connections.GetEkmConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_partner_permissions_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_partner_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            partner_permissions.PartnerPermissions(
+                name="name_value",
+                partner_permissions=[
+                    partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
+                ],
+            )
+        )
+        await client.get_partner_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = partner_permissions.GetPartnerPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_access_approval_requests_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_access_approval_requests), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            access_approval_requests.ListAccessApprovalRequestsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_access_approval_requests(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = access_approval_requests.ListAccessApprovalRequestsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_partner_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_partner), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            partners.Partner(
+                name="name_value",
+                operated_cloud_regions=["operated_cloud_regions_value"],
+                partner_project_id="partner_project_id_value",
+            )
+        )
+        await client.get_partner(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = partners.GetPartnerRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = CloudControlsPartnerCoreClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_get_workload_rest_bad_request(
+    request_type=customer_workloads.GetWorkloadRequest,
+):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_workload(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        customer_workloads.GetWorkloadRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = CloudControlsPartnerCoreClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_get_workload_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customer_workloads.Workload(
+            name="name_value",
+            folder_id=936,
+            folder="folder_value",
+            is_onboarded=True,
+            key_management_project_id="key_management_project_id_value",
+            location="location_value",
+            partner=customer_workloads.Workload.Partner.PARTNER_LOCAL_CONTROLS_BY_S3NS,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = customer_workloads.Workload.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_workload(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customer_workloads.Workload)
+    assert response.name == "name_value"
+    assert response.folder_id == 936
+    assert response.folder == "folder_value"
+    assert response.is_onboarded is True
+    assert response.key_management_project_id == "key_management_project_id_value"
+    assert response.location == "location_value"
+    assert (
+        response.partner
+        == customer_workloads.Workload.Partner.PARTNER_LOCAL_CONTROLS_BY_S3NS
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_workload_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_workload"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_workload"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = customer_workloads.GetWorkloadRequest.pb(
+            customer_workloads.GetWorkloadRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = customer_workloads.Workload.to_json(
+            customer_workloads.Workload()
+        )
+        req.return_value.content = return_value
+
+        request = customer_workloads.GetWorkloadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = customer_workloads.Workload()
+
+        client.get_workload(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_workloads_rest_bad_request(
+    request_type=customer_workloads.ListWorkloadsRequest,
+):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "organizations/sample1/locations/sample2/customers/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_workloads(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customer_workloads.ListWorkloadsRequest,
+        dict,
+    ],
+)
+def test_list_workloads_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "organizations/sample1/locations/sample2/customers/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customer_workloads.ListWorkloadsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = customer_workloads.ListWorkloadsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_workloads(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkloadsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_workloads_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_list_workloads"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_list_workloads"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = customer_workloads.ListWorkloadsRequest.pb(
+            customer_workloads.ListWorkloadsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = customer_workloads.ListWorkloadsResponse.to_json(
+            customer_workloads.ListWorkloadsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = customer_workloads.ListWorkloadsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = customer_workloads.ListWorkloadsResponse()
+
+        client.list_workloads(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_customer_rest_bad_request(request_type=customers.GetCustomerRequest):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/customers/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_customer(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.GetCustomerRequest,
+        dict,
+    ],
+)
+def test_get_customer_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/customers/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customers.Customer(
+            name="name_value",
+            display_name="display_name_value",
+            is_onboarded=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = customers.Customer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_customer(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_onboarded is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_customer_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_customer"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_customer"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = customers.GetCustomerRequest.pb(customers.GetCustomerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = customers.Customer.to_json(customers.Customer())
+        req.return_value.content = return_value
+
+        request = customers.GetCustomerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = customers.Customer()
+
+        client.get_customer(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_customers_rest_bad_request(request_type=customers.ListCustomersRequest):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_customers(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.ListCustomersRequest,
+        dict,
+    ],
+)
+def test_list_customers_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customers.ListCustomersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = customers.ListCustomersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_customers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_customers_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_list_customers"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_list_customers"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = customers.ListCustomersRequest.pb(customers.ListCustomersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = customers.ListCustomersResponse.to_json(
+            customers.ListCustomersResponse()
+        )
+        req.return_value.content = return_value
+
+        request = customers.ListCustomersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = customers.ListCustomersResponse()
+
+        client.list_customers(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_ekm_connections_rest_bad_request(
+    request_type=ekm_connections.GetEkmConnectionsRequest,
+):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/ekmConnections"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_ekm_connections(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_connections.GetEkmConnectionsRequest,
+        dict,
+    ],
+)
+def test_get_ekm_connections_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/ekmConnections"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = ekm_connections.EkmConnections(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = ekm_connections.EkmConnections.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_ekm_connections(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, ekm_connections.EkmConnections)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_ekm_connections_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_ekm_connections"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_ekm_connections"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = ekm_connections.GetEkmConnectionsRequest.pb(
+            ekm_connections.GetEkmConnectionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = ekm_connections.EkmConnections.to_json(
+            ekm_connections.EkmConnections()
+        )
+        req.return_value.content = return_value
+
+        request = ekm_connections.GetEkmConnectionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = ekm_connections.EkmConnections()
+
+        client.get_ekm_connections(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_partner_permissions_rest_bad_request(
+    request_type=partner_permissions.GetPartnerPermissionsRequest,
+):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/partnerPermissions"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_partner_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        partner_permissions.GetPartnerPermissionsRequest,
+        dict,
+    ],
+)
+def test_get_partner_permissions_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4/partnerPermissions"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = partner_permissions.PartnerPermissions(
+            name="name_value",
+            partner_permissions=[
+                partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
+            ],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = partner_permissions.PartnerPermissions.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_partner_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, partner_permissions.PartnerPermissions)
+    assert response.name == "name_value"
+    assert response.partner_permissions == [
+        partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
+    ]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_partner_permissions_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_get_partner_permissions",
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "pre_get_partner_permissions",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = partner_permissions.GetPartnerPermissionsRequest.pb(
+            partner_permissions.GetPartnerPermissionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = partner_permissions.PartnerPermissions.to_json(
+            partner_permissions.PartnerPermissions()
+        )
+        req.return_value.content = return_value
+
+        request = partner_permissions.GetPartnerPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = partner_permissions.PartnerPermissions()
+
+        client.get_partner_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_access_approval_requests_rest_bad_request(
+    request_type=access_approval_requests.ListAccessApprovalRequestsRequest,
+):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_access_approval_requests(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        access_approval_requests.ListAccessApprovalRequestsRequest,
+        dict,
+    ],
+)
+def test_list_access_approval_requests_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "organizations/sample1/locations/sample2/customers/sample3/workloads/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = access_approval_requests.ListAccessApprovalRequestsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = access_approval_requests.ListAccessApprovalRequestsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_access_approval_requests(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAccessApprovalRequestsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_access_approval_requests_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "post_list_access_approval_requests",
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor,
+        "pre_list_access_approval_requests",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = access_approval_requests.ListAccessApprovalRequestsRequest.pb(
+            access_approval_requests.ListAccessApprovalRequestsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = (
+            access_approval_requests.ListAccessApprovalRequestsResponse.to_json(
+                access_approval_requests.ListAccessApprovalRequestsResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = access_approval_requests.ListAccessApprovalRequestsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            access_approval_requests.ListAccessApprovalRequestsResponse()
+        )
+
+        client.list_access_approval_requests(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_partner_rest_bad_request(request_type=partners.GetPartnerRequest):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/partner"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_partner(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        partners.GetPartnerRequest,
+        dict,
+    ],
+)
+def test_get_partner_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/partner"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = partners.Partner(
+            name="name_value",
+            operated_cloud_regions=["operated_cloud_regions_value"],
+            partner_project_id="partner_project_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = partners.Partner.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_partner(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, partners.Partner)
+    assert response.name == "name_value"
+    assert response.operated_cloud_regions == ["operated_cloud_regions_value"]
+    assert response.partner_project_id == "partner_project_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_partner_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_get_partner"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_get_partner"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = partners.GetPartnerRequest.pb(partners.GetPartnerRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = partners.Partner.to_json(partners.Partner())
+        req.return_value.content = return_value
+
+        request = partners.GetPartnerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = partners.Partner()
+
+        client.get_partner(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workload_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
+        client.get_workload(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customer_workloads.GetWorkloadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workloads_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
+        client.list_workloads(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customer_workloads.ListWorkloadsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_customer_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
+        client.get_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.GetCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_customers_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
+        client.list_customers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.ListCustomersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_ekm_connections_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ekm_connections), "__call__"
+    ) as call:
+        client.get_ekm_connections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = ekm_connections.GetEkmConnectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_partner_permissions_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_partner_permissions), "__call__"
+    ) as call:
+        client.get_partner_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = partner_permissions.GetPartnerPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_access_approval_requests_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_access_approval_requests), "__call__"
+    ) as call:
+        client.list_access_approval_requests(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = access_approval_requests.ListAccessApprovalRequestsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_partner_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_partner), "__call__") as call:
+        client.get_partner(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = partners.GetPartnerRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -8507,36 +8736,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = CloudControlsPartnerCoreAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = CloudControlsPartnerCoreClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

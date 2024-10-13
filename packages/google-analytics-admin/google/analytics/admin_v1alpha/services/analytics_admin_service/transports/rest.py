@@ -16,27 +16,17 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
@@ -54,8 +44,14 @@ from google.analytics.admin_v1alpha.types import expanded_data_set
 from google.analytics.admin_v1alpha.types import resources
 from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
-from .base import AnalyticsAdminServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseAnalyticsAdminServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -4462,8 +4458,8 @@ class AnalyticsAdminServiceRestStub:
     _interceptor: AnalyticsAdminServiceRestInterceptor
 
 
-class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
-    """REST backend transport for AnalyticsAdminService.
+class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport):
+    """REST backend synchronous transport for AnalyticsAdminService.
 
     Service Interface for the Analytics Admin API (GA4).
 
@@ -4472,7 +4468,6 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -4526,21 +4521,12 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -4551,19 +4537,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         self._interceptor = interceptor or AnalyticsAdminServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AcknowledgeUserDataCollection(AnalyticsAdminServiceRestStub):
+    class _AcknowledgeUserDataCollection(
+        _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("AcknowledgeUserDataCollection")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.AcknowledgeUserDataCollection"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4593,49 +4597,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{property=properties/*}:acknowledgeUserDataCollection",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_acknowledge_user_data_collection(
                 request, metadata
             )
-            pb_request = analytics_admin.AcknowledgeUserDataCollectionRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._AcknowledgeUserDataCollection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4651,19 +4640,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_acknowledge_user_data_collection(resp)
             return resp
 
-    class _ApproveDisplayVideo360AdvertiserLinkProposal(AnalyticsAdminServiceRestStub):
+    class _ApproveDisplayVideo360AdvertiserLinkProposal(
+        _BaseAnalyticsAdminServiceRestTransport._BaseApproveDisplayVideo360AdvertiserLinkProposal,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ApproveDisplayVideo360AdvertiserLinkProposal")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ApproveDisplayVideo360AdvertiserLinkProposal"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4695,54 +4702,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=properties/*/displayVideo360AdvertiserLinkProposals/*}:approve",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseApproveDisplayVideo360AdvertiserLinkProposal._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_approve_display_video360_advertiser_link_proposal(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseApproveDisplayVideo360AdvertiserLinkProposal._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseApproveDisplayVideo360AdvertiserLinkProposal._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseApproveDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._ApproveDisplayVideo360AdvertiserLinkProposal._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4766,19 +4756,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _ArchiveAudience(AnalyticsAdminServiceRestStub):
+    class _ArchiveAudience(
+        _BaseAnalyticsAdminServiceRestTransport._BaseArchiveAudience,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ArchiveAudience")
+            return hash("AnalyticsAdminServiceRestTransport.ArchiveAudience")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4801,47 +4807,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=properties/*/audiences/*}:archive",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseArchiveAudience._get_http_options()
+            )
             request, metadata = self._interceptor.pre_archive_audience(
                 request, metadata
             )
-            pb_request = analytics_admin.ArchiveAudienceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveAudience._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveAudience._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveAudience._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._ArchiveAudience._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4849,19 +4844,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ArchiveCustomDimension(AnalyticsAdminServiceRestStub):
+    class _ArchiveCustomDimension(
+        _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ArchiveCustomDimension")
+            return hash("AnalyticsAdminServiceRestTransport.ArchiveCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4884,47 +4895,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=properties/*/customDimensions/*}:archive",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_http_options()
+            )
             request, metadata = self._interceptor.pre_archive_custom_dimension(
                 request, metadata
             )
-            pb_request = analytics_admin.ArchiveCustomDimensionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._ArchiveCustomDimension._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4932,19 +4930,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ArchiveCustomMetric(AnalyticsAdminServiceRestStub):
+    class _ArchiveCustomMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ArchiveCustomMetric")
+            return hash("AnalyticsAdminServiceRestTransport.ArchiveCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4967,47 +4981,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=properties/*/customMetrics/*}:archive",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_archive_custom_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.ArchiveCustomMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._ArchiveCustomMetric._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5015,19 +5018,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchCreateAccessBindings(AnalyticsAdminServiceRestStub):
+    class _BatchCreateAccessBindings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseBatchCreateAccessBindings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchCreateAccessBindings")
+            return hash("AnalyticsAdminServiceRestTransport.BatchCreateAccessBindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5057,52 +5076,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchCreate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchCreate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseBatchCreateAccessBindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_create_access_bindings(
                 request, metadata
             )
-            pb_request = analytics_admin.BatchCreateAccessBindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseBatchCreateAccessBindings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseBatchCreateAccessBindings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchCreateAccessBindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._BatchCreateAccessBindings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5118,19 +5119,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_batch_create_access_bindings(resp)
             return resp
 
-    class _BatchDeleteAccessBindings(AnalyticsAdminServiceRestStub):
+    class _BatchDeleteAccessBindings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseBatchDeleteAccessBindings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchDeleteAccessBindings")
+            return hash("AnalyticsAdminServiceRestTransport.BatchDeleteAccessBindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5154,52 +5171,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchDelete",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchDelete",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseBatchDeleteAccessBindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_delete_access_bindings(
                 request, metadata
             )
-            pb_request = analytics_admin.BatchDeleteAccessBindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseBatchDeleteAccessBindings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseBatchDeleteAccessBindings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchDeleteAccessBindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._BatchDeleteAccessBindings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5207,21 +5206,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchGetAccessBindings(AnalyticsAdminServiceRestStub):
+    class _BatchGetAccessBindings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseBatchGetAccessBindings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchGetAccessBindings")
+            return hash("AnalyticsAdminServiceRestTransport.BatchGetAccessBindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "names": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5250,44 +5262,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchGet",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchGet",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseBatchGetAccessBindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_get_access_bindings(
                 request, metadata
             )
-            pb_request = analytics_admin.BatchGetAccessBindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseBatchGetAccessBindings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchGetAccessBindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._BatchGetAccessBindings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5303,19 +5300,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_batch_get_access_bindings(resp)
             return resp
 
-    class _BatchUpdateAccessBindings(AnalyticsAdminServiceRestStub):
+    class _BatchUpdateAccessBindings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseBatchUpdateAccessBindings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchUpdateAccessBindings")
+            return hash("AnalyticsAdminServiceRestTransport.BatchUpdateAccessBindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5345,52 +5358,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings:batchUpdate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/accessBindings:batchUpdate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseBatchUpdateAccessBindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_update_access_bindings(
                 request, metadata
             )
-            pb_request = analytics_admin.BatchUpdateAccessBindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseBatchUpdateAccessBindings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseBatchUpdateAccessBindings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchUpdateAccessBindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._BatchUpdateAccessBindings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5406,19 +5401,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_batch_update_access_bindings(resp)
             return resp
 
-    class _CancelDisplayVideo360AdvertiserLinkProposal(AnalyticsAdminServiceRestStub):
+    class _CancelDisplayVideo360AdvertiserLinkProposal(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCancelDisplayVideo360AdvertiserLinkProposal,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CancelDisplayVideo360AdvertiserLinkProposal")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CancelDisplayVideo360AdvertiserLinkProposal"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5457,54 +5470,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{name=properties/*/displayVideo360AdvertiserLinkProposals/*}:cancel",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCancelDisplayVideo360AdvertiserLinkProposal._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_cancel_display_video360_advertiser_link_proposal(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCancelDisplayVideo360AdvertiserLinkProposal._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCancelDisplayVideo360AdvertiserLinkProposal._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCancelDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CancelDisplayVideo360AdvertiserLinkProposal._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5524,19 +5520,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _CreateAccessBinding(AnalyticsAdminServiceRestStub):
+    class _CreateAccessBinding(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateAccessBinding,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAccessBinding")
+            return hash("AnalyticsAdminServiceRestTransport.CreateAccessBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5565,52 +5577,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings",
-                    "body": "access_binding",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/accessBindings",
-                    "body": "access_binding",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateAccessBinding._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_access_binding(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateAccessBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAccessBinding._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAccessBinding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAccessBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateAccessBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5626,19 +5622,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_access_binding(resp)
             return resp
 
-    class _CreateAdSenseLink(AnalyticsAdminServiceRestStub):
+    class _CreateAdSenseLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateAdSenseLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAdSenseLink")
+            return hash("AnalyticsAdminServiceRestTransport.CreateAdSenseLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5667,47 +5679,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/adSenseLinks",
-                    "body": "adsense_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateAdSenseLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_ad_sense_link(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateAdSenseLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAdSenseLink._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAdSenseLink._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAdSenseLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateAdSenseLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5723,19 +5724,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_ad_sense_link(resp)
             return resp
 
-    class _CreateAudience(AnalyticsAdminServiceRestStub):
+    class _CreateAudience(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAudience")
+            return hash("AnalyticsAdminServiceRestTransport.CreateAudience")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5764,45 +5781,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/audiences",
-                    "body": "audience",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_audience(request, metadata)
-            pb_request = analytics_admin.CreateAudienceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_audience(request, metadata)
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateAudience._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5818,19 +5822,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_audience(resp)
             return resp
 
-    class _CreateBigQueryLink(AnalyticsAdminServiceRestStub):
+    class _CreateBigQueryLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateBigQueryLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateBigQueryLink")
+            return hash("AnalyticsAdminServiceRestTransport.CreateBigQueryLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5859,47 +5879,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/bigQueryLinks",
-                    "body": "bigquery_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateBigQueryLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_big_query_link(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateBigQueryLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateBigQueryLink._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateBigQueryLink._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateBigQueryLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateBigQueryLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5915,21 +5924,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_big_query_link(resp)
             return resp
 
-    class _CreateCalculatedMetric(AnalyticsAdminServiceRestStub):
+    class _CreateCalculatedMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateCalculatedMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateCalculatedMetric")
+            return hash("AnalyticsAdminServiceRestTransport.CreateCalculatedMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "calculatedMetricId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5956,47 +5979,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a calculated metric.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/calculatedMetrics",
-                    "body": "calculated_metric",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateCalculatedMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_calculated_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateCalculatedMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCalculatedMetric._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCalculatedMetric._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCalculatedMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateCalculatedMetric._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6012,19 +6022,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_calculated_metric(resp)
             return resp
 
-    class _CreateChannelGroup(AnalyticsAdminServiceRestStub):
+    class _CreateChannelGroup(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateChannelGroup,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateChannelGroup")
+            return hash("AnalyticsAdminServiceRestTransport.CreateChannelGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6053,47 +6079,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/channelGroups",
-                    "body": "channel_group",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateChannelGroup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_channel_group(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateChannelGroupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateChannelGroup._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateChannelGroup._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateChannelGroup._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateChannelGroup._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6109,19 +6124,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_channel_group(resp)
             return resp
 
-    class _CreateConnectedSiteTag(AnalyticsAdminServiceRestStub):
+    class _CreateConnectedSiteTag(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateConnectedSiteTag")
+            return hash("AnalyticsAdminServiceRestTransport.CreateConnectedSiteTag")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6150,47 +6181,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:createConnectedSiteTag",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_connected_site_tag(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateConnectedSiteTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateConnectedSiteTag._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6206,19 +6224,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_connected_site_tag(resp)
             return resp
 
-    class _CreateConversionEvent(AnalyticsAdminServiceRestStub):
+    class _CreateConversionEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateConversionEvent")
+            return hash("AnalyticsAdminServiceRestTransport.CreateConversionEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6247,47 +6281,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/conversionEvents",
-                    "body": "conversion_event",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_conversion_event(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateConversionEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateConversionEvent._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6303,19 +6326,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_conversion_event(resp)
             return resp
 
-    class _CreateCustomDimension(AnalyticsAdminServiceRestStub):
+    class _CreateCustomDimension(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateCustomDimension")
+            return hash("AnalyticsAdminServiceRestTransport.CreateCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6342,47 +6381,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a CustomDimension.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/customDimensions",
-                    "body": "custom_dimension",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_custom_dimension(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateCustomDimensionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateCustomDimension._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6398,19 +6426,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_custom_dimension(resp)
             return resp
 
-    class _CreateCustomMetric(AnalyticsAdminServiceRestStub):
+    class _CreateCustomMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateCustomMetric")
+            return hash("AnalyticsAdminServiceRestTransport.CreateCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6437,47 +6481,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a custom metric.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/customMetrics",
-                    "body": "custom_metric",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_custom_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateCustomMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateCustomMetric._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6493,19 +6526,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_custom_metric(resp)
             return resp
 
-    class _CreateDataStream(AnalyticsAdminServiceRestStub):
+    class _CreateDataStream(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateDataStream")
+            return hash("AnalyticsAdminServiceRestTransport.CreateDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6534,47 +6583,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/dataStreams",
-                    "body": "data_stream",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_data_stream(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateDataStreamRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateDataStream._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6590,19 +6628,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_data_stream(resp)
             return resp
 
-    class _CreateDisplayVideo360AdvertiserLink(AnalyticsAdminServiceRestStub):
+    class _CreateDisplayVideo360AdvertiserLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateDisplayVideo360AdvertiserLink")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CreateDisplayVideo360AdvertiserLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6632,52 +6688,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinks",
-                    "body": "display_video_360_advertiser_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_display_video360_advertiser_link(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLink._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateDisplayVideo360AdvertiserLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6693,19 +6734,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_display_video360_advertiser_link(resp)
             return resp
 
-    class _CreateDisplayVideo360AdvertiserLinkProposal(AnalyticsAdminServiceRestStub):
+    class _CreateDisplayVideo360AdvertiserLinkProposal(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLinkProposal,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateDisplayVideo360AdvertiserLinkProposal")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CreateDisplayVideo360AdvertiserLinkProposal"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6744,54 +6803,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinkProposals",
-                    "body": "display_video_360_advertiser_link_proposal",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLinkProposal._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_display_video360_advertiser_link_proposal(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLinkProposal._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLinkProposal._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateDisplayVideo360AdvertiserLinkProposal._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6811,19 +6853,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _CreateEventCreateRule(AnalyticsAdminServiceRestStub):
+    class _CreateEventCreateRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventCreateRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateEventCreateRule")
+            return hash("AnalyticsAdminServiceRestTransport.CreateEventCreateRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6864,47 +6922,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/eventCreateRules",
-                    "body": "event_create_rule",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventCreateRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_event_create_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateEventCreateRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventCreateRule._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventCreateRule._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventCreateRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateEventCreateRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6920,19 +6967,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_event_create_rule(resp)
             return resp
 
-    class _CreateEventEditRule(AnalyticsAdminServiceRestStub):
+    class _CreateEventEditRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventEditRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateEventEditRule")
+            return hash("AnalyticsAdminServiceRestTransport.CreateEventEditRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6973,47 +7036,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/eventEditRules",
-                    "body": "event_edit_rule",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventEditRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_event_edit_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateEventEditRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventEditRule._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventEditRule._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventEditRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateEventEditRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7029,19 +7081,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_event_edit_rule(resp)
             return resp
 
-    class _CreateExpandedDataSet(AnalyticsAdminServiceRestStub):
+    class _CreateExpandedDataSet(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateExpandedDataSet,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateExpandedDataSet")
+            return hash("AnalyticsAdminServiceRestTransport.CreateExpandedDataSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7070,47 +7138,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/expandedDataSets",
-                    "body": "expanded_data_set",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateExpandedDataSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_expanded_data_set(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateExpandedDataSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateExpandedDataSet._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateExpandedDataSet._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateExpandedDataSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateExpandedDataSet._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7126,19 +7183,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_expanded_data_set(resp)
             return resp
 
-    class _CreateFirebaseLink(AnalyticsAdminServiceRestStub):
+    class _CreateFirebaseLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateFirebaseLink")
+            return hash("AnalyticsAdminServiceRestTransport.CreateFirebaseLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7167,47 +7240,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/firebaseLinks",
-                    "body": "firebase_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_firebase_link(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateFirebaseLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateFirebaseLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7223,19 +7285,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_firebase_link(resp)
             return resp
 
-    class _CreateGoogleAdsLink(AnalyticsAdminServiceRestStub):
+    class _CreateGoogleAdsLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateGoogleAdsLink")
+            return hash("AnalyticsAdminServiceRestTransport.CreateGoogleAdsLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7264,47 +7342,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/googleAdsLinks",
-                    "body": "google_ads_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_google_ads_link(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateGoogleAdsLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateGoogleAdsLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7320,19 +7387,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_google_ads_link(resp)
             return resp
 
-    class _CreateKeyEvent(AnalyticsAdminServiceRestStub):
+    class _CreateKeyEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateKeyEvent")
+            return hash("AnalyticsAdminServiceRestTransport.CreateKeyEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7361,47 +7444,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/keyEvents",
-                    "body": "key_event",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_key_event(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateKeyEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateKeyEvent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7417,19 +7487,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_key_event(resp)
             return resp
 
-    class _CreateMeasurementProtocolSecret(AnalyticsAdminServiceRestStub):
+    class _CreateMeasurementProtocolSecret(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateMeasurementProtocolSecret")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CreateMeasurementProtocolSecret"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7459,52 +7547,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/measurementProtocolSecrets",
-                    "body": "measurement_protocol_secret",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_measurement_protocol_secret(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateMeasurementProtocolSecretRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateMeasurementProtocolSecret._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7520,19 +7593,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_measurement_protocol_secret(resp)
             return resp
 
-    class _CreateProperty(AnalyticsAdminServiceRestStub):
+    class _CreateProperty(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateProperty")
+            return hash("AnalyticsAdminServiceRestTransport.CreateProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7561,45 +7650,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties",
-                    "body": "property",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_property(request, metadata)
-            pb_request = analytics_admin.CreatePropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_property(request, metadata)
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateProperty._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7615,19 +7691,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_property(resp)
             return resp
 
-    class _CreateRollupProperty(AnalyticsAdminServiceRestStub):
+    class _CreateRollupProperty(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateRollupProperty")
+            return hash("AnalyticsAdminServiceRestTransport.CreateRollupProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7656,47 +7748,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:createRollupProperty",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_rollup_property(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateRollupPropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._CreateRollupProperty._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7712,19 +7793,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_rollup_property(resp)
             return resp
 
-    class _CreateRollupPropertySourceLink(AnalyticsAdminServiceRestStub):
+    class _CreateRollupPropertySourceLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupPropertySourceLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateRollupPropertySourceLink")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CreateRollupPropertySourceLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7755,52 +7854,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/rollupPropertySourceLinks",
-                    "body": "rollup_property_source_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupPropertySourceLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_rollup_property_source_link(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateRollupPropertySourceLinkRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupPropertySourceLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupPropertySourceLink._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupPropertySourceLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateRollupPropertySourceLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7816,19 +7900,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_rollup_property_source_link(resp)
             return resp
 
-    class _CreateSearchAds360Link(AnalyticsAdminServiceRestStub):
+    class _CreateSearchAds360Link(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateSearchAds360Link,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateSearchAds360Link")
+            return hash("AnalyticsAdminServiceRestTransport.CreateSearchAds360Link")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7857,47 +7957,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/searchAds360Links",
-                    "body": "search_ads_360_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateSearchAds360Link._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_search_ads360_link(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateSearchAds360LinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSearchAds360Link._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSearchAds360Link._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSearchAds360Link._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateSearchAds360Link._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7913,19 +8000,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_search_ads360_link(resp)
             return resp
 
-    class _CreateSKAdNetworkConversionValueSchema(AnalyticsAdminServiceRestStub):
+    class _CreateSKAdNetworkConversionValueSchema(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateSKAdNetworkConversionValueSchema,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateSKAdNetworkConversionValueSchema")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CreateSKAdNetworkConversionValueSchema"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7956,54 +8061,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/sKAdNetworkConversionValueSchema",
-                    "body": "skadnetwork_conversion_value_schema",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateSKAdNetworkConversionValueSchema._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_sk_ad_network_conversion_value_schema(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSKAdNetworkConversionValueSchema._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSKAdNetworkConversionValueSchema._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSKAdNetworkConversionValueSchema._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateSKAdNetworkConversionValueSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8021,19 +8109,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _CreateSubpropertyEventFilter(AnalyticsAdminServiceRestStub):
+    class _CreateSubpropertyEventFilter(
+        _BaseAnalyticsAdminServiceRestTransport._BaseCreateSubpropertyEventFilter,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateSubpropertyEventFilter")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.CreateSubpropertyEventFilter"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8063,47 +8169,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*}/subpropertyEventFilters",
-                    "body": "subproperty_event_filter",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseCreateSubpropertyEventFilter._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_subproperty_event_filter(
                 request, metadata
             )
-            pb_request = analytics_admin.CreateSubpropertyEventFilterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSubpropertyEventFilter._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSubpropertyEventFilter._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSubpropertyEventFilter._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._CreateSubpropertyEventFilter._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8119,19 +8212,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_create_subproperty_event_filter(resp)
             return resp
 
-    class _DeleteAccessBinding(AnalyticsAdminServiceRestStub):
+    class _DeleteAccessBinding(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccessBinding,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAccessBinding")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteAccessBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8154,44 +8262,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=accounts/*/accessBindings/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/accessBindings/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccessBinding._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_access_binding(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteAccessBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccessBinding._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccessBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteAccessBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8199,19 +8294,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteAccount(AnalyticsAdminServiceRestStub):
+    class _DeleteAccount(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAccount")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8234,38 +8344,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=accounts/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_account(request, metadata)
-            pb_request = analytics_admin.DeleteAccountRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteAccount._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8273,19 +8372,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteAdSenseLink(AnalyticsAdminServiceRestStub):
+    class _DeleteAdSenseLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAdSenseLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAdSenseLink")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteAdSenseLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8308,40 +8422,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/adSenseLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAdSenseLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_ad_sense_link(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteAdSenseLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAdSenseLink._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAdSenseLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteAdSenseLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8349,19 +8454,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteBigQueryLink(AnalyticsAdminServiceRestStub):
+    class _DeleteBigQueryLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteBigQueryLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteBigQueryLink")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteBigQueryLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8384,40 +8504,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/bigQueryLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteBigQueryLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_big_query_link(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteBigQueryLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteBigQueryLink._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteBigQueryLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteBigQueryLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8425,19 +8536,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteCalculatedMetric(AnalyticsAdminServiceRestStub):
+    class _DeleteCalculatedMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteCalculatedMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteCalculatedMetric")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteCalculatedMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8460,40 +8586,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/calculatedMetrics/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteCalculatedMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_calculated_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteCalculatedMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteCalculatedMetric._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteCalculatedMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteCalculatedMetric._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8501,19 +8616,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteChannelGroup(AnalyticsAdminServiceRestStub):
+    class _DeleteChannelGroup(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteChannelGroup,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteChannelGroup")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteChannelGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8536,40 +8666,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/channelGroups/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteChannelGroup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_channel_group(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteChannelGroupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteChannelGroup._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteChannelGroup._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteChannelGroup._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8577,9 +8698,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteConnectedSiteTag(AnalyticsAdminServiceRestStub):
+    class _DeleteConnectedSiteTag(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteConnectedSiteTag")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteConnectedSiteTag")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8602,46 +8749,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:deleteConnectedSiteTag",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_connected_site_tag(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteConnectedSiteTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._DeleteConnectedSiteTag._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8649,19 +8784,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteConversionEvent(AnalyticsAdminServiceRestStub):
+    class _DeleteConversionEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteConversionEvent")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteConversionEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8684,40 +8834,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/conversionEvents/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_conversion_event(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteConversionEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteConversionEvent._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8725,19 +8866,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDataStream(AnalyticsAdminServiceRestStub):
+    class _DeleteDataStream(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteDataStream")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8760,40 +8916,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_data_stream(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteDataStreamRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteDataStream._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8801,19 +8948,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDisplayVideo360AdvertiserLink(AnalyticsAdminServiceRestStub):
+    class _DeleteDisplayVideo360AdvertiserLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteDisplayVideo360AdvertiserLink")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.DeleteDisplayVideo360AdvertiserLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8837,45 +9001,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/displayVideo360AdvertiserLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_display_video360_advertiser_link(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteDisplayVideo360AdvertiserLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8883,19 +9034,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDisplayVideo360AdvertiserLinkProposal(AnalyticsAdminServiceRestStub):
+    class _DeleteDisplayVideo360AdvertiserLinkProposal(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLinkProposal,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteDisplayVideo360AdvertiserLinkProposal")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.DeleteDisplayVideo360AdvertiserLinkProposal"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8920,47 +9088,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/displayVideo360AdvertiserLinkProposals/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLinkProposal._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_display_video360_advertiser_link_proposal(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLinkProposal._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteDisplayVideo360AdvertiserLinkProposal._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8968,19 +9121,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteEventCreateRule(AnalyticsAdminServiceRestStub):
+    class _DeleteEventCreateRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventCreateRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteEventCreateRule")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteEventCreateRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9003,40 +9171,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/eventCreateRules/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventCreateRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_event_create_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteEventCreateRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventCreateRule._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventCreateRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteEventCreateRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9044,19 +9203,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteEventEditRule(AnalyticsAdminServiceRestStub):
+    class _DeleteEventEditRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventEditRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteEventEditRule")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteEventEditRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9079,40 +9253,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/eventEditRules/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventEditRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_event_edit_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteEventEditRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventEditRule._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventEditRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteEventEditRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9120,19 +9285,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteExpandedDataSet(AnalyticsAdminServiceRestStub):
+    class _DeleteExpandedDataSet(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteExpandedDataSet,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteExpandedDataSet")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteExpandedDataSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9155,40 +9335,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/expandedDataSets/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteExpandedDataSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_expanded_data_set(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteExpandedDataSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteExpandedDataSet._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteExpandedDataSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteExpandedDataSet._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9196,19 +9367,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteFirebaseLink(AnalyticsAdminServiceRestStub):
+    class _DeleteFirebaseLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteFirebaseLink")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteFirebaseLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9231,40 +9417,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/firebaseLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_firebase_link(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteFirebaseLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteFirebaseLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9272,19 +9449,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteGoogleAdsLink(AnalyticsAdminServiceRestStub):
+    class _DeleteGoogleAdsLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteGoogleAdsLink")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteGoogleAdsLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9307,40 +9499,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/googleAdsLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_google_ads_link(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteGoogleAdsLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._DeleteGoogleAdsLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9348,19 +9531,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteKeyEvent(AnalyticsAdminServiceRestStub):
+    class _DeleteKeyEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteKeyEvent")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteKeyEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9383,40 +9581,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/keyEvents/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_key_event(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteKeyEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteKeyEvent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9424,19 +9611,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteMeasurementProtocolSecret(AnalyticsAdminServiceRestStub):
+    class _DeleteMeasurementProtocolSecret(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteMeasurementProtocolSecret")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.DeleteMeasurementProtocolSecret"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9460,45 +9664,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/measurementProtocolSecrets/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_measurement_protocol_secret(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteMeasurementProtocolSecretRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteMeasurementProtocolSecret._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9506,19 +9697,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteProperty(AnalyticsAdminServiceRestStub):
+    class _DeleteProperty(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteProperty")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9547,38 +9753,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_property(request, metadata)
-            pb_request = analytics_admin.DeletePropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteProperty._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9594,19 +9789,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_delete_property(resp)
             return resp
 
-    class _DeleteRollupPropertySourceLink(AnalyticsAdminServiceRestStub):
+    class _DeleteRollupPropertySourceLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteRollupPropertySourceLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteRollupPropertySourceLink")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.DeleteRollupPropertySourceLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9630,45 +9842,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/rollupPropertySourceLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteRollupPropertySourceLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_rollup_property_source_link(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteRollupPropertySourceLinkRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteRollupPropertySourceLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteRollupPropertySourceLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteRollupPropertySourceLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9676,19 +9875,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSearchAds360Link(AnalyticsAdminServiceRestStub):
+    class _DeleteSearchAds360Link(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSearchAds360Link,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteSearchAds360Link")
+            return hash("AnalyticsAdminServiceRestTransport.DeleteSearchAds360Link")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9711,40 +9925,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/searchAds360Links/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSearchAds360Link._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_search_ads360_link(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteSearchAds360LinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSearchAds360Link._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSearchAds360Link._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteSearchAds360Link._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9752,19 +9955,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSKAdNetworkConversionValueSchema(AnalyticsAdminServiceRestStub):
+    class _DeleteSKAdNetworkConversionValueSchema(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSKAdNetworkConversionValueSchema,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteSKAdNetworkConversionValueSchema")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.DeleteSKAdNetworkConversionValueSchema"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9789,47 +10009,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/sKAdNetworkConversionValueSchema/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSKAdNetworkConversionValueSchema._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_sk_ad_network_conversion_value_schema(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSKAdNetworkConversionValueSchema._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSKAdNetworkConversionValueSchema._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteSKAdNetworkConversionValueSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9837,19 +10042,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSubpropertyEventFilter(AnalyticsAdminServiceRestStub):
+    class _DeleteSubpropertyEventFilter(
+        _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSubpropertyEventFilter,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteSubpropertyEventFilter")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.DeleteSubpropertyEventFilter"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -9873,40 +10095,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha/{name=properties/*/subpropertyEventFilters/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSubpropertyEventFilter._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_subproperty_event_filter(
                 request, metadata
             )
-            pb_request = analytics_admin.DeleteSubpropertyEventFilterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSubpropertyEventFilter._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSubpropertyEventFilter._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._DeleteSubpropertyEventFilter._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9914,19 +10125,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FetchAutomatedGa4ConfigurationOptOut(AnalyticsAdminServiceRestStub):
+    class _FetchAutomatedGa4ConfigurationOptOut(
+        _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("FetchAutomatedGa4ConfigurationOptOut")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.FetchAutomatedGa4ConfigurationOptOut"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9958,52 +10187,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:fetchAutomatedGa4ConfigurationOptOut",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_fetch_automated_ga4_configuration_opt_out(
                 request, metadata
             )
-            pb_request = analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._FetchAutomatedGa4ConfigurationOptOut._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10023,21 +10237,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _FetchConnectedGa4Property(AnalyticsAdminServiceRestStub):
+    class _FetchConnectedGa4Property(
+        _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("FetchConnectedGa4Property")
+            return hash("AnalyticsAdminServiceRestTransport.FetchConnectedGa4Property")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "property": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10067,40 +10294,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/properties:fetchConnectedGa4Property",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_http_options()
+            )
             request, metadata = self._interceptor.pre_fetch_connected_ga4_property(
                 request, metadata
             )
-            pb_request = analytics_admin.FetchConnectedGa4PropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._FetchConnectedGa4Property._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10116,19 +10332,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_fetch_connected_ga4_property(resp)
             return resp
 
-    class _GetAccessBinding(AnalyticsAdminServiceRestStub):
+    class _GetAccessBinding(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetAccessBinding,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAccessBinding")
+            return hash("AnalyticsAdminServiceRestTransport.GetAccessBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10157,44 +10388,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=accounts/*/accessBindings/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/accessBindings/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetAccessBinding._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_access_binding(
                 request, metadata
             )
-            pb_request = analytics_admin.GetAccessBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetAccessBinding._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAccessBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetAccessBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10210,19 +10428,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_access_binding(resp)
             return resp
 
-    class _GetAccount(AnalyticsAdminServiceRestStub):
+    class _GetAccount(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAccount")
+            return hash("AnalyticsAdminServiceRestTransport.GetAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10250,38 +10483,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=accounts/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_account(request, metadata)
-            pb_request = analytics_admin.GetAccountRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetAccount._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10297,19 +10519,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_account(resp)
             return resp
 
-    class _GetAdSenseLink(AnalyticsAdminServiceRestStub):
+    class _GetAdSenseLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetAdSenseLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAdSenseLink")
+            return hash("AnalyticsAdminServiceRestTransport.GetAdSenseLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10338,40 +10575,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/adSenseLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetAdSenseLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_ad_sense_link(
                 request, metadata
             )
-            pb_request = analytics_admin.GetAdSenseLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetAdSenseLink._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAdSenseLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetAdSenseLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10387,19 +10613,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_ad_sense_link(resp)
             return resp
 
-    class _GetAttributionSettings(AnalyticsAdminServiceRestStub):
+    class _GetAttributionSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetAttributionSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAttributionSettings")
+            return hash("AnalyticsAdminServiceRestTransport.GetAttributionSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10429,40 +10670,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/attributionSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetAttributionSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_attribution_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.GetAttributionSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetAttributionSettings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAttributionSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetAttributionSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10478,19 +10708,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_attribution_settings(resp)
             return resp
 
-    class _GetAudience(AnalyticsAdminServiceRestStub):
+    class _GetAudience(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetAudience,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAudience")
+            return hash("AnalyticsAdminServiceRestTransport.GetAudience")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10518,38 +10763,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/audiences/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetAudience._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_audience(request, metadata)
-            pb_request = analytics_admin.GetAudienceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetAudience._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAudience._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetAudience._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10565,19 +10799,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_audience(resp)
             return resp
 
-    class _GetBigQueryLink(AnalyticsAdminServiceRestStub):
+    class _GetBigQueryLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetBigQueryLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetBigQueryLink")
+            return hash("AnalyticsAdminServiceRestTransport.GetBigQueryLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10606,40 +10855,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/bigQueryLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetBigQueryLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_big_query_link(
                 request, metadata
             )
-            pb_request = analytics_admin.GetBigQueryLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetBigQueryLink._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetBigQueryLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetBigQueryLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10655,19 +10895,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_big_query_link(resp)
             return resp
 
-    class _GetCalculatedMetric(AnalyticsAdminServiceRestStub):
+    class _GetCalculatedMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetCalculatedMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetCalculatedMetric")
+            return hash("AnalyticsAdminServiceRestTransport.GetCalculatedMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10694,40 +10949,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a calculated metric.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/calculatedMetrics/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetCalculatedMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_calculated_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.GetCalculatedMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetCalculatedMetric._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetCalculatedMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetCalculatedMetric._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10743,19 +10989,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_calculated_metric(resp)
             return resp
 
-    class _GetChannelGroup(AnalyticsAdminServiceRestStub):
+    class _GetChannelGroup(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetChannelGroup,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetChannelGroup")
+            return hash("AnalyticsAdminServiceRestTransport.GetChannelGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10784,40 +11045,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/channelGroups/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetChannelGroup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_channel_group(
                 request, metadata
             )
-            pb_request = analytics_admin.GetChannelGroupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetChannelGroup._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetChannelGroup._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetChannelGroup._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10833,19 +11085,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_channel_group(resp)
             return resp
 
-    class _GetConversionEvent(AnalyticsAdminServiceRestStub):
+    class _GetConversionEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetConversionEvent")
+            return hash("AnalyticsAdminServiceRestTransport.GetConversionEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10874,40 +11141,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/conversionEvents/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_conversion_event(
                 request, metadata
             )
-            pb_request = analytics_admin.GetConversionEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetConversionEvent._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10923,19 +11181,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_conversion_event(resp)
             return resp
 
-    class _GetCustomDimension(AnalyticsAdminServiceRestStub):
+    class _GetCustomDimension(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetCustomDimension")
+            return hash("AnalyticsAdminServiceRestTransport.GetCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -10962,40 +11235,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a CustomDimension.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/customDimensions/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_custom_dimension(
                 request, metadata
             )
-            pb_request = analytics_admin.GetCustomDimensionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetCustomDimension._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11011,19 +11275,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_custom_dimension(resp)
             return resp
 
-    class _GetCustomMetric(AnalyticsAdminServiceRestStub):
+    class _GetCustomMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetCustomMetric")
+            return hash("AnalyticsAdminServiceRestTransport.GetCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11050,40 +11329,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a custom metric.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/customMetrics/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_custom_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.GetCustomMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetCustomMetric._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11099,19 +11369,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_custom_metric(resp)
             return resp
 
-    class _GetDataRedactionSettings(AnalyticsAdminServiceRestStub):
+    class _GetDataRedactionSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRedactionSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetDataRedactionSettings")
+            return hash("AnalyticsAdminServiceRestTransport.GetDataRedactionSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11142,40 +11427,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/dataRedactionSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRedactionSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_data_redaction_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.GetDataRedactionSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRedactionSettings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRedactionSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetDataRedactionSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11191,19 +11465,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_data_redaction_settings(resp)
             return resp
 
-    class _GetDataRetentionSettings(AnalyticsAdminServiceRestStub):
+    class _GetDataRetentionSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetDataRetentionSettings")
+            return hash("AnalyticsAdminServiceRestTransport.GetDataRetentionSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11233,40 +11522,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataRetentionSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_data_retention_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.GetDataRetentionSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetDataRetentionSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11282,19 +11560,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_data_retention_settings(resp)
             return resp
 
-    class _GetDataSharingSettings(AnalyticsAdminServiceRestStub):
+    class _GetDataSharingSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetDataSharingSettings")
+            return hash("AnalyticsAdminServiceRestTransport.GetDataSharingSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11324,40 +11617,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=accounts/*/dataSharingSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_data_sharing_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.GetDataSharingSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetDataSharingSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11373,19 +11655,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_data_sharing_settings(resp)
             return resp
 
-    class _GetDataStream(AnalyticsAdminServiceRestStub):
+    class _GetDataStream(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetDataStream")
+            return hash("AnalyticsAdminServiceRestTransport.GetDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11414,38 +11711,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_data_stream(request, metadata)
-            pb_request = analytics_admin.GetDataStreamRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetDataStream._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11461,19 +11747,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_data_stream(resp)
             return resp
 
-    class _GetDisplayVideo360AdvertiserLink(AnalyticsAdminServiceRestStub):
+    class _GetDisplayVideo360AdvertiserLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetDisplayVideo360AdvertiserLink")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.GetDisplayVideo360AdvertiserLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11503,45 +11806,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/displayVideo360AdvertiserLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_display_video360_advertiser_link(
                 request, metadata
             )
-            pb_request = analytics_admin.GetDisplayVideo360AdvertiserLinkRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetDisplayVideo360AdvertiserLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11557,19 +11847,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_display_video360_advertiser_link(resp)
             return resp
 
-    class _GetDisplayVideo360AdvertiserLinkProposal(AnalyticsAdminServiceRestStub):
+    class _GetDisplayVideo360AdvertiserLinkProposal(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLinkProposal,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetDisplayVideo360AdvertiserLinkProposal")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.GetDisplayVideo360AdvertiserLinkProposal"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11608,47 +11915,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/displayVideo360AdvertiserLinkProposals/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLinkProposal._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_display_video360_advertiser_link_proposal(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLinkProposal._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetDisplayVideo360AdvertiserLinkProposal._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11666,19 +11958,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _GetEnhancedMeasurementSettings(AnalyticsAdminServiceRestStub):
+    class _GetEnhancedMeasurementSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetEnhancedMeasurementSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEnhancedMeasurementSettings")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.GetEnhancedMeasurementSettings"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11710,42 +12019,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/enhancedMeasurementSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetEnhancedMeasurementSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_enhanced_measurement_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.GetEnhancedMeasurementSettingsRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetEnhancedMeasurementSettings._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetEnhancedMeasurementSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetEnhancedMeasurementSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11761,19 +12057,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_enhanced_measurement_settings(resp)
             return resp
 
-    class _GetEventCreateRule(AnalyticsAdminServiceRestStub):
+    class _GetEventCreateRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetEventCreateRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEventCreateRule")
+            return hash("AnalyticsAdminServiceRestTransport.GetEventCreateRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11814,40 +12125,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/eventCreateRules/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetEventCreateRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_event_create_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.GetEventCreateRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetEventCreateRule._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetEventCreateRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetEventCreateRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11863,19 +12165,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_event_create_rule(resp)
             return resp
 
-    class _GetEventEditRule(AnalyticsAdminServiceRestStub):
+    class _GetEventEditRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetEventEditRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEventEditRule")
+            return hash("AnalyticsAdminServiceRestTransport.GetEventEditRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -11916,40 +12233,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/eventEditRules/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetEventEditRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_event_edit_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.GetEventEditRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetEventEditRule._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetEventEditRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetEventEditRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11965,19 +12273,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_event_edit_rule(resp)
             return resp
 
-    class _GetExpandedDataSet(AnalyticsAdminServiceRestStub):
+    class _GetExpandedDataSet(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetExpandedDataSet,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetExpandedDataSet")
+            return hash("AnalyticsAdminServiceRestTransport.GetExpandedDataSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12006,40 +12329,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/expandedDataSets/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetExpandedDataSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_expanded_data_set(
                 request, metadata
             )
-            pb_request = analytics_admin.GetExpandedDataSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetExpandedDataSet._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetExpandedDataSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetExpandedDataSet._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12055,19 +12369,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_expanded_data_set(resp)
             return resp
 
-    class _GetGlobalSiteTag(AnalyticsAdminServiceRestStub):
+    class _GetGlobalSiteTag(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetGlobalSiteTag,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetGlobalSiteTag")
+            return hash("AnalyticsAdminServiceRestTransport.GetGlobalSiteTag")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12098,40 +12427,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/globalSiteTag}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetGlobalSiteTag._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_global_site_tag(
                 request, metadata
             )
-            pb_request = analytics_admin.GetGlobalSiteTagRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetGlobalSiteTag._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetGlobalSiteTag._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetGlobalSiteTag._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12147,19 +12467,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_global_site_tag(resp)
             return resp
 
-    class _GetGoogleSignalsSettings(AnalyticsAdminServiceRestStub):
+    class _GetGoogleSignalsSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetGoogleSignalsSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetGoogleSignalsSettings")
+            return hash("AnalyticsAdminServiceRestTransport.GetGoogleSignalsSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12189,40 +12524,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/googleSignalsSettings}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetGoogleSignalsSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_google_signals_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.GetGoogleSignalsSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetGoogleSignalsSettings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetGoogleSignalsSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetGoogleSignalsSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12238,19 +12562,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_google_signals_settings(resp)
             return resp
 
-    class _GetKeyEvent(AnalyticsAdminServiceRestStub):
+    class _GetKeyEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetKeyEvent")
+            return hash("AnalyticsAdminServiceRestTransport.GetKeyEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12278,38 +12617,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/keyEvents/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_key_event(request, metadata)
-            pb_request = analytics_admin.GetKeyEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetKeyEvent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12325,19 +12653,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_key_event(resp)
             return resp
 
-    class _GetMeasurementProtocolSecret(AnalyticsAdminServiceRestStub):
+    class _GetMeasurementProtocolSecret(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetMeasurementProtocolSecret")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.GetMeasurementProtocolSecret"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12367,40 +12712,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/measurementProtocolSecrets/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_measurement_protocol_secret(
                 request, metadata
             )
-            pb_request = analytics_admin.GetMeasurementProtocolSecretRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetMeasurementProtocolSecret._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12416,19 +12750,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_measurement_protocol_secret(resp)
             return resp
 
-    class _GetProperty(AnalyticsAdminServiceRestStub):
+    class _GetProperty(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetProperty")
+            return hash("AnalyticsAdminServiceRestTransport.GetProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12456,38 +12805,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_property(request, metadata)
-            pb_request = analytics_admin.GetPropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetProperty._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12503,19 +12841,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_property(resp)
             return resp
 
-    class _GetRollupPropertySourceLink(AnalyticsAdminServiceRestStub):
+    class _GetRollupPropertySourceLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetRollupPropertySourceLink")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.GetRollupPropertySourceLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12546,40 +12901,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/rollupPropertySourceLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_rollup_property_source_link(
                 request, metadata
             )
-            pb_request = analytics_admin.GetRollupPropertySourceLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetRollupPropertySourceLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12595,19 +12939,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_rollup_property_source_link(resp)
             return resp
 
-    class _GetSearchAds360Link(AnalyticsAdminServiceRestStub):
+    class _GetSearchAds360Link(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetSearchAds360Link,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetSearchAds360Link")
+            return hash("AnalyticsAdminServiceRestTransport.GetSearchAds360Link")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12636,40 +12995,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/searchAds360Links/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetSearchAds360Link._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_search_ads360_link(
                 request, metadata
             )
-            pb_request = analytics_admin.GetSearchAds360LinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetSearchAds360Link._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetSearchAds360Link._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._GetSearchAds360Link._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12685,19 +13035,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_search_ads360_link(resp)
             return resp
 
-    class _GetSKAdNetworkConversionValueSchema(AnalyticsAdminServiceRestStub):
+    class _GetSKAdNetworkConversionValueSchema(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetSKAdNetworkConversionValueSchema,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetSKAdNetworkConversionValueSchema")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.GetSKAdNetworkConversionValueSchema"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12727,45 +13094,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/dataStreams/*/sKAdNetworkConversionValueSchema/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetSKAdNetworkConversionValueSchema._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_sk_ad_network_conversion_value_schema(
                 request, metadata
             )
-            pb_request = analytics_admin.GetSKAdNetworkConversionValueSchemaRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetSKAdNetworkConversionValueSchema._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetSKAdNetworkConversionValueSchema._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetSKAdNetworkConversionValueSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12783,19 +13137,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _GetSubpropertyEventFilter(AnalyticsAdminServiceRestStub):
+    class _GetSubpropertyEventFilter(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertyEventFilter,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetSubpropertyEventFilter")
+            return hash("AnalyticsAdminServiceRestTransport.GetSubpropertyEventFilter")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12825,40 +13194,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{name=properties/*/subpropertyEventFilters/*}",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertyEventFilter._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_subproperty_event_filter(
                 request, metadata
             )
-            pb_request = analytics_admin.GetSubpropertyEventFilterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertyEventFilter._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertyEventFilter._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._GetSubpropertyEventFilter._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12874,19 +13232,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_get_subproperty_event_filter(resp)
             return resp
 
-    class _ListAccessBindings(AnalyticsAdminServiceRestStub):
+    class _ListAccessBindings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListAccessBindings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAccessBindings")
+            return hash("AnalyticsAdminServiceRestTransport.ListAccessBindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12915,44 +13288,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=accounts/*}/accessBindings",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/accessBindings",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListAccessBindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_access_bindings(
                 request, metadata
             )
-            pb_request = analytics_admin.ListAccessBindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListAccessBindings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAccessBindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListAccessBindings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12968,9 +13328,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_access_bindings(resp)
             return resp
 
-    class _ListAccounts(AnalyticsAdminServiceRestStub):
+    class _ListAccounts(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListAccounts,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAccounts")
+            return hash("AnalyticsAdminServiceRestTransport.ListAccounts")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -12996,37 +13381,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     Request message for ListAccounts RPC.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/accounts",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListAccounts._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_accounts(request, metadata)
-            pb_request = analytics_admin.ListAccountsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListAccounts._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAccounts._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListAccounts._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13042,9 +13417,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_accounts(resp)
             return resp
 
-    class _ListAccountSummaries(AnalyticsAdminServiceRestStub):
+    class _ListAccountSummaries(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListAccountSummaries,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAccountSummaries")
+            return hash("AnalyticsAdminServiceRestTransport.ListAccountSummaries")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13073,39 +13473,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/accountSummaries",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListAccountSummaries._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_account_summaries(
                 request, metadata
             )
-            pb_request = analytics_admin.ListAccountSummariesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListAccountSummaries._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAccountSummaries._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListAccountSummaries._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13121,19 +13513,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_account_summaries(resp)
             return resp
 
-    class _ListAdSenseLinks(AnalyticsAdminServiceRestStub):
+    class _ListAdSenseLinks(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListAdSenseLinks,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAdSenseLinks")
+            return hash("AnalyticsAdminServiceRestTransport.ListAdSenseLinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13162,40 +13569,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/adSenseLinks",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListAdSenseLinks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_ad_sense_links(
                 request, metadata
             )
-            pb_request = analytics_admin.ListAdSenseLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListAdSenseLinks._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAdSenseLinks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListAdSenseLinks._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13211,19 +13609,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_ad_sense_links(resp)
             return resp
 
-    class _ListAudiences(AnalyticsAdminServiceRestStub):
+    class _ListAudiences(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListAudiences,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAudiences")
+            return hash("AnalyticsAdminServiceRestTransport.ListAudiences")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13252,38 +13665,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/audiences",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListAudiences._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_audiences(request, metadata)
-            pb_request = analytics_admin.ListAudiencesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListAudiences._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAudiences._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListAudiences._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13299,19 +13701,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_audiences(resp)
             return resp
 
-    class _ListBigQueryLinks(AnalyticsAdminServiceRestStub):
+    class _ListBigQueryLinks(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListBigQueryLinks,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListBigQueryLinks")
+            return hash("AnalyticsAdminServiceRestTransport.ListBigQueryLinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13340,40 +13757,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/bigQueryLinks",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListBigQueryLinks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_big_query_links(
                 request, metadata
             )
-            pb_request = analytics_admin.ListBigQueryLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListBigQueryLinks._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListBigQueryLinks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListBigQueryLinks._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13389,19 +13797,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_big_query_links(resp)
             return resp
 
-    class _ListCalculatedMetrics(AnalyticsAdminServiceRestStub):
+    class _ListCalculatedMetrics(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListCalculatedMetrics,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListCalculatedMetrics")
+            return hash("AnalyticsAdminServiceRestTransport.ListCalculatedMetrics")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13430,40 +13853,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/calculatedMetrics",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListCalculatedMetrics._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_calculated_metrics(
                 request, metadata
             )
-            pb_request = analytics_admin.ListCalculatedMetricsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListCalculatedMetrics._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListCalculatedMetrics._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListCalculatedMetrics._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13479,19 +13893,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_calculated_metrics(resp)
             return resp
 
-    class _ListChannelGroups(AnalyticsAdminServiceRestStub):
+    class _ListChannelGroups(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListChannelGroups,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListChannelGroups")
+            return hash("AnalyticsAdminServiceRestTransport.ListChannelGroups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13520,40 +13949,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/channelGroups",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListChannelGroups._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_channel_groups(
                 request, metadata
             )
-            pb_request = analytics_admin.ListChannelGroupsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListChannelGroups._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListChannelGroups._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListChannelGroups._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13569,9 +13989,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_channel_groups(resp)
             return resp
 
-    class _ListConnectedSiteTags(AnalyticsAdminServiceRestStub):
+    class _ListConnectedSiteTags(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListConnectedSiteTags")
+            return hash("AnalyticsAdminServiceRestTransport.ListConnectedSiteTags")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -13600,46 +14046,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:listConnectedSiteTags",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_connected_site_tags(
                 request, metadata
             )
-            pb_request = analytics_admin.ListConnectedSiteTagsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._ListConnectedSiteTags._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13655,19 +14091,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_connected_site_tags(resp)
             return resp
 
-    class _ListConversionEvents(AnalyticsAdminServiceRestStub):
+    class _ListConversionEvents(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListConversionEvents")
+            return hash("AnalyticsAdminServiceRestTransport.ListConversionEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13696,40 +14147,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/conversionEvents",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_conversion_events(
                 request, metadata
             )
-            pb_request = analytics_admin.ListConversionEventsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListConversionEvents._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13745,19 +14187,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_conversion_events(resp)
             return resp
 
-    class _ListCustomDimensions(AnalyticsAdminServiceRestStub):
+    class _ListCustomDimensions(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListCustomDimensions")
+            return hash("AnalyticsAdminServiceRestTransport.ListCustomDimensions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13786,40 +14243,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/customDimensions",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_custom_dimensions(
                 request, metadata
             )
-            pb_request = analytics_admin.ListCustomDimensionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListCustomDimensions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13835,19 +14283,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_custom_dimensions(resp)
             return resp
 
-    class _ListCustomMetrics(AnalyticsAdminServiceRestStub):
+    class _ListCustomMetrics(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListCustomMetrics")
+            return hash("AnalyticsAdminServiceRestTransport.ListCustomMetrics")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13876,40 +14339,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/customMetrics",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_custom_metrics(
                 request, metadata
             )
-            pb_request = analytics_admin.ListCustomMetricsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListCustomMetrics._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13925,19 +14379,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_custom_metrics(resp)
             return resp
 
-    class _ListDataStreams(AnalyticsAdminServiceRestStub):
+    class _ListDataStreams(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListDataStreams")
+            return hash("AnalyticsAdminServiceRestTransport.ListDataStreams")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -13966,40 +14435,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/dataStreams",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_data_streams(
                 request, metadata
             )
-            pb_request = analytics_admin.ListDataStreamsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListDataStreams._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14015,19 +14475,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_data_streams(resp)
             return resp
 
-    class _ListDisplayVideo360AdvertiserLinkProposals(AnalyticsAdminServiceRestStub):
+    class _ListDisplayVideo360AdvertiserLinkProposals(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinkProposals,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListDisplayVideo360AdvertiserLinkProposals")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ListDisplayVideo360AdvertiserLinkProposals"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14059,47 +14536,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinkProposals",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinkProposals._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_display_video360_advertiser_link_proposals(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinkProposals._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinkProposals._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListDisplayVideo360AdvertiserLinkProposals._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14123,19 +14585,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _ListDisplayVideo360AdvertiserLinks(AnalyticsAdminServiceRestStub):
+    class _ListDisplayVideo360AdvertiserLinks(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinks,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListDisplayVideo360AdvertiserLinks")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ListDisplayVideo360AdvertiserLinks"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14165,45 +14644,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/displayVideo360AdvertiserLinks",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinks._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_display_video360_advertiser_links(
                 request, metadata
             )
-            pb_request = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinks._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListDisplayVideo360AdvertiserLinks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14221,19 +14687,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_display_video360_advertiser_links(resp)
             return resp
 
-    class _ListEventCreateRules(AnalyticsAdminServiceRestStub):
+    class _ListEventCreateRules(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListEventCreateRules,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListEventCreateRules")
+            return hash("AnalyticsAdminServiceRestTransport.ListEventCreateRules")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14262,40 +14743,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/eventCreateRules",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListEventCreateRules._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_event_create_rules(
                 request, metadata
             )
-            pb_request = analytics_admin.ListEventCreateRulesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListEventCreateRules._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListEventCreateRules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListEventCreateRules._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14311,19 +14783,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_event_create_rules(resp)
             return resp
 
-    class _ListEventEditRules(AnalyticsAdminServiceRestStub):
+    class _ListEventEditRules(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListEventEditRules,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListEventEditRules")
+            return hash("AnalyticsAdminServiceRestTransport.ListEventEditRules")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14352,40 +14839,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/eventEditRules",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListEventEditRules._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_event_edit_rules(
                 request, metadata
             )
-            pb_request = analytics_admin.ListEventEditRulesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListEventEditRules._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListEventEditRules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListEventEditRules._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14401,19 +14879,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_event_edit_rules(resp)
             return resp
 
-    class _ListExpandedDataSets(AnalyticsAdminServiceRestStub):
+    class _ListExpandedDataSets(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListExpandedDataSets,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListExpandedDataSets")
+            return hash("AnalyticsAdminServiceRestTransport.ListExpandedDataSets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14442,40 +14935,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/expandedDataSets",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListExpandedDataSets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_expanded_data_sets(
                 request, metadata
             )
-            pb_request = analytics_admin.ListExpandedDataSetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListExpandedDataSets._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListExpandedDataSets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListExpandedDataSets._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14491,19 +14975,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_expanded_data_sets(resp)
             return resp
 
-    class _ListFirebaseLinks(AnalyticsAdminServiceRestStub):
+    class _ListFirebaseLinks(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListFirebaseLinks")
+            return hash("AnalyticsAdminServiceRestTransport.ListFirebaseLinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14532,40 +15031,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/firebaseLinks",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_firebase_links(
                 request, metadata
             )
-            pb_request = analytics_admin.ListFirebaseLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListFirebaseLinks._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14581,19 +15071,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_firebase_links(resp)
             return resp
 
-    class _ListGoogleAdsLinks(AnalyticsAdminServiceRestStub):
+    class _ListGoogleAdsLinks(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListGoogleAdsLinks")
+            return hash("AnalyticsAdminServiceRestTransport.ListGoogleAdsLinks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14622,40 +15127,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/googleAdsLinks",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_google_ads_links(
                 request, metadata
             )
-            pb_request = analytics_admin.ListGoogleAdsLinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListGoogleAdsLinks._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14671,19 +15167,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_google_ads_links(resp)
             return resp
 
-    class _ListKeyEvents(AnalyticsAdminServiceRestStub):
+    class _ListKeyEvents(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListKeyEvents")
+            return hash("AnalyticsAdminServiceRestTransport.ListKeyEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14711,38 +15222,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/keyEvents",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_key_events(request, metadata)
-            pb_request = analytics_admin.ListKeyEventsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListKeyEvents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14758,19 +15258,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_key_events(resp)
             return resp
 
-    class _ListMeasurementProtocolSecrets(AnalyticsAdminServiceRestStub):
+    class _ListMeasurementProtocolSecrets(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListMeasurementProtocolSecrets")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ListMeasurementProtocolSecrets"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14800,42 +15317,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/measurementProtocolSecrets",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_measurement_protocol_secrets(
                 request, metadata
             )
-            pb_request = analytics_admin.ListMeasurementProtocolSecretsRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListMeasurementProtocolSecrets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14851,21 +15355,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_measurement_protocol_secrets(resp)
             return resp
 
-    class _ListProperties(AnalyticsAdminServiceRestStub):
+    class _ListProperties(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListProperties,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListProperties")
+            return hash("AnalyticsAdminServiceRestTransport.ListProperties")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "filter": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14894,38 +15411,27 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/properties",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_properties(request, metadata)
-            pb_request = analytics_admin.ListPropertiesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListProperties._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14941,19 +15447,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_properties(resp)
             return resp
 
-    class _ListRollupPropertySourceLinks(AnalyticsAdminServiceRestStub):
+    class _ListRollupPropertySourceLinks(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListRollupPropertySourceLinks,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListRollupPropertySourceLinks")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ListRollupPropertySourceLinks"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -14983,42 +15506,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/rollupPropertySourceLinks",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListRollupPropertySourceLinks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_rollup_property_source_links(
                 request, metadata
             )
-            pb_request = analytics_admin.ListRollupPropertySourceLinksRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListRollupPropertySourceLinks._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListRollupPropertySourceLinks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListRollupPropertySourceLinks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15034,19 +15544,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_rollup_property_source_links(resp)
             return resp
 
-    class _ListSearchAds360Links(AnalyticsAdminServiceRestStub):
+    class _ListSearchAds360Links(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListSearchAds360Links,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListSearchAds360Links")
+            return hash("AnalyticsAdminServiceRestTransport.ListSearchAds360Links")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15075,40 +15600,31 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/searchAds360Links",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListSearchAds360Links._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_search_ads360_links(
                 request, metadata
             )
-            pb_request = analytics_admin.ListSearchAds360LinksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListSearchAds360Links._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListSearchAds360Links._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AnalyticsAdminServiceRestTransport._ListSearchAds360Links._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15124,19 +15640,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_search_ads360_links(resp)
             return resp
 
-    class _ListSKAdNetworkConversionValueSchemas(AnalyticsAdminServiceRestStub):
+    class _ListSKAdNetworkConversionValueSchemas(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListSKAdNetworkConversionValueSchemas,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListSKAdNetworkConversionValueSchemas")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ListSKAdNetworkConversionValueSchemas"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15168,45 +15701,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/sKAdNetworkConversionValueSchema",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListSKAdNetworkConversionValueSchemas._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_sk_ad_network_conversion_value_schemas(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.ListSKAdNetworkConversionValueSchemasRequest.pb(request)
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListSKAdNetworkConversionValueSchemas._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListSKAdNetworkConversionValueSchemas._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListSKAdNetworkConversionValueSchemas._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15226,19 +15746,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _ListSubpropertyEventFilters(AnalyticsAdminServiceRestStub):
+    class _ListSubpropertyEventFilters(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertyEventFilters,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListSubpropertyEventFilters")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.ListSubpropertyEventFilters"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -15268,40 +15805,29 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha/{parent=properties/*}/subpropertyEventFilters",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertyEventFilters._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_subproperty_event_filters(
                 request, metadata
             )
-            pb_request = analytics_admin.ListSubpropertyEventFiltersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertyEventFilters._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertyEventFilters._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AnalyticsAdminServiceRestTransport._ListSubpropertyEventFilters._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15317,9 +15843,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_subproperty_event_filters(resp)
             return resp
 
-    class _ProvisionAccountTicket(AnalyticsAdminServiceRestStub):
+    class _ProvisionAccountTicket(
+        _BaseAnalyticsAdminServiceRestTransport._BaseProvisionAccountTicket,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ProvisionAccountTicket")
+            return hash("AnalyticsAdminServiceRestTransport.ProvisionAccountTicket")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -15348,46 +15900,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/accounts:provisionAccountTicket",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseProvisionAccountTicket._get_http_options()
+            )
             request, metadata = self._interceptor.pre_provision_account_ticket(
                 request, metadata
             )
-            pb_request = analytics_admin.ProvisionAccountTicketRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionAccountTicket._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionAccountTicket._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionAccountTicket._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._ProvisionAccountTicket._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15403,19 +15943,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_provision_account_ticket(resp)
             return resp
 
-    class _ProvisionSubproperty(AnalyticsAdminServiceRestStub):
+    class _ProvisionSubproperty(
+        _BaseAnalyticsAdminServiceRestTransport._BaseProvisionSubproperty,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ProvisionSubproperty")
+            return hash("AnalyticsAdminServiceRestTransport.ProvisionSubproperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -15444,47 +16000,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:provisionSubproperty",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseProvisionSubproperty._get_http_options()
+            )
             request, metadata = self._interceptor.pre_provision_subproperty(
                 request, metadata
             )
-            pb_request = analytics_admin.ProvisionSubpropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionSubproperty._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionSubproperty._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionSubproperty._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._ProvisionSubproperty._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15500,19 +16045,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_provision_subproperty(resp)
             return resp
 
-    class _ReorderEventEditRules(AnalyticsAdminServiceRestStub):
+    class _ReorderEventEditRules(
+        _BaseAnalyticsAdminServiceRestTransport._BaseReorderEventEditRules,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ReorderEventEditRules")
+            return hash("AnalyticsAdminServiceRestTransport.ReorderEventEditRules")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -15535,47 +16096,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{parent=properties/*/dataStreams/*}/eventEditRules:reorder",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseReorderEventEditRules._get_http_options()
+            )
             request, metadata = self._interceptor.pre_reorder_event_edit_rules(
                 request, metadata
             )
-            pb_request = analytics_admin.ReorderEventEditRulesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseReorderEventEditRules._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseReorderEventEditRules._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseReorderEventEditRules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._ReorderEventEditRules._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15583,9 +16133,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _RunAccessReport(AnalyticsAdminServiceRestStub):
+    class _RunAccessReport(
+        _BaseAnalyticsAdminServiceRestTransport._BaseRunAccessReport,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("RunAccessReport")
+            return hash("AnalyticsAdminServiceRestTransport.RunAccessReport")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -15614,51 +16190,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{entity=properties/*}:runAccessReport",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{entity=accounts/*}:runAccessReport",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseRunAccessReport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_run_access_report(
                 request, metadata
             )
-            pb_request = analytics_admin.RunAccessReportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseRunAccessReport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseRunAccessReport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseRunAccessReport._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._RunAccessReport._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15674,19 +16235,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_run_access_report(resp)
             return resp
 
-    class _SearchChangeHistoryEvents(AnalyticsAdminServiceRestStub):
+    class _SearchChangeHistoryEvents(
+        _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SearchChangeHistoryEvents")
+            return hash("AnalyticsAdminServiceRestTransport.SearchChangeHistoryEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -15716,47 +16293,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/{account=accounts/*}:searchChangeHistoryEvents",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_change_history_events(
                 request, metadata
             )
-            pb_request = analytics_admin.SearchChangeHistoryEventsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._SearchChangeHistoryEvents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15772,19 +16336,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_search_change_history_events(resp)
             return resp
 
-    class _SetAutomatedGa4ConfigurationOptOut(AnalyticsAdminServiceRestStub):
+    class _SetAutomatedGa4ConfigurationOptOut(
+        _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SetAutomatedGa4ConfigurationOptOut")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.SetAutomatedGa4ConfigurationOptOut"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -15816,52 +16398,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha/properties:setAutomatedGa4ConfigurationOptOut",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_set_automated_ga4_configuration_opt_out(
                 request, metadata
             )
-            pb_request = analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._SetAutomatedGa4ConfigurationOptOut._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15879,19 +16446,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_set_automated_ga4_configuration_opt_out(resp)
             return resp
 
-    class _UpdateAccessBinding(AnalyticsAdminServiceRestStub):
+    class _UpdateAccessBinding(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccessBinding,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAccessBinding")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateAccessBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -15920,52 +16503,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{access_binding.name=accounts/*/accessBindings/*}",
-                    "body": "access_binding",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{access_binding.name=properties/*/accessBindings/*}",
-                    "body": "access_binding",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccessBinding._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_access_binding(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateAccessBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccessBinding._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccessBinding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccessBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateAccessBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15981,21 +16548,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_access_binding(resp)
             return resp
 
-    class _UpdateAccount(AnalyticsAdminServiceRestStub):
+    class _UpdateAccount(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAccount")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16024,45 +16605,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{account.name=accounts/*}",
-                    "body": "account",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_account(request, metadata)
-            pb_request = analytics_admin.UpdateAccountRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_account(request, metadata)
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateAccount._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16078,21 +16646,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_account(resp)
             return resp
 
-    class _UpdateAttributionSettings(AnalyticsAdminServiceRestStub):
+    class _UpdateAttributionSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAttributionSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAttributionSettings")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateAttributionSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16123,47 +16705,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{attribution_settings.name=properties/*/attributionSettings}",
-                    "body": "attribution_settings",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAttributionSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_attribution_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateAttributionSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAttributionSettings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAttributionSettings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAttributionSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateAttributionSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16179,21 +16748,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_attribution_settings(resp)
             return resp
 
-    class _UpdateAudience(AnalyticsAdminServiceRestStub):
+    class _UpdateAudience(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAudience")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateAudience")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16222,45 +16805,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{audience.name=properties/*/audiences/*}",
-                    "body": "audience",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_audience(request, metadata)
-            pb_request = analytics_admin.UpdateAudienceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_audience(request, metadata)
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateAudience._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16276,21 +16846,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_audience(resp)
             return resp
 
-    class _UpdateBigQueryLink(AnalyticsAdminServiceRestStub):
+    class _UpdateBigQueryLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateBigQueryLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateBigQueryLink")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateBigQueryLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16319,47 +16903,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{bigquery_link.name=properties/*/bigQueryLinks/*}",
-                    "body": "bigquery_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateBigQueryLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_big_query_link(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateBigQueryLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateBigQueryLink._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateBigQueryLink._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateBigQueryLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateBigQueryLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16375,21 +16948,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_big_query_link(resp)
             return resp
 
-    class _UpdateCalculatedMetric(AnalyticsAdminServiceRestStub):
+    class _UpdateCalculatedMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCalculatedMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateCalculatedMetric")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateCalculatedMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16416,47 +17003,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a calculated metric.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{calculated_metric.name=properties/*/calculatedMetrics/*}",
-                    "body": "calculated_metric",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCalculatedMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_calculated_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateCalculatedMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCalculatedMetric._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCalculatedMetric._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCalculatedMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateCalculatedMetric._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16472,21 +17046,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_calculated_metric(resp)
             return resp
 
-    class _UpdateChannelGroup(AnalyticsAdminServiceRestStub):
+    class _UpdateChannelGroup(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateChannelGroup,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateChannelGroup")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateChannelGroup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16515,47 +17103,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{channel_group.name=properties/*/channelGroups/*}",
-                    "body": "channel_group",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateChannelGroup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_channel_group(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateChannelGroupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateChannelGroup._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateChannelGroup._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateChannelGroup._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateChannelGroup._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16571,21 +17148,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_channel_group(resp)
             return resp
 
-    class _UpdateConversionEvent(AnalyticsAdminServiceRestStub):
+    class _UpdateConversionEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateConversionEvent")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateConversionEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16614,47 +17205,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{conversion_event.name=properties/*/conversionEvents/*}",
-                    "body": "conversion_event",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_conversion_event(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateConversionEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateConversionEvent._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16670,21 +17250,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_conversion_event(resp)
             return resp
 
-    class _UpdateCustomDimension(AnalyticsAdminServiceRestStub):
+    class _UpdateCustomDimension(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateCustomDimension")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateCustomDimension")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16711,47 +17305,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a CustomDimension.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{custom_dimension.name=properties/*/customDimensions/*}",
-                    "body": "custom_dimension",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_custom_dimension(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateCustomDimensionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateCustomDimension._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16767,21 +17350,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_custom_dimension(resp)
             return resp
 
-    class _UpdateCustomMetric(AnalyticsAdminServiceRestStub):
+    class _UpdateCustomMetric(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateCustomMetric")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateCustomMetric")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16808,47 +17405,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     A definition for a custom metric.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{custom_metric.name=properties/*/customMetrics/*}",
-                    "body": "custom_metric",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_custom_metric(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateCustomMetricRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateCustomMetric._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16864,21 +17450,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_custom_metric(resp)
             return resp
 
-    class _UpdateDataRedactionSettings(AnalyticsAdminServiceRestStub):
+    class _UpdateDataRedactionSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRedactionSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateDataRedactionSettings")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateDataRedactionSettings"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -16909,47 +17511,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{data_redaction_settings.name=properties/*/dataStreams/*/dataRedactionSettings}",
-                    "body": "data_redaction_settings",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRedactionSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_data_redaction_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateDataRedactionSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRedactionSettings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRedactionSettings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRedactionSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateDataRedactionSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16965,21 +17554,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_data_redaction_settings(resp)
             return resp
 
-    class _UpdateDataRetentionSettings(AnalyticsAdminServiceRestStub):
+    class _UpdateDataRetentionSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateDataRetentionSettings")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateDataRetentionSettings"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17009,47 +17614,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{data_retention_settings.name=properties/*/dataRetentionSettings}",
-                    "body": "data_retention_settings",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_data_retention_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateDataRetentionSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateDataRetentionSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17065,21 +17657,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_data_retention_settings(resp)
             return resp
 
-    class _UpdateDataStream(AnalyticsAdminServiceRestStub):
+    class _UpdateDataStream(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateDataStream")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateDataStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17108,47 +17714,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{data_stream.name=properties/*/dataStreams/*}",
-                    "body": "data_stream",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_data_stream(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateDataStreamRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateDataStream._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17164,21 +17759,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_data_stream(resp)
             return resp
 
-    class _UpdateDisplayVideo360AdvertiserLink(AnalyticsAdminServiceRestStub):
+    class _UpdateDisplayVideo360AdvertiserLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDisplayVideo360AdvertiserLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateDisplayVideo360AdvertiserLink")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateDisplayVideo360AdvertiserLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17208,52 +17819,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{display_video_360_advertiser_link.name=properties/*/displayVideo360AdvertiserLinks/*}",
-                    "body": "display_video_360_advertiser_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDisplayVideo360AdvertiserLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_update_display_video360_advertiser_link(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDisplayVideo360AdvertiserLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDisplayVideo360AdvertiserLink._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDisplayVideo360AdvertiserLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateDisplayVideo360AdvertiserLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17269,21 +17865,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_display_video360_advertiser_link(resp)
             return resp
 
-    class _UpdateEnhancedMeasurementSettings(AnalyticsAdminServiceRestStub):
+    class _UpdateEnhancedMeasurementSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEnhancedMeasurementSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateEnhancedMeasurementSettings")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateEnhancedMeasurementSettings"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17315,52 +17927,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{enhanced_measurement_settings.name=properties/*/dataStreams/*/enhancedMeasurementSettings}",
-                    "body": "enhanced_measurement_settings",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEnhancedMeasurementSettings._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_update_enhanced_measurement_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateEnhancedMeasurementSettingsRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEnhancedMeasurementSettings._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEnhancedMeasurementSettings._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEnhancedMeasurementSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateEnhancedMeasurementSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17376,21 +17973,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_enhanced_measurement_settings(resp)
             return resp
 
-    class _UpdateEventCreateRule(AnalyticsAdminServiceRestStub):
+    class _UpdateEventCreateRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventCreateRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateEventCreateRule")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateEventCreateRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17431,47 +18042,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{event_create_rule.name=properties/*/dataStreams/*/eventCreateRules/*}",
-                    "body": "event_create_rule",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventCreateRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_event_create_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateEventCreateRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventCreateRule._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventCreateRule._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventCreateRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateEventCreateRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17487,21 +18087,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_event_create_rule(resp)
             return resp
 
-    class _UpdateEventEditRule(AnalyticsAdminServiceRestStub):
+    class _UpdateEventEditRule(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventEditRule,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateEventEditRule")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateEventEditRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17542,47 +18156,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{event_edit_rule.name=properties/*/dataStreams/*/eventEditRules/*}",
-                    "body": "event_edit_rule",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventEditRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_event_edit_rule(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateEventEditRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventEditRule._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventEditRule._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventEditRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateEventEditRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17598,21 +18201,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_event_edit_rule(resp)
             return resp
 
-    class _UpdateExpandedDataSet(AnalyticsAdminServiceRestStub):
+    class _UpdateExpandedDataSet(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateExpandedDataSet,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateExpandedDataSet")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateExpandedDataSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17641,47 +18258,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{expanded_data_set.name=properties/*/expandedDataSets/*}",
-                    "body": "expanded_data_set",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateExpandedDataSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_expanded_data_set(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateExpandedDataSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateExpandedDataSet._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateExpandedDataSet._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateExpandedDataSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateExpandedDataSet._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17697,21 +18303,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_expanded_data_set(resp)
             return resp
 
-    class _UpdateGoogleAdsLink(AnalyticsAdminServiceRestStub):
+    class _UpdateGoogleAdsLink(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateGoogleAdsLink")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateGoogleAdsLink")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17740,47 +18360,36 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{google_ads_link.name=properties/*/googleAdsLinks/*}",
-                    "body": "google_ads_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_google_ads_link(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateGoogleAdsLinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AnalyticsAdminServiceRestTransport._UpdateGoogleAdsLink._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17796,21 +18405,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_google_ads_link(resp)
             return resp
 
-    class _UpdateGoogleSignalsSettings(AnalyticsAdminServiceRestStub):
+    class _UpdateGoogleSignalsSettings(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleSignalsSettings,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateGoogleSignalsSettings")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateGoogleSignalsSettings"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17840,47 +18465,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{google_signals_settings.name=properties/*/googleSignalsSettings}",
-                    "body": "google_signals_settings",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleSignalsSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_google_signals_settings(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateGoogleSignalsSettingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleSignalsSettings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleSignalsSettings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleSignalsSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateGoogleSignalsSettings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17896,21 +18508,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_google_signals_settings(resp)
             return resp
 
-    class _UpdateKeyEvent(AnalyticsAdminServiceRestStub):
+    class _UpdateKeyEvent(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateKeyEvent")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateKeyEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -17939,47 +18565,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{key_event.name=properties/*/keyEvents/*}",
-                    "body": "key_event",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_key_event(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateKeyEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateKeyEvent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -17995,21 +18608,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_key_event(resp)
             return resp
 
-    class _UpdateMeasurementProtocolSecret(AnalyticsAdminServiceRestStub):
+    class _UpdateMeasurementProtocolSecret(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateMeasurementProtocolSecret")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateMeasurementProtocolSecret"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -18039,52 +18668,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{measurement_protocol_secret.name=properties/*/dataStreams/*/measurementProtocolSecrets/*}",
-                    "body": "measurement_protocol_secret",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_update_measurement_protocol_secret(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateMeasurementProtocolSecretRequest.pb(
-                request
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateMeasurementProtocolSecret._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -18100,21 +18714,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_measurement_protocol_secret(resp)
             return resp
 
-    class _UpdateProperty(AnalyticsAdminServiceRestStub):
+    class _UpdateProperty(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateProperty")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateProperty")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -18143,45 +18771,32 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{property.name=properties/*}",
-                    "body": "property",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_property(request, metadata)
-            pb_request = analytics_admin.UpdatePropertyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_property(request, metadata)
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateProperty._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -18197,21 +18812,35 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_property(resp)
             return resp
 
-    class _UpdateSearchAds360Link(AnalyticsAdminServiceRestStub):
+    class _UpdateSearchAds360Link(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateSearchAds360Link")
+            return hash("AnalyticsAdminServiceRestTransport.UpdateSearchAds360Link")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -18240,47 +18869,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{search_ads_360_link.name=properties/*/searchAds360Links/*}",
-                    "body": "search_ads_360_link",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_search_ads360_link(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateSearchAds360LinkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateSearchAds360Link._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -18296,21 +18912,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_search_ads360_link(resp)
             return resp
 
-    class _UpdateSKAdNetworkConversionValueSchema(AnalyticsAdminServiceRestStub):
+    class _UpdateSKAdNetworkConversionValueSchema(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSKAdNetworkConversionValueSchema,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateSKAdNetworkConversionValueSchema")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateSKAdNetworkConversionValueSchema"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -18341,54 +18973,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{skadnetwork_conversion_value_schema.name=properties/*/dataStreams/*/sKAdNetworkConversionValueSchema/*}",
-                    "body": "skadnetwork_conversion_value_schema",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSKAdNetworkConversionValueSchema._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_update_sk_ad_network_conversion_value_schema(
                 request, metadata
             )
-            pb_request = (
-                analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSKAdNetworkConversionValueSchema._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSKAdNetworkConversionValueSchema._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSKAdNetworkConversionValueSchema._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateSKAdNetworkConversionValueSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -18406,21 +19021,37 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             )
             return resp
 
-    class _UpdateSubpropertyEventFilter(AnalyticsAdminServiceRestStub):
+    class _UpdateSubpropertyEventFilter(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertyEventFilter,
+        AnalyticsAdminServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateSubpropertyEventFilter")
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateSubpropertyEventFilter"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -18450,47 +19081,34 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha/{subproperty_event_filter.name=properties/*/subpropertyEventFilters/*}",
-                    "body": "subproperty_event_filter",
-                },
-            ]
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertyEventFilter._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_subproperty_event_filter(
                 request, metadata
             )
-            pb_request = analytics_admin.UpdateSubpropertyEventFilterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertyEventFilter._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertyEventFilter._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertyEventFilter._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AnalyticsAdminServiceRestTransport._UpdateSubpropertyEventFilter._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
