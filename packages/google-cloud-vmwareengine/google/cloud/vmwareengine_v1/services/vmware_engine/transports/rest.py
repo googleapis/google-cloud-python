@@ -16,41 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseVmwareEngineRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import VmwareEngineTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -2582,8 +2572,8 @@ class VmwareEngineRestStub:
     _interceptor: VmwareEngineRestInterceptor
 
 
-class VmwareEngineRestTransport(VmwareEngineTransport):
-    """REST backend transport for VmwareEngine.
+class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
+    """REST backend synchronous transport for VmwareEngine.
 
     VMwareEngine manages VMware's private clusters in the Cloud.
 
@@ -2592,7 +2582,6 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -2646,21 +2635,12 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -2718,21 +2698,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateCluster(VmwareEngineRestStub):
+    class _CreateCluster(
+        _BaseVmwareEngineRestTransport._BaseCreateCluster, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCluster")
+            return hash("VmwareEngineRestTransport.CreateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "clusterId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2762,45 +2755,32 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/clusters",
-                    "body": "cluster",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            pb_request = vmwareengine.CreateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2814,21 +2794,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_cluster(resp)
             return resp
 
-    class _CreateExternalAccessRule(VmwareEngineRestStub):
+    class _CreateExternalAccessRule(
+        _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateExternalAccessRule")
+            return hash("VmwareEngineRestTransport.CreateExternalAccessRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "externalAccessRuleId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2859,47 +2853,36 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/networkPolicies/*}/externalAccessRules",
-                    "body": "external_access_rule",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_external_access_rule(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateExternalAccessRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                VmwareEngineRestTransport._CreateExternalAccessRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2913,21 +2896,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_external_access_rule(resp)
             return resp
 
-    class _CreateExternalAddress(VmwareEngineRestStub):
+    class _CreateExternalAddress(
+        _BaseVmwareEngineRestTransport._BaseCreateExternalAddress, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("CreateExternalAddress")
+            return hash("VmwareEngineRestTransport.CreateExternalAddress")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "externalAddressId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2957,47 +2953,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/externalAddresses",
-                    "body": "external_address",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_external_address(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateExternalAddressRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreateExternalAddress._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3011,21 +2994,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_external_address(resp)
             return resp
 
-    class _CreateHcxActivationKey(VmwareEngineRestStub):
+    class _CreateHcxActivationKey(
+        _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("CreateHcxActivationKey")
+            return hash("VmwareEngineRestTransport.CreateHcxActivationKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "hcxActivationKeyId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3055,47 +3051,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/hcxActivationKeys",
-                    "body": "hcx_activation_key",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_hcx_activation_key(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateHcxActivationKeyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreateHcxActivationKey._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3109,21 +3092,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_hcx_activation_key(resp)
             return resp
 
-    class _CreateLoggingServer(VmwareEngineRestStub):
+    class _CreateLoggingServer(
+        _BaseVmwareEngineRestTransport._BaseCreateLoggingServer, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("CreateLoggingServer")
+            return hash("VmwareEngineRestTransport.CreateLoggingServer")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "loggingServerId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3153,47 +3149,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/loggingServers",
-                    "body": "logging_server",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_logging_server(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateLoggingServerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreateLoggingServer._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3207,21 +3190,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_logging_server(resp)
             return resp
 
-    class _CreateManagementDnsZoneBinding(VmwareEngineRestStub):
+    class _CreateManagementDnsZoneBinding(
+        _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateManagementDnsZoneBinding")
+            return hash("VmwareEngineRestTransport.CreateManagementDnsZoneBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "managementDnsZoneBindingId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3252,50 +3249,39 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/managementDnsZoneBindings",
-                    "body": "management_dns_zone_binding",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_management_dns_zone_binding(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateManagementDnsZoneBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                VmwareEngineRestTransport._CreateManagementDnsZoneBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3309,21 +3295,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_management_dns_zone_binding(resp)
             return resp
 
-    class _CreateNetworkPeering(VmwareEngineRestStub):
+    class _CreateNetworkPeering(
+        _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("CreateNetworkPeering")
+            return hash("VmwareEngineRestTransport.CreateNetworkPeering")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "networkPeeringId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3353,47 +3352,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/networkPeerings",
-                    "body": "network_peering",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_network_peering(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateNetworkPeeringRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreateNetworkPeering._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3407,21 +3393,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_network_peering(resp)
             return resp
 
-    class _CreateNetworkPolicy(VmwareEngineRestStub):
+    class _CreateNetworkPolicy(
+        _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("CreateNetworkPolicy")
+            return hash("VmwareEngineRestTransport.CreateNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "networkPolicyId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3451,47 +3450,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/networkPolicies",
-                    "body": "network_policy",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_network_policy(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateNetworkPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreateNetworkPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3505,21 +3491,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_network_policy(resp)
             return resp
 
-    class _CreatePrivateCloud(VmwareEngineRestStub):
+    class _CreatePrivateCloud(
+        _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("CreatePrivateCloud")
+            return hash("VmwareEngineRestTransport.CreatePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "privateCloudId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3549,47 +3548,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/privateClouds",
-                    "body": "private_cloud",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_private_cloud(
                 request, metadata
             )
-            pb_request = vmwareengine.CreatePrivateCloudRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreatePrivateCloud._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3603,21 +3589,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_private_cloud(resp)
             return resp
 
-    class _CreatePrivateConnection(VmwareEngineRestStub):
+    class _CreatePrivateConnection(
+        _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("CreatePrivateConnection")
+            return hash("VmwareEngineRestTransport.CreatePrivateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "privateConnectionId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3647,47 +3647,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/privateConnections",
-                    "body": "private_connection",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_private_connection(
                 request, metadata
             )
-            pb_request = vmwareengine.CreatePrivateConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._CreatePrivateConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3701,21 +3688,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_private_connection(resp)
             return resp
 
-    class _CreateVmwareEngineNetwork(VmwareEngineRestStub):
+    class _CreateVmwareEngineNetwork(
+        _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateVmwareEngineNetwork")
+            return hash("VmwareEngineRestTransport.CreateVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "vmwareEngineNetworkId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3746,47 +3747,36 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/vmwareEngineNetworks",
-                    "body": "vmware_engine_network",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_vmware_engine_network(
                 request, metadata
             )
-            pb_request = vmwareengine.CreateVmwareEngineNetworkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                VmwareEngineRestTransport._CreateVmwareEngineNetwork._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3800,19 +3790,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_create_vmware_engine_network(resp)
             return resp
 
-    class _DeleteCluster(VmwareEngineRestStub):
+    class _DeleteCluster(
+        _BaseVmwareEngineRestTransport._BaseDeleteCluster, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteCluster")
+            return hash("VmwareEngineRestTransport.DeleteCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3842,38 +3846,27 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/clusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            pb_request = vmwareengine.DeleteClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._DeleteCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3887,19 +3880,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_cluster(resp)
             return resp
 
-    class _DeleteExternalAccessRule(VmwareEngineRestStub):
+    class _DeleteExternalAccessRule(
+        _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteExternalAccessRule")
+            return hash("VmwareEngineRestTransport.DeleteExternalAccessRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3930,40 +3938,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/networkPolicies/*/externalAccessRules/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_external_access_rule(
                 request, metadata
             )
-            pb_request = vmwareengine.DeleteExternalAccessRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                VmwareEngineRestTransport._DeleteExternalAccessRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3977,19 +3976,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_external_access_rule(resp)
             return resp
 
-    class _DeleteExternalAddress(VmwareEngineRestStub):
+    class _DeleteExternalAddress(
+        _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteExternalAddress")
+            return hash("VmwareEngineRestTransport.DeleteExternalAddress")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4019,40 +4032,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/externalAddresses/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_external_address(
                 request, metadata
             )
-            pb_request = vmwareengine.DeleteExternalAddressRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._DeleteExternalAddress._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4066,19 +4068,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_external_address(resp)
             return resp
 
-    class _DeleteLoggingServer(VmwareEngineRestStub):
+    class _DeleteLoggingServer(
+        _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteLoggingServer")
+            return hash("VmwareEngineRestTransport.DeleteLoggingServer")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4108,40 +4124,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/loggingServers/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_logging_server(
                 request, metadata
             )
-            pb_request = vmwareengine.DeleteLoggingServerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._DeleteLoggingServer._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4155,19 +4160,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_logging_server(resp)
             return resp
 
-    class _DeleteManagementDnsZoneBinding(VmwareEngineRestStub):
+    class _DeleteManagementDnsZoneBinding(
+        _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteManagementDnsZoneBinding")
+            return hash("VmwareEngineRestTransport.DeleteManagementDnsZoneBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4198,43 +4218,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_management_dns_zone_binding(
                 request, metadata
             )
-            pb_request = vmwareengine.DeleteManagementDnsZoneBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                VmwareEngineRestTransport._DeleteManagementDnsZoneBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4248,19 +4259,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_management_dns_zone_binding(resp)
             return resp
 
-    class _DeleteNetworkPeering(VmwareEngineRestStub):
+    class _DeleteNetworkPeering(
+        _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteNetworkPeering")
+            return hash("VmwareEngineRestTransport.DeleteNetworkPeering")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4290,40 +4315,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/networkPeerings/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_network_peering(
                 request, metadata
             )
-            pb_request = vmwareengine.DeleteNetworkPeeringRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._DeleteNetworkPeering._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4337,19 +4351,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_network_peering(resp)
             return resp
 
-    class _DeleteNetworkPolicy(VmwareEngineRestStub):
+    class _DeleteNetworkPolicy(
+        _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteNetworkPolicy")
+            return hash("VmwareEngineRestTransport.DeleteNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4379,40 +4407,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/networkPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_network_policy(
                 request, metadata
             )
-            pb_request = vmwareengine.DeleteNetworkPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._DeleteNetworkPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4426,19 +4443,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_network_policy(resp)
             return resp
 
-    class _DeletePrivateCloud(VmwareEngineRestStub):
+    class _DeletePrivateCloud(
+        _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("DeletePrivateCloud")
+            return hash("VmwareEngineRestTransport.DeletePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4468,40 +4499,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_private_cloud(
                 request, metadata
             )
-            pb_request = vmwareengine.DeletePrivateCloudRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._DeletePrivateCloud._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4515,19 +4535,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_private_cloud(resp)
             return resp
 
-    class _DeletePrivateConnection(VmwareEngineRestStub):
+    class _DeletePrivateConnection(
+        _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("DeletePrivateConnection")
+            return hash("VmwareEngineRestTransport.DeletePrivateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4557,40 +4592,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/privateConnections/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_private_connection(
                 request, metadata
             )
-            pb_request = vmwareengine.DeletePrivateConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._DeletePrivateConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4604,19 +4628,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_private_connection(resp)
             return resp
 
-    class _DeleteVmwareEngineNetwork(VmwareEngineRestStub):
+    class _DeleteVmwareEngineNetwork(
+        _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteVmwareEngineNetwork")
+            return hash("VmwareEngineRestTransport.DeleteVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4647,40 +4686,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/vmwareEngineNetworks/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_vmware_engine_network(
                 request, metadata
             )
-            pb_request = vmwareengine.DeleteVmwareEngineNetworkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                VmwareEngineRestTransport._DeleteVmwareEngineNetwork._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4694,19 +4724,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_delete_vmware_engine_network(resp)
             return resp
 
-    class _FetchNetworkPolicyExternalAddresses(VmwareEngineRestStub):
+    class _FetchNetworkPolicyExternalAddresses(
+        _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("FetchNetworkPolicyExternalAddresses")
+            return hash("VmwareEngineRestTransport.FetchNetworkPolicyExternalAddresses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4736,45 +4781,32 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{network_policy=projects/*/locations/*/networkPolicies/*}:fetchExternalAddresses",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_fetch_network_policy_external_addresses(
                 request, metadata
             )
-            pb_request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest.pb(
-                request
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._FetchNetworkPolicyExternalAddresses._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4790,19 +4822,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_fetch_network_policy_external_addresses(resp)
             return resp
 
-    class _GetCluster(VmwareEngineRestStub):
+    class _GetCluster(
+        _BaseVmwareEngineRestTransport._BaseGetCluster, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetCluster")
+            return hash("VmwareEngineRestTransport.GetCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4829,38 +4875,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     A cluster in a private cloud.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/clusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            pb_request = vmwareengine.GetClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseVmwareEngineRestTransport._BaseGetCluster._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseGetCluster._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4876,19 +4915,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_cluster(resp)
             return resp
 
-    class _GetDnsBindPermission(VmwareEngineRestStub):
+    class _GetDnsBindPermission(
+        _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetDnsBindPermission")
+            return hash("VmwareEngineRestTransport.GetDnsBindPermission")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4920,40 +4973,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dnsBindPermission}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_dns_bind_permission(
                 request, metadata
             )
-            pb_request = vmwareengine.GetDnsBindPermissionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetDnsBindPermission._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4969,19 +5011,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_dns_bind_permission(resp)
             return resp
 
-    class _GetDnsForwarding(VmwareEngineRestStub):
+    class _GetDnsForwarding(
+        _BaseVmwareEngineRestTransport._BaseGetDnsForwarding, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetDnsForwarding")
+            return hash("VmwareEngineRestTransport.GetDnsForwarding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5013,40 +5069,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/dnsForwarding}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_dns_forwarding(
                 request, metadata
             )
-            pb_request = vmwareengine.GetDnsForwardingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetDnsForwarding._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5062,19 +5107,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_dns_forwarding(resp)
             return resp
 
-    class _GetExternalAccessRule(VmwareEngineRestStub):
+    class _GetExternalAccessRule(
+        _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetExternalAccessRule")
+            return hash("VmwareEngineRestTransport.GetExternalAccessRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5103,40 +5162,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/networkPolicies/*/externalAccessRules/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_external_access_rule(
                 request, metadata
             )
-            pb_request = vmwareengine.GetExternalAccessRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetExternalAccessRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5152,19 +5200,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_external_access_rule(resp)
             return resp
 
-    class _GetExternalAddress(VmwareEngineRestStub):
+    class _GetExternalAddress(
+        _BaseVmwareEngineRestTransport._BaseGetExternalAddress, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetExternalAddress")
+            return hash("VmwareEngineRestTransport.GetExternalAddress")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5194,40 +5256,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/externalAddresses/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_external_address(
                 request, metadata
             )
-            pb_request = vmwareengine.GetExternalAddressRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetExternalAddress._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5243,19 +5294,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_external_address(resp)
             return resp
 
-    class _GetHcxActivationKey(VmwareEngineRestStub):
+    class _GetHcxActivationKey(
+        _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetHcxActivationKey")
+            return hash("VmwareEngineRestTransport.GetHcxActivationKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5289,40 +5354,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/hcxActivationKeys/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_hcx_activation_key(
                 request, metadata
             )
-            pb_request = vmwareengine.GetHcxActivationKeyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetHcxActivationKey._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5338,19 +5392,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_hcx_activation_key(resp)
             return resp
 
-    class _GetLoggingServer(VmwareEngineRestStub):
+    class _GetLoggingServer(
+        _BaseVmwareEngineRestTransport._BaseGetLoggingServer, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetLoggingServer")
+            return hash("VmwareEngineRestTransport.GetLoggingServer")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5379,40 +5447,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/loggingServers/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_logging_server(
                 request, metadata
             )
-            pb_request = vmwareengine.GetLoggingServerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetLoggingServer._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5428,19 +5485,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_logging_server(resp)
             return resp
 
-    class _GetManagementDnsZoneBinding(VmwareEngineRestStub):
+    class _GetManagementDnsZoneBinding(
+        _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("GetManagementDnsZoneBinding")
+            return hash("VmwareEngineRestTransport.GetManagementDnsZoneBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5477,40 +5549,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_management_dns_zone_binding(
                 request, metadata
             )
-            pb_request = vmwareengine.GetManagementDnsZoneBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                VmwareEngineRestTransport._GetManagementDnsZoneBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5526,19 +5589,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_management_dns_zone_binding(resp)
             return resp
 
-    class _GetNetworkPeering(VmwareEngineRestStub):
+    class _GetNetworkPeering(
+        _BaseVmwareEngineRestTransport._BaseGetNetworkPeering, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetNetworkPeering")
+            return hash("VmwareEngineRestTransport.GetNetworkPeering")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5565,40 +5642,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     Details of a network peering.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/networkPeerings/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_network_peering(
                 request, metadata
             )
-            pb_request = vmwareengine.GetNetworkPeeringRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetNetworkPeering._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5614,19 +5680,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_network_peering(resp)
             return resp
 
-    class _GetNetworkPolicy(VmwareEngineRestStub):
+    class _GetNetworkPolicy(
+        _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetNetworkPolicy")
+            return hash("VmwareEngineRestTransport.GetNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5664,40 +5744,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/networkPolicies/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_network_policy(
                 request, metadata
             )
-            pb_request = vmwareengine.GetNetworkPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetNetworkPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5713,19 +5782,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_network_policy(resp)
             return resp
 
-    class _GetNode(VmwareEngineRestStub):
+    class _GetNode(_BaseVmwareEngineRestTransport._BaseGetNode, VmwareEngineRestStub):
         def __hash__(self):
-            return hash("GetNode")
+            return hash("VmwareEngineRestTransport.GetNode")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5752,38 +5833,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     Node in a cluster.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/clusters/*/nodes/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetNode._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_node(request, metadata)
-            pb_request = vmwareengine.GetNodeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseVmwareEngineRestTransport._BaseGetNode._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseGetNode._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetNode._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5799,19 +5873,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_node(resp)
             return resp
 
-    class _GetNodeType(VmwareEngineRestStub):
+    class _GetNodeType(
+        _BaseVmwareEngineRestTransport._BaseGetNodeType, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetNodeType")
+            return hash("VmwareEngineRestTransport.GetNodeType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5838,38 +5926,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     Describes node type.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/nodeTypes/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetNodeType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_node_type(request, metadata)
-            pb_request = vmwareengine.GetNodeTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseVmwareEngineRestTransport._BaseGetNodeType._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseGetNodeType._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetNodeType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5885,19 +5966,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_node_type(resp)
             return resp
 
-    class _GetPrivateCloud(VmwareEngineRestStub):
+    class _GetPrivateCloud(
+        _BaseVmwareEngineRestTransport._BaseGetPrivateCloud, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetPrivateCloud")
+            return hash("VmwareEngineRestTransport.GetPrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5927,40 +6022,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_private_cloud(
                 request, metadata
             )
-            pb_request = vmwareengine.GetPrivateCloudRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetPrivateCloud._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5976,19 +6060,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_private_cloud(resp)
             return resp
 
-    class _GetPrivateConnection(VmwareEngineRestStub):
+    class _GetPrivateConnection(
+        _BaseVmwareEngineRestTransport._BaseGetPrivateConnection, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetPrivateConnection")
+            return hash("VmwareEngineRestTransport.GetPrivateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6018,40 +6116,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateConnections/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_private_connection(
                 request, metadata
             )
-            pb_request = vmwareengine.GetPrivateConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetPrivateConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6067,19 +6154,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_private_connection(resp)
             return resp
 
-    class _GetSubnet(VmwareEngineRestStub):
+    class _GetSubnet(
+        _BaseVmwareEngineRestTransport._BaseGetSubnet, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetSubnet")
+            return hash("VmwareEngineRestTransport.GetSubnet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6109,38 +6210,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/subnets/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetSubnet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_subnet(request, metadata)
-            pb_request = vmwareengine.GetSubnetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseVmwareEngineRestTransport._BaseGetSubnet._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseGetSubnet._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetSubnet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6156,19 +6250,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_subnet(resp)
             return resp
 
-    class _GetVmwareEngineNetwork(VmwareEngineRestStub):
+    class _GetVmwareEngineNetwork(
+        _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GetVmwareEngineNetwork")
+            return hash("VmwareEngineRestTransport.GetVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6198,40 +6306,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/vmwareEngineNetworks/*}",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_vmware_engine_network(
                 request, metadata
             )
-            pb_request = vmwareengine.GetVmwareEngineNetworkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._GetVmwareEngineNetwork._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6247,19 +6344,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_get_vmware_engine_network(resp)
             return resp
 
-    class _GrantDnsBindPermission(VmwareEngineRestStub):
+    class _GrantDnsBindPermission(
+        _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("GrantDnsBindPermission")
+            return hash("VmwareEngineRestTransport.GrantDnsBindPermission")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6289,47 +6401,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/dnsBindPermission}:grant",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_http_options()
+            )
             request, metadata = self._interceptor.pre_grant_dns_bind_permission(
                 request, metadata
             )
-            pb_request = vmwareengine.GrantDnsBindPermissionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._GrantDnsBindPermission._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6343,19 +6442,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_grant_dns_bind_permission(resp)
             return resp
 
-    class _ListClusters(VmwareEngineRestStub):
+    class _ListClusters(
+        _BaseVmwareEngineRestTransport._BaseListClusters, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListClusters")
+            return hash("VmwareEngineRestTransport.ListClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6384,38 +6497,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/clusters",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListClusters._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            pb_request = vmwareengine.ListClustersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListClusters._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseListClusters._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListClusters._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6431,19 +6535,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_clusters(resp)
             return resp
 
-    class _ListExternalAccessRules(VmwareEngineRestStub):
+    class _ListExternalAccessRules(
+        _BaseVmwareEngineRestTransport._BaseListExternalAccessRules,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("ListExternalAccessRules")
+            return hash("VmwareEngineRestTransport.ListExternalAccessRules")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6473,40 +6592,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/networkPolicies/*}/externalAccessRules",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_external_access_rules(
                 request, metadata
             )
-            pb_request = vmwareengine.ListExternalAccessRulesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListExternalAccessRules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6522,19 +6630,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_external_access_rules(resp)
             return resp
 
-    class _ListExternalAddresses(VmwareEngineRestStub):
+    class _ListExternalAddresses(
+        _BaseVmwareEngineRestTransport._BaseListExternalAddresses, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListExternalAddresses")
+            return hash("VmwareEngineRestTransport.ListExternalAddresses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6563,40 +6685,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/externalAddresses",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_external_addresses(
                 request, metadata
             )
-            pb_request = vmwareengine.ListExternalAddressesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListExternalAddresses._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6612,19 +6723,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_external_addresses(resp)
             return resp
 
-    class _ListHcxActivationKeys(VmwareEngineRestStub):
+    class _ListHcxActivationKeys(
+        _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListHcxActivationKeys")
+            return hash("VmwareEngineRestTransport.ListHcxActivationKeys")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6653,40 +6778,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/hcxActivationKeys",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_hcx_activation_keys(
                 request, metadata
             )
-            pb_request = vmwareengine.ListHcxActivationKeysRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListHcxActivationKeys._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6702,19 +6816,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_hcx_activation_keys(resp)
             return resp
 
-    class _ListLoggingServers(VmwareEngineRestStub):
+    class _ListLoggingServers(
+        _BaseVmwareEngineRestTransport._BaseListLoggingServers, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListLoggingServers")
+            return hash("VmwareEngineRestTransport.ListLoggingServers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6743,40 +6871,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/loggingServers",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_logging_servers(
                 request, metadata
             )
-            pb_request = vmwareengine.ListLoggingServersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListLoggingServers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6792,19 +6909,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_logging_servers(resp)
             return resp
 
-    class _ListManagementDnsZoneBindings(VmwareEngineRestStub):
+    class _ListManagementDnsZoneBindings(
+        _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("ListManagementDnsZoneBindings")
+            return hash("VmwareEngineRestTransport.ListManagementDnsZoneBindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6834,40 +6966,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/managementDnsZoneBindings",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_management_dns_zone_bindings(
                 request, metadata
             )
-            pb_request = vmwareengine.ListManagementDnsZoneBindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                VmwareEngineRestTransport._ListManagementDnsZoneBindings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6883,19 +7006,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_management_dns_zone_bindings(resp)
             return resp
 
-    class _ListNetworkPeerings(VmwareEngineRestStub):
+    class _ListNetworkPeerings(
+        _BaseVmwareEngineRestTransport._BaseListNetworkPeerings, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListNetworkPeerings")
+            return hash("VmwareEngineRestTransport.ListNetworkPeerings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6924,40 +7061,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/networkPeerings",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_network_peerings(
                 request, metadata
             )
-            pb_request = vmwareengine.ListNetworkPeeringsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListNetworkPeerings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6973,19 +7099,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_network_peerings(resp)
             return resp
 
-    class _ListNetworkPolicies(VmwareEngineRestStub):
+    class _ListNetworkPolicies(
+        _BaseVmwareEngineRestTransport._BaseListNetworkPolicies, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListNetworkPolicies")
+            return hash("VmwareEngineRestTransport.ListNetworkPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7014,40 +7154,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/networkPolicies",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_network_policies(
                 request, metadata
             )
-            pb_request = vmwareengine.ListNetworkPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListNetworkPolicies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7063,19 +7192,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_network_policies(resp)
             return resp
 
-    class _ListNodes(VmwareEngineRestStub):
+    class _ListNodes(
+        _BaseVmwareEngineRestTransport._BaseListNodes, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListNodes")
+            return hash("VmwareEngineRestTransport.ListNodes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7104,38 +7247,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*/clusters/*}/nodes",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListNodes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_nodes(request, metadata)
-            pb_request = vmwareengine.ListNodesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseVmwareEngineRestTransport._BaseListNodes._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseListNodes._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListNodes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7151,19 +7287,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_nodes(resp)
             return resp
 
-    class _ListNodeTypes(VmwareEngineRestStub):
+    class _ListNodeTypes(
+        _BaseVmwareEngineRestTransport._BaseListNodeTypes, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListNodeTypes")
+            return hash("VmwareEngineRestTransport.ListNodeTypes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7192,38 +7342,27 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/nodeTypes",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_node_types(request, metadata)
-            pb_request = vmwareengine.ListNodeTypesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListNodeTypes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7239,19 +7378,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_node_types(resp)
             return resp
 
-    class _ListPeeringRoutes(VmwareEngineRestStub):
+    class _ListPeeringRoutes(
+        _BaseVmwareEngineRestTransport._BaseListPeeringRoutes, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListPeeringRoutes")
+            return hash("VmwareEngineRestTransport.ListPeeringRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7280,40 +7433,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/networkPeerings/*}/peeringRoutes",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_peering_routes(
                 request, metadata
             )
-            pb_request = vmwareengine.ListPeeringRoutesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListPeeringRoutes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7329,19 +7471,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_peering_routes(resp)
             return resp
 
-    class _ListPrivateClouds(VmwareEngineRestStub):
+    class _ListPrivateClouds(
+        _BaseVmwareEngineRestTransport._BaseListPrivateClouds, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListPrivateClouds")
+            return hash("VmwareEngineRestTransport.ListPrivateClouds")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7370,40 +7526,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/privateClouds",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_private_clouds(
                 request, metadata
             )
-            pb_request = vmwareengine.ListPrivateCloudsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListPrivateClouds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7419,19 +7564,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_private_clouds(resp)
             return resp
 
-    class _ListPrivateConnectionPeeringRoutes(VmwareEngineRestStub):
+    class _ListPrivateConnectionPeeringRoutes(
+        _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("ListPrivateConnectionPeeringRoutes")
+            return hash("VmwareEngineRestTransport.ListPrivateConnectionPeeringRoutes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7461,45 +7621,32 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateConnections/*}/peeringRoutes",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_private_connection_peering_routes(
                 request, metadata
             )
-            pb_request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest.pb(
-                request
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListPrivateConnectionPeeringRoutes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7515,19 +7662,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_private_connection_peering_routes(resp)
             return resp
 
-    class _ListPrivateConnections(VmwareEngineRestStub):
+    class _ListPrivateConnections(
+        _BaseVmwareEngineRestTransport._BaseListPrivateConnections, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListPrivateConnections")
+            return hash("VmwareEngineRestTransport.ListPrivateConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7556,40 +7717,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/privateConnections",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_private_connections(
                 request, metadata
             )
-            pb_request = vmwareengine.ListPrivateConnectionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListPrivateConnections._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7605,19 +7755,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_private_connections(resp)
             return resp
 
-    class _ListSubnets(VmwareEngineRestStub):
+    class _ListSubnets(
+        _BaseVmwareEngineRestTransport._BaseListSubnets, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ListSubnets")
+            return hash("VmwareEngineRestTransport.ListSubnets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7646,38 +7810,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/privateClouds/*}/subnets",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListSubnets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_subnets(request, metadata)
-            pb_request = vmwareengine.ListSubnetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseVmwareEngineRestTransport._BaseListSubnets._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseListSubnets._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ListSubnets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7693,19 +7850,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_subnets(resp)
             return resp
 
-    class _ListVmwareEngineNetworks(VmwareEngineRestStub):
+    class _ListVmwareEngineNetworks(
+        _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("ListVmwareEngineNetworks")
+            return hash("VmwareEngineRestTransport.ListVmwareEngineNetworks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7735,40 +7907,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/vmwareEngineNetworks",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_vmware_engine_networks(
                 request, metadata
             )
-            pb_request = vmwareengine.ListVmwareEngineNetworksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                VmwareEngineRestTransport._ListVmwareEngineNetworks._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7784,19 +7947,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_list_vmware_engine_networks(resp)
             return resp
 
-    class _RepairManagementDnsZoneBinding(VmwareEngineRestStub):
+    class _RepairManagementDnsZoneBinding(
+        _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("RepairManagementDnsZoneBinding")
+            return hash("VmwareEngineRestTransport.RepairManagementDnsZoneBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7827,50 +8006,39 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}:repair",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_repair_management_dns_zone_binding(
                 request, metadata
             )
-            pb_request = vmwareengine.RepairManagementDnsZoneBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                VmwareEngineRestTransport._RepairManagementDnsZoneBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7884,19 +8052,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_repair_management_dns_zone_binding(resp)
             return resp
 
-    class _ResetNsxCredentials(VmwareEngineRestStub):
+    class _ResetNsxCredentials(
+        _BaseVmwareEngineRestTransport._BaseResetNsxCredentials, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ResetNsxCredentials")
+            return hash("VmwareEngineRestTransport.ResetNsxCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7926,47 +8109,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{private_cloud=projects/*/locations/*/privateClouds/*}:resetNsxCredentials",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_http_options()
+            )
             request, metadata = self._interceptor.pre_reset_nsx_credentials(
                 request, metadata
             )
-            pb_request = vmwareengine.ResetNsxCredentialsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._ResetNsxCredentials._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7980,19 +8150,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_reset_nsx_credentials(resp)
             return resp
 
-    class _ResetVcenterCredentials(VmwareEngineRestStub):
+    class _ResetVcenterCredentials(
+        _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("ResetVcenterCredentials")
+            return hash("VmwareEngineRestTransport.ResetVcenterCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8022,47 +8208,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{private_cloud=projects/*/locations/*/privateClouds/*}:resetVcenterCredentials",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_http_options()
+            )
             request, metadata = self._interceptor.pre_reset_vcenter_credentials(
                 request, metadata
             )
-            pb_request = vmwareengine.ResetVcenterCredentialsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._ResetVcenterCredentials._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8076,19 +8249,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_reset_vcenter_credentials(resp)
             return resp
 
-    class _RevokeDnsBindPermission(VmwareEngineRestStub):
+    class _RevokeDnsBindPermission(
+        _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("RevokeDnsBindPermission")
+            return hash("VmwareEngineRestTransport.RevokeDnsBindPermission")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8119,47 +8308,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/dnsBindPermission}:revoke",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_http_options()
+            )
             request, metadata = self._interceptor.pre_revoke_dns_bind_permission(
                 request, metadata
             )
-            pb_request = vmwareengine.RevokeDnsBindPermissionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._RevokeDnsBindPermission._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8173,19 +8349,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_revoke_dns_bind_permission(resp)
             return resp
 
-    class _ShowNsxCredentials(VmwareEngineRestStub):
+    class _ShowNsxCredentials(
+        _BaseVmwareEngineRestTransport._BaseShowNsxCredentials, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ShowNsxCredentials")
+            return hash("VmwareEngineRestTransport.ShowNsxCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8212,40 +8402,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     Credentials for a private cloud.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{private_cloud=projects/*/locations/*/privateClouds/*}:showNsxCredentials",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_http_options()
+            )
             request, metadata = self._interceptor.pre_show_nsx_credentials(
                 request, metadata
             )
-            pb_request = vmwareengine.ShowNsxCredentialsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ShowNsxCredentials._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8261,19 +8440,33 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_show_nsx_credentials(resp)
             return resp
 
-    class _ShowVcenterCredentials(VmwareEngineRestStub):
+    class _ShowVcenterCredentials(
+        _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("ShowVcenterCredentials")
+            return hash("VmwareEngineRestTransport.ShowVcenterCredentials")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -8300,40 +8493,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     Credentials for a private cloud.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{private_cloud=projects/*/locations/*/privateClouds/*}:showVcenterCredentials",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_http_options()
+            )
             request, metadata = self._interceptor.pre_show_vcenter_credentials(
                 request, metadata
             )
-            pb_request = vmwareengine.ShowVcenterCredentialsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = VmwareEngineRestTransport._ShowVcenterCredentials._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8349,19 +8531,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_show_vcenter_credentials(resp)
             return resp
 
-    class _UndeletePrivateCloud(VmwareEngineRestStub):
+    class _UndeletePrivateCloud(
+        _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UndeletePrivateCloud")
+            return hash("VmwareEngineRestTransport.UndeletePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8391,47 +8588,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/privateClouds/*}:undelete",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_http_options()
+            )
             request, metadata = self._interceptor.pre_undelete_private_cloud(
                 request, metadata
             )
-            pb_request = vmwareengine.UndeletePrivateCloudRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UndeletePrivateCloud._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8445,21 +8629,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_undelete_private_cloud(resp)
             return resp
 
-    class _UpdateCluster(VmwareEngineRestStub):
+    class _UpdateCluster(
+        _BaseVmwareEngineRestTransport._BaseUpdateCluster, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateCluster")
+            return hash("VmwareEngineRestTransport.UpdateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8489,45 +8686,32 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{cluster.name=projects/*/locations/*/privateClouds/*/clusters/*}",
-                    "body": "cluster",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            pb_request = vmwareengine.UpdateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8541,21 +8725,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_cluster(resp)
             return resp
 
-    class _UpdateDnsForwarding(VmwareEngineRestStub):
+    class _UpdateDnsForwarding(
+        _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateDnsForwarding")
+            return hash("VmwareEngineRestTransport.UpdateDnsForwarding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8585,47 +8782,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{dns_forwarding.name=projects/*/locations/*/privateClouds/*/dnsForwarding}",
-                    "body": "dns_forwarding",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_dns_forwarding(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateDnsForwardingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdateDnsForwarding._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8639,21 +8823,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_dns_forwarding(resp)
             return resp
 
-    class _UpdateExternalAccessRule(VmwareEngineRestStub):
+    class _UpdateExternalAccessRule(
+        _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateExternalAccessRule")
+            return hash("VmwareEngineRestTransport.UpdateExternalAccessRule")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8684,47 +8882,36 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{external_access_rule.name=projects/*/locations/*/networkPolicies/*/externalAccessRules/*}",
-                    "body": "external_access_rule",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_external_access_rule(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateExternalAccessRuleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                VmwareEngineRestTransport._UpdateExternalAccessRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8738,21 +8925,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_external_access_rule(resp)
             return resp
 
-    class _UpdateExternalAddress(VmwareEngineRestStub):
+    class _UpdateExternalAddress(
+        _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateExternalAddress")
+            return hash("VmwareEngineRestTransport.UpdateExternalAddress")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8782,47 +8982,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{external_address.name=projects/*/locations/*/privateClouds/*/externalAddresses/*}",
-                    "body": "external_address",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_external_address(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateExternalAddressRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdateExternalAddress._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8836,21 +9023,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_external_address(resp)
             return resp
 
-    class _UpdateLoggingServer(VmwareEngineRestStub):
+    class _UpdateLoggingServer(
+        _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateLoggingServer")
+            return hash("VmwareEngineRestTransport.UpdateLoggingServer")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8880,47 +9080,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{logging_server.name=projects/*/locations/*/privateClouds/*/loggingServers/*}",
-                    "body": "logging_server",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_logging_server(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateLoggingServerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdateLoggingServer._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8934,21 +9121,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_logging_server(resp)
             return resp
 
-    class _UpdateManagementDnsZoneBinding(VmwareEngineRestStub):
+    class _UpdateManagementDnsZoneBinding(
+        _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateManagementDnsZoneBinding")
+            return hash("VmwareEngineRestTransport.UpdateManagementDnsZoneBinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8979,50 +9180,39 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{management_dns_zone_binding.name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}",
-                    "body": "management_dns_zone_binding",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_update_management_dns_zone_binding(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateManagementDnsZoneBindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                VmwareEngineRestTransport._UpdateManagementDnsZoneBinding._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9036,21 +9226,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_management_dns_zone_binding(resp)
             return resp
 
-    class _UpdateNetworkPeering(VmwareEngineRestStub):
+    class _UpdateNetworkPeering(
+        _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateNetworkPeering")
+            return hash("VmwareEngineRestTransport.UpdateNetworkPeering")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9080,47 +9283,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{network_peering.name=projects/*/locations/*/networkPeerings/*}",
-                    "body": "network_peering",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_network_peering(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateNetworkPeeringRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdateNetworkPeering._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9134,21 +9324,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_network_peering(resp)
             return resp
 
-    class _UpdateNetworkPolicy(VmwareEngineRestStub):
+    class _UpdateNetworkPolicy(
+        _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateNetworkPolicy")
+            return hash("VmwareEngineRestTransport.UpdateNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9178,47 +9381,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{network_policy.name=projects/*/locations/*/networkPolicies/*}",
-                    "body": "network_policy",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_network_policy(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateNetworkPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdateNetworkPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9232,21 +9422,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_network_policy(resp)
             return resp
 
-    class _UpdatePrivateCloud(VmwareEngineRestStub):
+    class _UpdatePrivateCloud(
+        _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdatePrivateCloud")
+            return hash("VmwareEngineRestTransport.UpdatePrivateCloud")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9276,47 +9479,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{private_cloud.name=projects/*/locations/*/privateClouds/*}",
-                    "body": "private_cloud",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_private_cloud(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdatePrivateCloudRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdatePrivateCloud._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9330,21 +9520,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_private_cloud(resp)
             return resp
 
-    class _UpdatePrivateConnection(VmwareEngineRestStub):
+    class _UpdatePrivateConnection(
+        _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdatePrivateConnection")
+            return hash("VmwareEngineRestTransport.UpdatePrivateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9374,47 +9578,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{private_connection.name=projects/*/locations/*/privateConnections/*}",
-                    "body": "private_connection",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_private_connection(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdatePrivateConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdatePrivateConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9428,21 +9619,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_private_connection(resp)
             return resp
 
-    class _UpdateSubnet(VmwareEngineRestStub):
+    class _UpdateSubnet(
+        _BaseVmwareEngineRestTransport._BaseUpdateSubnet, VmwareEngineRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateSubnet")
+            return hash("VmwareEngineRestTransport.UpdateSubnet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9472,45 +9676,36 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{subnet.name=projects/*/locations/*/privateClouds/*/subnets/*}",
-                    "body": "subnet",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_subnet(request, metadata)
-            pb_request = vmwareengine.UpdateSubnetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_subnet(request, metadata)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_transcoded_request(
+                http_options, request
+            )
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = VmwareEngineRestTransport._UpdateSubnet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9524,21 +9719,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             resp = self._interceptor.post_update_subnet(resp)
             return resp
 
-    class _UpdateVmwareEngineNetwork(VmwareEngineRestStub):
+    class _UpdateVmwareEngineNetwork(
+        _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork,
+        VmwareEngineRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateVmwareEngineNetwork")
+            return hash("VmwareEngineRestTransport.UpdateVmwareEngineNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9569,47 +9778,36 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{vmware_engine_network.name=projects/*/locations/*/vmwareEngineNetworks/*}",
-                    "body": "vmware_engine_network",
-                },
-            ]
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_vmware_engine_network(
                 request, metadata
             )
-            pb_request = vmwareengine.UpdateVmwareEngineNetworkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                VmwareEngineRestTransport._UpdateVmwareEngineNetwork._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10334,7 +10532,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(VmwareEngineRestStub):
+    class _GetLocation(
+        _BaseVmwareEngineRestTransport._BaseGetLocation, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -10358,32 +10583,31 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseVmwareEngineRestTransport._BaseGetLocation._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseGetLocation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = VmwareEngineRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10391,8 +10615,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -10400,7 +10625,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(VmwareEngineRestStub):
+    class _ListLocations(
+        _BaseVmwareEngineRestTransport._BaseListLocations, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -10424,32 +10676,27 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseVmwareEngineRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = VmwareEngineRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10457,8 +10704,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -10466,7 +10714,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(VmwareEngineRestStub):
+    class _GetIamPolicy(
+        _BaseVmwareEngineRestTransport._BaseGetIamPolicy, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.GetIamPolicyRequest,
@@ -10490,40 +10765,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*/clusters/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*/hcxActivationKeys/*}:getIamPolicy",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = VmwareEngineRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10531,8 +10795,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -10540,7 +10805,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(VmwareEngineRestStub):
+    class _SetIamPolicy(
+        _BaseVmwareEngineRestTransport._BaseSetIamPolicy, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.SetIamPolicyRequest,
@@ -10564,45 +10857,36 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*/clusters/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*/hcxActivationKeys/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = (
+                _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_request_body_json(
+                    transcoded_request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = VmwareEngineRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10610,8 +10894,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -10619,7 +10904,35 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(VmwareEngineRestStub):
+    class _TestIamPermissions(
+        _BaseVmwareEngineRestTransport._BaseTestIamPermissions, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.TestIamPermissionsRequest,
@@ -10643,47 +10956,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*/clusters/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/privateClouds/*/hcxActivationKeys/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = VmwareEngineRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10691,8 +10991,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
@@ -10700,7 +11001,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(VmwareEngineRestStub):
+    class _DeleteOperation(
+        _BaseVmwareEngineRestTransport._BaseDeleteOperation, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -10721,34 +11049,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = VmwareEngineRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10762,7 +11085,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(VmwareEngineRestStub):
+    class _GetOperation(
+        _BaseVmwareEngineRestTransport._BaseGetOperation, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -10786,32 +11136,29 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseVmwareEngineRestTransport._BaseGetOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = VmwareEngineRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10819,8 +11166,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -10828,7 +11176,34 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(VmwareEngineRestStub):
+    class _ListOperations(
+        _BaseVmwareEngineRestTransport._BaseListOperations, VmwareEngineRestStub
+    ):
+        def __hash__(self):
+            return hash("VmwareEngineRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -10852,32 +11227,27 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseVmwareEngineRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseVmwareEngineRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseVmwareEngineRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = VmwareEngineRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10885,8 +11255,9 @@ class VmwareEngineRestTransport(VmwareEngineTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

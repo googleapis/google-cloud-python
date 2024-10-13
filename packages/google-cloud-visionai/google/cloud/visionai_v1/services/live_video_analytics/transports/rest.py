@@ -16,41 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.visionai_v1.types import lva_resources, lva_service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseLiveVideoAnalyticsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.visionai_v1.types import lva_resources, lva_service
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import LiveVideoAnalyticsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -734,8 +724,8 @@ class LiveVideoAnalyticsRestStub:
     _interceptor: LiveVideoAnalyticsRestInterceptor
 
 
-class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
-    """REST backend transport for LiveVideoAnalytics.
+class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
+    """REST backend synchronous transport for LiveVideoAnalytics.
 
     Service describing handlers for resources. The service
     enables clients to run Live Video Analytics (LVA) on the
@@ -746,7 +736,6 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -800,21 +789,12 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -907,19 +887,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchRunProcess(LiveVideoAnalyticsRestStub):
+    class _BatchRunProcess(
+        _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchRunProcess")
+            return hash("LiveVideoAnalyticsRestTransport.BatchRunProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -949,47 +945,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/processes:batchRun",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_run_process(
                 request, metadata
             )
-            pb_request = lva_service.BatchRunProcessRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._BatchRunProcess._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1003,21 +986,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_batch_run_process(resp)
             return resp
 
-    class _CreateAnalysis(LiveVideoAnalyticsRestStub):
+    class _CreateAnalysis(
+        _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAnalysis")
+            return hash("LiveVideoAnalyticsRestTransport.CreateAnalysis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "analysisId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1046,45 +1043,32 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/analyses",
-                    "body": "analysis",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_analysis(request, metadata)
-            pb_request = lva_service.CreateAnalysisRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_analysis(request, metadata)
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._CreateAnalysis._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1098,21 +1082,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_create_analysis(resp)
             return resp
 
-    class _CreateOperator(LiveVideoAnalyticsRestStub):
+    class _CreateOperator(
+        _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateOperator")
+            return hash("LiveVideoAnalyticsRestTransport.CreateOperator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "operatorId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1141,45 +1139,32 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/operators",
-                    "body": "operator",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_operator(request, metadata)
-            pb_request = lva_service.CreateOperatorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_operator(request, metadata)
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._CreateOperator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1193,21 +1178,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_create_operator(resp)
             return resp
 
-    class _CreateProcess(LiveVideoAnalyticsRestStub):
+    class _CreateProcess(
+        _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateProcess")
+            return hash("LiveVideoAnalyticsRestTransport.CreateProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "processId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1236,45 +1235,32 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/processes",
-                    "body": "process",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_process(request, metadata)
-            pb_request = lva_service.CreateProcessRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_process(request, metadata)
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._CreateProcess._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1288,19 +1274,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_create_process(resp)
             return resp
 
-    class _DeleteAnalysis(LiveVideoAnalyticsRestStub):
+    class _DeleteAnalysis(
+        _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAnalysis")
+            return hash("LiveVideoAnalyticsRestTransport.DeleteAnalysis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1329,38 +1330,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/analyses/*}",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_analysis(request, metadata)
-            pb_request = lva_service.DeleteAnalysisRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._DeleteAnalysis._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1374,19 +1364,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_delete_analysis(resp)
             return resp
 
-    class _DeleteOperator(LiveVideoAnalyticsRestStub):
+    class _DeleteOperator(
+        _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteOperator")
+            return hash("LiveVideoAnalyticsRestTransport.DeleteOperator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1415,38 +1420,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operators/*}",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operator(request, metadata)
-            pb_request = lva_service.DeleteOperatorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._DeleteOperator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1460,19 +1454,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_delete_operator(resp)
             return resp
 
-    class _DeleteProcess(LiveVideoAnalyticsRestStub):
+    class _DeleteProcess(
+        _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteProcess")
+            return hash("LiveVideoAnalyticsRestTransport.DeleteProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1501,38 +1510,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/processes/*}",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_process(request, metadata)
-            pb_request = lva_service.DeleteProcessRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._DeleteProcess._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1546,19 +1544,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_delete_process(resp)
             return resp
 
-    class _GetAnalysis(LiveVideoAnalyticsRestStub):
+    class _GetAnalysis(
+        _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAnalysis")
+            return hash("LiveVideoAnalyticsRestTransport.GetAnalysis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1586,38 +1599,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/analyses/*}",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_analysis(request, metadata)
-            pb_request = lva_service.GetAnalysisRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._GetAnalysis._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1633,19 +1635,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_get_analysis(resp)
             return resp
 
-    class _GetOperator(LiveVideoAnalyticsRestStub):
+    class _GetOperator(
+        _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("GetOperator")
+            return hash("LiveVideoAnalyticsRestTransport.GetOperator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1673,38 +1690,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operators/*}",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operator(request, metadata)
-            pb_request = lva_service.GetOperatorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._GetOperator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1720,19 +1726,33 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_get_operator(resp)
             return resp
 
-    class _GetProcess(LiveVideoAnalyticsRestStub):
+    class _GetProcess(
+        _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess, LiveVideoAnalyticsRestStub
+    ):
         def __hash__(self):
-            return hash("GetProcess")
+            return hash("LiveVideoAnalyticsRestTransport.GetProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1760,38 +1780,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/processes/*}",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_process(request, metadata)
-            pb_request = lva_service.GetProcessRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._GetProcess._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1807,19 +1816,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_get_process(resp)
             return resp
 
-    class _ListAnalyses(LiveVideoAnalyticsRestStub):
+    class _ListAnalyses(
+        _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAnalyses")
+            return hash("LiveVideoAnalyticsRestTransport.ListAnalyses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1848,38 +1872,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/analyses",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_analyses(request, metadata)
-            pb_request = lva_service.ListAnalysesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._ListAnalyses._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1895,19 +1908,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_list_analyses(resp)
             return resp
 
-    class _ListOperators(LiveVideoAnalyticsRestStub):
+    class _ListOperators(
+        _BaseLiveVideoAnalyticsRestTransport._BaseListOperators,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("ListOperators")
+            return hash("LiveVideoAnalyticsRestTransport.ListOperators")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1936,38 +1964,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/operators",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operators(request, metadata)
-            pb_request = lva_service.ListOperatorsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._ListOperators._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1983,19 +2000,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_list_operators(resp)
             return resp
 
-    class _ListProcesses(LiveVideoAnalyticsRestStub):
+    class _ListProcesses(
+        _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("ListProcesses")
+            return hash("LiveVideoAnalyticsRestTransport.ListProcesses")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2024,38 +2056,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/processes",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_processes(request, metadata)
-            pb_request = lva_service.ListProcessesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = LiveVideoAnalyticsRestTransport._ListProcesses._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2071,19 +2092,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_list_processes(resp)
             return resp
 
-    class _ListPublicOperators(LiveVideoAnalyticsRestStub):
+    class _ListPublicOperators(
+        _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("ListPublicOperators")
+            return hash("LiveVideoAnalyticsRestTransport.ListPublicOperators")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2112,40 +2148,31 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}:listPublicOperators",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_public_operators(
                 request, metadata
             )
-            pb_request = lva_service.ListPublicOperatorsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                LiveVideoAnalyticsRestTransport._ListPublicOperators._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2161,19 +2188,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_list_public_operators(resp)
             return resp
 
-    class _ResolveOperatorInfo(LiveVideoAnalyticsRestStub):
+    class _ResolveOperatorInfo(
+        _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("ResolveOperatorInfo")
+            return hash("LiveVideoAnalyticsRestTransport.ResolveOperatorInfo")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2202,47 +2245,36 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}:resolveOperatorInfo",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_http_options()
+            )
             request, metadata = self._interceptor.pre_resolve_operator_info(
                 request, metadata
             )
-            pb_request = lva_service.ResolveOperatorInfoRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                LiveVideoAnalyticsRestTransport._ResolveOperatorInfo._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2258,21 +2290,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_resolve_operator_info(resp)
             return resp
 
-    class _UpdateAnalysis(LiveVideoAnalyticsRestStub):
+    class _UpdateAnalysis(
+        _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAnalysis")
+            return hash("LiveVideoAnalyticsRestTransport.UpdateAnalysis")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2301,45 +2347,32 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{analysis.name=projects/*/locations/*/clusters/*/analyses/*}",
-                    "body": "analysis",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_analysis(request, metadata)
-            pb_request = lva_service.UpdateAnalysisRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_analysis(request, metadata)
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._UpdateAnalysis._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2353,21 +2386,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_update_analysis(resp)
             return resp
 
-    class _UpdateOperator(LiveVideoAnalyticsRestStub):
+    class _UpdateOperator(
+        _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateOperator")
+            return hash("LiveVideoAnalyticsRestTransport.UpdateOperator")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2396,45 +2443,32 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{operator.name=projects/*/locations/*/operators/*}",
-                    "body": "operator",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_operator(request, metadata)
-            pb_request = lva_service.UpdateOperatorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_operator(request, metadata)
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._UpdateOperator._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2448,21 +2482,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             resp = self._interceptor.post_update_operator(resp)
             return resp
 
-    class _UpdateProcess(LiveVideoAnalyticsRestStub):
+    class _UpdateProcess(
+        _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess,
+        LiveVideoAnalyticsRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateProcess")
+            return hash("LiveVideoAnalyticsRestTransport.UpdateProcess")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2491,45 +2539,32 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{process.name=projects/*/locations/*/clusters/*/processes/*}",
-                    "body": "process",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_process(request, metadata)
-            pb_request = lva_service.UpdateProcessRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_process(request, metadata)
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._UpdateProcess._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2701,7 +2736,36 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(LiveVideoAnalyticsRestStub):
+    class _CancelOperation(
+        _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation,
+        LiveVideoAnalyticsRestStub,
+    ):
+        def __hash__(self):
+            return hash("LiveVideoAnalyticsRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -2722,37 +2786,34 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = LiveVideoAnalyticsRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2766,7 +2827,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(LiveVideoAnalyticsRestStub):
+    class _DeleteOperation(
+        _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation,
+        LiveVideoAnalyticsRestStub,
+    ):
+        def __hash__(self):
+            return hash("LiveVideoAnalyticsRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -2787,34 +2876,29 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = LiveVideoAnalyticsRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2828,7 +2912,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(LiveVideoAnalyticsRestStub):
+    class _GetOperation(
+        _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation,
+        LiveVideoAnalyticsRestStub,
+    ):
+        def __hash__(self):
+            return hash("LiveVideoAnalyticsRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -2852,60 +2964,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/warehouseOperations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/collections/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/imageIndexes/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/indexes/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/indexEndpoints/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = LiveVideoAnalyticsRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2913,8 +2992,9 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -2922,7 +3002,35 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(LiveVideoAnalyticsRestStub):
+    class _ListOperations(
+        _BaseLiveVideoAnalyticsRestTransport._BaseListOperations,
+        LiveVideoAnalyticsRestStub,
+    ):
+        def __hash__(self):
+            return hash("LiveVideoAnalyticsRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -2946,32 +3054,27 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = LiveVideoAnalyticsRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2979,8 +3082,9 @@ class LiveVideoAnalyticsRestTransport(LiveVideoAnalyticsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

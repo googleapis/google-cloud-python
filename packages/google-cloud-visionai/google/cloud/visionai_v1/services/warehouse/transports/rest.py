@@ -16,42 +16,32 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.visionai_v1.types import warehouse
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseWarehouseRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.visionai_v1.types import warehouse
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import WarehouseTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1980,8 +1970,8 @@ class WarehouseRestStub:
     _interceptor: WarehouseRestInterceptor
 
 
-class WarehouseRestTransport(WarehouseTransport):
-    """REST backend transport for Warehouse.
+class WarehouseRestTransport(_BaseWarehouseRestTransport):
+    """REST backend synchronous transport for Warehouse.
 
     Service that manages media content + metadata for streaming.
 
@@ -1990,7 +1980,6 @@ class WarehouseRestTransport(WarehouseTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -2044,21 +2033,12 @@ class WarehouseRestTransport(WarehouseTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -2151,19 +2131,34 @@ class WarehouseRestTransport(WarehouseTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _AddCollectionItem(WarehouseRestStub):
+    class _AddCollectionItem(
+        _BaseWarehouseRestTransport._BaseAddCollectionItem, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("AddCollectionItem")
+            return hash("WarehouseRestTransport.AddCollectionItem")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2192,47 +2187,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{item.collection=projects/*/locations/*/corpora/*/collections/*}:addCollectionItem",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseAddCollectionItem._get_http_options()
+            )
             request, metadata = self._interceptor.pre_add_collection_item(
                 request, metadata
             )
-            pb_request = warehouse.AddCollectionItemRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._AddCollectionItem._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2248,19 +2230,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_add_collection_item(resp)
             return resp
 
-    class _AnalyzeAsset(WarehouseRestStub):
+    class _AnalyzeAsset(
+        _BaseWarehouseRestTransport._BaseAnalyzeAsset, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("AnalyzeAsset")
+            return hash("WarehouseRestTransport.AnalyzeAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2289,45 +2286,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}:analyze",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_analyze_asset(request, metadata)
-            pb_request = warehouse.AnalyzeAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_analyze_asset(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._AnalyzeAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2341,19 +2329,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_analyze_asset(resp)
             return resp
 
-    class _AnalyzeCorpus(WarehouseRestStub):
+    class _AnalyzeCorpus(
+        _BaseWarehouseRestTransport._BaseAnalyzeCorpus, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("AnalyzeCorpus")
+            return hash("WarehouseRestTransport.AnalyzeCorpus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2382,45 +2385,38 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*}:analyze",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_analyze_corpus(request, metadata)
-            pb_request = warehouse.AnalyzeCorpusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_analyze_corpus(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._AnalyzeCorpus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2434,19 +2430,32 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_analyze_corpus(resp)
             return resp
 
-    class _ClipAsset(WarehouseRestStub):
+    class _ClipAsset(_BaseWarehouseRestTransport._BaseClipAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("ClipAsset")
+            return hash("WarehouseRestTransport.ClipAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2472,45 +2481,36 @@ class WarehouseRestTransport(WarehouseTransport):
                     Response message for ClipAsset API.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}:clip",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_clip_asset(request, metadata)
-            pb_request = warehouse.ClipAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseClipAsset._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_clip_asset(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseClipAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseClipAsset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseClipAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._ClipAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2526,19 +2526,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_clip_asset(resp)
             return resp
 
-    class _CreateAnnotation(WarehouseRestStub):
+    class _CreateAnnotation(
+        _BaseWarehouseRestTransport._BaseCreateAnnotation, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("CreateAnnotation")
+            return hash("WarehouseRestTransport.CreateAnnotation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2567,47 +2582,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*/assets/*}/annotations",
-                    "body": "annotation",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateAnnotation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_annotation(
                 request, metadata
             )
-            pb_request = warehouse.CreateAnnotationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2623,19 +2625,32 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_annotation(resp)
             return resp
 
-    class _CreateAsset(WarehouseRestStub):
+    class _CreateAsset(_BaseWarehouseRestTransport._BaseCreateAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("CreateAsset")
+            return hash("WarehouseRestTransport.CreateAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2669,45 +2684,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/assets",
-                    "body": "asset",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_asset(request, metadata)
-            pb_request = warehouse.CreateAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateAsset._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_asset(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseCreateAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseCreateAsset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseCreateAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2723,19 +2729,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_asset(resp)
             return resp
 
-    class _CreateCollection(WarehouseRestStub):
+    class _CreateCollection(
+        _BaseWarehouseRestTransport._BaseCreateCollection, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCollection")
+            return hash("WarehouseRestTransport.CreateCollection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2764,47 +2785,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/collections",
-                    "body": "collection",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateCollection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_collection(
                 request, metadata
             )
-            pb_request = warehouse.CreateCollectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateCollection._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseCreateCollection._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseCreateCollection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateCollection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2818,19 +2826,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_collection(resp)
             return resp
 
-    class _CreateCorpus(WarehouseRestStub):
+    class _CreateCorpus(
+        _BaseWarehouseRestTransport._BaseCreateCorpus, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCorpus")
+            return hash("WarehouseRestTransport.CreateCorpus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2859,45 +2882,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/corpora",
-                    "body": "corpus",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_corpus(request, metadata)
-            pb_request = warehouse.CreateCorpusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateCorpus._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_corpus(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseCreateCorpus._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseCreateCorpus._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseCreateCorpus._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateCorpus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2911,19 +2925,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_corpus(resp)
             return resp
 
-    class _CreateDataSchema(WarehouseRestStub):
+    class _CreateDataSchema(
+        _BaseWarehouseRestTransport._BaseCreateDataSchema, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("CreateDataSchema")
+            return hash("WarehouseRestTransport.CreateDataSchema")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2952,47 +2981,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/dataSchemas",
-                    "body": "data_schema",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateDataSchema._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_data_schema(
                 request, metadata
             )
-            pb_request = warehouse.CreateDataSchemaRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateDataSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3008,19 +3024,32 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_data_schema(resp)
             return resp
 
-    class _CreateIndex(WarehouseRestStub):
+    class _CreateIndex(_BaseWarehouseRestTransport._BaseCreateIndex, WarehouseRestStub):
         def __hash__(self):
-            return hash("CreateIndex")
+            return hash("WarehouseRestTransport.CreateIndex")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3049,45 +3078,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/indexes",
-                    "body": "index",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_index(request, metadata)
-            pb_request = warehouse.CreateIndexRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateIndex._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_index(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseCreateIndex._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseCreateIndex._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseCreateIndex._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateIndex._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3101,19 +3121,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_index(resp)
             return resp
 
-    class _CreateIndexEndpoint(WarehouseRestStub):
+    class _CreateIndexEndpoint(
+        _BaseWarehouseRestTransport._BaseCreateIndexEndpoint, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("CreateIndexEndpoint")
+            return hash("WarehouseRestTransport.CreateIndexEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3143,47 +3178,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/indexEndpoints",
-                    "body": "index_endpoint",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_index_endpoint(
                 request, metadata
             )
-            pb_request = warehouse.CreateIndexEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateIndexEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3197,21 +3219,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_index_endpoint(resp)
             return resp
 
-    class _CreateSearchConfig(WarehouseRestStub):
+    class _CreateSearchConfig(
+        _BaseWarehouseRestTransport._BaseCreateSearchConfig, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("CreateSearchConfig")
+            return hash("WarehouseRestTransport.CreateSearchConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "searchConfigId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3241,47 +3276,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/searchConfigs",
-                    "body": "search_config",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_search_config(
                 request, metadata
             )
-            pb_request = warehouse.CreateSearchConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateSearchConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3297,19 +3319,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_search_config(resp)
             return resp
 
-    class _CreateSearchHypernym(WarehouseRestStub):
+    class _CreateSearchHypernym(
+        _BaseWarehouseRestTransport._BaseCreateSearchHypernym, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("CreateSearchHypernym")
+            return hash("WarehouseRestTransport.CreateSearchHypernym")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3341,47 +3378,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/searchHypernyms",
-                    "body": "search_hypernym",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_search_hypernym(
                 request, metadata
             )
-            pb_request = warehouse.CreateSearchHypernymRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._CreateSearchHypernym._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3397,19 +3421,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_create_search_hypernym(resp)
             return resp
 
-    class _DeleteAnnotation(WarehouseRestStub):
+    class _DeleteAnnotation(
+        _BaseWarehouseRestTransport._BaseDeleteAnnotation, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteAnnotation")
+            return hash("WarehouseRestTransport.DeleteAnnotation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3432,40 +3470,29 @@ class WarehouseRestTransport(WarehouseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*/annotations/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_annotation(
                 request, metadata
             )
-            pb_request = warehouse.DeleteAnnotationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3473,19 +3500,31 @@ class WarehouseRestTransport(WarehouseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteAsset(WarehouseRestStub):
+    class _DeleteAsset(_BaseWarehouseRestTransport._BaseDeleteAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("DeleteAsset")
+            return hash("WarehouseRestTransport.DeleteAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3514,38 +3553,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteAsset._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
-            pb_request = warehouse.DeleteAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseDeleteAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseDeleteAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3559,19 +3591,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_delete_asset(resp)
             return resp
 
-    class _DeleteCollection(WarehouseRestStub):
+    class _DeleteCollection(
+        _BaseWarehouseRestTransport._BaseDeleteCollection, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteCollection")
+            return hash("WarehouseRestTransport.DeleteCollection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3601,40 +3647,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/collections/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteCollection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_collection(
                 request, metadata
             )
-            pb_request = warehouse.DeleteCollectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteCollection._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteCollection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteCollection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3648,19 +3683,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_delete_collection(resp)
             return resp
 
-    class _DeleteCorpus(WarehouseRestStub):
+    class _DeleteCorpus(
+        _BaseWarehouseRestTransport._BaseDeleteCorpus, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteCorpus")
+            return hash("WarehouseRestTransport.DeleteCorpus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3682,38 +3731,31 @@ class WarehouseRestTransport(WarehouseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteCorpus._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_corpus(request, metadata)
-            pb_request = warehouse.DeleteCorpusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseDeleteCorpus._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseDeleteCorpus._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteCorpus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3721,19 +3763,33 @@ class WarehouseRestTransport(WarehouseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDataSchema(WarehouseRestStub):
+    class _DeleteDataSchema(
+        _BaseWarehouseRestTransport._BaseDeleteDataSchema, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteDataSchema")
+            return hash("WarehouseRestTransport.DeleteDataSchema")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3755,40 +3811,29 @@ class WarehouseRestTransport(WarehouseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/dataSchemas/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_data_schema(
                 request, metadata
             )
-            pb_request = warehouse.DeleteDataSchemaRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteDataSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3796,19 +3841,31 @@ class WarehouseRestTransport(WarehouseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteIndex(WarehouseRestStub):
+    class _DeleteIndex(_BaseWarehouseRestTransport._BaseDeleteIndex, WarehouseRestStub):
         def __hash__(self):
-            return hash("DeleteIndex")
+            return hash("WarehouseRestTransport.DeleteIndex")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3837,38 +3894,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/indexes/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteIndex._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_index(request, metadata)
-            pb_request = warehouse.DeleteIndexRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseDeleteIndex._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseDeleteIndex._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteIndex._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3882,19 +3932,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_delete_index(resp)
             return resp
 
-    class _DeleteIndexEndpoint(WarehouseRestStub):
+    class _DeleteIndexEndpoint(
+        _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteIndexEndpoint")
+            return hash("WarehouseRestTransport.DeleteIndexEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3924,40 +3988,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/indexEndpoints/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_index_endpoint(
                 request, metadata
             )
-            pb_request = warehouse.DeleteIndexEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteIndexEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3971,19 +4024,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_delete_index_endpoint(resp)
             return resp
 
-    class _DeleteSearchConfig(WarehouseRestStub):
+    class _DeleteSearchConfig(
+        _BaseWarehouseRestTransport._BaseDeleteSearchConfig, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteSearchConfig")
+            return hash("WarehouseRestTransport.DeleteSearchConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4006,40 +4073,29 @@ class WarehouseRestTransport(WarehouseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/searchConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_search_config(
                 request, metadata
             )
-            pb_request = warehouse.DeleteSearchConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteSearchConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4047,19 +4103,33 @@ class WarehouseRestTransport(WarehouseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSearchHypernym(WarehouseRestStub):
+    class _DeleteSearchHypernym(
+        _BaseWarehouseRestTransport._BaseDeleteSearchHypernym, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteSearchHypernym")
+            return hash("WarehouseRestTransport.DeleteSearchHypernym")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4082,40 +4152,29 @@ class WarehouseRestTransport(WarehouseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/searchHypernyms/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_search_hypernym(
                 request, metadata
             )
-            pb_request = warehouse.DeleteSearchHypernymRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._DeleteSearchHypernym._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4123,19 +4182,32 @@ class WarehouseRestTransport(WarehouseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeployIndex(WarehouseRestStub):
+    class _DeployIndex(_BaseWarehouseRestTransport._BaseDeployIndex, WarehouseRestStub):
         def __hash__(self):
-            return hash("DeployIndex")
+            return hash("WarehouseRestTransport.DeployIndex")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4164,45 +4236,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{index_endpoint=projects/*/locations/*/indexEndpoints/*}:deployIndex",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_deploy_index(request, metadata)
-            pb_request = warehouse.DeployIndexRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeployIndex._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_deploy_index(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseDeployIndex._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseDeployIndex._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseDeployIndex._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._DeployIndex._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4216,19 +4279,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_deploy_index(resp)
             return resp
 
-    class _GenerateHlsUri(WarehouseRestStub):
+    class _GenerateHlsUri(
+        _BaseWarehouseRestTransport._BaseGenerateHlsUri, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GenerateHlsUri")
+            return hash("WarehouseRestTransport.GenerateHlsUri")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4257,47 +4335,40 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}:generateHlsUri",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_http_options()
+            )
             request, metadata = self._interceptor.pre_generate_hls_uri(
                 request, metadata
             )
-            pb_request = warehouse.GenerateHlsUriRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._GenerateHlsUri._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4313,19 +4384,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_generate_hls_uri(resp)
             return resp
 
-    class _GenerateRetrievalUrl(WarehouseRestStub):
+    class _GenerateRetrievalUrl(
+        _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GenerateRetrievalUrl")
+            return hash("WarehouseRestTransport.GenerateRetrievalUrl")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4354,47 +4440,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}:generateRetrievalUrl",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_http_options()
+            )
             request, metadata = self._interceptor.pre_generate_retrieval_url(
                 request, metadata
             )
-            pb_request = warehouse.GenerateRetrievalUrlRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._GenerateRetrievalUrl._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4410,19 +4483,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_generate_retrieval_url(resp)
             return resp
 
-    class _GetAnnotation(WarehouseRestStub):
+    class _GetAnnotation(
+        _BaseWarehouseRestTransport._BaseGetAnnotation, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GetAnnotation")
+            return hash("WarehouseRestTransport.GetAnnotation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4452,38 +4539,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*/annotations/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetAnnotation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_annotation(request, metadata)
-            pb_request = warehouse.GetAnnotationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGetAnnotation._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetAnnotation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4499,19 +4579,31 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_annotation(resp)
             return resp
 
-    class _GetAsset(WarehouseRestStub):
+    class _GetAsset(_BaseWarehouseRestTransport._BaseGetAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("GetAsset")
+            return hash("WarehouseRestTransport.GetAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4544,38 +4636,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}",
-                },
-            ]
+            http_options = _BaseWarehouseRestTransport._BaseGetAsset._get_http_options()
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
-            pb_request = warehouse.GetAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGetAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4591,19 +4674,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_asset(resp)
             return resp
 
-    class _GetCollection(WarehouseRestStub):
+    class _GetCollection(
+        _BaseWarehouseRestTransport._BaseGetCollection, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GetCollection")
+            return hash("WarehouseRestTransport.GetCollection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4633,38 +4730,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/collections/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetCollection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_collection(request, metadata)
-            pb_request = warehouse.GetCollectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGetCollection._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetCollection._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetCollection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4680,19 +4770,31 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_collection(resp)
             return resp
 
-    class _GetCorpus(WarehouseRestStub):
+    class _GetCorpus(_BaseWarehouseRestTransport._BaseGetCorpus, WarehouseRestStub):
         def __hash__(self):
-            return hash("GetCorpus")
+            return hash("WarehouseRestTransport.GetCorpus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4722,38 +4824,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetCorpus._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_corpus(request, metadata)
-            pb_request = warehouse.GetCorpusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGetCorpus._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetCorpus._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetCorpus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4769,19 +4864,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_corpus(resp)
             return resp
 
-    class _GetDataSchema(WarehouseRestStub):
+    class _GetDataSchema(
+        _BaseWarehouseRestTransport._BaseGetDataSchema, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GetDataSchema")
+            return hash("WarehouseRestTransport.GetDataSchema")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4810,38 +4919,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/dataSchemas/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetDataSchema._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_data_schema(request, metadata)
-            pb_request = warehouse.GetDataSchemaRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGetDataSchema._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetDataSchema._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetDataSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4857,19 +4959,31 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_data_schema(resp)
             return resp
 
-    class _GetIndex(WarehouseRestStub):
+    class _GetIndex(_BaseWarehouseRestTransport._BaseGetIndex, WarehouseRestStub):
         def __hash__(self):
-            return hash("GetIndex")
+            return hash("WarehouseRestTransport.GetIndex")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4900,38 +5014,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/indexes/*}",
-                },
-            ]
+            http_options = _BaseWarehouseRestTransport._BaseGetIndex._get_http_options()
             request, metadata = self._interceptor.pre_get_index(request, metadata)
-            pb_request = warehouse.GetIndexRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGetIndex._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetIndex._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetIndex._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4947,19 +5052,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_index(resp)
             return resp
 
-    class _GetIndexEndpoint(WarehouseRestStub):
+    class _GetIndexEndpoint(
+        _BaseWarehouseRestTransport._BaseGetIndexEndpoint, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GetIndexEndpoint")
+            return hash("WarehouseRestTransport.GetIndexEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4987,40 +5106,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/indexEndpoints/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_index_endpoint(
                 request, metadata
             )
-            pb_request = warehouse.GetIndexEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetIndexEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5036,19 +5144,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_index_endpoint(resp)
             return resp
 
-    class _GetSearchConfig(WarehouseRestStub):
+    class _GetSearchConfig(
+        _BaseWarehouseRestTransport._BaseGetSearchConfig, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GetSearchConfig")
+            return hash("WarehouseRestTransport.GetSearchConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5077,40 +5199,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/searchConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetSearchConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_search_config(
                 request, metadata
             )
-            pb_request = warehouse.GetSearchConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetSearchConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetSearchConfig._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetSearchConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5126,19 +5239,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_search_config(resp)
             return resp
 
-    class _GetSearchHypernym(WarehouseRestStub):
+    class _GetSearchHypernym(
+        _BaseWarehouseRestTransport._BaseGetSearchHypernym, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("GetSearchHypernym")
+            return hash("WarehouseRestTransport.GetSearchHypernym")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5170,40 +5297,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/searchHypernyms/*}",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_search_hypernym(
                 request, metadata
             )
-            pb_request = warehouse.GetSearchHypernymRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._GetSearchHypernym._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5219,19 +5335,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_get_search_hypernym(resp)
             return resp
 
-    class _ImportAssets(WarehouseRestStub):
+    class _ImportAssets(
+        _BaseWarehouseRestTransport._BaseImportAssets, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ImportAssets")
+            return hash("WarehouseRestTransport.ImportAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5260,45 +5391,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/assets:import",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_import_assets(request, metadata)
-            pb_request = warehouse.ImportAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseImportAssets._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_import_assets(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseImportAssets._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseImportAssets._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseImportAssets._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._ImportAssets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5312,19 +5434,32 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_import_assets(resp)
             return resp
 
-    class _IndexAsset(WarehouseRestStub):
+    class _IndexAsset(_BaseWarehouseRestTransport._BaseIndexAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("IndexAsset")
+            return hash("WarehouseRestTransport.IndexAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5353,45 +5488,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}:index",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_index_asset(request, metadata)
-            pb_request = warehouse.IndexAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseIndexAsset._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_index_asset(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseIndexAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseIndexAsset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseIndexAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._IndexAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5405,9 +5531,9 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_index_asset(resp)
             return resp
 
-    class _IngestAsset(WarehouseRestStub):
+    class _IngestAsset(_BaseWarehouseRestTransport._BaseIngestAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("IngestAsset")
+            return hash("WarehouseRestTransport.IngestAsset")
 
         def __call__(
             self,
@@ -5421,9 +5547,33 @@ class WarehouseRestTransport(WarehouseTransport):
                 "Method IngestAsset is not available over REST transport"
             )
 
-    class _ListAnnotations(WarehouseRestStub):
+    class _ListAnnotations(
+        _BaseWarehouseRestTransport._BaseListAnnotations, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ListAnnotations")
+            return hash("WarehouseRestTransport.ListAnnotations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5452,39 +5602,31 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*/assets/*}/annotations",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListAnnotations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_annotations(
                 request, metadata
             )
-            pb_request = warehouse.ListAnnotationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseListAnnotations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseWarehouseRestTransport._BaseListAnnotations._get_query_params_json(
+                    transcoded_request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListAnnotations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5500,19 +5642,31 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_annotations(resp)
             return resp
 
-    class _ListAssets(WarehouseRestStub):
+    class _ListAssets(_BaseWarehouseRestTransport._BaseListAssets, WarehouseRestStub):
         def __hash__(self):
-            return hash("ListAssets")
+            return hash("WarehouseRestTransport.ListAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5538,38 +5692,31 @@ class WarehouseRestTransport(WarehouseTransport):
                     Response message for ListAssets.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/assets",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListAssets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            pb_request = warehouse.ListAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseListAssets._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseListAssets._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListAssets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5585,19 +5732,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_assets(resp)
             return resp
 
-    class _ListCollections(WarehouseRestStub):
+    class _ListCollections(
+        _BaseWarehouseRestTransport._BaseListCollections, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ListCollections")
+            return hash("WarehouseRestTransport.ListCollections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5623,40 +5784,31 @@ class WarehouseRestTransport(WarehouseTransport):
                     Response message for ListCollections.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/collections",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListCollections._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_collections(
                 request, metadata
             )
-            pb_request = warehouse.ListCollectionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseListCollections._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseWarehouseRestTransport._BaseListCollections._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListCollections._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5672,19 +5824,31 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_collections(resp)
             return resp
 
-    class _ListCorpora(WarehouseRestStub):
+    class _ListCorpora(_BaseWarehouseRestTransport._BaseListCorpora, WarehouseRestStub):
         def __hash__(self):
-            return hash("ListCorpora")
+            return hash("WarehouseRestTransport.ListCorpora")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5710,38 +5874,31 @@ class WarehouseRestTransport(WarehouseTransport):
                     Response message for ListCorpora.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/corpora",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListCorpora._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_corpora(request, metadata)
-            pb_request = warehouse.ListCorporaRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseListCorpora._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseListCorpora._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListCorpora._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5757,19 +5914,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_corpora(resp)
             return resp
 
-    class _ListDataSchemas(WarehouseRestStub):
+    class _ListDataSchemas(
+        _BaseWarehouseRestTransport._BaseListDataSchemas, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ListDataSchemas")
+            return hash("WarehouseRestTransport.ListDataSchemas")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5795,40 +5966,31 @@ class WarehouseRestTransport(WarehouseTransport):
                     Response message for ListDataSchemas.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/dataSchemas",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListDataSchemas._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_data_schemas(
                 request, metadata
             )
-            pb_request = warehouse.ListDataSchemasRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseListDataSchemas._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseWarehouseRestTransport._BaseListDataSchemas._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListDataSchemas._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5844,19 +6006,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_data_schemas(resp)
             return resp
 
-    class _ListIndexEndpoints(WarehouseRestStub):
+    class _ListIndexEndpoints(
+        _BaseWarehouseRestTransport._BaseListIndexEndpoints, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ListIndexEndpoints")
+            return hash("WarehouseRestTransport.ListIndexEndpoints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5885,40 +6061,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/indexEndpoints",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_index_endpoints(
                 request, metadata
             )
-            pb_request = warehouse.ListIndexEndpointsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListIndexEndpoints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5934,19 +6099,31 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_index_endpoints(resp)
             return resp
 
-    class _ListIndexes(WarehouseRestStub):
+    class _ListIndexes(_BaseWarehouseRestTransport._BaseListIndexes, WarehouseRestStub):
         def __hash__(self):
-            return hash("ListIndexes")
+            return hash("WarehouseRestTransport.ListIndexes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5972,38 +6149,31 @@ class WarehouseRestTransport(WarehouseTransport):
                     Response message for ListIndexes.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/indexes",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListIndexes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_indexes(request, metadata)
-            pb_request = warehouse.ListIndexesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseListIndexes._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseListIndexes._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListIndexes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6019,19 +6189,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_indexes(resp)
             return resp
 
-    class _ListSearchConfigs(WarehouseRestStub):
+    class _ListSearchConfigs(
+        _BaseWarehouseRestTransport._BaseListSearchConfigs, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ListSearchConfigs")
+            return hash("WarehouseRestTransport.ListSearchConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6060,40 +6244,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/searchConfigs",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListSearchConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_search_configs(
                 request, metadata
             )
-            pb_request = warehouse.ListSearchConfigsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListSearchConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6109,19 +6282,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_search_configs(resp)
             return resp
 
-    class _ListSearchHypernyms(WarehouseRestStub):
+    class _ListSearchHypernyms(
+        _BaseWarehouseRestTransport._BaseListSearchHypernyms, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ListSearchHypernyms")
+            return hash("WarehouseRestTransport.ListSearchHypernyms")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6150,40 +6337,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/corpora/*}/searchHypernyms",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_search_hypernyms(
                 request, metadata
             )
-            pb_request = warehouse.ListSearchHypernymsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ListSearchHypernyms._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6199,19 +6375,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_list_search_hypernyms(resp)
             return resp
 
-    class _RemoveCollectionItem(WarehouseRestStub):
+    class _RemoveCollectionItem(
+        _BaseWarehouseRestTransport._BaseRemoveCollectionItem, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("RemoveCollectionItem")
+            return hash("WarehouseRestTransport.RemoveCollectionItem")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6240,47 +6431,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{item.collection=projects/*/locations/*/corpora/*/collections/*}:removeCollectionItem",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_http_options()
+            )
             request, metadata = self._interceptor.pre_remove_collection_item(
                 request, metadata
             )
-            pb_request = warehouse.RemoveCollectionItemRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._RemoveCollectionItem._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6296,19 +6474,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_remove_collection_item(resp)
             return resp
 
-    class _RemoveIndexAsset(WarehouseRestStub):
+    class _RemoveIndexAsset(
+        _BaseWarehouseRestTransport._BaseRemoveIndexAsset, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("RemoveIndexAsset")
+            return hash("WarehouseRestTransport.RemoveIndexAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6337,47 +6530,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}:removeIndex",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_http_options()
+            )
             request, metadata = self._interceptor.pre_remove_index_asset(
                 request, metadata
             )
-            pb_request = warehouse.RemoveIndexAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._RemoveIndexAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6391,19 +6571,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_remove_index_asset(resp)
             return resp
 
-    class _SearchAssets(WarehouseRestStub):
+    class _SearchAssets(
+        _BaseWarehouseRestTransport._BaseSearchAssets, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("SearchAssets")
+            return hash("WarehouseRestTransport.SearchAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6429,45 +6624,36 @@ class WarehouseRestTransport(WarehouseTransport):
                     Response message for SearchAssets.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{corpus=projects/*/locations/*/corpora/*}:searchAssets",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_search_assets(request, metadata)
-            pb_request = warehouse.SearchAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseSearchAssets._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_search_assets(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseSearchAssets._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseSearchAssets._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseSearchAssets._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._SearchAssets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6483,19 +6669,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_search_assets(resp)
             return resp
 
-    class _SearchIndexEndpoint(WarehouseRestStub):
+    class _SearchIndexEndpoint(
+        _BaseWarehouseRestTransport._BaseSearchIndexEndpoint, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("SearchIndexEndpoint")
+            return hash("WarehouseRestTransport.SearchIndexEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6524,47 +6725,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{index_endpoint=projects/*/locations/*/indexEndpoints/*}:searchIndexEndpoint",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_index_endpoint(
                 request, metadata
             )
-            pb_request = warehouse.SearchIndexEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._SearchIndexEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6580,19 +6768,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_search_index_endpoint(resp)
             return resp
 
-    class _UndeployIndex(WarehouseRestStub):
+    class _UndeployIndex(
+        _BaseWarehouseRestTransport._BaseUndeployIndex, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UndeployIndex")
+            return hash("WarehouseRestTransport.UndeployIndex")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6622,45 +6825,38 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{index_endpoint=projects/*/locations/*/indexEndpoints/*}:undeployIndex",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_undeploy_index(request, metadata)
-            pb_request = warehouse.UndeployIndexRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUndeployIndex._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_undeploy_index(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseUndeployIndex._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseWarehouseRestTransport._BaseUndeployIndex._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseUndeployIndex._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UndeployIndex._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6674,19 +6870,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_undeploy_index(resp)
             return resp
 
-    class _UpdateAnnotation(WarehouseRestStub):
+    class _UpdateAnnotation(
+        _BaseWarehouseRestTransport._BaseUpdateAnnotation, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateAnnotation")
+            return hash("WarehouseRestTransport.UpdateAnnotation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6716,47 +6927,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{annotation.name=projects/*/locations/*/corpora/*/assets/*/annotations/*}",
-                    "body": "annotation",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_annotation(
                 request, metadata
             )
-            pb_request = warehouse.UpdateAnnotationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateAnnotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6772,19 +6970,32 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_annotation(resp)
             return resp
 
-    class _UpdateAsset(WarehouseRestStub):
+    class _UpdateAsset(_BaseWarehouseRestTransport._BaseUpdateAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("UpdateAsset")
+            return hash("WarehouseRestTransport.UpdateAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6817,45 +7028,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{asset.name=projects/*/locations/*/corpora/*/assets/*}",
-                    "body": "asset",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_asset(request, metadata)
-            pb_request = warehouse.UpdateAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateAsset._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_asset(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseUpdateAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseUpdateAsset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseUpdateAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6871,19 +7073,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_asset(resp)
             return resp
 
-    class _UpdateCollection(WarehouseRestStub):
+    class _UpdateCollection(
+        _BaseWarehouseRestTransport._BaseUpdateCollection, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateCollection")
+            return hash("WarehouseRestTransport.UpdateCollection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6913,47 +7130,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{collection.name=projects/*/locations/*/corpora/*/collections/*}",
-                    "body": "collection",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateCollection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_collection(
                 request, metadata
             )
-            pb_request = warehouse.UpdateCollectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateCollection._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseUpdateCollection._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateCollection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateCollection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6969,19 +7173,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_collection(resp)
             return resp
 
-    class _UpdateCorpus(WarehouseRestStub):
+    class _UpdateCorpus(
+        _BaseWarehouseRestTransport._BaseUpdateCorpus, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateCorpus")
+            return hash("WarehouseRestTransport.UpdateCorpus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7011,45 +7230,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{corpus.name=projects/*/locations/*/corpora/*}",
-                    "body": "corpus",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_corpus(request, metadata)
-            pb_request = warehouse.UpdateCorpusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateCorpus._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_corpus(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseUpdateCorpus._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseUpdateCorpus._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseUpdateCorpus._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateCorpus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7065,19 +7275,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_corpus(resp)
             return resp
 
-    class _UpdateDataSchema(WarehouseRestStub):
+    class _UpdateDataSchema(
+        _BaseWarehouseRestTransport._BaseUpdateDataSchema, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateDataSchema")
+            return hash("WarehouseRestTransport.UpdateDataSchema")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7106,47 +7331,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{data_schema.name=projects/*/locations/*/corpora/*/dataSchemas/*}",
-                    "body": "data_schema",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_data_schema(
                 request, metadata
             )
-            pb_request = warehouse.UpdateDataSchemaRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateDataSchema._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7162,21 +7374,32 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_data_schema(resp)
             return resp
 
-    class _UpdateIndex(WarehouseRestStub):
+    class _UpdateIndex(_BaseWarehouseRestTransport._BaseUpdateIndex, WarehouseRestStub):
         def __hash__(self):
-            return hash("UpdateIndex")
+            return hash("WarehouseRestTransport.UpdateIndex")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7205,45 +7428,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{index.name=projects/*/locations/*/corpora/*/indexes/*}",
-                    "body": "index",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_index(request, metadata)
-            pb_request = warehouse.UpdateIndexRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateIndex._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_index(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseUpdateIndex._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseUpdateIndex._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseUpdateIndex._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateIndex._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7257,21 +7471,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_index(resp)
             return resp
 
-    class _UpdateIndexEndpoint(WarehouseRestStub):
+    class _UpdateIndexEndpoint(
+        _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateIndexEndpoint")
+            return hash("WarehouseRestTransport.UpdateIndexEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7301,47 +7528,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{index_endpoint.name=projects/*/locations/*/indexEndpoints/*}",
-                    "body": "index_endpoint",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_index_endpoint(
                 request, metadata
             )
-            pb_request = warehouse.UpdateIndexEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateIndexEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7355,19 +7569,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_index_endpoint(resp)
             return resp
 
-    class _UpdateSearchConfig(WarehouseRestStub):
+    class _UpdateSearchConfig(
+        _BaseWarehouseRestTransport._BaseUpdateSearchConfig, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateSearchConfig")
+            return hash("WarehouseRestTransport.UpdateSearchConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7397,47 +7626,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{search_config.name=projects/*/locations/*/corpora/*/searchConfigs/*}",
-                    "body": "search_config",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_search_config(
                 request, metadata
             )
-            pb_request = warehouse.UpdateSearchConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateSearchConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7453,19 +7669,34 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_search_config(resp)
             return resp
 
-    class _UpdateSearchHypernym(WarehouseRestStub):
+    class _UpdateSearchHypernym(
+        _BaseWarehouseRestTransport._BaseUpdateSearchHypernym, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateSearchHypernym")
+            return hash("WarehouseRestTransport.UpdateSearchHypernym")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7497,47 +7728,34 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{search_hypernym.name=projects/*/locations/*/corpora/*/searchHypernyms/*}",
-                    "body": "search_hypernym",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_search_hypernym(
                 request, metadata
             )
-            pb_request = warehouse.UpdateSearchHypernymRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UpdateSearchHypernym._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7553,19 +7771,32 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_update_search_hypernym(resp)
             return resp
 
-    class _UploadAsset(WarehouseRestStub):
+    class _UploadAsset(_BaseWarehouseRestTransport._BaseUploadAsset, WarehouseRestStub):
         def __hash__(self):
-            return hash("UploadAsset")
+            return hash("WarehouseRestTransport.UploadAsset")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7594,45 +7825,36 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*}:upload",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_upload_asset(request, metadata)
-            pb_request = warehouse.UploadAssetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseWarehouseRestTransport._BaseUploadAsset._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_upload_asset(request, metadata)
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseUploadAsset._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseWarehouseRestTransport._BaseUploadAsset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseWarehouseRestTransport._BaseUploadAsset._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = WarehouseRestTransport._UploadAsset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7646,19 +7868,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_upload_asset(resp)
             return resp
 
-    class _ViewCollectionItems(WarehouseRestStub):
+    class _ViewCollectionItems(
+        _BaseWarehouseRestTransport._BaseViewCollectionItems, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ViewCollectionItems")
+            return hash("WarehouseRestTransport.ViewCollectionItems")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7687,40 +7923,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{collection=projects/*/locations/*/corpora/*/collections/*}:viewCollectionItems",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseViewCollectionItems._get_http_options()
+            )
             request, metadata = self._interceptor.pre_view_collection_items(
                 request, metadata
             )
-            pb_request = warehouse.ViewCollectionItemsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseViewCollectionItems._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseViewCollectionItems._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ViewCollectionItems._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7736,19 +7961,33 @@ class WarehouseRestTransport(WarehouseTransport):
             resp = self._interceptor.post_view_collection_items(resp)
             return resp
 
-    class _ViewIndexedAssets(WarehouseRestStub):
+    class _ViewIndexedAssets(
+        _BaseWarehouseRestTransport._BaseViewIndexedAssets, WarehouseRestStub
+    ):
         def __hash__(self):
-            return hash("ViewIndexedAssets")
+            return hash("WarehouseRestTransport.ViewIndexedAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7777,40 +8016,29 @@ class WarehouseRestTransport(WarehouseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{index=projects/*/locations/*/corpora/*/indexes/*}:viewAssets",
-                },
-            ]
+            http_options = (
+                _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_view_indexed_assets(
                 request, metadata
             )
-            pb_request = warehouse.ViewIndexedAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = WarehouseRestTransport._ViewIndexedAssets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8348,7 +8576,35 @@ class WarehouseRestTransport(WarehouseTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(WarehouseRestStub):
+    class _CancelOperation(
+        _BaseWarehouseRestTransport._BaseCancelOperation, WarehouseRestStub
+    ):
+        def __hash__(self):
+            return hash("WarehouseRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -8369,37 +8625,38 @@ class WarehouseRestTransport(WarehouseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseWarehouseRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = (
+                _BaseWarehouseRestTransport._BaseCancelOperation._get_request_body_json(
+                    transcoded_request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseWarehouseRestTransport._BaseCancelOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = WarehouseRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8413,7 +8670,34 @@ class WarehouseRestTransport(WarehouseTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(WarehouseRestStub):
+    class _DeleteOperation(
+        _BaseWarehouseRestTransport._BaseDeleteOperation, WarehouseRestStub
+    ):
+        def __hash__(self):
+            return hash("WarehouseRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -8434,34 +8718,31 @@ class WarehouseRestTransport(WarehouseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseWarehouseRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseWarehouseRestTransport._BaseDeleteOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = WarehouseRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8475,7 +8756,34 @@ class WarehouseRestTransport(WarehouseTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(WarehouseRestStub):
+    class _GetOperation(
+        _BaseWarehouseRestTransport._BaseGetOperation, WarehouseRestStub
+    ):
+        def __hash__(self):
+            return hash("WarehouseRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -8499,60 +8807,31 @@ class WarehouseRestTransport(WarehouseTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/warehouseOperations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/assets/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/collections/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/imageIndexes/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/indexes/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/corpora/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/indexEndpoints/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseWarehouseRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseGetOperation._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseWarehouseRestTransport._BaseGetOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = WarehouseRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8560,8 +8839,9 @@ class WarehouseRestTransport(WarehouseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -8569,7 +8849,34 @@ class WarehouseRestTransport(WarehouseTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(WarehouseRestStub):
+    class _ListOperations(
+        _BaseWarehouseRestTransport._BaseListOperations, WarehouseRestStub
+    ):
+        def __hash__(self):
+            return hash("WarehouseRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -8593,32 +8900,31 @@ class WarehouseRestTransport(WarehouseTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseWarehouseRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseWarehouseRestTransport._BaseListOperations._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseWarehouseRestTransport._BaseListOperations._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = WarehouseRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8626,8 +8932,9 @@ class WarehouseRestTransport(WarehouseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

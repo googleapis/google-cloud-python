@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -52,17 +69,9 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.visionai_v1alpha1.services.warehouse import (
     WarehouseAsyncClient,
@@ -73,8 +82,22 @@ from google.cloud.visionai_v1alpha1.services.warehouse import (
 from google.cloud.visionai_v1alpha1.types import warehouse
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1129,25 +1152,6 @@ def test_create_asset(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
 
 
-def test_create_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateAssetRequest()
-
-
 def test_create_asset_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1214,29 +1218,6 @@ def test_create_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Asset(
-                name="name_value",
-            )
-        )
-        response = await client.create_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_asset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1244,7 +1225,7 @@ async def test_create_asset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1283,7 +1264,7 @@ async def test_create_asset_async(
     transport: str = "grpc_asyncio", request_type=warehouse.CreateAssetRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1349,7 +1330,7 @@ def test_create_asset_field_headers():
 @pytest.mark.asyncio
 async def test_create_asset_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1427,7 +1408,7 @@ def test_create_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_create_asset_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1462,7 +1443,7 @@ async def test_create_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_create_asset_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1510,25 +1491,6 @@ def test_update_asset(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Asset)
     assert response.name == "name_value"
-
-
-def test_update_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateAssetRequest()
 
 
 def test_update_asset_non_empty_request_with_auto_populated_field():
@@ -1591,29 +1553,6 @@ def test_update_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Asset(
-                name="name_value",
-            )
-        )
-        response = await client.update_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_asset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1621,7 +1560,7 @@ async def test_update_asset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1660,7 +1599,7 @@ async def test_update_asset_async(
     transport: str = "grpc_asyncio", request_type=warehouse.UpdateAssetRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1726,7 +1665,7 @@ def test_update_asset_field_headers():
 @pytest.mark.asyncio
 async def test_update_asset_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1799,7 +1738,7 @@ def test_update_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_update_asset_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1830,7 +1769,7 @@ async def test_update_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_update_asset_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1877,25 +1816,6 @@ def test_get_asset(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Asset)
     assert response.name == "name_value"
-
-
-def test_get_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetAssetRequest()
 
 
 def test_get_asset_non_empty_request_with_auto_populated_field():
@@ -1962,35 +1882,12 @@ def test_get_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Asset(
-                name="name_value",
-            )
-        )
-        response = await client.get_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_asset_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2029,7 +1926,7 @@ async def test_get_asset_async(
     transport: str = "grpc_asyncio", request_type=warehouse.GetAssetRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2095,7 +1992,7 @@ def test_get_asset_field_headers():
 @pytest.mark.asyncio
 async def test_get_asset_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2163,7 +2060,7 @@ def test_get_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_get_asset_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2190,7 +2087,7 @@ async def test_get_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_get_asset_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2236,25 +2133,6 @@ def test_list_assets(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_assets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_assets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListAssetsRequest()
 
 
 def test_list_assets_non_empty_request_with_auto_populated_field():
@@ -2323,29 +2201,6 @@ def test_list_assets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_assets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.ListAssetsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_assets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListAssetsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_assets_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2353,7 +2208,7 @@ async def test_list_assets_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2392,7 +2247,7 @@ async def test_list_assets_async(
     transport: str = "grpc_asyncio", request_type=warehouse.ListAssetsRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2458,7 +2313,7 @@ def test_list_assets_field_headers():
 @pytest.mark.asyncio
 async def test_list_assets_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2528,7 +2383,7 @@ def test_list_assets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2557,7 +2412,7 @@ async def test_list_assets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2667,7 +2522,7 @@ def test_list_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_assets_async_pager():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2717,7 +2572,7 @@ async def test_list_assets_async_pager():
 @pytest.mark.asyncio
 async def test_list_assets_async_pages():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2796,25 +2651,6 @@ def test_delete_asset(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_delete_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteAssetRequest()
-
-
 def test_delete_asset_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2884,27 +2720,6 @@ def test_delete_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_asset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2912,7 +2727,7 @@ async def test_delete_asset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2956,7 +2771,7 @@ async def test_delete_asset_async(
     transport: str = "grpc_asyncio", request_type=warehouse.DeleteAssetRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3019,7 +2834,7 @@ def test_delete_asset_field_headers():
 @pytest.mark.asyncio
 async def test_delete_asset_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3089,7 +2904,7 @@ def test_delete_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_asset_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3118,7 +2933,7 @@ async def test_delete_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_asset_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3161,25 +2976,6 @@ def test_create_corpus(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_corpus_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateCorpusRequest()
 
 
 def test_create_corpus_non_empty_request_with_auto_populated_field():
@@ -3251,27 +3047,6 @@ def test_create_corpus_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_corpus_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateCorpusRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_corpus_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3279,7 +3054,7 @@ async def test_create_corpus_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3323,7 +3098,7 @@ async def test_create_corpus_async(
     transport: str = "grpc_asyncio", request_type=warehouse.CreateCorpusRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3386,7 +3161,7 @@ def test_create_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_create_corpus_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3461,7 +3236,7 @@ def test_create_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_create_corpus_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3494,7 +3269,7 @@ async def test_create_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_create_corpus_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3545,25 +3320,6 @@ def test_get_corpus(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_get_corpus_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetCorpusRequest()
 
 
 def test_get_corpus_non_empty_request_with_auto_populated_field():
@@ -3630,37 +3386,12 @@ def test_get_corpus_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_corpus_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Corpus(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.get_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetCorpusRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_corpus_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3699,7 +3430,7 @@ async def test_get_corpus_async(
     transport: str = "grpc_asyncio", request_type=warehouse.GetCorpusRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3769,7 +3500,7 @@ def test_get_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_get_corpus_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3837,7 +3568,7 @@ def test_get_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_get_corpus_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3864,7 +3595,7 @@ async def test_get_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_get_corpus_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3914,25 +3645,6 @@ def test_update_corpus(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_update_corpus_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateCorpusRequest()
 
 
 def test_update_corpus_non_empty_request_with_auto_populated_field():
@@ -3995,31 +3707,6 @@ def test_update_corpus_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_corpus_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Corpus(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-            )
-        )
-        response = await client.update_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateCorpusRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_corpus_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4027,7 +3714,7 @@ async def test_update_corpus_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4066,7 +3753,7 @@ async def test_update_corpus_async(
     transport: str = "grpc_asyncio", request_type=warehouse.UpdateCorpusRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4136,7 +3823,7 @@ def test_update_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_update_corpus_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4209,7 +3896,7 @@ def test_update_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_update_corpus_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4240,7 +3927,7 @@ async def test_update_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_update_corpus_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4287,25 +3974,6 @@ def test_list_corpora(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCorporaPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_corpora_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_corpora()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListCorporaRequest()
 
 
 def test_list_corpora_non_empty_request_with_auto_populated_field():
@@ -4374,29 +4042,6 @@ def test_list_corpora_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_corpora_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.ListCorporaResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_corpora()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListCorporaRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_corpora_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4404,7 +4049,7 @@ async def test_list_corpora_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4443,7 +4088,7 @@ async def test_list_corpora_async(
     transport: str = "grpc_asyncio", request_type=warehouse.ListCorporaRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4509,7 +4154,7 @@ def test_list_corpora_field_headers():
 @pytest.mark.asyncio
 async def test_list_corpora_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4579,7 +4224,7 @@ def test_list_corpora_flattened_error():
 @pytest.mark.asyncio
 async def test_list_corpora_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4608,7 +4253,7 @@ async def test_list_corpora_flattened_async():
 @pytest.mark.asyncio
 async def test_list_corpora_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4718,7 +4363,7 @@ def test_list_corpora_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_corpora_async_pager():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4768,7 +4413,7 @@ async def test_list_corpora_async_pager():
 @pytest.mark.asyncio
 async def test_list_corpora_async_pages():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4847,25 +4492,6 @@ def test_delete_corpus(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_corpus_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteCorpusRequest()
-
-
 def test_delete_corpus_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4930,25 +4556,6 @@ def test_delete_corpus_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_corpus_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_corpus()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteCorpusRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_corpus_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4956,7 +4563,7 @@ async def test_delete_corpus_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4995,7 +4602,7 @@ async def test_delete_corpus_async(
     transport: str = "grpc_asyncio", request_type=warehouse.DeleteCorpusRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5056,7 +4663,7 @@ def test_delete_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_delete_corpus_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5124,7 +4731,7 @@ def test_delete_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_corpus_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5151,7 +4758,7 @@ async def test_delete_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_corpus_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5201,27 +4808,6 @@ def test_create_data_schema(request_type, transport: str = "grpc"):
     assert isinstance(response, warehouse.DataSchema)
     assert response.name == "name_value"
     assert response.key == "key_value"
-
-
-def test_create_data_schema_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_schema), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateDataSchemaRequest()
 
 
 def test_create_data_schema_non_empty_request_with_auto_populated_field():
@@ -5294,32 +4880,6 @@ def test_create_data_schema_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_data_schema_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_schema), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.DataSchema(
-                name="name_value",
-                key="key_value",
-            )
-        )
-        response = await client.create_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateDataSchemaRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_data_schema_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5327,7 +4887,7 @@ async def test_create_data_schema_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5366,7 +4926,7 @@ async def test_create_data_schema_async(
     transport: str = "grpc_asyncio", request_type=warehouse.CreateDataSchemaRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5438,7 +4998,7 @@ def test_create_data_schema_field_headers():
 @pytest.mark.asyncio
 async def test_create_data_schema_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5517,7 +5077,7 @@ def test_create_data_schema_flattened_error():
 @pytest.mark.asyncio
 async def test_create_data_schema_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5552,7 +5112,7 @@ async def test_create_data_schema_flattened_async():
 @pytest.mark.asyncio
 async def test_create_data_schema_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5603,27 +5163,6 @@ def test_update_data_schema(request_type, transport: str = "grpc"):
     assert isinstance(response, warehouse.DataSchema)
     assert response.name == "name_value"
     assert response.key == "key_value"
-
-
-def test_update_data_schema_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_schema), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateDataSchemaRequest()
 
 
 def test_update_data_schema_non_empty_request_with_auto_populated_field():
@@ -5692,32 +5231,6 @@ def test_update_data_schema_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_data_schema_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_schema), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.DataSchema(
-                name="name_value",
-                key="key_value",
-            )
-        )
-        response = await client.update_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateDataSchemaRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_data_schema_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5725,7 +5238,7 @@ async def test_update_data_schema_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5764,7 +5277,7 @@ async def test_update_data_schema_async(
     transport: str = "grpc_asyncio", request_type=warehouse.UpdateDataSchemaRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5836,7 +5349,7 @@ def test_update_data_schema_field_headers():
 @pytest.mark.asyncio
 async def test_update_data_schema_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5915,7 +5428,7 @@ def test_update_data_schema_flattened_error():
 @pytest.mark.asyncio
 async def test_update_data_schema_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5950,7 +5463,7 @@ async def test_update_data_schema_flattened_async():
 @pytest.mark.asyncio
 async def test_update_data_schema_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5999,25 +5512,6 @@ def test_get_data_schema(request_type, transport: str = "grpc"):
     assert isinstance(response, warehouse.DataSchema)
     assert response.name == "name_value"
     assert response.key == "key_value"
-
-
-def test_get_data_schema_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_data_schema), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetDataSchemaRequest()
 
 
 def test_get_data_schema_non_empty_request_with_auto_populated_field():
@@ -6084,30 +5578,6 @@ def test_get_data_schema_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_data_schema_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_data_schema), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.DataSchema(
-                name="name_value",
-                key="key_value",
-            )
-        )
-        response = await client.get_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetDataSchemaRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_data_schema_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6115,7 +5585,7 @@ async def test_get_data_schema_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6154,7 +5624,7 @@ async def test_get_data_schema_async(
     transport: str = "grpc_asyncio", request_type=warehouse.GetDataSchemaRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6222,7 +5692,7 @@ def test_get_data_schema_field_headers():
 @pytest.mark.asyncio
 async def test_get_data_schema_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6292,7 +5762,7 @@ def test_get_data_schema_flattened_error():
 @pytest.mark.asyncio
 async def test_get_data_schema_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6321,7 +5791,7 @@ async def test_get_data_schema_flattened_async():
 @pytest.mark.asyncio
 async def test_get_data_schema_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6366,27 +5836,6 @@ def test_delete_data_schema(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_data_schema_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_schema), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteDataSchemaRequest()
 
 
 def test_delete_data_schema_non_empty_request_with_auto_populated_field():
@@ -6459,27 +5908,6 @@ def test_delete_data_schema_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_data_schema_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_schema), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_data_schema()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteDataSchemaRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_data_schema_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6487,7 +5915,7 @@ async def test_delete_data_schema_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6526,7 +5954,7 @@ async def test_delete_data_schema_async(
     transport: str = "grpc_asyncio", request_type=warehouse.DeleteDataSchemaRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6591,7 +6019,7 @@ def test_delete_data_schema_field_headers():
 @pytest.mark.asyncio
 async def test_delete_data_schema_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6663,7 +6091,7 @@ def test_delete_data_schema_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_data_schema_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6692,7 +6120,7 @@ async def test_delete_data_schema_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_data_schema_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6740,27 +6168,6 @@ def test_list_data_schemas(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSchemasPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_data_schemas_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_schemas), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_data_schemas()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListDataSchemasRequest()
 
 
 def test_list_data_schemas_non_empty_request_with_auto_populated_field():
@@ -6833,31 +6240,6 @@ def test_list_data_schemas_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_data_schemas_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_schemas), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.ListDataSchemasResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_data_schemas()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListDataSchemasRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_data_schemas_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6865,7 +6247,7 @@ async def test_list_data_schemas_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6904,7 +6286,7 @@ async def test_list_data_schemas_async(
     transport: str = "grpc_asyncio", request_type=warehouse.ListDataSchemasRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6974,7 +6356,7 @@ def test_list_data_schemas_field_headers():
 @pytest.mark.asyncio
 async def test_list_data_schemas_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7048,7 +6430,7 @@ def test_list_data_schemas_flattened_error():
 @pytest.mark.asyncio
 async def test_list_data_schemas_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7079,7 +6461,7 @@ async def test_list_data_schemas_flattened_async():
 @pytest.mark.asyncio
 async def test_list_data_schemas_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7193,7 +6575,7 @@ def test_list_data_schemas_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_data_schemas_async_pager():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7245,7 +6627,7 @@ async def test_list_data_schemas_async_pager():
 @pytest.mark.asyncio
 async def test_list_data_schemas_async_pages():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7331,27 +6713,6 @@ def test_create_annotation(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
 
 
-def test_create_annotation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_annotation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateAnnotationRequest()
-
-
 def test_create_annotation_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7422,31 +6783,6 @@ def test_create_annotation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_annotation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_annotation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Annotation(
-                name="name_value",
-            )
-        )
-        response = await client.create_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateAnnotationRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_annotation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7454,7 +6790,7 @@ async def test_create_annotation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7493,7 +6829,7 @@ async def test_create_annotation_async(
     transport: str = "grpc_asyncio", request_type=warehouse.CreateAnnotationRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7563,7 +6899,7 @@ def test_create_annotation_field_headers():
 @pytest.mark.asyncio
 async def test_create_annotation_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7647,7 +6983,7 @@ def test_create_annotation_flattened_error():
 @pytest.mark.asyncio
 async def test_create_annotation_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7686,7 +7022,7 @@ async def test_create_annotation_flattened_async():
 @pytest.mark.asyncio
 async def test_create_annotation_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7734,25 +7070,6 @@ def test_get_annotation(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.Annotation)
     assert response.name == "name_value"
-
-
-def test_get_annotation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetAnnotationRequest()
 
 
 def test_get_annotation_non_empty_request_with_auto_populated_field():
@@ -7819,29 +7136,6 @@ def test_get_annotation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_annotation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Annotation(
-                name="name_value",
-            )
-        )
-        response = await client.get_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetAnnotationRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_annotation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7849,7 +7143,7 @@ async def test_get_annotation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7888,7 +7182,7 @@ async def test_get_annotation_async(
     transport: str = "grpc_asyncio", request_type=warehouse.GetAnnotationRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7954,7 +7248,7 @@ def test_get_annotation_field_headers():
 @pytest.mark.asyncio
 async def test_get_annotation_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8024,7 +7318,7 @@ def test_get_annotation_flattened_error():
 @pytest.mark.asyncio
 async def test_get_annotation_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8053,7 +7347,7 @@ async def test_get_annotation_flattened_async():
 @pytest.mark.asyncio
 async def test_get_annotation_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8099,25 +7393,6 @@ def test_list_annotations(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_annotations_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_annotations), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_annotations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListAnnotationsRequest()
 
 
 def test_list_annotations_non_empty_request_with_auto_populated_field():
@@ -8190,29 +7465,6 @@ def test_list_annotations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_annotations_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_annotations), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.ListAnnotationsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_annotations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListAnnotationsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_annotations_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8220,7 +7472,7 @@ async def test_list_annotations_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8259,7 +7511,7 @@ async def test_list_annotations_async(
     transport: str = "grpc_asyncio", request_type=warehouse.ListAnnotationsRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8325,7 +7577,7 @@ def test_list_annotations_field_headers():
 @pytest.mark.asyncio
 async def test_list_annotations_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8395,7 +7647,7 @@ def test_list_annotations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_annotations_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8424,7 +7676,7 @@ async def test_list_annotations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_annotations_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8534,7 +7786,7 @@ def test_list_annotations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_annotations_async_pager():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8584,7 +7836,7 @@ async def test_list_annotations_async_pager():
 @pytest.mark.asyncio
 async def test_list_annotations_async_pages():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8668,27 +7920,6 @@ def test_update_annotation(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
 
 
-def test_update_annotation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_annotation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateAnnotationRequest()
-
-
 def test_update_annotation_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -8753,31 +7984,6 @@ def test_update_annotation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_annotation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_annotation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.Annotation(
-                name="name_value",
-            )
-        )
-        response = await client.update_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateAnnotationRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_annotation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8785,7 +7991,7 @@ async def test_update_annotation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8824,7 +8030,7 @@ async def test_update_annotation_async(
     transport: str = "grpc_asyncio", request_type=warehouse.UpdateAnnotationRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8894,7 +8100,7 @@ def test_update_annotation_field_headers():
 @pytest.mark.asyncio
 async def test_update_annotation_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8973,7 +8179,7 @@ def test_update_annotation_flattened_error():
 @pytest.mark.asyncio
 async def test_update_annotation_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9008,7 +8214,7 @@ async def test_update_annotation_flattened_async():
 @pytest.mark.asyncio
 async def test_update_annotation_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9054,27 +8260,6 @@ def test_delete_annotation(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_annotation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_annotation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteAnnotationRequest()
 
 
 def test_delete_annotation_non_empty_request_with_auto_populated_field():
@@ -9145,27 +8330,6 @@ def test_delete_annotation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_annotation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_annotation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_annotation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteAnnotationRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_annotation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9173,7 +8337,7 @@ async def test_delete_annotation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9212,7 +8376,7 @@ async def test_delete_annotation_async(
     transport: str = "grpc_asyncio", request_type=warehouse.DeleteAnnotationRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9277,7 +8441,7 @@ def test_delete_annotation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_annotation_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9349,7 +8513,7 @@ def test_delete_annotation_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_annotation_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9378,7 +8542,7 @@ async def test_delete_annotation_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_annotation_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9467,7 +8631,7 @@ async def test_ingest_asset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9506,7 +8670,7 @@ async def test_ingest_asset_async(
     transport: str = "grpc_asyncio", request_type=warehouse.IngestAssetRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9570,25 +8734,6 @@ def test_clip_asset(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.ClipAssetResponse)
-
-
-def test_clip_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.clip_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.clip_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ClipAssetRequest()
 
 
 def test_clip_asset_non_empty_request_with_auto_populated_field():
@@ -9655,33 +8800,12 @@ def test_clip_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_clip_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.clip_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.ClipAssetResponse()
-        )
-        response = await client.clip_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ClipAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_clip_asset_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9720,7 +8844,7 @@ async def test_clip_asset_async(
     transport: str = "grpc_asyncio", request_type=warehouse.ClipAssetRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9783,7 +8907,7 @@ def test_clip_asset_field_headers():
 @pytest.mark.asyncio
 async def test_clip_asset_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9846,25 +8970,6 @@ def test_generate_hls_uri(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.GenerateHlsUriResponse)
     assert response.uri == "uri_value"
-
-
-def test_generate_hls_uri_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_hls_uri), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.generate_hls_uri()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GenerateHlsUriRequest()
 
 
 def test_generate_hls_uri_non_empty_request_with_auto_populated_field():
@@ -9933,29 +9038,6 @@ def test_generate_hls_uri_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_hls_uri_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.generate_hls_uri), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.GenerateHlsUriResponse(
-                uri="uri_value",
-            )
-        )
-        response = await client.generate_hls_uri()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GenerateHlsUriRequest()
-
-
-@pytest.mark.asyncio
 async def test_generate_hls_uri_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9963,7 +9045,7 @@ async def test_generate_hls_uri_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10002,7 +9084,7 @@ async def test_generate_hls_uri_async(
     transport: str = "grpc_asyncio", request_type=warehouse.GenerateHlsUriRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10068,7 +9150,7 @@ def test_generate_hls_uri_field_headers():
 @pytest.mark.asyncio
 async def test_generate_hls_uri_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10133,27 +9215,6 @@ def test_create_search_config(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.SearchConfig)
     assert response.name == "name_value"
-
-
-def test_create_search_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_search_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateSearchConfigRequest()
 
 
 def test_create_search_config_non_empty_request_with_auto_populated_field():
@@ -10228,31 +9289,6 @@ def test_create_search_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_search_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_search_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.SearchConfig(
-                name="name_value",
-            )
-        )
-        response = await client.create_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.CreateSearchConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_search_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10260,7 +9296,7 @@ async def test_create_search_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10299,7 +9335,7 @@ async def test_create_search_config_async(
     transport: str = "grpc_asyncio", request_type=warehouse.CreateSearchConfigRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10369,7 +9405,7 @@ def test_create_search_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_search_config_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10453,7 +9489,7 @@ def test_create_search_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_search_config_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10492,7 +9528,7 @@ async def test_create_search_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_search_config_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10542,27 +9578,6 @@ def test_update_search_config(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.SearchConfig)
     assert response.name == "name_value"
-
-
-def test_update_search_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_search_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateSearchConfigRequest()
 
 
 def test_update_search_config_non_empty_request_with_auto_populated_field():
@@ -10631,31 +9646,6 @@ def test_update_search_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_search_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_search_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.SearchConfig(
-                name="name_value",
-            )
-        )
-        response = await client.update_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.UpdateSearchConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_search_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10663,7 +9653,7 @@ async def test_update_search_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10702,7 +9692,7 @@ async def test_update_search_config_async(
     transport: str = "grpc_asyncio", request_type=warehouse.UpdateSearchConfigRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10772,7 +9762,7 @@ def test_update_search_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_search_config_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10851,7 +9841,7 @@ def test_update_search_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_search_config_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10886,7 +9876,7 @@ async def test_update_search_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_search_config_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10935,27 +9925,6 @@ def test_get_search_config(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, warehouse.SearchConfig)
     assert response.name == "name_value"
-
-
-def test_get_search_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_search_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetSearchConfigRequest()
 
 
 def test_get_search_config_non_empty_request_with_auto_populated_field():
@@ -11026,31 +9995,6 @@ def test_get_search_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_search_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_search_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.SearchConfig(
-                name="name_value",
-            )
-        )
-        response = await client.get_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.GetSearchConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_search_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11058,7 +10002,7 @@ async def test_get_search_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11097,7 +10041,7 @@ async def test_get_search_config_async(
     transport: str = "grpc_asyncio", request_type=warehouse.GetSearchConfigRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11167,7 +10111,7 @@ def test_get_search_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_search_config_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11241,7 +10185,7 @@ def test_get_search_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_search_config_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11272,7 +10216,7 @@ async def test_get_search_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_search_config_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11317,27 +10261,6 @@ def test_delete_search_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_search_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_search_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteSearchConfigRequest()
 
 
 def test_delete_search_config_non_empty_request_with_auto_populated_field():
@@ -11410,27 +10333,6 @@ def test_delete_search_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_search_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_search_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_search_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.DeleteSearchConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_search_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11438,7 +10340,7 @@ async def test_delete_search_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11477,7 +10379,7 @@ async def test_delete_search_config_async(
     transport: str = "grpc_asyncio", request_type=warehouse.DeleteSearchConfigRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11542,7 +10444,7 @@ def test_delete_search_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_search_config_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11614,7 +10516,7 @@ def test_delete_search_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_search_config_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11643,7 +10545,7 @@ async def test_delete_search_config_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_search_config_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11691,27 +10593,6 @@ def test_list_search_configs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSearchConfigsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_search_configs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_search_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_search_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListSearchConfigsRequest()
 
 
 def test_list_search_configs_non_empty_request_with_auto_populated_field():
@@ -11786,31 +10667,6 @@ def test_list_search_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_search_configs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_search_configs), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.ListSearchConfigsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_search_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.ListSearchConfigsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_search_configs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11818,7 +10674,7 @@ async def test_list_search_configs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11857,7 +10713,7 @@ async def test_list_search_configs_async(
     transport: str = "grpc_asyncio", request_type=warehouse.ListSearchConfigsRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11927,7 +10783,7 @@ def test_list_search_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_search_configs_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12001,7 +10857,7 @@ def test_list_search_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_search_configs_flattened_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12032,7 +10888,7 @@ async def test_list_search_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_search_configs_flattened_error_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12146,7 +11002,7 @@ def test_list_search_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_search_configs_async_pager():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12198,7 +11054,7 @@ async def test_list_search_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_search_configs_async_pages():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12282,25 +11138,6 @@ def test_search_assets(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_search_assets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_assets), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.search_assets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.SearchAssetsRequest()
-
-
 def test_search_assets_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -12367,29 +11204,6 @@ def test_search_assets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_assets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_assets), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            warehouse.SearchAssetsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.search_assets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == warehouse.SearchAssetsRequest()
-
-
-@pytest.mark.asyncio
 async def test_search_assets_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12397,7 +11211,7 @@ async def test_search_assets_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WarehouseAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12436,7 +11250,7 @@ async def test_search_assets_async(
     transport: str = "grpc_asyncio", request_type=warehouse.SearchAssetsRequest
 ):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12502,7 +11316,7 @@ def test_search_assets_field_headers():
 @pytest.mark.asyncio
 async def test_search_assets_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12629,7 +11443,7 @@ def test_search_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_assets_async_pager():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12679,7 +11493,7 @@ async def test_search_assets_async_pager():
 @pytest.mark.asyncio
 async def test_search_assets_async_pages():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12723,117 +11537,6 @@ async def test_search_assets_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.CreateAssetRequest,
-        dict,
-    ],
-)
-def test_create_asset_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request_init["asset"] = {
-        "name": "name_value",
-        "ttl": {"seconds": 751, "nanos": 543},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.CreateAssetRequest.meta.fields["asset"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["asset"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["asset"][field])):
-                    del request_init["asset"][field][i][subfield]
-            else:
-                del request_init["asset"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Asset(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Asset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_asset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Asset)
-    assert response.name == "name_value"
 
 
 def test_create_asset_rest_use_cached_wrapped_rpc():
@@ -12964,81 +11667,6 @@ def test_create_asset_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_asset_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_create_asset"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_create_asset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.CreateAssetRequest.pb(warehouse.CreateAssetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Asset.to_json(warehouse.Asset())
-
-        request = warehouse.CreateAssetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Asset()
-
-        client.create_asset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_asset_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.CreateAssetRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_asset(request)
-
-
 def test_create_asset_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13100,127 +11728,6 @@ def test_create_asset_rest_flattened_error(transport: str = "rest"):
             asset=warehouse.Asset(name="name_value"),
             asset_id="asset_id_value",
         )
-
-
-def test_create_asset_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.UpdateAssetRequest,
-        dict,
-    ],
-)
-def test_update_asset_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "asset": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-        }
-    }
-    request_init["asset"] = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4",
-        "ttl": {"seconds": 751, "nanos": 543},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.UpdateAssetRequest.meta.fields["asset"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["asset"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["asset"][field])):
-                    del request_init["asset"][field][i][subfield]
-            else:
-                del request_init["asset"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Asset(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Asset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_asset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Asset)
-    assert response.name == "name_value"
 
 
 def test_update_asset_rest_use_cached_wrapped_rpc():
@@ -13338,85 +11845,6 @@ def test_update_asset_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("asset",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_asset_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_update_asset"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_update_asset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.UpdateAssetRequest.pb(warehouse.UpdateAssetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Asset.to_json(warehouse.Asset())
-
-        request = warehouse.UpdateAssetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Asset()
-
-        client.update_asset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_asset_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.UpdateAssetRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "asset": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_asset(request)
-
-
 def test_update_asset_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13478,54 +11906,6 @@ def test_update_asset_rest_flattened_error(transport: str = "rest"):
             asset=warehouse.Asset(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_asset_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.GetAssetRequest,
-        dict,
-    ],
-)
-def test_get_asset_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Asset(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Asset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_asset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Asset)
-    assert response.name == "name_value"
 
 
 def test_get_asset_rest_use_cached_wrapped_rpc():
@@ -13645,83 +12025,6 @@ def test_get_asset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_asset_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_get_asset"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_get_asset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.GetAssetRequest.pb(warehouse.GetAssetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Asset.to_json(warehouse.Asset())
-
-        request = warehouse.GetAssetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Asset()
-
-        client.get_asset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_asset_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.GetAssetRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_asset(request)
-
-
 def test_get_asset_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13779,52 +12082,6 @@ def test_get_asset_rest_flattened_error(transport: str = "rest"):
             warehouse.GetAssetRequest(),
             name="name_value",
         )
-
-
-def test_get_asset_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.ListAssetsRequest,
-        dict,
-    ],
-)
-def test_list_assets_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.ListAssetsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.ListAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAssetsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_assets_rest_use_cached_wrapped_rpc():
@@ -13959,83 +12216,6 @@ def test_list_assets_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_assets_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_list_assets"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_list_assets"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.ListAssetsRequest.pb(warehouse.ListAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.ListAssetsResponse.to_json(
-            warehouse.ListAssetsResponse()
-        )
-
-        request = warehouse.ListAssetsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.ListAssetsResponse()
-
-        client.list_assets(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_assets_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.ListAssetsRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_assets(request)
-
-
 def test_list_assets_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14158,43 +12338,6 @@ def test_list_assets_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.DeleteAssetRequest,
-        dict,
-    ],
-)
-def test_delete_asset_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_asset(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
 def test_delete_asset_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -14313,87 +12456,6 @@ def test_delete_asset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_asset_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_delete_asset"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_delete_asset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.DeleteAssetRequest.pb(warehouse.DeleteAssetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = warehouse.DeleteAssetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_asset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_asset_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.DeleteAssetRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_asset(request)
-
-
 def test_delete_asset_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14449,120 +12511,6 @@ def test_delete_asset_rest_flattened_error(transport: str = "rest"):
             warehouse.DeleteAssetRequest(),
             name="name_value",
         )
-
-
-def test_delete_asset_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.CreateCorpusRequest,
-        dict,
-    ],
-)
-def test_create_corpus_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["corpus"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "default_ttl": {"seconds": 751, "nanos": 543},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.CreateCorpusRequest.meta.fields["corpus"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["corpus"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["corpus"][field])):
-                    del request_init["corpus"][field][i][subfield]
-            else:
-                del request_init["corpus"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_corpus(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_corpus_rest_use_cached_wrapped_rpc():
@@ -14692,85 +12640,6 @@ def test_create_corpus_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_corpus_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_create_corpus"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_create_corpus"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.CreateCorpusRequest.pb(warehouse.CreateCorpusRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = warehouse.CreateCorpusRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_corpus(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_corpus_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.CreateCorpusRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_corpus(request)
-
-
 def test_create_corpus_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14826,56 +12695,6 @@ def test_create_corpus_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             corpus=warehouse.Corpus(name="name_value"),
         )
-
-
-def test_create_corpus_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.GetCorpusRequest,
-        dict,
-    ],
-)
-def test_get_corpus_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Corpus(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Corpus.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_corpus(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Corpus)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_get_corpus_rest_use_cached_wrapped_rpc():
@@ -14995,81 +12814,6 @@ def test_get_corpus_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_corpus_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_get_corpus"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_get_corpus"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.GetCorpusRequest.pb(warehouse.GetCorpusRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Corpus.to_json(warehouse.Corpus())
-
-        request = warehouse.GetCorpusRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Corpus()
-
-        client.get_corpus(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_corpus_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.GetCorpusRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_corpus(request)
-
-
 def test_get_corpus_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15125,131 +12869,6 @@ def test_get_corpus_rest_flattened_error(transport: str = "rest"):
             warehouse.GetCorpusRequest(),
             name="name_value",
         )
-
-
-def test_get_corpus_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.UpdateCorpusRequest,
-        dict,
-    ],
-)
-def test_update_corpus_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "corpus": {"name": "projects/sample1/locations/sample2/corpora/sample3"}
-    }
-    request_init["corpus"] = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "default_ttl": {"seconds": 751, "nanos": 543},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.UpdateCorpusRequest.meta.fields["corpus"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["corpus"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["corpus"][field])):
-                    del request_init["corpus"][field][i][subfield]
-            else:
-                del request_init["corpus"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Corpus(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Corpus.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_corpus(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Corpus)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
 
 
 def test_update_corpus_rest_use_cached_wrapped_rpc():
@@ -15367,83 +12986,6 @@ def test_update_corpus_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("corpus",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_corpus_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_update_corpus"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_update_corpus"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.UpdateCorpusRequest.pb(warehouse.UpdateCorpusRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Corpus.to_json(warehouse.Corpus())
-
-        request = warehouse.UpdateCorpusRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Corpus()
-
-        client.update_corpus(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_corpus_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.UpdateCorpusRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "corpus": {"name": "projects/sample1/locations/sample2/corpora/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_corpus(request)
-
-
 def test_update_corpus_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15503,52 +13045,6 @@ def test_update_corpus_rest_flattened_error(transport: str = "rest"):
             corpus=warehouse.Corpus(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_corpus_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.ListCorporaRequest,
-        dict,
-    ],
-)
-def test_list_corpora_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.ListCorporaResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.ListCorporaResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_corpora(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListCorporaPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_corpora_rest_use_cached_wrapped_rpc():
@@ -15683,83 +13179,6 @@ def test_list_corpora_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_corpora_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_list_corpora"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_list_corpora"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.ListCorporaRequest.pb(warehouse.ListCorporaRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.ListCorporaResponse.to_json(
-            warehouse.ListCorporaResponse()
-        )
-
-        request = warehouse.ListCorporaRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.ListCorporaResponse()
-
-        client.list_corpora(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_corpora_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.ListCorporaRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_corpora(request)
-
-
 def test_list_corpora_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15878,41 +13297,6 @@ def test_list_corpora_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.DeleteCorpusRequest,
-        dict,
-    ],
-)
-def test_delete_corpus_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_corpus(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
 def test_delete_corpus_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -16027,75 +13411,6 @@ def test_delete_corpus_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_corpus_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_delete_corpus"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = warehouse.DeleteCorpusRequest.pb(warehouse.DeleteCorpusRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = warehouse.DeleteCorpusRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_corpus(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_corpus_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.DeleteCorpusRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_corpus(request)
-
-
 def test_delete_corpus_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16149,131 +13464,6 @@ def test_delete_corpus_rest_flattened_error(transport: str = "rest"):
             warehouse.DeleteCorpusRequest(),
             name="name_value",
         )
-
-
-def test_delete_corpus_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.CreateDataSchemaRequest,
-        dict,
-    ],
-)
-def test_create_data_schema_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request_init["data_schema"] = {
-        "name": "name_value",
-        "key": "key_value",
-        "schema_details": {
-            "type_": 1,
-            "proto_any_config": {"type_uri": "type_uri_value"},
-            "granularity": 1,
-            "search_strategy": {"search_strategy_type": 1},
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.CreateDataSchemaRequest.meta.fields["data_schema"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["data_schema"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["data_schema"][field])):
-                    del request_init["data_schema"][field][i][subfield]
-            else:
-                del request_init["data_schema"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.DataSchema(
-            name="name_value",
-            key="key_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.DataSchema.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_data_schema(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.DataSchema)
-    assert response.name == "name_value"
-    assert response.key == "key_value"
 
 
 def test_create_data_schema_rest_use_cached_wrapped_rpc():
@@ -16408,83 +13598,6 @@ def test_create_data_schema_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_data_schema_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_create_data_schema"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_create_data_schema"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.CreateDataSchemaRequest.pb(
-            warehouse.CreateDataSchemaRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.DataSchema.to_json(warehouse.DataSchema())
-
-        request = warehouse.CreateDataSchemaRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.DataSchema()
-
-        client.create_data_schema(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_data_schema_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.CreateDataSchemaRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_data_schema(request)
-
-
 def test_create_data_schema_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16544,135 +13657,6 @@ def test_create_data_schema_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             data_schema=warehouse.DataSchema(name="name_value"),
         )
-
-
-def test_create_data_schema_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.UpdateDataSchemaRequest,
-        dict,
-    ],
-)
-def test_update_data_schema_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "data_schema": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
-        }
-    }
-    request_init["data_schema"] = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4",
-        "key": "key_value",
-        "schema_details": {
-            "type_": 1,
-            "proto_any_config": {"type_uri": "type_uri_value"},
-            "granularity": 1,
-            "search_strategy": {"search_strategy_type": 1},
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.UpdateDataSchemaRequest.meta.fields["data_schema"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["data_schema"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["data_schema"][field])):
-                    del request_init["data_schema"][field][i][subfield]
-            else:
-                del request_init["data_schema"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.DataSchema(
-            name="name_value",
-            key="key_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.DataSchema.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_data_schema(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.DataSchema)
-    assert response.name == "name_value"
-    assert response.key == "key_value"
 
 
 def test_update_data_schema_rest_use_cached_wrapped_rpc():
@@ -16796,87 +13780,6 @@ def test_update_data_schema_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("dataSchema",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_data_schema_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_update_data_schema"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_update_data_schema"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.UpdateDataSchemaRequest.pb(
-            warehouse.UpdateDataSchemaRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.DataSchema.to_json(warehouse.DataSchema())
-
-        request = warehouse.UpdateDataSchemaRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.DataSchema()
-
-        client.update_data_schema(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_data_schema_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.UpdateDataSchemaRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "data_schema": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_data_schema(request)
-
-
 def test_update_data_schema_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16938,56 +13841,6 @@ def test_update_data_schema_rest_flattened_error(transport: str = "rest"):
             data_schema=warehouse.DataSchema(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_data_schema_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.GetDataSchemaRequest,
-        dict,
-    ],
-)
-def test_get_data_schema_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.DataSchema(
-            name="name_value",
-            key="key_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.DataSchema.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_data_schema(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.DataSchema)
-    assert response.name == "name_value"
-    assert response.key == "key_value"
 
 
 def test_get_data_schema_rest_use_cached_wrapped_rpc():
@@ -17109,83 +13962,6 @@ def test_get_data_schema_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_data_schema_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_get_data_schema"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_get_data_schema"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.GetDataSchemaRequest.pb(warehouse.GetDataSchemaRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.DataSchema.to_json(warehouse.DataSchema())
-
-        request = warehouse.GetDataSchemaRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.DataSchema()
-
-        client.get_data_schema(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_data_schema_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.GetDataSchemaRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_data_schema(request)
-
-
 def test_get_data_schema_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17243,49 +14019,6 @@ def test_get_data_schema_rest_flattened_error(transport: str = "rest"):
             warehouse.GetDataSchemaRequest(),
             name="name_value",
         )
-
-
-def test_get_data_schema_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.DeleteDataSchemaRequest,
-        dict,
-    ],
-)
-def test_delete_data_schema_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_data_schema(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_data_schema_rest_use_cached_wrapped_rpc():
@@ -17408,79 +14141,6 @@ def test_delete_data_schema_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_data_schema_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_delete_data_schema"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = warehouse.DeleteDataSchemaRequest.pb(
-            warehouse.DeleteDataSchemaRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = warehouse.DeleteDataSchemaRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_data_schema(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_data_schema_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.DeleteDataSchemaRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_data_schema(request)
-
-
 def test_delete_data_schema_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17536,52 +14196,6 @@ def test_delete_data_schema_rest_flattened_error(transport: str = "rest"):
             warehouse.DeleteDataSchemaRequest(),
             name="name_value",
         )
-
-
-def test_delete_data_schema_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.ListDataSchemasRequest,
-        dict,
-    ],
-)
-def test_list_data_schemas_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.ListDataSchemasResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.ListDataSchemasResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_data_schemas(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDataSchemasPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_data_schemas_rest_use_cached_wrapped_rpc():
@@ -17720,85 +14334,6 @@ def test_list_data_schemas_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_data_schemas_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_list_data_schemas"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_list_data_schemas"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.ListDataSchemasRequest.pb(
-            warehouse.ListDataSchemasRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.ListDataSchemasResponse.to_json(
-            warehouse.ListDataSchemasResponse()
-        )
-
-        request = warehouse.ListDataSchemasRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.ListDataSchemasResponse()
-
-        client.list_data_schemas(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_data_schemas_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.ListDataSchemasRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_data_schemas(request)
-
-
 def test_list_data_schemas_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17919,146 +14454,6 @@ def test_list_data_schemas_rest_pager(transport: str = "rest"):
         pages = list(client.list_data_schemas(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.CreateAnnotationRequest,
-        dict,
-    ],
-)
-def test_create_annotation_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request_init["annotation"] = {
-        "name": "name_value",
-        "user_specified_annotation": {
-            "key": "key_value",
-            "value": {
-                "int_value": 967,
-                "float_value": 0.117,
-                "str_value": "str_value_value",
-                "datetime_value": "datetime_value_value",
-                "geo_coordinate": {"latitude": 0.86, "longitude": 0.971},
-                "proto_any_value": {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                },
-                "bool_value": True,
-                "customized_struct_data_value": {"fields": {}},
-            },
-            "partition": {
-                "temporal_partition": {
-                    "start_time": {"seconds": 751, "nanos": 543},
-                    "end_time": {},
-                },
-                "spatial_partition": {
-                    "x_min": 539,
-                    "y_min": 540,
-                    "x_max": 541,
-                    "y_max": 542,
-                },
-            },
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.CreateAnnotationRequest.meta.fields["annotation"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["annotation"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["annotation"][field])):
-                    del request_init["annotation"][field][i][subfield]
-            else:
-                del request_init["annotation"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Annotation(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Annotation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_annotation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Annotation)
-    assert response.name == "name_value"
 
 
 def test_create_annotation_rest_use_cached_wrapped_rpc():
@@ -18193,85 +14588,6 @@ def test_create_annotation_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_annotation_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_create_annotation"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_create_annotation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.CreateAnnotationRequest.pb(
-            warehouse.CreateAnnotationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Annotation.to_json(warehouse.Annotation())
-
-        request = warehouse.CreateAnnotationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Annotation()
-
-        client.create_annotation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_annotation_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.CreateAnnotationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_annotation(request)
-
-
 def test_create_annotation_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18333,54 +14649,6 @@ def test_create_annotation_rest_flattened_error(transport: str = "rest"):
             annotation=warehouse.Annotation(name="name_value"),
             annotation_id="annotation_id_value",
         )
-
-
-def test_create_annotation_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.GetAnnotationRequest,
-        dict,
-    ],
-)
-def test_get_annotation_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Annotation(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Annotation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_annotation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Annotation)
-    assert response.name == "name_value"
 
 
 def test_get_annotation_rest_use_cached_wrapped_rpc():
@@ -18502,83 +14770,6 @@ def test_get_annotation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_annotation_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_get_annotation"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_get_annotation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.GetAnnotationRequest.pb(warehouse.GetAnnotationRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Annotation.to_json(warehouse.Annotation())
-
-        request = warehouse.GetAnnotationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Annotation()
-
-        client.get_annotation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_annotation_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.GetAnnotationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_annotation(request)
-
-
 def test_get_annotation_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18638,54 +14829,6 @@ def test_get_annotation_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_annotation_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.ListAnnotationsRequest,
-        dict,
-    ],
-)
-def test_list_annotations_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.ListAnnotationsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.ListAnnotationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_annotations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAnnotationsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
 def test_list_annotations_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -18722,87 +14865,6 @@ def test_list_annotations_rest_use_cached_wrapped_rpc():
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_annotations_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_list_annotations"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_list_annotations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.ListAnnotationsRequest.pb(
-            warehouse.ListAnnotationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.ListAnnotationsResponse.to_json(
-            warehouse.ListAnnotationsResponse()
-        )
-
-        request = warehouse.ListAnnotationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.ListAnnotationsResponse()
-
-        client.list_annotations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_annotations_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.ListAnnotationsRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_annotations(request)
 
 
 def test_list_annotations_rest_flattened():
@@ -18927,148 +14989,6 @@ def test_list_annotations_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.UpdateAnnotationRequest,
-        dict,
-    ],
-)
-def test_update_annotation_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "annotation": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
-        }
-    }
-    request_init["annotation"] = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5",
-        "user_specified_annotation": {
-            "key": "key_value",
-            "value": {
-                "int_value": 967,
-                "float_value": 0.117,
-                "str_value": "str_value_value",
-                "datetime_value": "datetime_value_value",
-                "geo_coordinate": {"latitude": 0.86, "longitude": 0.971},
-                "proto_any_value": {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                },
-                "bool_value": True,
-                "customized_struct_data_value": {"fields": {}},
-            },
-            "partition": {
-                "temporal_partition": {
-                    "start_time": {"seconds": 751, "nanos": 543},
-                    "end_time": {},
-                },
-                "spatial_partition": {
-                    "x_min": 539,
-                    "y_min": 540,
-                    "x_max": 541,
-                    "y_max": 542,
-                },
-            },
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.UpdateAnnotationRequest.meta.fields["annotation"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["annotation"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["annotation"][field])):
-                    del request_init["annotation"][field][i][subfield]
-            else:
-                del request_init["annotation"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.Annotation(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.Annotation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_annotation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.Annotation)
-    assert response.name == "name_value"
-
-
 def test_update_annotation_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -19188,87 +15108,6 @@ def test_update_annotation_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("annotation",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_annotation_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_update_annotation"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_update_annotation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.UpdateAnnotationRequest.pb(
-            warehouse.UpdateAnnotationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.Annotation.to_json(warehouse.Annotation())
-
-        request = warehouse.UpdateAnnotationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.Annotation()
-
-        client.update_annotation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_annotation_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.UpdateAnnotationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "annotation": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_annotation(request)
-
-
 def test_update_annotation_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19330,49 +15169,6 @@ def test_update_annotation_rest_flattened_error(transport: str = "rest"):
             annotation=warehouse.Annotation(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_annotation_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.DeleteAnnotationRequest,
-        dict,
-    ],
-)
-def test_delete_annotation_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_annotation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_annotation_rest_use_cached_wrapped_rpc():
@@ -19493,79 +15289,6 @@ def test_delete_annotation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_annotation_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_delete_annotation"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = warehouse.DeleteAnnotationRequest.pb(
-            warehouse.DeleteAnnotationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = warehouse.DeleteAnnotationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_annotation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_annotation_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.DeleteAnnotationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_annotation(request)
-
-
 def test_delete_annotation_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19623,12 +15346,6 @@ def test_delete_annotation_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_delete_annotation_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_ingest_asset_rest_no_http_options():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19638,45 +15355,6 @@ def test_ingest_asset_rest_no_http_options():
     requests = [request]
     with pytest.raises(RuntimeError):
         client.ingest_asset(requests)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.ClipAssetRequest,
-        dict,
-    ],
-)
-def test_clip_asset_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.ClipAssetResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.ClipAssetResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.clip_asset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.ClipAssetResponse)
 
 
 def test_clip_asset_rest_use_cached_wrapped_rpc():
@@ -19803,133 +15481,6 @@ def test_clip_asset_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_clip_asset_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_clip_asset"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_clip_asset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.ClipAssetRequest.pb(warehouse.ClipAssetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.ClipAssetResponse.to_json(
-            warehouse.ClipAssetResponse()
-        )
-
-        request = warehouse.ClipAssetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.ClipAssetResponse()
-
-        client.clip_asset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_clip_asset_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.ClipAssetRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.clip_asset(request)
-
-
-def test_clip_asset_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.GenerateHlsUriRequest,
-        dict,
-    ],
-)
-def test_generate_hls_uri_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.GenerateHlsUriResponse(
-            uri="uri_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.GenerateHlsUriResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.generate_hls_uri(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.GenerateHlsUriResponse)
-    assert response.uri == "uri_value"
 
 
 def test_generate_hls_uri_rest_use_cached_wrapped_rpc():
@@ -20060,233 +15611,6 @@ def test_generate_hls_uri_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_hls_uri_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_generate_hls_uri"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_generate_hls_uri"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.GenerateHlsUriRequest.pb(
-            warehouse.GenerateHlsUriRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.GenerateHlsUriResponse.to_json(
-            warehouse.GenerateHlsUriResponse()
-        )
-
-        request = warehouse.GenerateHlsUriRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.GenerateHlsUriResponse()
-
-        client.generate_hls_uri(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_hls_uri_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.GenerateHlsUriRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_hls_uri(request)
-
-
-def test_generate_hls_uri_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.CreateSearchConfigRequest,
-        dict,
-    ],
-)
-def test_create_search_config_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request_init["search_config"] = {
-        "name": "name_value",
-        "facet_property": {
-            "fixed_range_bucket_spec": {
-                "bucket_start": {
-                    "string_value": "string_value_value",
-                    "integer_value": 1386,
-                    "datetime_value": {
-                        "year": 433,
-                        "month": 550,
-                        "day": 318,
-                        "hours": 561,
-                        "minutes": 773,
-                        "seconds": 751,
-                        "nanos": 543,
-                        "utc_offset": {"seconds": 751, "nanos": 543},
-                        "time_zone": {"id": "id_value", "version": "version_value"},
-                    },
-                },
-                "bucket_granularity": {},
-                "bucket_count": 1286,
-            },
-            "custom_range_bucket_spec": {"endpoints": {}},
-            "datetime_bucket_spec": {"granularity": 1},
-            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"],
-            "display_name": "display_name_value",
-            "result_size": 1209,
-            "bucket_type": 1,
-        },
-        "search_criteria_property": {
-            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"]
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.CreateSearchConfigRequest.meta.fields["search_config"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["search_config"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["search_config"][field])):
-                    del request_init["search_config"][field][i][subfield]
-            else:
-                del request_init["search_config"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.SearchConfig(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.SearchConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_search_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.SearchConfig)
-    assert response.name == "name_value"
 
 
 def test_create_search_config_rest_use_cached_wrapped_rpc():
@@ -20437,85 +15761,6 @@ def test_create_search_config_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_search_config_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_create_search_config"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_create_search_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.CreateSearchConfigRequest.pb(
-            warehouse.CreateSearchConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.SearchConfig.to_json(
-            warehouse.SearchConfig()
-        )
-
-        request = warehouse.CreateSearchConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.SearchConfig()
-
-        client.create_search_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_search_config_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.CreateSearchConfigRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_search_config(request)
-
-
 def test_create_search_config_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20577,156 +15822,6 @@ def test_create_search_config_rest_flattened_error(transport: str = "rest"):
             search_config=warehouse.SearchConfig(name="name_value"),
             search_config_id="search_config_id_value",
         )
-
-
-def test_create_search_config_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.UpdateSearchConfigRequest,
-        dict,
-    ],
-)
-def test_update_search_config_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "search_config": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
-        }
-    }
-    request_init["search_config"] = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4",
-        "facet_property": {
-            "fixed_range_bucket_spec": {
-                "bucket_start": {
-                    "string_value": "string_value_value",
-                    "integer_value": 1386,
-                    "datetime_value": {
-                        "year": 433,
-                        "month": 550,
-                        "day": 318,
-                        "hours": 561,
-                        "minutes": 773,
-                        "seconds": 751,
-                        "nanos": 543,
-                        "utc_offset": {"seconds": 751, "nanos": 543},
-                        "time_zone": {"id": "id_value", "version": "version_value"},
-                    },
-                },
-                "bucket_granularity": {},
-                "bucket_count": 1286,
-            },
-            "custom_range_bucket_spec": {"endpoints": {}},
-            "datetime_bucket_spec": {"granularity": 1},
-            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"],
-            "display_name": "display_name_value",
-            "result_size": 1209,
-            "bucket_type": 1,
-        },
-        "search_criteria_property": {
-            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"]
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = warehouse.UpdateSearchConfigRequest.meta.fields["search_config"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["search_config"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["search_config"][field])):
-                    del request_init["search_config"][field][i][subfield]
-            else:
-                del request_init["search_config"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.SearchConfig(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.SearchConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_search_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.SearchConfig)
-    assert response.name == "name_value"
 
 
 def test_update_search_config_rest_use_cached_wrapped_rpc():
@@ -20850,89 +15945,6 @@ def test_update_search_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("searchConfig",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_search_config_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_update_search_config"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_update_search_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.UpdateSearchConfigRequest.pb(
-            warehouse.UpdateSearchConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.SearchConfig.to_json(
-            warehouse.SearchConfig()
-        )
-
-        request = warehouse.UpdateSearchConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.SearchConfig()
-
-        client.update_search_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_search_config_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.UpdateSearchConfigRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "search_config": {
-            "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_search_config(request)
-
-
 def test_update_search_config_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20994,54 +16006,6 @@ def test_update_search_config_rest_flattened_error(transport: str = "rest"):
             search_config=warehouse.SearchConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_search_config_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.GetSearchConfigRequest,
-        dict,
-    ],
-)
-def test_get_search_config_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.SearchConfig(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.SearchConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_search_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, warehouse.SearchConfig)
-    assert response.name == "name_value"
 
 
 def test_get_search_config_rest_use_cached_wrapped_rpc():
@@ -21165,87 +16129,6 @@ def test_get_search_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_search_config_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_get_search_config"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_get_search_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.GetSearchConfigRequest.pb(
-            warehouse.GetSearchConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.SearchConfig.to_json(
-            warehouse.SearchConfig()
-        )
-
-        request = warehouse.GetSearchConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.SearchConfig()
-
-        client.get_search_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_search_config_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.GetSearchConfigRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_search_config(request)
-
-
 def test_get_search_config_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21303,49 +16186,6 @@ def test_get_search_config_rest_flattened_error(transport: str = "rest"):
             warehouse.GetSearchConfigRequest(),
             name="name_value",
         )
-
-
-def test_get_search_config_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.DeleteSearchConfigRequest,
-        dict,
-    ],
-)
-def test_delete_search_config_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_search_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_search_config_rest_use_cached_wrapped_rpc():
@@ -21468,79 +16308,6 @@ def test_delete_search_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_search_config_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_delete_search_config"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = warehouse.DeleteSearchConfigRequest.pb(
-            warehouse.DeleteSearchConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = warehouse.DeleteSearchConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_search_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_search_config_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.DeleteSearchConfigRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_search_config(request)
-
-
 def test_delete_search_config_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21596,52 +16363,6 @@ def test_delete_search_config_rest_flattened_error(transport: str = "rest"):
             warehouse.DeleteSearchConfigRequest(),
             name="name_value",
         )
-
-
-def test_delete_search_config_rest_error():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.ListSearchConfigsRequest,
-        dict,
-    ],
-)
-def test_list_search_configs_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.ListSearchConfigsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.ListSearchConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_search_configs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSearchConfigsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_search_configs_rest_use_cached_wrapped_rpc():
@@ -21782,85 +16503,6 @@ def test_list_search_configs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_search_configs_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_list_search_configs"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_list_search_configs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.ListSearchConfigsRequest.pb(
-            warehouse.ListSearchConfigsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.ListSearchConfigsResponse.to_json(
-            warehouse.ListSearchConfigsResponse()
-        )
-
-        request = warehouse.ListSearchConfigsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.ListSearchConfigsResponse()
-
-        client.list_search_configs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_search_configs_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.ListSearchConfigsRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_search_configs(request)
-
-
 def test_list_search_configs_rest_flattened():
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21985,46 +16627,6 @@ def test_list_search_configs_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        warehouse.SearchAssetsRequest,
-        dict,
-    ],
-)
-def test_search_assets_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"corpus": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = warehouse.SearchAssetsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = warehouse.SearchAssetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.search_assets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchAssetsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
 def test_search_assets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -22141,83 +16743,6 @@ def test_search_assets_rest_unset_required_fields():
 
     unset_fields = transport.search_assets._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("corpus",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_assets_rest_interceptors(null_interceptor):
-    transport = transports.WarehouseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
-    )
-    client = WarehouseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WarehouseRestInterceptor, "post_search_assets"
-    ) as post, mock.patch.object(
-        transports.WarehouseRestInterceptor, "pre_search_assets"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = warehouse.SearchAssetsRequest.pb(warehouse.SearchAssetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = warehouse.SearchAssetsResponse.to_json(
-            warehouse.SearchAssetsResponse()
-        )
-
-        request = warehouse.SearchAssetsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = warehouse.SearchAssetsResponse()
-
-        client.search_assets(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_assets_rest_bad_request(
-    transport: str = "rest", request_type=warehouse.SearchAssetsRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"corpus": "projects/sample1/locations/sample2/corpora/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_assets(request)
 
 
 def test_search_assets_rest_pager(transport: str = "rest"):
@@ -22388,18 +16913,6681 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = WarehouseClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_asset_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
+        call.return_value = warehouse.Asset()
+        client.create_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_asset_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
+        call.return_value = warehouse.Asset()
+        client.update_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_asset_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
+        call.return_value = warehouse.Asset()
+        client.get_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_assets_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        call.return_value = warehouse.ListAssetsResponse()
+        client.list_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_asset_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_corpus_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_corpus_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
+        call.return_value = warehouse.Corpus()
+        client.get_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_corpus_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
+        call.return_value = warehouse.Corpus()
+        client.update_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_corpora_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
+        call.return_value = warehouse.ListCorporaResponse()
+        client.list_corpora(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListCorporaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_corpus_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
+        call.return_value = None
+        client.delete_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_data_schema_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_schema), "__call__"
+    ) as call:
+        call.return_value = warehouse.DataSchema()
+        client.create_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_data_schema_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_schema), "__call__"
+    ) as call:
+        call.return_value = warehouse.DataSchema()
+        client.update_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_schema_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_schema), "__call__") as call:
+        call.return_value = warehouse.DataSchema()
+        client.get_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_data_schema_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_schema), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_schemas_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_schemas), "__call__"
+    ) as call:
+        call.return_value = warehouse.ListDataSchemasResponse()
+        client.list_data_schemas(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListDataSchemasRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_annotation_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation), "__call__"
+    ) as call:
+        call.return_value = warehouse.Annotation()
+        client.create_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_annotation_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
+        call.return_value = warehouse.Annotation()
+        client.get_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_annotations_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_annotations), "__call__") as call:
+        call.return_value = warehouse.ListAnnotationsResponse()
+        client.list_annotations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListAnnotationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_annotation_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_annotation), "__call__"
+    ) as call:
+        call.return_value = warehouse.Annotation()
+        client.update_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_annotation_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotation), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_clip_asset_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.clip_asset), "__call__") as call:
+        call.return_value = warehouse.ClipAssetResponse()
+        client.clip_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ClipAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_hls_uri_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.generate_hls_uri), "__call__") as call:
+        call.return_value = warehouse.GenerateHlsUriResponse()
+        client.generate_hls_uri(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GenerateHlsUriRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_search_config_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_search_config), "__call__"
+    ) as call:
+        call.return_value = warehouse.SearchConfig()
+        client.create_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_search_config_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_search_config), "__call__"
+    ) as call:
+        call.return_value = warehouse.SearchConfig()
+        client.update_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_search_config_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_search_config), "__call__"
+    ) as call:
+        call.return_value = warehouse.SearchConfig()
+        client.get_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_search_config_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_search_config), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_search_configs_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_search_configs), "__call__"
+    ) as call:
+        call.return_value = warehouse.ListSearchConfigsResponse()
+        client.list_search_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListSearchConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_assets_empty_call_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_assets), "__call__") as call:
+        call.return_value = warehouse.SearchAssetsResponse()
+        client.search_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.SearchAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = WarehouseAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_asset_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Asset(
+                name="name_value",
+            )
+        )
+        await client.create_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_asset_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Asset(
+                name="name_value",
+            )
+        )
+        await client.update_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_asset_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Asset(
+                name="name_value",
+            )
+        )
+        await client.get_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_assets_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.ListAssetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_asset_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_corpus_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_corpus_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Corpus(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.get_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_corpus_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Corpus(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.update_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_corpora_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.ListCorporaResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_corpora(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListCorporaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_corpus_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_data_schema_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.DataSchema(
+                name="name_value",
+                key="key_value",
+            )
+        )
+        await client.create_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_data_schema_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.DataSchema(
+                name="name_value",
+                key="key_value",
+            )
+        )
+        await client.update_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_data_schema_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_schema), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.DataSchema(
+                name="name_value",
+                key="key_value",
+            )
+        )
+        await client.get_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_data_schema_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_data_schemas_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_schemas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.ListDataSchemasResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_data_schemas(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListDataSchemasRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_annotation_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Annotation(
+                name="name_value",
+            )
+        )
+        await client.create_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_annotation_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Annotation(
+                name="name_value",
+            )
+        )
+        await client.get_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_annotations_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_annotations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.ListAnnotationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_annotations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListAnnotationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_annotation_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_annotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.Annotation(
+                name="name_value",
+            )
+        )
+        await client.update_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_annotation_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_clip_asset_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.clip_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.ClipAssetResponse()
+        )
+        await client.clip_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ClipAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_generate_hls_uri_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.generate_hls_uri), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.GenerateHlsUriResponse(
+                uri="uri_value",
+            )
+        )
+        await client.generate_hls_uri(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GenerateHlsUriRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_search_config_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_search_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.SearchConfig(
+                name="name_value",
+            )
+        )
+        await client.create_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_search_config_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_search_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.SearchConfig(
+                name="name_value",
+            )
+        )
+        await client.update_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_search_config_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_search_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.SearchConfig(
+                name="name_value",
+            )
+        )
+        await client.get_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_search_config_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_search_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_search_configs_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_search_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.ListSearchConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_search_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListSearchConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_search_assets_empty_call_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            warehouse.SearchAssetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.search_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.SearchAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = WarehouseClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_asset_rest_bad_request(request_type=warehouse.CreateAssetRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_asset(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        warehouse.CreateAssetRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = WarehouseClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_asset_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request_init["asset"] = {
+        "name": "name_value",
+        "ttl": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.CreateAssetRequest.meta.fields["asset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["asset"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["asset"][field])):
+                    del request_init["asset"][field][i][subfield]
+            else:
+                del request_init["asset"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Asset(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Asset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_asset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Asset)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_asset_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_asset"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_create_asset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.CreateAssetRequest.pb(warehouse.CreateAssetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Asset.to_json(warehouse.Asset())
+        req.return_value.content = return_value
+
+        request = warehouse.CreateAssetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Asset()
+
+        client.create_asset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_asset_rest_bad_request(request_type=warehouse.UpdateAssetRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "asset": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_asset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateAssetRequest,
+        dict,
+    ],
+)
+def test_update_asset_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "asset": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+        }
+    }
+    request_init["asset"] = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4",
+        "ttl": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.UpdateAssetRequest.meta.fields["asset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["asset"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["asset"][field])):
+                    del request_init["asset"][field][i][subfield]
+            else:
+                del request_init["asset"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Asset(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Asset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_asset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Asset)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_asset_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_asset"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_update_asset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.UpdateAssetRequest.pb(warehouse.UpdateAssetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Asset.to_json(warehouse.Asset())
+        req.return_value.content = return_value
+
+        request = warehouse.UpdateAssetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Asset()
+
+        client.update_asset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_asset_rest_bad_request(request_type=warehouse.GetAssetRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_asset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetAssetRequest,
+        dict,
+    ],
+)
+def test_get_asset_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Asset(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Asset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_asset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Asset)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_asset_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_asset"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_get_asset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.GetAssetRequest.pb(warehouse.GetAssetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Asset.to_json(warehouse.Asset())
+        req.return_value.content = return_value
+
+        request = warehouse.GetAssetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Asset()
+
+        client.get_asset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_assets_rest_bad_request(request_type=warehouse.ListAssetsRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_assets(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListAssetsRequest,
+        dict,
+    ],
+)
+def test_list_assets_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.ListAssetsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.ListAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAssetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_assets_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_assets"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_list_assets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.ListAssetsRequest.pb(warehouse.ListAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.ListAssetsResponse.to_json(
+            warehouse.ListAssetsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.ListAssetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.ListAssetsResponse()
+
+        client.list_assets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_asset_rest_bad_request(request_type=warehouse.DeleteAssetRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_asset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteAssetRequest,
+        dict,
+    ],
+)
+def test_delete_asset_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_asset(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_asset_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_delete_asset"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_delete_asset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.DeleteAssetRequest.pb(warehouse.DeleteAssetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = warehouse.DeleteAssetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_asset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_corpus_rest_bad_request(request_type=warehouse.CreateCorpusRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_corpus(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateCorpusRequest,
+        dict,
+    ],
+)
+def test_create_corpus_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["corpus"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "default_ttl": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.CreateCorpusRequest.meta.fields["corpus"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["corpus"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["corpus"][field])):
+                    del request_init["corpus"][field][i][subfield]
+            else:
+                del request_init["corpus"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_corpus(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_corpus_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_corpus"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_create_corpus"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.CreateCorpusRequest.pb(warehouse.CreateCorpusRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = warehouse.CreateCorpusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_corpus(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_corpus_rest_bad_request(request_type=warehouse.GetCorpusRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_corpus(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetCorpusRequest,
+        dict,
+    ],
+)
+def test_get_corpus_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Corpus(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Corpus.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_corpus(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Corpus)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_corpus_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_corpus"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_get_corpus"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.GetCorpusRequest.pb(warehouse.GetCorpusRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Corpus.to_json(warehouse.Corpus())
+        req.return_value.content = return_value
+
+        request = warehouse.GetCorpusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Corpus()
+
+        client.get_corpus(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_corpus_rest_bad_request(request_type=warehouse.UpdateCorpusRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "corpus": {"name": "projects/sample1/locations/sample2/corpora/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_corpus(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateCorpusRequest,
+        dict,
+    ],
+)
+def test_update_corpus_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "corpus": {"name": "projects/sample1/locations/sample2/corpora/sample3"}
+    }
+    request_init["corpus"] = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "default_ttl": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.UpdateCorpusRequest.meta.fields["corpus"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["corpus"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["corpus"][field])):
+                    del request_init["corpus"][field][i][subfield]
+            else:
+                del request_init["corpus"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Corpus(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Corpus.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_corpus(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Corpus)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_corpus_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_corpus"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_update_corpus"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.UpdateCorpusRequest.pb(warehouse.UpdateCorpusRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Corpus.to_json(warehouse.Corpus())
+        req.return_value.content = return_value
+
+        request = warehouse.UpdateCorpusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Corpus()
+
+        client.update_corpus(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_corpora_rest_bad_request(request_type=warehouse.ListCorporaRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_corpora(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListCorporaRequest,
+        dict,
+    ],
+)
+def test_list_corpora_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.ListCorporaResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.ListCorporaResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_corpora(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCorporaPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_corpora_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_corpora"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_list_corpora"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.ListCorporaRequest.pb(warehouse.ListCorporaRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.ListCorporaResponse.to_json(
+            warehouse.ListCorporaResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.ListCorporaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.ListCorporaResponse()
+
+        client.list_corpora(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_corpus_rest_bad_request(request_type=warehouse.DeleteCorpusRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_corpus(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteCorpusRequest,
+        dict,
+    ],
+)
+def test_delete_corpus_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_corpus(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_corpus_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_delete_corpus"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = warehouse.DeleteCorpusRequest.pb(warehouse.DeleteCorpusRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = warehouse.DeleteCorpusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_corpus(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_data_schema_rest_bad_request(
+    request_type=warehouse.CreateDataSchemaRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_data_schema(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateDataSchemaRequest,
+        dict,
+    ],
+)
+def test_create_data_schema_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request_init["data_schema"] = {
+        "name": "name_value",
+        "key": "key_value",
+        "schema_details": {
+            "type_": 1,
+            "proto_any_config": {"type_uri": "type_uri_value"},
+            "granularity": 1,
+            "search_strategy": {"search_strategy_type": 1},
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.CreateDataSchemaRequest.meta.fields["data_schema"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["data_schema"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["data_schema"][field])):
+                    del request_init["data_schema"][field][i][subfield]
+            else:
+                del request_init["data_schema"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.DataSchema(
+            name="name_value",
+            key="key_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.DataSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_data_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.DataSchema)
+    assert response.name == "name_value"
+    assert response.key == "key_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_data_schema_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_data_schema"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_create_data_schema"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.CreateDataSchemaRequest.pb(
+            warehouse.CreateDataSchemaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.DataSchema.to_json(warehouse.DataSchema())
+        req.return_value.content = return_value
+
+        request = warehouse.CreateDataSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.DataSchema()
+
+        client.create_data_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_data_schema_rest_bad_request(
+    request_type=warehouse.UpdateDataSchemaRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_schema": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_data_schema(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateDataSchemaRequest,
+        dict,
+    ],
+)
+def test_update_data_schema_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "data_schema": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
+        }
+    }
+    request_init["data_schema"] = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4",
+        "key": "key_value",
+        "schema_details": {
+            "type_": 1,
+            "proto_any_config": {"type_uri": "type_uri_value"},
+            "granularity": 1,
+            "search_strategy": {"search_strategy_type": 1},
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.UpdateDataSchemaRequest.meta.fields["data_schema"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["data_schema"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["data_schema"][field])):
+                    del request_init["data_schema"][field][i][subfield]
+            else:
+                del request_init["data_schema"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.DataSchema(
+            name="name_value",
+            key="key_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.DataSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_data_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.DataSchema)
+    assert response.name == "name_value"
+    assert response.key == "key_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_data_schema_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_data_schema"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_update_data_schema"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.UpdateDataSchemaRequest.pb(
+            warehouse.UpdateDataSchemaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.DataSchema.to_json(warehouse.DataSchema())
+        req.return_value.content = return_value
+
+        request = warehouse.UpdateDataSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.DataSchema()
+
+        client.update_data_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_data_schema_rest_bad_request(request_type=warehouse.GetDataSchemaRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_data_schema(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetDataSchemaRequest,
+        dict,
+    ],
+)
+def test_get_data_schema_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.DataSchema(
+            name="name_value",
+            key="key_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.DataSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_data_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.DataSchema)
+    assert response.name == "name_value"
+    assert response.key == "key_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_data_schema_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_data_schema"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_get_data_schema"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.GetDataSchemaRequest.pb(warehouse.GetDataSchemaRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.DataSchema.to_json(warehouse.DataSchema())
+        req.return_value.content = return_value
+
+        request = warehouse.GetDataSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.DataSchema()
+
+        client.get_data_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_data_schema_rest_bad_request(
+    request_type=warehouse.DeleteDataSchemaRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_data_schema(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteDataSchemaRequest,
+        dict,
+    ],
+)
+def test_delete_data_schema_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/dataSchemas/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_data_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_data_schema_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_delete_data_schema"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = warehouse.DeleteDataSchemaRequest.pb(
+            warehouse.DeleteDataSchemaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = warehouse.DeleteDataSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_data_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_data_schemas_rest_bad_request(
+    request_type=warehouse.ListDataSchemasRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_data_schemas(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListDataSchemasRequest,
+        dict,
+    ],
+)
+def test_list_data_schemas_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.ListDataSchemasResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.ListDataSchemasResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_data_schemas(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDataSchemasPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_data_schemas_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_data_schemas"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_list_data_schemas"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.ListDataSchemasRequest.pb(
+            warehouse.ListDataSchemasRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.ListDataSchemasResponse.to_json(
+            warehouse.ListDataSchemasResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.ListDataSchemasRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.ListDataSchemasResponse()
+
+        client.list_data_schemas(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_annotation_rest_bad_request(
+    request_type=warehouse.CreateAnnotationRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_annotation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateAnnotationRequest,
+        dict,
+    ],
+)
+def test_create_annotation_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request_init["annotation"] = {
+        "name": "name_value",
+        "user_specified_annotation": {
+            "key": "key_value",
+            "value": {
+                "int_value": 967,
+                "float_value": 0.117,
+                "str_value": "str_value_value",
+                "datetime_value": "datetime_value_value",
+                "geo_coordinate": {"latitude": 0.86, "longitude": 0.971},
+                "proto_any_value": {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                },
+                "bool_value": True,
+                "customized_struct_data_value": {"fields": {}},
+            },
+            "partition": {
+                "temporal_partition": {
+                    "start_time": {"seconds": 751, "nanos": 543},
+                    "end_time": {},
+                },
+                "spatial_partition": {
+                    "x_min": 539,
+                    "y_min": 540,
+                    "x_max": 541,
+                    "y_max": 542,
+                },
+            },
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.CreateAnnotationRequest.meta.fields["annotation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["annotation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["annotation"][field])):
+                    del request_init["annotation"][field][i][subfield]
+            else:
+                del request_init["annotation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Annotation(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Annotation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_annotation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Annotation)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_annotation_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_annotation"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_create_annotation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.CreateAnnotationRequest.pb(
+            warehouse.CreateAnnotationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Annotation.to_json(warehouse.Annotation())
+        req.return_value.content = return_value
+
+        request = warehouse.CreateAnnotationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Annotation()
+
+        client.create_annotation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_annotation_rest_bad_request(request_type=warehouse.GetAnnotationRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_annotation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetAnnotationRequest,
+        dict,
+    ],
+)
+def test_get_annotation_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Annotation(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Annotation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_annotation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Annotation)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_annotation_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_annotation"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_get_annotation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.GetAnnotationRequest.pb(warehouse.GetAnnotationRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Annotation.to_json(warehouse.Annotation())
+        req.return_value.content = return_value
+
+        request = warehouse.GetAnnotationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Annotation()
+
+        client.get_annotation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_annotations_rest_bad_request(
+    request_type=warehouse.ListAnnotationsRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_annotations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListAnnotationsRequest,
+        dict,
+    ],
+)
+def test_list_annotations_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.ListAnnotationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.ListAnnotationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_annotations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAnnotationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_annotations_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_annotations"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_list_annotations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.ListAnnotationsRequest.pb(
+            warehouse.ListAnnotationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.ListAnnotationsResponse.to_json(
+            warehouse.ListAnnotationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.ListAnnotationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.ListAnnotationsResponse()
+
+        client.list_annotations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_annotation_rest_bad_request(
+    request_type=warehouse.UpdateAnnotationRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "annotation": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_annotation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateAnnotationRequest,
+        dict,
+    ],
+)
+def test_update_annotation_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "annotation": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
+        }
+    }
+    request_init["annotation"] = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5",
+        "user_specified_annotation": {
+            "key": "key_value",
+            "value": {
+                "int_value": 967,
+                "float_value": 0.117,
+                "str_value": "str_value_value",
+                "datetime_value": "datetime_value_value",
+                "geo_coordinate": {"latitude": 0.86, "longitude": 0.971},
+                "proto_any_value": {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                },
+                "bool_value": True,
+                "customized_struct_data_value": {"fields": {}},
+            },
+            "partition": {
+                "temporal_partition": {
+                    "start_time": {"seconds": 751, "nanos": 543},
+                    "end_time": {},
+                },
+                "spatial_partition": {
+                    "x_min": 539,
+                    "y_min": 540,
+                    "x_max": 541,
+                    "y_max": 542,
+                },
+            },
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.UpdateAnnotationRequest.meta.fields["annotation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["annotation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["annotation"][field])):
+                    del request_init["annotation"][field][i][subfield]
+            else:
+                del request_init["annotation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.Annotation(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.Annotation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_annotation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.Annotation)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_annotation_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_annotation"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_update_annotation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.UpdateAnnotationRequest.pb(
+            warehouse.UpdateAnnotationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.Annotation.to_json(warehouse.Annotation())
+        req.return_value.content = return_value
+
+        request = warehouse.UpdateAnnotationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.Annotation()
+
+        client.update_annotation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_annotation_rest_bad_request(
+    request_type=warehouse.DeleteAnnotationRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_annotation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteAnnotationRequest,
+        dict,
+    ],
+)
+def test_delete_annotation_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4/annotations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_annotation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_annotation_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_delete_annotation"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = warehouse.DeleteAnnotationRequest.pb(
+            warehouse.DeleteAnnotationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = warehouse.DeleteAnnotationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_annotation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_ingest_asset_rest_error():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.ingest_asset({})
+    assert "Method IngestAsset is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_clip_asset_rest_bad_request(request_type=warehouse.ClipAssetRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.clip_asset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ClipAssetRequest,
+        dict,
+    ],
+)
+def test_clip_asset_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.ClipAssetResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.ClipAssetResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.clip_asset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.ClipAssetResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_clip_asset_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_clip_asset"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_clip_asset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.ClipAssetRequest.pb(warehouse.ClipAssetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.ClipAssetResponse.to_json(
+            warehouse.ClipAssetResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.ClipAssetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.ClipAssetResponse()
+
+        client.clip_asset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_hls_uri_rest_bad_request(
+    request_type=warehouse.GenerateHlsUriRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_hls_uri(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GenerateHlsUriRequest,
+        dict,
+    ],
+)
+def test_generate_hls_uri_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/assets/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.GenerateHlsUriResponse(
+            uri="uri_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.GenerateHlsUriResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_hls_uri(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.GenerateHlsUriResponse)
+    assert response.uri == "uri_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_hls_uri_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_generate_hls_uri"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_generate_hls_uri"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.GenerateHlsUriRequest.pb(
+            warehouse.GenerateHlsUriRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.GenerateHlsUriResponse.to_json(
+            warehouse.GenerateHlsUriResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.GenerateHlsUriRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.GenerateHlsUriResponse()
+
+        client.generate_hls_uri(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_search_config_rest_bad_request(
+    request_type=warehouse.CreateSearchConfigRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_search_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.CreateSearchConfigRequest,
+        dict,
+    ],
+)
+def test_create_search_config_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request_init["search_config"] = {
+        "name": "name_value",
+        "facet_property": {
+            "fixed_range_bucket_spec": {
+                "bucket_start": {
+                    "string_value": "string_value_value",
+                    "integer_value": 1386,
+                    "datetime_value": {
+                        "year": 433,
+                        "month": 550,
+                        "day": 318,
+                        "hours": 561,
+                        "minutes": 773,
+                        "seconds": 751,
+                        "nanos": 543,
+                        "utc_offset": {"seconds": 751, "nanos": 543},
+                        "time_zone": {"id": "id_value", "version": "version_value"},
+                    },
+                },
+                "bucket_granularity": {},
+                "bucket_count": 1286,
+            },
+            "custom_range_bucket_spec": {"endpoints": {}},
+            "datetime_bucket_spec": {"granularity": 1},
+            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"],
+            "display_name": "display_name_value",
+            "result_size": 1209,
+            "bucket_type": 1,
+        },
+        "search_criteria_property": {
+            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"]
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.CreateSearchConfigRequest.meta.fields["search_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["search_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["search_config"][field])):
+                    del request_init["search_config"][field][i][subfield]
+            else:
+                del request_init["search_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.SearchConfig(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.SearchConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_search_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.SearchConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_search_config_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_search_config"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_create_search_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.CreateSearchConfigRequest.pb(
+            warehouse.CreateSearchConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.SearchConfig.to_json(warehouse.SearchConfig())
+        req.return_value.content = return_value
+
+        request = warehouse.CreateSearchConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.SearchConfig()
+
+        client.create_search_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_search_config_rest_bad_request(
+    request_type=warehouse.UpdateSearchConfigRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "search_config": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_search_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.UpdateSearchConfigRequest,
+        dict,
+    ],
+)
+def test_update_search_config_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "search_config": {
+            "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
+        }
+    }
+    request_init["search_config"] = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4",
+        "facet_property": {
+            "fixed_range_bucket_spec": {
+                "bucket_start": {
+                    "string_value": "string_value_value",
+                    "integer_value": 1386,
+                    "datetime_value": {
+                        "year": 433,
+                        "month": 550,
+                        "day": 318,
+                        "hours": 561,
+                        "minutes": 773,
+                        "seconds": 751,
+                        "nanos": 543,
+                        "utc_offset": {"seconds": 751, "nanos": 543},
+                        "time_zone": {"id": "id_value", "version": "version_value"},
+                    },
+                },
+                "bucket_granularity": {},
+                "bucket_count": 1286,
+            },
+            "custom_range_bucket_spec": {"endpoints": {}},
+            "datetime_bucket_spec": {"granularity": 1},
+            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"],
+            "display_name": "display_name_value",
+            "result_size": 1209,
+            "bucket_type": 1,
+        },
+        "search_criteria_property": {
+            "mapped_fields": ["mapped_fields_value1", "mapped_fields_value2"]
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = warehouse.UpdateSearchConfigRequest.meta.fields["search_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["search_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["search_config"][field])):
+                    del request_init["search_config"][field][i][subfield]
+            else:
+                del request_init["search_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.SearchConfig(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.SearchConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_search_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.SearchConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_search_config_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_search_config"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_update_search_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.UpdateSearchConfigRequest.pb(
+            warehouse.UpdateSearchConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.SearchConfig.to_json(warehouse.SearchConfig())
+        req.return_value.content = return_value
+
+        request = warehouse.UpdateSearchConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.SearchConfig()
+
+        client.update_search_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_search_config_rest_bad_request(
+    request_type=warehouse.GetSearchConfigRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_search_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.GetSearchConfigRequest,
+        dict,
+    ],
+)
+def test_get_search_config_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.SearchConfig(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.SearchConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_search_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, warehouse.SearchConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_search_config_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_search_config"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_get_search_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.GetSearchConfigRequest.pb(
+            warehouse.GetSearchConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.SearchConfig.to_json(warehouse.SearchConfig())
+        req.return_value.content = return_value
+
+        request = warehouse.GetSearchConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.SearchConfig()
+
+        client.get_search_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_search_config_rest_bad_request(
+    request_type=warehouse.DeleteSearchConfigRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_search_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.DeleteSearchConfigRequest,
+        dict,
+    ],
+)
+def test_delete_search_config_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/corpora/sample3/searchConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_search_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_search_config_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_delete_search_config"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = warehouse.DeleteSearchConfigRequest.pb(
+            warehouse.DeleteSearchConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = warehouse.DeleteSearchConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_search_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_search_configs_rest_bad_request(
+    request_type=warehouse.ListSearchConfigsRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_search_configs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.ListSearchConfigsRequest,
+        dict,
+    ],
+)
+def test_list_search_configs_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.ListSearchConfigsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.ListSearchConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_search_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSearchConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_search_configs_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_search_configs"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_list_search_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.ListSearchConfigsRequest.pb(
+            warehouse.ListSearchConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.ListSearchConfigsResponse.to_json(
+            warehouse.ListSearchConfigsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.ListSearchConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.ListSearchConfigsResponse()
+
+        client.list_search_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_assets_rest_bad_request(request_type=warehouse.SearchAssetsRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"corpus": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_assets(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        warehouse.SearchAssetsRequest,
+        dict,
+    ],
+)
+def test_search_assets_rest_call_success(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"corpus": "projects/sample1/locations/sample2/corpora/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = warehouse.SearchAssetsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = warehouse.SearchAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchAssetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_assets_rest_interceptors(null_interceptor):
+    transport = transports.WarehouseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.WarehouseRestInterceptor(),
+    )
+    client = WarehouseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_search_assets"
+    ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "pre_search_assets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = warehouse.SearchAssetsRequest.pb(warehouse.SearchAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = warehouse.SearchAssetsResponse.to_json(
+            warehouse.SearchAssetsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = warehouse.SearchAssetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = warehouse.SearchAssetsResponse()
+
+        client.search_assets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/clusters/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/clusters/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"resource": "projects/sample1/locations/sample2/clusters/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"resource": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_asset_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
+        client.create_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_asset_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
+        client.update_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_asset_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
+        client.get_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_assets_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        client.list_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_asset_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
+        client.delete_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_corpus_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_corpus), "__call__") as call:
+        client.create_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_corpus_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_corpus), "__call__") as call:
+        client.get_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_corpus_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_corpus), "__call__") as call:
+        client.update_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_corpora_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_corpora), "__call__") as call:
+        client.list_corpora(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListCorporaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_corpus_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_corpus), "__call__") as call:
+        client.delete_corpus(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteCorpusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_data_schema_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_schema), "__call__"
+    ) as call:
+        client.create_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_data_schema_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_schema), "__call__"
+    ) as call:
+        client.update_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_schema_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_schema), "__call__") as call:
+        client.get_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_data_schema_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_schema), "__call__"
+    ) as call:
+        client.delete_data_schema(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteDataSchemaRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_schemas_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_schemas), "__call__"
+    ) as call:
+        client.list_data_schemas(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListDataSchemasRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_annotation_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation), "__call__"
+    ) as call:
+        client.create_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_annotation_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
+        client.get_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_annotations_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_annotations), "__call__") as call:
+        client.list_annotations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListAnnotationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_annotation_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_annotation), "__call__"
+    ) as call:
+        client.update_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_annotation_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotation), "__call__"
+    ) as call:
+        client.delete_annotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteAnnotationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_clip_asset_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.clip_asset), "__call__") as call:
+        client.clip_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ClipAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_hls_uri_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.generate_hls_uri), "__call__") as call:
+        client.generate_hls_uri(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GenerateHlsUriRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_search_config_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_search_config), "__call__"
+    ) as call:
+        client.create_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.CreateSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_search_config_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_search_config), "__call__"
+    ) as call:
+        client.update_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.UpdateSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_search_config_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_search_config), "__call__"
+    ) as call:
+        client.get_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.GetSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_search_config_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_search_config), "__call__"
+    ) as call:
+        client.delete_search_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.DeleteSearchConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_search_configs_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_search_configs), "__call__"
+    ) as call:
+        client.list_search_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.ListSearchConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_assets_empty_call_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_assets), "__call__") as call:
+        client.search_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = warehouse.SearchAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_warehouse_rest_lro_client():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -22668,23 +23856,6 @@ def test_warehouse_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_warehouse_rest_lro_client():
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -23268,540 +24439,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_get_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/clusters/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"resource": "projects/sample1/locations/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-
-def test_set_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/clusters/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"resource": "projects/sample1/locations/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.set_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-
-def test_test_iam_permissions_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/clusters/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"resource": "projects/sample1/locations/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.test_iam_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = WarehouseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = WarehouseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23829,7 +24466,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -23882,7 +24519,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -23927,7 +24564,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -23968,7 +24605,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24021,7 +24658,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -24066,7 +24703,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -24107,7 +24744,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24162,7 +24799,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -24209,7 +24846,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -24252,7 +24889,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24307,7 +24944,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -24354,7 +24991,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -24397,7 +25034,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24452,7 +25089,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -24499,7 +25136,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -24542,7 +25179,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24594,7 +25231,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = WarehouseAsyncClient(credentials=ga_credentials.AnonymousCredentials())
+    client = WarehouseAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -24640,7 +25277,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -24691,7 +25328,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24756,7 +25393,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -24804,7 +25441,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -24857,7 +25494,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -24923,7 +25560,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -24971,7 +25608,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -25023,7 +25660,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -25090,7 +25727,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -25144,7 +25781,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = WarehouseAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25164,22 +25801,41 @@ async def test_test_iam_permissions_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = WarehouseClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = WarehouseAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = WarehouseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

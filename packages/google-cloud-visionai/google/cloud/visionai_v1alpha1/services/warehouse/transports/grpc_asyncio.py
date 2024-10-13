@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -232,6 +233,9 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1083,7 +1087,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_asset: gapic_v1.method_async.wrap_method(
+            self.create_asset: self._wrap_method(
                 self.create_asset,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1098,27 +1102,27 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.update_asset: gapic_v1.method_async.wrap_method(
+            self.update_asset: self._wrap_method(
                 self.update_asset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_asset: gapic_v1.method_async.wrap_method(
+            self.get_asset: self._wrap_method(
                 self.get_asset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_assets: gapic_v1.method_async.wrap_method(
+            self.list_assets: self._wrap_method(
                 self.list_assets,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_asset: gapic_v1.method_async.wrap_method(
+            self.delete_asset: self._wrap_method(
                 self.delete_asset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_corpus: gapic_v1.method_async.wrap_method(
+            self.create_corpus: self._wrap_method(
                 self.create_corpus,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1133,27 +1137,27 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_corpus: gapic_v1.method_async.wrap_method(
+            self.get_corpus: self._wrap_method(
                 self.get_corpus,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_corpus: gapic_v1.method_async.wrap_method(
+            self.update_corpus: self._wrap_method(
                 self.update_corpus,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_corpora: gapic_v1.method_async.wrap_method(
+            self.list_corpora: self._wrap_method(
                 self.list_corpora,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_corpus: gapic_v1.method_async.wrap_method(
+            self.delete_corpus: self._wrap_method(
                 self.delete_corpus,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_data_schema: gapic_v1.method_async.wrap_method(
+            self.create_data_schema: self._wrap_method(
                 self.create_data_schema,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1168,27 +1172,27 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.update_data_schema: gapic_v1.method_async.wrap_method(
+            self.update_data_schema: self._wrap_method(
                 self.update_data_schema,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_data_schema: gapic_v1.method_async.wrap_method(
+            self.get_data_schema: self._wrap_method(
                 self.get_data_schema,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_data_schema: gapic_v1.method_async.wrap_method(
+            self.delete_data_schema: self._wrap_method(
                 self.delete_data_schema,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_data_schemas: gapic_v1.method_async.wrap_method(
+            self.list_data_schemas: self._wrap_method(
                 self.list_data_schemas,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_annotation: gapic_v1.method_async.wrap_method(
+            self.create_annotation: self._wrap_method(
                 self.create_annotation,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1203,27 +1207,27 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_annotation: gapic_v1.method_async.wrap_method(
+            self.get_annotation: self._wrap_method(
                 self.get_annotation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_annotations: gapic_v1.method_async.wrap_method(
+            self.list_annotations: self._wrap_method(
                 self.list_annotations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_annotation: gapic_v1.method_async.wrap_method(
+            self.update_annotation: self._wrap_method(
                 self.update_annotation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_annotation: gapic_v1.method_async.wrap_method(
+            self.delete_annotation: self._wrap_method(
                 self.delete_annotation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.ingest_asset: gapic_v1.method_async.wrap_method(
+            self.ingest_asset: self._wrap_method(
                 self.ingest_asset,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1238,50 +1242,104 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.clip_asset: gapic_v1.method_async.wrap_method(
+            self.clip_asset: self._wrap_method(
                 self.clip_asset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.generate_hls_uri: gapic_v1.method_async.wrap_method(
+            self.generate_hls_uri: self._wrap_method(
                 self.generate_hls_uri,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_search_config: gapic_v1.method_async.wrap_method(
+            self.create_search_config: self._wrap_method(
                 self.create_search_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_search_config: gapic_v1.method_async.wrap_method(
+            self.update_search_config: self._wrap_method(
                 self.update_search_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_search_config: gapic_v1.method_async.wrap_method(
+            self.get_search_config: self._wrap_method(
                 self.get_search_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_search_config: gapic_v1.method_async.wrap_method(
+            self.delete_search_config: self._wrap_method(
                 self.delete_search_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_search_configs: gapic_v1.method_async.wrap_method(
+            self.list_search_configs: self._wrap_method(
                 self.list_search_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.search_assets: gapic_v1.method_async.wrap_method(
+            self.search_assets: self._wrap_method(
                 self.search_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

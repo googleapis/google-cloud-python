@@ -24,8 +24,22 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -33,11 +47,6 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.workflows.executions_v1beta.services.executions import (
     ExecutionsAsyncClient,
@@ -48,8 +57,22 @@ from google.cloud.workflows.executions_v1beta.services.executions import (
 from google.cloud.workflows.executions_v1beta.types import executions
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1090,25 +1113,6 @@ def test_list_executions(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_executions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_executions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.ListExecutionsRequest()
-
-
 def test_list_executions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1175,29 +1179,6 @@ def test_list_executions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_executions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            executions.ListExecutionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_executions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.ListExecutionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_executions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1205,7 +1186,7 @@ async def test_list_executions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ExecutionsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1244,7 +1225,7 @@ async def test_list_executions_async(
     transport: str = "grpc_asyncio", request_type=executions.ListExecutionsRequest
 ):
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1310,7 +1291,7 @@ def test_list_executions_field_headers():
 @pytest.mark.asyncio
 async def test_list_executions_field_headers_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1380,7 +1361,7 @@ def test_list_executions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_executions_flattened_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1409,7 +1390,7 @@ async def test_list_executions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_executions_flattened_error_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1519,7 +1500,7 @@ def test_list_executions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_executions_async_pager():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1569,7 +1550,7 @@ async def test_list_executions_async_pager():
 @pytest.mark.asyncio
 async def test_list_executions_async_pages():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1659,25 +1640,6 @@ def test_create_execution(request_type, transport: str = "grpc"):
     assert response.workflow_revision_id == "workflow_revision_id_value"
 
 
-def test_create_execution_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_execution()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.CreateExecutionRequest()
-
-
 def test_create_execution_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1744,33 +1706,6 @@ def test_create_execution_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_execution_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            executions.Execution(
-                name="name_value",
-                state=executions.Execution.State.ACTIVE,
-                argument="argument_value",
-                result="result_value",
-                workflow_revision_id="workflow_revision_id_value",
-            )
-        )
-        response = await client.create_execution()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.CreateExecutionRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_execution_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1778,7 +1713,7 @@ async def test_create_execution_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ExecutionsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1817,7 +1752,7 @@ async def test_create_execution_async(
     transport: str = "grpc_asyncio", request_type=executions.CreateExecutionRequest
 ):
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1891,7 +1826,7 @@ def test_create_execution_field_headers():
 @pytest.mark.asyncio
 async def test_create_execution_field_headers_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1966,7 +1901,7 @@ def test_create_execution_flattened_error():
 @pytest.mark.asyncio
 async def test_create_execution_flattened_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1999,7 +1934,7 @@ async def test_create_execution_flattened_async():
 @pytest.mark.asyncio
 async def test_create_execution_flattened_error_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2054,25 +1989,6 @@ def test_get_execution(request_type, transport: str = "grpc"):
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
-
-
-def test_get_execution_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_execution()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.GetExecutionRequest()
 
 
 def test_get_execution_non_empty_request_with_auto_populated_field():
@@ -2139,33 +2055,6 @@ def test_get_execution_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_execution_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            executions.Execution(
-                name="name_value",
-                state=executions.Execution.State.ACTIVE,
-                argument="argument_value",
-                result="result_value",
-                workflow_revision_id="workflow_revision_id_value",
-            )
-        )
-        response = await client.get_execution()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.GetExecutionRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_execution_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2173,7 +2062,7 @@ async def test_get_execution_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ExecutionsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2212,7 +2101,7 @@ async def test_get_execution_async(
     transport: str = "grpc_asyncio", request_type=executions.GetExecutionRequest
 ):
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2286,7 +2175,7 @@ def test_get_execution_field_headers():
 @pytest.mark.asyncio
 async def test_get_execution_field_headers_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2356,7 +2245,7 @@ def test_get_execution_flattened_error():
 @pytest.mark.asyncio
 async def test_get_execution_flattened_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2385,7 +2274,7 @@ async def test_get_execution_flattened_async():
 @pytest.mark.asyncio
 async def test_get_execution_flattened_error_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2439,25 +2328,6 @@ def test_cancel_execution(request_type, transport: str = "grpc"):
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
-
-
-def test_cancel_execution_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.cancel_execution()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.CancelExecutionRequest()
 
 
 def test_cancel_execution_non_empty_request_with_auto_populated_field():
@@ -2526,33 +2396,6 @@ def test_cancel_execution_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_cancel_execution_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            executions.Execution(
-                name="name_value",
-                state=executions.Execution.State.ACTIVE,
-                argument="argument_value",
-                result="result_value",
-                workflow_revision_id="workflow_revision_id_value",
-            )
-        )
-        response = await client.cancel_execution()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == executions.CancelExecutionRequest()
-
-
-@pytest.mark.asyncio
 async def test_cancel_execution_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2560,7 +2403,7 @@ async def test_cancel_execution_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ExecutionsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2599,7 +2442,7 @@ async def test_cancel_execution_async(
     transport: str = "grpc_asyncio", request_type=executions.CancelExecutionRequest
 ):
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2673,7 +2516,7 @@ def test_cancel_execution_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_execution_field_headers_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2743,7 +2586,7 @@ def test_cancel_execution_flattened_error():
 @pytest.mark.asyncio
 async def test_cancel_execution_flattened_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2772,7 +2615,7 @@ async def test_cancel_execution_flattened_async():
 @pytest.mark.asyncio
 async def test_cancel_execution_flattened_error_async():
     client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2875,17 +2718,236 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = ExecutionsClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = ExecutionsClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_executions_empty_call_grpc():
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
+        call.return_value = executions.ListExecutionsResponse()
+        client.list_executions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.ListExecutionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_execution_empty_call_grpc():
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
+        call.return_value = executions.Execution()
+        client.create_execution(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.CreateExecutionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_execution_empty_call_grpc():
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
+        call.return_value = executions.Execution()
+        client.get_execution(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.GetExecutionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_cancel_execution_empty_call_grpc():
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
+        call.return_value = executions.Execution()
+        client.cancel_execution(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.CancelExecutionRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = ExecutionsAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = ExecutionsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_executions_empty_call_grpc_asyncio():
+    client = ExecutionsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            executions.ListExecutionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_executions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.ListExecutionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_execution_empty_call_grpc_asyncio():
+    client = ExecutionsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            executions.Execution(
+                name="name_value",
+                state=executions.Execution.State.ACTIVE,
+                argument="argument_value",
+                result="result_value",
+                workflow_revision_id="workflow_revision_id_value",
+            )
+        )
+        await client.create_execution(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.CreateExecutionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_execution_empty_call_grpc_asyncio():
+    client = ExecutionsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            executions.Execution(
+                name="name_value",
+                state=executions.Execution.State.ACTIVE,
+                argument="argument_value",
+                result="result_value",
+                workflow_revision_id="workflow_revision_id_value",
+            )
+        )
+        await client.get_execution(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.GetExecutionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_cancel_execution_empty_call_grpc_asyncio():
+    client = ExecutionsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            executions.Execution(
+                name="name_value",
+                state=executions.Execution.State.ACTIVE,
+                argument="argument_value",
+                result="result_value",
+                workflow_revision_id="workflow_revision_id_value",
+            )
+        )
+        await client.cancel_execution(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = executions.CancelExecutionRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -3440,35 +3502,29 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = ExecutionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = ExecutionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
-        async with client:
+        with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = ExecutionsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = ExecutionsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
