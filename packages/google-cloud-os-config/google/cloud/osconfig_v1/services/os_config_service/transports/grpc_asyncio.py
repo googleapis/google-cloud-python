@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -231,6 +232,9 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -594,70 +598,79 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.execute_patch_job: gapic_v1.method_async.wrap_method(
+            self.execute_patch_job: self._wrap_method(
                 self.execute_patch_job,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_patch_job: gapic_v1.method_async.wrap_method(
+            self.get_patch_job: self._wrap_method(
                 self.get_patch_job,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.cancel_patch_job: gapic_v1.method_async.wrap_method(
+            self.cancel_patch_job: self._wrap_method(
                 self.cancel_patch_job,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_patch_jobs: gapic_v1.method_async.wrap_method(
+            self.list_patch_jobs: self._wrap_method(
                 self.list_patch_jobs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_patch_job_instance_details: gapic_v1.method_async.wrap_method(
+            self.list_patch_job_instance_details: self._wrap_method(
                 self.list_patch_job_instance_details,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_patch_deployment: gapic_v1.method_async.wrap_method(
+            self.create_patch_deployment: self._wrap_method(
                 self.create_patch_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_patch_deployment: gapic_v1.method_async.wrap_method(
+            self.get_patch_deployment: self._wrap_method(
                 self.get_patch_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_patch_deployments: gapic_v1.method_async.wrap_method(
+            self.list_patch_deployments: self._wrap_method(
                 self.list_patch_deployments,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_patch_deployment: gapic_v1.method_async.wrap_method(
+            self.delete_patch_deployment: self._wrap_method(
                 self.delete_patch_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_patch_deployment: gapic_v1.method_async.wrap_method(
+            self.update_patch_deployment: self._wrap_method(
                 self.update_patch_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.pause_patch_deployment: gapic_v1.method_async.wrap_method(
+            self.pause_patch_deployment: self._wrap_method(
                 self.pause_patch_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.resume_patch_deployment: gapic_v1.method_async.wrap_method(
+            self.resume_patch_deployment: self._wrap_method(
                 self.resume_patch_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("OsConfigServiceGrpcAsyncIOTransport",)

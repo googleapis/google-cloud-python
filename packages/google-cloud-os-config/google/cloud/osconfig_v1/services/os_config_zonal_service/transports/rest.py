@@ -16,33 +16,17 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.osconfig_v1.types import (
     inventory,
@@ -52,7 +36,13 @@ from google.cloud.osconfig_v1.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import OsConfigZonalServiceTransport
+from .rest_base import _BaseOsConfigZonalServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -482,8 +472,8 @@ class OsConfigZonalServiceRestStub:
     _interceptor: OsConfigZonalServiceRestInterceptor
 
 
-class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
-    """REST backend transport for OsConfigZonalService.
+class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
+    """REST backend synchronous transport for OsConfigZonalService.
 
     Zonal OS Config API
 
@@ -496,7 +486,6 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -550,21 +539,12 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -617,21 +597,35 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateOSPolicyAssignment(OsConfigZonalServiceRestStub):
+    class _CreateOSPolicyAssignment(
+        _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateOSPolicyAssignment")
+            return hash("OsConfigZonalServiceRestTransport.CreateOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "osPolicyAssignmentId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -662,49 +656,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/osPolicyAssignments",
-                    "body": "os_policy_assignment",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_os_policy_assignment(
                 request, metadata
             )
-            pb_request = os_policy_assignments.CreateOSPolicyAssignmentRequest.pb(
-                request
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OsConfigZonalServiceRestTransport._CreateOSPolicyAssignment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -718,19 +697,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_create_os_policy_assignment(resp)
             return resp
 
-    class _DeleteOSPolicyAssignment(OsConfigZonalServiceRestStub):
+    class _DeleteOSPolicyAssignment(
+        _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteOSPolicyAssignment")
+            return hash("OsConfigZonalServiceRestTransport.DeleteOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -761,42 +755,29 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/osPolicyAssignments/*}",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_os_policy_assignment(
                 request, metadata
             )
-            pb_request = os_policy_assignments.DeleteOSPolicyAssignmentRequest.pb(
-                request
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._DeleteOSPolicyAssignment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -810,19 +791,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_delete_os_policy_assignment(resp)
             return resp
 
-    class _GetInventory(OsConfigZonalServiceRestStub):
+    class _GetInventory(
+        _BaseOsConfigZonalServiceRestTransport._BaseGetInventory,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetInventory")
+            return hash("OsConfigZonalServiceRestTransport.GetInventory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -859,38 +855,27 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*/inventory}",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_inventory(request, metadata)
-            pb_request = inventory.GetInventoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._GetInventory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -906,19 +891,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_get_inventory(resp)
             return resp
 
-    class _GetOSPolicyAssignment(OsConfigZonalServiceRestStub):
+    class _GetOSPolicyAssignment(
+        _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetOSPolicyAssignment")
+            return hash("OsConfigZonalServiceRestTransport.GetOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -957,40 +957,31 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/osPolicyAssignments/*}",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_os_policy_assignment(
                 request, metadata
             )
-            pb_request = os_policy_assignments.GetOSPolicyAssignmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                OsConfigZonalServiceRestTransport._GetOSPolicyAssignment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1006,19 +997,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_get_os_policy_assignment(resp)
             return resp
 
-    class _GetOSPolicyAssignmentReport(OsConfigZonalServiceRestStub):
+    class _GetOSPolicyAssignmentReport(
+        _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetOSPolicyAssignmentReport")
+            return hash("OsConfigZonalServiceRestTransport.GetOSPolicyAssignmentReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1048,44 +1054,29 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*/osPolicyAssignments/*/report}",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_os_policy_assignment_report(
                 request, metadata
             )
-            pb_request = (
-                os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._GetOSPolicyAssignmentReport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1101,19 +1092,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_get_os_policy_assignment_report(resp)
             return resp
 
-    class _GetVulnerabilityReport(OsConfigZonalServiceRestStub):
+    class _GetVulnerabilityReport(
+        _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetVulnerabilityReport")
+            return hash("OsConfigZonalServiceRestTransport.GetVulnerabilityReport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1147,40 +1153,31 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*/vulnerabilityReport}",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_vulnerability_report(
                 request, metadata
             )
-            pb_request = vulnerability.GetVulnerabilityReportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                OsConfigZonalServiceRestTransport._GetVulnerabilityReport._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1196,19 +1193,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_get_vulnerability_report(resp)
             return resp
 
-    class _ListInventories(OsConfigZonalServiceRestStub):
+    class _ListInventories(
+        _BaseOsConfigZonalServiceRestTransport._BaseListInventories,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListInventories")
+            return hash("OsConfigZonalServiceRestTransport.ListInventories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1239,40 +1251,29 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/inventories",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_inventories(
                 request, metadata
             )
-            pb_request = inventory.ListInventoriesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._ListInventories._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1288,19 +1289,36 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_list_inventories(resp)
             return resp
 
-    class _ListOSPolicyAssignmentReports(OsConfigZonalServiceRestStub):
+    class _ListOSPolicyAssignmentReports(
+        _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListOSPolicyAssignmentReports")
+            return hash(
+                "OsConfigZonalServiceRestTransport.ListOSPolicyAssignmentReports"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1331,44 +1349,29 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/instances/*/osPolicyAssignments/*}/reports",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_os_policy_assignment_reports(
                 request, metadata
             )
-            pb_request = (
-                os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._ListOSPolicyAssignmentReports._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1388,19 +1391,36 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_list_os_policy_assignment_reports(resp)
             return resp
 
-    class _ListOSPolicyAssignmentRevisions(OsConfigZonalServiceRestStub):
+    class _ListOSPolicyAssignmentRevisions(
+        _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListOSPolicyAssignmentRevisions")
+            return hash(
+                "OsConfigZonalServiceRestTransport.ListOSPolicyAssignmentRevisions"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1430,45 +1450,32 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/osPolicyAssignments/*}:listRevisions",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_os_policy_assignment_revisions(
                 request, metadata
             )
-            pb_request = (
-                os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest.pb(request)
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._ListOSPolicyAssignmentRevisions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1486,19 +1493,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_list_os_policy_assignment_revisions(resp)
             return resp
 
-    class _ListOSPolicyAssignments(OsConfigZonalServiceRestStub):
+    class _ListOSPolicyAssignments(
+        _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListOSPolicyAssignments")
+            return hash("OsConfigZonalServiceRestTransport.ListOSPolicyAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1528,42 +1550,29 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/osPolicyAssignments",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_os_policy_assignments(
                 request, metadata
             )
-            pb_request = os_policy_assignments.ListOSPolicyAssignmentsRequest.pb(
-                request
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._ListOSPolicyAssignments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1579,19 +1588,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_list_os_policy_assignments(resp)
             return resp
 
-    class _ListVulnerabilityReports(OsConfigZonalServiceRestStub):
+    class _ListVulnerabilityReports(
+        _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListVulnerabilityReports")
+            return hash("OsConfigZonalServiceRestTransport.ListVulnerabilityReports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1623,40 +1647,29 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/vulnerabilityReports",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_vulnerability_reports(
                 request, metadata
             )
-            pb_request = vulnerability.ListVulnerabilityReportsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OsConfigZonalServiceRestTransport._ListVulnerabilityReports._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1672,19 +1685,35 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
             resp = self._interceptor.post_list_vulnerability_reports(resp)
             return resp
 
-    class _UpdateOSPolicyAssignment(OsConfigZonalServiceRestStub):
+    class _UpdateOSPolicyAssignment(
+        _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment,
+        OsConfigZonalServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateOSPolicyAssignment")
+            return hash("OsConfigZonalServiceRestTransport.UpdateOSPolicyAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1715,49 +1744,34 @@ class OsConfigZonalServiceRestTransport(OsConfigZonalServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{os_policy_assignment.name=projects/*/locations/*/osPolicyAssignments/*}",
-                    "body": "os_policy_assignment",
-                },
-            ]
+            http_options = (
+                _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_os_policy_assignment(
                 request, metadata
             )
-            pb_request = os_policy_assignments.UpdateOSPolicyAssignmentRequest.pb(
-                request
+            transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OsConfigZonalServiceRestTransport._UpdateOSPolicyAssignment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

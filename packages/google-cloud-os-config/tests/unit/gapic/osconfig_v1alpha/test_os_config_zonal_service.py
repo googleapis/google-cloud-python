@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -47,15 +64,7 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.osconfig_v1alpha.services.os_config_zonal_service import (
     OsConfigZonalServiceAsyncClient,
@@ -75,8 +84,22 @@ from google.cloud.osconfig_v1alpha.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1243,27 +1266,6 @@ def test_create_os_policy_assignment(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_os_policy_assignment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_os_policy_assignment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest()
-
-
 def test_create_os_policy_assignment_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1342,29 +1344,6 @@ def test_create_os_policy_assignment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_os_policy_assignment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_os_policy_assignment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.CreateOSPolicyAssignmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_os_policy_assignment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1372,7 +1351,7 @@ async def test_create_os_policy_assignment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1417,7 +1396,7 @@ async def test_create_os_policy_assignment_async(
     request_type=os_policy_assignments.CreateOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1484,7 +1463,7 @@ def test_create_os_policy_assignment_field_headers():
 @pytest.mark.asyncio
 async def test_create_os_policy_assignment_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1572,7 +1551,7 @@ def test_create_os_policy_assignment_flattened_error():
 @pytest.mark.asyncio
 async def test_create_os_policy_assignment_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1613,7 +1592,7 @@ async def test_create_os_policy_assignment_flattened_async():
 @pytest.mark.asyncio
 async def test_create_os_policy_assignment_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1662,27 +1641,6 @@ def test_update_os_policy_assignment(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_os_policy_assignment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_os_policy_assignment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
 
 
 def test_update_os_policy_assignment_non_empty_request_with_auto_populated_field():
@@ -1757,29 +1715,6 @@ def test_update_os_policy_assignment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_os_policy_assignment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_os_policy_assignment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.UpdateOSPolicyAssignmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_os_policy_assignment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1787,7 +1722,7 @@ async def test_update_os_policy_assignment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1832,7 +1767,7 @@ async def test_update_os_policy_assignment_async(
     request_type=os_policy_assignments.UpdateOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1899,7 +1834,7 @@ def test_update_os_policy_assignment_field_headers():
 @pytest.mark.asyncio
 async def test_update_os_policy_assignment_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1982,7 +1917,7 @@ def test_update_os_policy_assignment_flattened_error():
 @pytest.mark.asyncio
 async def test_update_os_policy_assignment_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2019,7 +1954,7 @@ async def test_update_os_policy_assignment_flattened_async():
 @pytest.mark.asyncio
 async def test_update_os_policy_assignment_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2089,27 +2024,6 @@ def test_get_os_policy_assignment(request_type, transport: str = "grpc"):
     assert response.deleted is True
     assert response.reconciling is True
     assert response.uid == "uid_value"
-
-
-def test_get_os_policy_assignment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_os_policy_assignment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest()
 
 
 def test_get_os_policy_assignment_non_empty_request_with_auto_populated_field():
@@ -2183,39 +2097,6 @@ def test_get_os_policy_assignment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_os_policy_assignment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_os_policy_assignment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            os_policy_assignments.OSPolicyAssignment(
-                name="name_value",
-                description="description_value",
-                revision_id="revision_id_value",
-                etag="etag_value",
-                rollout_state=os_policy_assignments.OSPolicyAssignment.RolloutState.IN_PROGRESS,
-                baseline=True,
-                deleted=True,
-                reconciling=True,
-                uid="uid_value",
-            )
-        )
-        response = await client.get_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.GetOSPolicyAssignmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_os_policy_assignment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2223,7 +2104,7 @@ async def test_get_os_policy_assignment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2263,7 +2144,7 @@ async def test_get_os_policy_assignment_async(
     request_type=os_policy_assignments.GetOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2352,7 +2233,7 @@ def test_get_os_policy_assignment_field_headers():
 @pytest.mark.asyncio
 async def test_get_os_policy_assignment_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2426,7 +2307,7 @@ def test_get_os_policy_assignment_flattened_error():
 @pytest.mark.asyncio
 async def test_get_os_policy_assignment_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2457,7 +2338,7 @@ async def test_get_os_policy_assignment_flattened_async():
 @pytest.mark.asyncio
 async def test_get_os_policy_assignment_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2505,27 +2386,6 @@ def test_list_os_policy_assignments(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_os_policy_assignments_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_os_policy_assignments), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_os_policy_assignments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest()
 
 
 def test_list_os_policy_assignments_non_empty_request_with_auto_populated_field():
@@ -2601,31 +2461,6 @@ def test_list_os_policy_assignments_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_os_policy_assignments_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_os_policy_assignments), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_os_policy_assignments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_os_policy_assignments_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2633,7 +2468,7 @@ async def test_list_os_policy_assignments_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2673,7 +2508,7 @@ async def test_list_os_policy_assignments_async(
     request_type=os_policy_assignments.ListOSPolicyAssignmentsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2743,7 +2578,7 @@ def test_list_os_policy_assignments_field_headers():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignments_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2817,7 +2652,7 @@ def test_list_os_policy_assignments_flattened_error():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignments_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2848,7 +2683,7 @@ async def test_list_os_policy_assignments_flattened_async():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignments_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2966,7 +2801,7 @@ def test_list_os_policy_assignments_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_os_policy_assignments_async_pager():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3020,7 +2855,7 @@ async def test_list_os_policy_assignments_async_pager():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignments_async_pages():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3108,27 +2943,6 @@ def test_list_os_policy_assignment_revisions(request_type, transport: str = "grp
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_os_policy_assignment_revisions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_os_policy_assignment_revisions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_os_policy_assignment_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
-
-
 def test_list_os_policy_assignment_revisions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3202,31 +3016,6 @@ def test_list_os_policy_assignment_revisions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_os_policy_assignment_revisions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_os_policy_assignment_revisions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_os_policy_assignment_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_os_policy_assignment_revisions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3234,7 +3023,7 @@ async def test_list_os_policy_assignment_revisions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3274,7 +3063,7 @@ async def test_list_os_policy_assignment_revisions_async(
     request_type=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3346,7 +3135,7 @@ def test_list_os_policy_assignment_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_revisions_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3422,7 +3211,7 @@ def test_list_os_policy_assignment_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_revisions_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3455,7 +3244,7 @@ async def test_list_os_policy_assignment_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_revisions_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3573,7 +3362,7 @@ def test_list_os_policy_assignment_revisions_pages(transport_name: str = "grpc")
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_revisions_async_pager():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3627,7 +3416,7 @@ async def test_list_os_policy_assignment_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_revisions_async_pages():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3710,27 +3499,6 @@ def test_delete_os_policy_assignment(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_delete_os_policy_assignment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_os_policy_assignment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest()
-
-
 def test_delete_os_policy_assignment_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3807,29 +3575,6 @@ def test_delete_os_policy_assignment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_os_policy_assignment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_os_policy_assignment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_os_policy_assignment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == os_policy_assignments.DeleteOSPolicyAssignmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_os_policy_assignment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3837,7 +3582,7 @@ async def test_delete_os_policy_assignment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3882,7 +3627,7 @@ async def test_delete_os_policy_assignment_async(
     request_type=os_policy_assignments.DeleteOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3949,7 +3694,7 @@ def test_delete_os_policy_assignment_field_headers():
 @pytest.mark.asyncio
 async def test_delete_os_policy_assignment_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4023,7 +3768,7 @@ def test_delete_os_policy_assignment_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_os_policy_assignment_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4054,7 +3799,7 @@ async def test_delete_os_policy_assignment_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_os_policy_assignment_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4118,30 +3863,6 @@ def test_get_instance_os_policies_compliance(request_type, transport: str = "grp
     assert response.detailed_state == "detailed_state_value"
     assert response.detailed_state_reason == "detailed_state_reason_value"
     assert response.last_compliance_run_id == "last_compliance_run_id_value"
-
-
-def test_get_instance_os_policies_compliance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_instance_os_policies_compliance), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_instance_os_policies_compliance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
-        )
 
 
 def test_get_instance_os_policies_compliance_non_empty_request_with_auto_populated_field():
@@ -4217,39 +3938,6 @@ def test_get_instance_os_policies_compliance_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_instance_os_policies_compliance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_instance_os_policies_compliance), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            instance_os_policies_compliance.InstanceOSPoliciesCompliance(
-                name="name_value",
-                instance="instance_value",
-                state=config_common.OSPolicyComplianceState.COMPLIANT,
-                detailed_state="detailed_state_value",
-                detailed_state_reason="detailed_state_reason_value",
-                last_compliance_run_id="last_compliance_run_id_value",
-            )
-        )
-        response = await client.get_instance_os_policies_compliance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
-        )
-
-
-@pytest.mark.asyncio
 async def test_get_instance_os_policies_compliance_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4257,7 +3945,7 @@ async def test_get_instance_os_policies_compliance_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4297,7 +3985,7 @@ async def test_get_instance_os_policies_compliance_async(
     request_type=instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4383,7 +4071,7 @@ def test_get_instance_os_policies_compliance_field_headers():
 @pytest.mark.asyncio
 async def test_get_instance_os_policies_compliance_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4459,7 +4147,7 @@ def test_get_instance_os_policies_compliance_flattened_error():
 @pytest.mark.asyncio
 async def test_get_instance_os_policies_compliance_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4492,7 +4180,7 @@ async def test_get_instance_os_policies_compliance_flattened_async():
 @pytest.mark.asyncio
 async def test_get_instance_os_policies_compliance_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4544,30 +4232,6 @@ def test_list_instance_os_policies_compliances(request_type, transport: str = "g
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceOSPoliciesCompliancesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_instance_os_policies_compliances_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_instance_os_policies_compliances), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_instance_os_policies_compliances()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
-        )
 
 
 def test_list_instance_os_policies_compliances_non_empty_request_with_auto_populated_field():
@@ -4647,34 +4311,6 @@ def test_list_instance_os_policies_compliances_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_instance_os_policies_compliances_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_instance_os_policies_compliances), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_instance_os_policies_compliances()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
-        )
-
-
-@pytest.mark.asyncio
 async def test_list_instance_os_policies_compliances_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4682,7 +4318,7 @@ async def test_list_instance_os_policies_compliances_async_use_cached_wrapped_rp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4722,7 +4358,7 @@ async def test_list_instance_os_policies_compliances_async(
     request_type=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4796,7 +4432,7 @@ def test_list_instance_os_policies_compliances_field_headers():
 @pytest.mark.asyncio
 async def test_list_instance_os_policies_compliances_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4872,7 +4508,7 @@ def test_list_instance_os_policies_compliances_flattened_error():
 @pytest.mark.asyncio
 async def test_list_instance_os_policies_compliances_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4905,7 +4541,7 @@ async def test_list_instance_os_policies_compliances_flattened_async():
 @pytest.mark.asyncio
 async def test_list_instance_os_policies_compliances_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5024,7 +4660,7 @@ def test_list_instance_os_policies_compliances_pages(transport_name: str = "grpc
 @pytest.mark.asyncio
 async def test_list_instance_os_policies_compliances_async_pager():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5079,7 +4715,7 @@ async def test_list_instance_os_policies_compliances_async_pager():
 @pytest.mark.asyncio
 async def test_list_instance_os_policies_compliances_async_pages():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5171,29 +4807,6 @@ def test_get_os_policy_assignment_report(request_type, transport: str = "grpc"):
     assert response.last_run_id == "last_run_id_value"
 
 
-def test_get_os_policy_assignment_report_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_os_policy_assignment_report), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_os_policy_assignment_report()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
-        )
-
-
 def test_get_os_policy_assignment_report_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5267,36 +4880,6 @@ def test_get_os_policy_assignment_report_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_os_policy_assignment_report_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_os_policy_assignment_report), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            os_policy_assignment_reports.OSPolicyAssignmentReport(
-                name="name_value",
-                instance="instance_value",
-                os_policy_assignment="os_policy_assignment_value",
-                last_run_id="last_run_id_value",
-            )
-        )
-        response = await client.get_os_policy_assignment_report()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
-        )
-
-
-@pytest.mark.asyncio
 async def test_get_os_policy_assignment_report_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5304,7 +4887,7 @@ async def test_get_os_policy_assignment_report_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5344,7 +4927,7 @@ async def test_get_os_policy_assignment_report_async(
     request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5420,7 +5003,7 @@ def test_get_os_policy_assignment_report_field_headers():
 @pytest.mark.asyncio
 async def test_get_os_policy_assignment_report_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5494,7 +5077,7 @@ def test_get_os_policy_assignment_report_flattened_error():
 @pytest.mark.asyncio
 async def test_get_os_policy_assignment_report_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5525,7 +5108,7 @@ async def test_get_os_policy_assignment_report_flattened_async():
 @pytest.mark.asyncio
 async def test_get_os_policy_assignment_report_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5575,30 +5158,6 @@ def test_list_os_policy_assignment_reports(request_type, transport: str = "grpc"
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentReportsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_os_policy_assignment_reports_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_os_policy_assignment_reports), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_os_policy_assignment_reports()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
-        )
 
 
 def test_list_os_policy_assignment_reports_non_empty_request_with_auto_populated_field():
@@ -5678,34 +5237,6 @@ def test_list_os_policy_assignment_reports_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_os_policy_assignment_reports_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_os_policy_assignment_reports), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_os_policy_assignment_reports()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
-        )
-
-
-@pytest.mark.asyncio
 async def test_list_os_policy_assignment_reports_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5713,7 +5244,7 @@ async def test_list_os_policy_assignment_reports_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5753,7 +5284,7 @@ async def test_list_os_policy_assignment_reports_async(
     request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5825,7 +5356,7 @@ def test_list_os_policy_assignment_reports_field_headers():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_reports_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5901,7 +5432,7 @@ def test_list_os_policy_assignment_reports_flattened_error():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_reports_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5934,7 +5465,7 @@ async def test_list_os_policy_assignment_reports_flattened_async():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_reports_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6053,7 +5584,7 @@ def test_list_os_policy_assignment_reports_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_reports_async_pager():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6108,7 +5639,7 @@ async def test_list_os_policy_assignment_reports_async_pager():
 @pytest.mark.asyncio
 async def test_list_os_policy_assignment_reports_async_pages():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6192,25 +5723,6 @@ def test_get_inventory(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
 
 
-def test_get_inventory_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_inventory()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.GetInventoryRequest()
-
-
 def test_get_inventory_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6275,29 +5787,6 @@ def test_get_inventory_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_inventory_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            inventory.Inventory(
-                name="name_value",
-            )
-        )
-        response = await client.get_inventory()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.GetInventoryRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_inventory_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6305,7 +5794,7 @@ async def test_get_inventory_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6344,7 +5833,7 @@ async def test_get_inventory_async(
     transport: str = "grpc_asyncio", request_type=inventory.GetInventoryRequest
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6410,7 +5899,7 @@ def test_get_inventory_field_headers():
 @pytest.mark.asyncio
 async def test_get_inventory_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6478,7 +5967,7 @@ def test_get_inventory_flattened_error():
 @pytest.mark.asyncio
 async def test_get_inventory_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6505,7 +5994,7 @@ async def test_get_inventory_flattened_async():
 @pytest.mark.asyncio
 async def test_get_inventory_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6551,25 +6040,6 @@ def test_list_inventories(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInventoriesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_inventories_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_inventories()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.ListInventoriesRequest()
 
 
 def test_list_inventories_non_empty_request_with_auto_populated_field():
@@ -6642,29 +6112,6 @@ def test_list_inventories_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_inventories_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            inventory.ListInventoriesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_inventories()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == inventory.ListInventoriesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_inventories_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6672,7 +6119,7 @@ async def test_list_inventories_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6711,7 +6158,7 @@ async def test_list_inventories_async(
     transport: str = "grpc_asyncio", request_type=inventory.ListInventoriesRequest
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6777,7 +6224,7 @@ def test_list_inventories_field_headers():
 @pytest.mark.asyncio
 async def test_list_inventories_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6847,7 +6294,7 @@ def test_list_inventories_flattened_error():
 @pytest.mark.asyncio
 async def test_list_inventories_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6876,7 +6323,7 @@ async def test_list_inventories_flattened_async():
 @pytest.mark.asyncio
 async def test_list_inventories_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6986,7 +6433,7 @@ def test_list_inventories_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_inventories_async_pager():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7036,7 +6483,7 @@ async def test_list_inventories_async_pager():
 @pytest.mark.asyncio
 async def test_list_inventories_async_pages():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7120,27 +6567,6 @@ def test_get_vulnerability_report(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
 
 
-def test_get_vulnerability_report_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_vulnerability_report), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_vulnerability_report()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.GetVulnerabilityReportRequest()
-
-
 def test_get_vulnerability_report_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7212,31 +6638,6 @@ def test_get_vulnerability_report_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_vulnerability_report_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_vulnerability_report), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vulnerability.VulnerabilityReport(
-                name="name_value",
-            )
-        )
-        response = await client.get_vulnerability_report()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.GetVulnerabilityReportRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_vulnerability_report_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7244,7 +6645,7 @@ async def test_get_vulnerability_report_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7284,7 +6685,7 @@ async def test_get_vulnerability_report_async(
     request_type=vulnerability.GetVulnerabilityReportRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7354,7 +6755,7 @@ def test_get_vulnerability_report_field_headers():
 @pytest.mark.asyncio
 async def test_get_vulnerability_report_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7428,7 +6829,7 @@ def test_get_vulnerability_report_flattened_error():
 @pytest.mark.asyncio
 async def test_get_vulnerability_report_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7459,7 +6860,7 @@ async def test_get_vulnerability_report_flattened_async():
 @pytest.mark.asyncio
 async def test_get_vulnerability_report_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7507,27 +6908,6 @@ def test_list_vulnerability_reports(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVulnerabilityReportsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_vulnerability_reports_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_vulnerability_reports), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_vulnerability_reports()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.ListVulnerabilityReportsRequest()
 
 
 def test_list_vulnerability_reports_non_empty_request_with_auto_populated_field():
@@ -7605,31 +6985,6 @@ def test_list_vulnerability_reports_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_vulnerability_reports_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_vulnerability_reports), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vulnerability.ListVulnerabilityReportsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_vulnerability_reports()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == vulnerability.ListVulnerabilityReportsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_vulnerability_reports_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7637,7 +6992,7 @@ async def test_list_vulnerability_reports_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = OsConfigZonalServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7677,7 +7032,7 @@ async def test_list_vulnerability_reports_async(
     request_type=vulnerability.ListVulnerabilityReportsRequest,
 ):
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7747,7 +7102,7 @@ def test_list_vulnerability_reports_field_headers():
 @pytest.mark.asyncio
 async def test_list_vulnerability_reports_field_headers_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7821,7 +7176,7 @@ def test_list_vulnerability_reports_flattened_error():
 @pytest.mark.asyncio
 async def test_list_vulnerability_reports_flattened_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7852,7 +7207,7 @@ async def test_list_vulnerability_reports_flattened_async():
 @pytest.mark.asyncio
 async def test_list_vulnerability_reports_flattened_error_async():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7968,7 +7323,7 @@ def test_list_vulnerability_reports_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_vulnerability_reports_async_pager():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8020,7 +7375,7 @@ async def test_list_vulnerability_reports_async_pager():
 @pytest.mark.asyncio
 async def test_list_vulnerability_reports_async_pages():
     client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8068,6 +7423,4064 @@ async def test_list_vulnerability_reports_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+def test_create_os_policy_assignment_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_os_policy_assignment
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_os_policy_assignment
+        ] = mock_rpc
+
+        request = {}
+        client.create_os_policy_assignment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_os_policy_assignment(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_os_policy_assignment_rest_required_fields(
+    request_type=os_policy_assignments.CreateOSPolicyAssignmentRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["os_policy_assignment_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "osPolicyAssignmentId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "osPolicyAssignmentId" in jsonified_request
+    assert (
+        jsonified_request["osPolicyAssignmentId"]
+        == request_init["os_policy_assignment_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["osPolicyAssignmentId"] = "os_policy_assignment_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("os_policy_assignment_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "osPolicyAssignmentId" in jsonified_request
+    assert jsonified_request["osPolicyAssignmentId"] == "os_policy_assignment_id_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_os_policy_assignment(request)
+
+            expected_params = [
+                (
+                    "osPolicyAssignmentId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_os_policy_assignment_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_os_policy_assignment._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("osPolicyAssignmentId",))
+        & set(
+            (
+                "parent",
+                "osPolicyAssignment",
+                "osPolicyAssignmentId",
+            )
+        )
+    )
+
+
+def test_create_os_policy_assignment_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
+                name="name_value"
+            ),
+            os_policy_assignment_id="os_policy_assignment_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_os_policy_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*}/osPolicyAssignments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_os_policy_assignment(
+            os_policy_assignments.CreateOSPolicyAssignmentRequest(),
+            parent="parent_value",
+            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
+                name="name_value"
+            ),
+            os_policy_assignment_id="os_policy_assignment_id_value",
+        )
+
+
+def test_update_os_policy_assignment_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_os_policy_assignment
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_os_policy_assignment
+        ] = mock_rpc
+
+        request = {}
+        client.update_os_policy_assignment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_os_policy_assignment(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_os_policy_assignment_rest_required_fields(
+    request_type=os_policy_assignments.UpdateOSPolicyAssignmentRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_os_policy_assignment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_os_policy_assignment_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_os_policy_assignment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("osPolicyAssignment",)))
+
+
+def test_update_os_policy_assignment_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "os_policy_assignment": {
+                "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_os_policy_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{os_policy_assignment.name=projects/*/locations/*/osPolicyAssignments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_os_policy_assignment(
+            os_policy_assignments.UpdateOSPolicyAssignmentRequest(),
+            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_get_os_policy_assignment_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_os_policy_assignment
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_os_policy_assignment
+        ] = mock_rpc
+
+        request = {}
+        client.get_os_policy_assignment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_os_policy_assignment(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_os_policy_assignment_rest_required_fields(
+    request_type=os_policy_assignments.GetOSPolicyAssignmentRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = os_policy_assignments.OSPolicyAssignment()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_os_policy_assignment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_os_policy_assignment_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_os_policy_assignment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_os_policy_assignment_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = os_policy_assignments.OSPolicyAssignment()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_os_policy_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/osPolicyAssignments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_os_policy_assignment(
+            os_policy_assignments.GetOSPolicyAssignmentRequest(),
+            name="name_value",
+        )
+
+
+def test_list_os_policy_assignments_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_os_policy_assignments
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_os_policy_assignments
+        ] = mock_rpc
+
+        request = {}
+        client.list_os_policy_assignments(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_os_policy_assignments(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_os_policy_assignments_rest_required_fields(
+    request_type=os_policy_assignments.ListOSPolicyAssignmentsRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_policy_assignments._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_policy_assignments._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_os_policy_assignments(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_os_policy_assignments_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_os_policy_assignments._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_os_policy_assignments_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_os_policy_assignments(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*}/osPolicyAssignments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_os_policy_assignments_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_os_policy_assignments(
+            os_policy_assignments.ListOSPolicyAssignmentsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_os_policy_assignments_rest_pager(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            os_policy_assignments.ListOSPolicyAssignmentsResponse(
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                    os_policy_assignments.OSPolicyAssignment(),
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
+                next_page_token="abc",
+            ),
+            os_policy_assignments.ListOSPolicyAssignmentsResponse(
+                os_policy_assignments=[],
+                next_page_token="def",
+            ),
+            os_policy_assignments.ListOSPolicyAssignmentsResponse(
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
+                next_page_token="ghi",
+            ),
+            os_policy_assignments.ListOSPolicyAssignmentsResponse(
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            os_policy_assignments.ListOSPolicyAssignmentsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_os_policy_assignments(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, os_policy_assignments.OSPolicyAssignment) for i in results
+        )
+
+        pages = list(client.list_os_policy_assignments(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_list_os_policy_assignment_revisions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_os_policy_assignment_revisions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_os_policy_assignment_revisions
+        ] = mock_rpc
+
+        request = {}
+        client.list_os_policy_assignment_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_os_policy_assignment_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_os_policy_assignment_revisions_rest_required_fields(
+    request_type=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_policy_assignment_revisions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_policy_assignment_revisions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_os_policy_assignment_revisions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_os_policy_assignment_revisions_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_os_policy_assignment_revisions._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("name",))
+    )
+
+
+def test_list_os_policy_assignment_revisions_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_os_policy_assignment_revisions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/osPolicyAssignments/*}:listRevisions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_os_policy_assignment_revisions_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_os_policy_assignment_revisions(
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(),
+            name="name_value",
+        )
+
+
+def test_list_os_policy_assignment_revisions_rest_pager(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                    os_policy_assignments.OSPolicyAssignment(),
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
+                next_page_token="abc",
+            ),
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
+                os_policy_assignments=[],
+                next_page_token="def",
+            ),
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
+                next_page_token="ghi",
+            ),
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
+                os_policy_assignments=[
+                    os_policy_assignments.OSPolicyAssignment(),
+                    os_policy_assignments.OSPolicyAssignment(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+        }
+
+        pager = client.list_os_policy_assignment_revisions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, os_policy_assignments.OSPolicyAssignment) for i in results
+        )
+
+        pages = list(
+            client.list_os_policy_assignment_revisions(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_delete_os_policy_assignment_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_os_policy_assignment
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_os_policy_assignment
+        ] = mock_rpc
+
+        request = {}
+        client.delete_os_policy_assignment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_os_policy_assignment(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_os_policy_assignment_rest_required_fields(
+    request_type=os_policy_assignments.DeleteOSPolicyAssignmentRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_os_policy_assignment._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_os_policy_assignment(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_os_policy_assignment_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_os_policy_assignment._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_os_policy_assignment_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_os_policy_assignment(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/osPolicyAssignments/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_os_policy_assignment(
+            os_policy_assignments.DeleteOSPolicyAssignmentRequest(),
+            name="name_value",
+        )
+
+
+def test_get_instance_os_policies_compliance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_instance_os_policies_compliance
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_instance_os_policies_compliance
+        ] = mock_rpc
+
+        request = {}
+        client.get_instance_os_policies_compliance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_instance_os_policies_compliance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_instance_os_policies_compliance_rest_required_fields(
+    request_type=instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_instance_os_policies_compliance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_instance_os_policies_compliance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_instance_os_policies_compliance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_instance_os_policies_compliance_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_instance_os_policies_compliance._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_instance_os_policies_compliance_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instanceOSPoliciesCompliances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_instance_os_policies_compliance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/instanceOSPoliciesCompliances/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_instance_os_policies_compliance_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_instance_os_policies_compliance(
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(),
+            name="name_value",
+        )
+
+
+def test_list_instance_os_policies_compliances_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_instance_os_policies_compliances
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_instance_os_policies_compliances
+        ] = mock_rpc
+
+        request = {}
+        client.list_instance_os_policies_compliances(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_instance_os_policies_compliances(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_instance_os_policies_compliances_rest_required_fields(
+    request_type=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_instance_os_policies_compliances._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_instance_os_policies_compliances._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = (
+        instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
+    )
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_instance_os_policies_compliances(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_instance_os_policies_compliances_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_instance_os_policies_compliances._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_instance_os_policies_compliances_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_instance_os_policies_compliances(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*}/instanceOSPoliciesCompliances"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_instance_os_policies_compliances_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_instance_os_policies_compliances(
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_instance_os_policies_compliances_rest_pager(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
+                instance_os_policies_compliances=[
+                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
+                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
+                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
+                ],
+                next_page_token="abc",
+            ),
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
+                instance_os_policies_compliances=[],
+                next_page_token="def",
+            ),
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
+                instance_os_policies_compliances=[
+                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
+                ],
+                next_page_token="ghi",
+            ),
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
+                instance_os_policies_compliances=[
+                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
+                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_instance_os_policies_compliances(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, instance_os_policies_compliance.InstanceOSPoliciesCompliance)
+            for i in results
+        )
+
+        pages = list(
+            client.list_instance_os_policies_compliances(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_os_policy_assignment_report_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_os_policy_assignment_report
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_os_policy_assignment_report
+        ] = mock_rpc
+
+        request = {}
+        client.get_os_policy_assignment_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_os_policy_assignment_report(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_os_policy_assignment_report_rest_required_fields(
+    request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_os_policy_assignment_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_os_policy_assignment_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_os_policy_assignment_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_os_policy_assignment_report_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_os_policy_assignment_report._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_os_policy_assignment_report_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4/report"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_os_policy_assignment_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/instances/*/osPolicyAssignments/*/report}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_os_policy_assignment_report_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_os_policy_assignment_report(
+            os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(),
+            name="name_value",
+        )
+
+
+def test_list_os_policy_assignment_reports_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_os_policy_assignment_reports
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_os_policy_assignment_reports
+        ] = mock_rpc
+
+        request = {}
+        client.list_os_policy_assignment_reports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_os_policy_assignment_reports(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_os_policy_assignment_reports_rest_required_fields(
+    request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_policy_assignment_reports._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_policy_assignment_reports._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_os_policy_assignment_reports(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_os_policy_assignment_reports_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_os_policy_assignment_reports._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_os_policy_assignment_reports_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+        )
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_os_policy_assignment_reports(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/instances/*/osPolicyAssignments/*}/reports"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_os_policy_assignment_reports_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_os_policy_assignment_reports(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_os_policy_assignment_reports_rest_pager(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="abc",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[],
+                next_page_token="def",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+                next_page_token="ghi",
+            ),
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                os_policy_assignment_reports=[
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.to_json(
+                x
+            )
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4"
+        }
+
+        pager = client.list_os_policy_assignment_reports(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, os_policy_assignment_reports.OSPolicyAssignmentReport)
+            for i in results
+        )
+
+        pages = list(
+            client.list_os_policy_assignment_reports(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_inventory_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_inventory in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_inventory] = mock_rpc
+
+        request = {}
+        client.get_inventory(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_inventory(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_inventory_rest_required_fields(request_type=inventory.GetInventoryRequest):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_inventory._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_inventory._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("view",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = inventory.Inventory()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = inventory.Inventory.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_inventory(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_inventory_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_inventory._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("view",)) & set(("name",)))
+
+
+def test_get_inventory_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = inventory.Inventory()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3/inventory"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = inventory.Inventory.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_inventory(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/instances/*/inventory}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_inventory_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_inventory(
+            inventory.GetInventoryRequest(),
+            name="name_value",
+        )
+
+
+def test_list_inventories_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_inventories in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_inventories
+        ] = mock_rpc
+
+        request = {}
+        client.list_inventories(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_inventories(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_inventories_rest_required_fields(
+    request_type=inventory.ListInventoriesRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_inventories._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_inventories._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+            "view",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = inventory.ListInventoriesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = inventory.ListInventoriesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_inventories(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_inventories_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_inventories._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+                "view",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_inventories_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = inventory.ListInventoriesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = inventory.ListInventoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_inventories(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/instances/*}/inventories"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_inventories_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_inventories(
+            inventory.ListInventoriesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_inventories_rest_pager(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            inventory.ListInventoriesResponse(
+                inventories=[
+                    inventory.Inventory(),
+                    inventory.Inventory(),
+                    inventory.Inventory(),
+                ],
+                next_page_token="abc",
+            ),
+            inventory.ListInventoriesResponse(
+                inventories=[],
+                next_page_token="def",
+            ),
+            inventory.ListInventoriesResponse(
+                inventories=[
+                    inventory.Inventory(),
+                ],
+                next_page_token="ghi",
+            ),
+            inventory.ListInventoriesResponse(
+                inventories=[
+                    inventory.Inventory(),
+                    inventory.Inventory(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(inventory.ListInventoriesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        pager = client.list_inventories(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, inventory.Inventory) for i in results)
+
+        pages = list(client.list_inventories(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_vulnerability_report_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_vulnerability_report
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_vulnerability_report
+        ] = mock_rpc
+
+        request = {}
+        client.get_vulnerability_report(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_vulnerability_report(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_vulnerability_report_rest_required_fields(
+    request_type=vulnerability.GetVulnerabilityReportRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_vulnerability_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_vulnerability_report._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vulnerability.VulnerabilityReport()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vulnerability.VulnerabilityReport.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_vulnerability_report(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_vulnerability_report_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_vulnerability_report._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_vulnerability_report_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vulnerability.VulnerabilityReport()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3/vulnerabilityReport"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vulnerability.VulnerabilityReport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_vulnerability_report(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=projects/*/locations/*/instances/*/vulnerabilityReport}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_vulnerability_report_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_vulnerability_report(
+            vulnerability.GetVulnerabilityReportRequest(),
+            name="name_value",
+        )
+
+
+def test_list_vulnerability_reports_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_vulnerability_reports
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_vulnerability_reports
+        ] = mock_rpc
+
+        request = {}
+        client.list_vulnerability_reports(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_vulnerability_reports(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_vulnerability_reports_rest_required_fields(
+    request_type=vulnerability.ListVulnerabilityReportsRequest,
+):
+    transport_class = transports.OsConfigZonalServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_vulnerability_reports._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_vulnerability_reports._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vulnerability.ListVulnerabilityReportsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vulnerability.ListVulnerabilityReportsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_vulnerability_reports(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_vulnerability_reports_rest_unset_required_fields():
+    transport = transports.OsConfigZonalServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_vulnerability_reports._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_vulnerability_reports_rest_flattened():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vulnerability.ListVulnerabilityReportsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vulnerability.ListVulnerabilityReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_vulnerability_reports(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=projects/*/locations/*/instances/*}/vulnerabilityReports"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_vulnerability_reports_rest_flattened_error(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_vulnerability_reports(
+            vulnerability.ListVulnerabilityReportsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_vulnerability_reports_rest_pager(transport: str = "rest"):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vulnerability.ListVulnerabilityReportsResponse(
+                vulnerability_reports=[
+                    vulnerability.VulnerabilityReport(),
+                    vulnerability.VulnerabilityReport(),
+                    vulnerability.VulnerabilityReport(),
+                ],
+                next_page_token="abc",
+            ),
+            vulnerability.ListVulnerabilityReportsResponse(
+                vulnerability_reports=[],
+                next_page_token="def",
+            ),
+            vulnerability.ListVulnerabilityReportsResponse(
+                vulnerability_reports=[
+                    vulnerability.VulnerabilityReport(),
+                ],
+                next_page_token="ghi",
+            ),
+            vulnerability.ListVulnerabilityReportsResponse(
+                vulnerability_reports=[
+                    vulnerability.VulnerabilityReport(),
+                    vulnerability.VulnerabilityReport(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vulnerability.ListVulnerabilityReportsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        pager = client.list_vulnerability_reports(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vulnerability.VulnerabilityReport) for i in results)
+
+        pages = list(client.list_vulnerability_reports(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.OsConfigZonalServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = OsConfigZonalServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.OsConfigZonalServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = OsConfigZonalServiceClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.OsConfigZonalServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = OsConfigZonalServiceClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = OsConfigZonalServiceClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.OsConfigZonalServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = OsConfigZonalServiceClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.OsConfigZonalServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = OsConfigZonalServiceClient(transport=transport)
+    assert client.transport is transport
+
+
+def test_transport_get_channel():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.OsConfigZonalServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+    transport = transports.OsConfigZonalServiceGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.OsConfigZonalServiceGrpcTransport,
+        transports.OsConfigZonalServiceGrpcAsyncIOTransport,
+        transports.OsConfigZonalServiceRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+def test_transport_kind_grpc():
+    transport = OsConfigZonalServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_os_policy_assignment_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_os_policy_assignment), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.CreateOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_os_policy_assignment_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_os_policy_assignment), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_os_policy_assignment_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment), "__call__"
+    ) as call:
+        call.return_value = os_policy_assignments.OSPolicyAssignment()
+        client.get_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.GetOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_os_policy_assignments_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignments), "__call__"
+    ) as call:
+        call.return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse()
+        client.list_os_policy_assignments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_os_policy_assignment_revisions_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_revisions), "__call__"
+    ) as call:
+        call.return_value = (
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
+        )
+        client.list_os_policy_assignment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_os_policy_assignment_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_os_policy_assignment), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_instance_os_policies_compliance_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_os_policies_compliance), "__call__"
+    ) as call:
+        call.return_value = (
+            instance_os_policies_compliance.InstanceOSPoliciesCompliance()
+        )
+        client.get_instance_os_policies_compliance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_instance_os_policies_compliances_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instance_os_policies_compliances), "__call__"
+    ) as call:
+        call.return_value = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
+        )
+        client.list_instance_os_policies_compliances(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_os_policy_assignment_report_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        call.return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
+        client.get_os_policy_assignment_report(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_os_policy_assignment_reports_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        call.return_value = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
+        )
+        client.list_os_policy_assignment_reports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_inventory_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
+        call.return_value = inventory.Inventory()
+        client.get_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = inventory.GetInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_inventories_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
+        call.return_value = inventory.ListInventoriesResponse()
+        client.list_inventories(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = inventory.ListInventoriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_vulnerability_report_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vulnerability_report), "__call__"
+    ) as call:
+        call.return_value = vulnerability.VulnerabilityReport()
+        client.get_vulnerability_report(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vulnerability.GetVulnerabilityReportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_vulnerability_reports_empty_call_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vulnerability_reports), "__call__"
+    ) as call:
+        call.return_value = vulnerability.ListVulnerabilityReportsResponse()
+        client.list_vulnerability_reports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vulnerability.ListVulnerabilityReportsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = OsConfigZonalServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_os_policy_assignment_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.CreateOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_os_policy_assignment_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignments.OSPolicyAssignment(
+                name="name_value",
+                description="description_value",
+                revision_id="revision_id_value",
+                etag="etag_value",
+                rollout_state=os_policy_assignments.OSPolicyAssignment.RolloutState.IN_PROGRESS,
+                baseline=True,
+                deleted=True,
+                reconciling=True,
+                uid="uid_value",
+            )
+        )
+        await client.get_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.GetOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_os_policy_assignments_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignments.ListOSPolicyAssignmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_os_policy_assignments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_revisions_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_os_policy_assignment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_os_policy_assignment_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_os_policy_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_instance_os_policies_compliance_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_os_policies_compliance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            instance_os_policies_compliance.InstanceOSPoliciesCompliance(
+                name="name_value",
+                instance="instance_value",
+                state=config_common.OSPolicyComplianceState.COMPLIANT,
+                detailed_state="detailed_state_value",
+                detailed_state_reason="detailed_state_reason_value",
+                last_compliance_run_id="last_compliance_run_id_value",
+            )
+        )
+        await client.get_instance_os_policies_compliance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_instance_os_policies_compliances_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instance_os_policies_compliances), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_instance_os_policies_compliances(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_os_policy_assignment_report_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.OSPolicyAssignmentReport(
+                name="name_value",
+                instance="instance_value",
+                os_policy_assignment="os_policy_assignment_value",
+                last_run_id="last_run_id_value",
+            )
+        )
+        await client.get_os_policy_assignment_report(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_os_policy_assignment_reports_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_os_policy_assignment_reports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_inventory_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            inventory.Inventory(
+                name="name_value",
+            )
+        )
+        await client.get_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = inventory.GetInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_inventories_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            inventory.ListInventoriesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_inventories(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = inventory.ListInventoriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_vulnerability_report_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vulnerability_report), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vulnerability.VulnerabilityReport(
+                name="name_value",
+            )
+        )
+        await client.get_vulnerability_report(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vulnerability.GetVulnerabilityReportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_vulnerability_reports_empty_call_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vulnerability_reports), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vulnerability.ListVulnerabilityReportsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_vulnerability_reports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vulnerability.ListVulnerabilityReportsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = OsConfigZonalServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_os_policy_assignment_rest_bad_request(
+    request_type=os_policy_assignments.CreateOSPolicyAssignmentRequest,
+):
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_os_policy_assignment(request)
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -8075,10 +11488,9 @@ async def test_list_vulnerability_reports_async_pages():
         dict,
     ],
 )
-def test_create_os_policy_assignment_rest(request_type):
+def test_create_os_policy_assignment_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -8296,169 +11708,15 @@ def test_create_os_policy_assignment_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.create_os_policy_assignment(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_create_os_policy_assignment_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.create_os_policy_assignment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_os_policy_assignment
-        ] = mock_rpc
-
-        request = {}
-        client.create_os_policy_assignment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.create_os_policy_assignment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_create_os_policy_assignment_rest_required_fields(
-    request_type=os_policy_assignments.CreateOSPolicyAssignmentRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request_init["os_policy_assignment_id"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-    assert "osPolicyAssignmentId" not in jsonified_request
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-    assert "osPolicyAssignmentId" in jsonified_request
-    assert (
-        jsonified_request["osPolicyAssignmentId"]
-        == request_init["os_policy_assignment_id"]
-    )
-
-    jsonified_request["parent"] = "parent_value"
-    jsonified_request["osPolicyAssignmentId"] = "os_policy_assignment_id_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("os_policy_assignment_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-    assert "osPolicyAssignmentId" in jsonified_request
-    assert jsonified_request["osPolicyAssignmentId"] == "os_policy_assignment_id_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.create_os_policy_assignment(request)
-
-            expected_params = [
-                (
-                    "osPolicyAssignmentId",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_create_os_policy_assignment_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_os_policy_assignment._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("osPolicyAssignmentId",))
-        & set(
-            (
-                "parent",
-                "osPolicyAssignment",
-                "osPolicyAssignmentId",
-            )
-        )
-    )
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8470,6 +11728,7 @@ def test_create_os_policy_assignment_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -8495,12 +11754,10 @@ def test_create_os_policy_assignment_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = os_policy_assignments.CreateOSPolicyAssignmentRequest()
         metadata = [
@@ -8522,17 +11779,18 @@ def test_create_os_policy_assignment_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_os_policy_assignment_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignments.CreateOSPolicyAssignmentRequest,
+def test_update_os_policy_assignment_rest_bad_request(
+    request_type=os_policy_assignments.UpdateOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init = {
+        "os_policy_assignment": {
+            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+        }
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8540,80 +11798,13 @@ def test_create_os_policy_assignment_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.create_os_policy_assignment(request)
-
-
-def test_create_os_policy_assignment_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
-                name="name_value"
-            ),
-            os_policy_assignment_id="os_policy_assignment_id_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.create_os_policy_assignment(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=projects/*/locations/*}/osPolicyAssignments"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_create_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_os_policy_assignment(
-            os_policy_assignments.CreateOSPolicyAssignmentRequest(),
-            parent="parent_value",
-            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
-                name="name_value"
-            ),
-            os_policy_assignment_id="os_policy_assignment_id_value",
-        )
-
-
-def test_create_os_policy_assignment_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.update_os_policy_assignment(request)
 
 
 @pytest.mark.parametrize(
@@ -8623,10 +11814,9 @@ def test_create_os_policy_assignment_rest_error():
         dict,
     ],
 )
-def test_update_os_policy_assignment_rest(request_type):
+def test_update_os_policy_assignment_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -8848,139 +12038,15 @@ def test_update_os_policy_assignment_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_os_policy_assignment(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_update_os_policy_assignment_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.update_os_policy_assignment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_os_policy_assignment
-        ] = mock_rpc
-
-        request = {}
-        client.update_os_policy_assignment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.update_os_policy_assignment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_update_os_policy_assignment_rest_required_fields(
-    request_type=os_policy_assignments.UpdateOSPolicyAssignmentRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.update_os_policy_assignment(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_update_os_policy_assignment_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_os_policy_assignment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("osPolicyAssignment",)))
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8992,6 +12058,7 @@ def test_update_os_policy_assignment_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -9017,12 +12084,10 @@ def test_update_os_policy_assignment_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
         metadata = [
@@ -9044,20 +12109,15 @@ def test_update_os_policy_assignment_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_os_policy_assignment_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignments.UpdateOSPolicyAssignmentRequest,
+def test_get_os_policy_assignment_rest_bad_request(
+    request_type=os_policy_assignments.GetOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
-        "os_policy_assignment": {
-            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
-        }
+        "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
     }
     request = request_type(**request_init)
 
@@ -9066,82 +12126,13 @@ def test_update_os_policy_assignment_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.update_os_policy_assignment(request)
-
-
-def test_update_os_policy_assignment_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "os_policy_assignment": {
-                "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
-            }
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
-                name="name_value"
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.update_os_policy_assignment(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{os_policy_assignment.name=projects/*/locations/*/osPolicyAssignments/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_update_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_os_policy_assignment(
-            os_policy_assignments.UpdateOSPolicyAssignmentRequest(),
-            os_policy_assignment=os_policy_assignments.OSPolicyAssignment(
-                name="name_value"
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-def test_update_os_policy_assignment_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.get_os_policy_assignment(request)
 
 
 @pytest.mark.parametrize(
@@ -9151,10 +12142,9 @@ def test_update_os_policy_assignment_rest_error():
         dict,
     ],
 )
-def test_get_os_policy_assignment_rest(request_type):
+def test_get_os_policy_assignment_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -9179,13 +12169,13 @@ def test_get_os_policy_assignment_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_os_policy_assignment(request)
 
@@ -9205,130 +12195,6 @@ def test_get_os_policy_assignment_rest(request_type):
     assert response.uid == "uid_value"
 
 
-def test_get_os_policy_assignment_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_os_policy_assignment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_os_policy_assignment
-        ] = mock_rpc
-
-        request = {}
-        client.get_os_policy_assignment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_os_policy_assignment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_os_policy_assignment_rest_required_fields(
-    request_type=os_policy_assignments.GetOSPolicyAssignmentRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = os_policy_assignments.OSPolicyAssignment()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_os_policy_assignment(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_os_policy_assignment_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_os_policy_assignment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_os_policy_assignment_rest_interceptors(null_interceptor):
     transport = transports.OsConfigZonalServiceRestTransport(
@@ -9338,6 +12204,7 @@ def test_get_os_policy_assignment_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -9359,12 +12226,12 @@ def test_get_os_policy_assignment_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = os_policy_assignments.OSPolicyAssignment.to_json(
+        return_value = os_policy_assignments.OSPolicyAssignment.to_json(
             os_policy_assignments.OSPolicyAssignment()
         )
+        req.return_value.content = return_value
 
         request = os_policy_assignments.GetOSPolicyAssignmentRequest()
         metadata = [
@@ -9386,19 +12253,14 @@ def test_get_os_policy_assignment_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_os_policy_assignment_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignments.GetOSPolicyAssignmentRequest,
+def test_list_os_policy_assignments_rest_bad_request(
+    request_type=os_policy_assignments.ListOSPolicyAssignmentsRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9406,76 +12268,13 @@ def test_get_os_policy_assignment_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.get_os_policy_assignment(request)
-
-
-def test_get_os_policy_assignment_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = os_policy_assignments.OSPolicyAssignment()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_os_policy_assignment(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=projects/*/locations/*/osPolicyAssignments/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_os_policy_assignment(
-            os_policy_assignments.GetOSPolicyAssignmentRequest(),
-            name="name_value",
-        )
-
-
-def test_get_os_policy_assignment_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.list_os_policy_assignments(request)
 
 
 @pytest.mark.parametrize(
@@ -9485,10 +12284,9 @@ def test_get_os_policy_assignment_rest_error():
         dict,
     ],
 )
-def test_list_os_policy_assignments_rest(request_type):
+def test_list_os_policy_assignments_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -9503,162 +12301,21 @@ def test_list_os_policy_assignments_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_os_policy_assignments(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_os_policy_assignments_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_os_policy_assignments
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_os_policy_assignments
-        ] = mock_rpc
-
-        request = {}
-        client.list_os_policy_assignments(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_os_policy_assignments(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_os_policy_assignments_rest_required_fields(
-    request_type=os_policy_assignments.ListOSPolicyAssignmentsRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_os_policy_assignments._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_os_policy_assignments._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_os_policy_assignments(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_os_policy_assignments_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_os_policy_assignments._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9670,6 +12327,7 @@ def test_list_os_policy_assignments_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -9692,14 +12350,12 @@ def test_list_os_policy_assignments_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            os_policy_assignments.ListOSPolicyAssignmentsResponse.to_json(
-                os_policy_assignments.ListOSPolicyAssignmentsResponse()
-            )
+        return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.to_json(
+            os_policy_assignments.ListOSPolicyAssignmentsResponse()
         )
+        req.return_value.content = return_value
 
         request = os_policy_assignments.ListOSPolicyAssignmentsRequest()
         metadata = [
@@ -9721,17 +12377,16 @@ def test_list_os_policy_assignments_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_os_policy_assignments_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignments.ListOSPolicyAssignmentsRequest,
+def test_list_os_policy_assignment_revisions_rest_bad_request(
+    request_type=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9739,136 +12394,13 @@ def test_list_os_policy_assignments_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list_os_policy_assignments(request)
-
-
-def test_list_os_policy_assignments_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_os_policy_assignments(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=projects/*/locations/*}/osPolicyAssignments"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_os_policy_assignments_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_os_policy_assignments(
-            os_policy_assignments.ListOSPolicyAssignmentsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_os_policy_assignments_rest_pager(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[
-                    os_policy_assignments.OSPolicyAssignment(),
-                    os_policy_assignments.OSPolicyAssignment(),
-                    os_policy_assignments.OSPolicyAssignment(),
-                ],
-                next_page_token="abc",
-            ),
-            os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[],
-                next_page_token="def",
-            ),
-            os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[
-                    os_policy_assignments.OSPolicyAssignment(),
-                ],
-                next_page_token="ghi",
-            ),
-            os_policy_assignments.ListOSPolicyAssignmentsResponse(
-                os_policy_assignments=[
-                    os_policy_assignments.OSPolicyAssignment(),
-                    os_policy_assignments.OSPolicyAssignment(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            os_policy_assignments.ListOSPolicyAssignmentsResponse.to_json(x)
-            for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        pager = client.list_os_policy_assignments(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, os_policy_assignments.OSPolicyAssignment) for i in results
-        )
-
-        pages = list(client.list_os_policy_assignments(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.list_os_policy_assignment_revisions(request)
 
 
 @pytest.mark.parametrize(
@@ -9878,10 +12410,9 @@ def test_list_os_policy_assignments_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
-def test_list_os_policy_assignment_revisions_rest(request_type):
+def test_list_os_policy_assignment_revisions_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -9898,166 +12429,21 @@ def test_list_os_policy_assignment_revisions_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_os_policy_assignment_revisions(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentRevisionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_os_policy_assignment_revisions_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_os_policy_assignment_revisions
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_os_policy_assignment_revisions
-        ] = mock_rpc
-
-        request = {}
-        client.list_os_policy_assignment_revisions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_os_policy_assignment_revisions(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_os_policy_assignment_revisions_rest_required_fields(
-    request_type=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_os_policy_assignment_revisions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_os_policy_assignment_revisions._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = (
-                os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
-                    return_value
-                )
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_os_policy_assignment_revisions(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_os_policy_assignment_revisions_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_os_policy_assignment_revisions._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("name",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10069,6 +12455,7 @@ def test_list_os_policy_assignment_revisions_rest_interceptors(null_interceptor)
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -10092,14 +12479,14 @@ def test_list_os_policy_assignment_revisions_rest_interceptors(null_interceptor)
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
+        return_value = (
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.to_json(
                 os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
             )
         )
+        req.return_value.content = return_value
 
         request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
         metadata = [
@@ -10123,15 +12510,12 @@ def test_list_os_policy_assignment_revisions_rest_interceptors(null_interceptor)
         post.assert_called_once()
 
 
-def test_list_os_policy_assignment_revisions_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
+def test_delete_os_policy_assignment_rest_bad_request(
+    request_type=os_policy_assignments.DeleteOSPolicyAssignmentRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
         "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
@@ -10143,144 +12527,13 @@ def test_list_os_policy_assignment_revisions_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list_os_policy_assignment_revisions(request)
-
-
-def test_list_os_policy_assignment_revisions_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_os_policy_assignment_revisions(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=projects/*/locations/*/osPolicyAssignments/*}:listRevisions"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_os_policy_assignment_revisions_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_os_policy_assignment_revisions(
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(),
-            name="name_value",
-        )
-
-
-def test_list_os_policy_assignment_revisions_rest_pager(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[
-                    os_policy_assignments.OSPolicyAssignment(),
-                    os_policy_assignments.OSPolicyAssignment(),
-                    os_policy_assignments.OSPolicyAssignment(),
-                ],
-                next_page_token="abc",
-            ),
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[],
-                next_page_token="def",
-            ),
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[
-                    os_policy_assignments.OSPolicyAssignment(),
-                ],
-                next_page_token="ghi",
-            ),
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse(
-                os_policy_assignments=[
-                    os_policy_assignments.OSPolicyAssignment(),
-                    os_policy_assignments.OSPolicyAssignment(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.to_json(x)
-            for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
-        }
-
-        pager = client.list_os_policy_assignment_revisions(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, os_policy_assignments.OSPolicyAssignment) for i in results
-        )
-
-        pages = list(
-            client.list_os_policy_assignment_revisions(request=sample_request).pages
-        )
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.delete_os_policy_assignment(request)
 
 
 @pytest.mark.parametrize(
@@ -10290,10 +12543,9 @@ def test_list_os_policy_assignment_revisions_rest_pager(transport: str = "rest")
         dict,
     ],
 )
-def test_delete_os_policy_assignment_rest(request_type):
+def test_delete_os_policy_assignment_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -10308,141 +12560,15 @@ def test_delete_os_policy_assignment_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_os_policy_assignment(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_delete_os_policy_assignment_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.delete_os_policy_assignment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_os_policy_assignment
-        ] = mock_rpc
-
-        request = {}
-        client.delete_os_policy_assignment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.delete_os_policy_assignment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_delete_os_policy_assignment_rest_required_fields(
-    request_type=os_policy_assignments.DeleteOSPolicyAssignmentRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_os_policy_assignment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.delete_os_policy_assignment(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_os_policy_assignment_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_os_policy_assignment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10454,6 +12580,7 @@ def test_delete_os_policy_assignment_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -10479,12 +12606,10 @@ def test_delete_os_policy_assignment_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
         metadata = [
@@ -10506,18 +12631,15 @@ def test_delete_os_policy_assignment_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_delete_os_policy_assignment_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignments.DeleteOSPolicyAssignmentRequest,
+def test_get_instance_os_policies_compliance_rest_bad_request(
+    request_type=instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
-        "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
+        "name": "projects/sample1/locations/sample2/instanceOSPoliciesCompliances/sample3"
     }
     request = request_type(**request_init)
 
@@ -10526,74 +12648,13 @@ def test_delete_os_policy_assignment_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.delete_os_policy_assignment(request)
-
-
-def test_delete_os_policy_assignment_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.delete_os_policy_assignment(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=projects/*/locations/*/osPolicyAssignments/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_delete_os_policy_assignment_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_os_policy_assignment(
-            os_policy_assignments.DeleteOSPolicyAssignmentRequest(),
-            name="name_value",
-        )
-
-
-def test_delete_os_policy_assignment_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.get_instance_os_policies_compliance(request)
 
 
 @pytest.mark.parametrize(
@@ -10603,10 +12664,9 @@ def test_delete_os_policy_assignment_rest_error():
         dict,
     ],
 )
-def test_get_instance_os_policies_compliance_rest(request_type):
+def test_get_instance_os_policies_compliance_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -10628,15 +12688,15 @@ def test_get_instance_os_policies_compliance_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_instance_os_policies_compliance(request)
 
@@ -10652,136 +12712,6 @@ def test_get_instance_os_policies_compliance_rest(request_type):
     assert response.last_compliance_run_id == "last_compliance_run_id_value"
 
 
-def test_get_instance_os_policies_compliance_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_instance_os_policies_compliance
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_instance_os_policies_compliance
-        ] = mock_rpc
-
-        request = {}
-        client.get_instance_os_policies_compliance(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_instance_os_policies_compliance(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_instance_os_policies_compliance_rest_required_fields(
-    request_type=instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_instance_os_policies_compliance._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_instance_os_policies_compliance._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = (
-                instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
-                    return_value
-                )
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_instance_os_policies_compliance(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_instance_os_policies_compliance_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.get_instance_os_policies_compliance._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_instance_os_policies_compliance_rest_interceptors(null_interceptor):
     transport = transports.OsConfigZonalServiceRestTransport(
@@ -10791,6 +12721,7 @@ def test_get_instance_os_policies_compliance_rest_interceptors(null_interceptor)
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -10816,14 +12747,14 @@ def test_get_instance_os_policies_compliance_rest_interceptors(null_interceptor)
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
+        return_value = (
             instance_os_policies_compliance.InstanceOSPoliciesCompliance.to_json(
                 instance_os_policies_compliance.InstanceOSPoliciesCompliance()
             )
         )
+        req.return_value.content = return_value
 
         request = (
             instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
@@ -10849,19 +12780,14 @@ def test_get_instance_os_policies_compliance_rest_interceptors(null_interceptor)
         post.assert_called_once()
 
 
-def test_get_instance_os_policies_compliance_rest_bad_request(
-    transport: str = "rest",
-    request_type=instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest,
+def test_list_instance_os_policies_compliances_rest_bad_request(
+    request_type=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/instanceOSPoliciesCompliances/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10869,80 +12795,13 @@ def test_get_instance_os_policies_compliance_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.get_instance_os_policies_compliance(request)
-
-
-def test_get_instance_os_policies_compliance_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/instanceOSPoliciesCompliances/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_instance_os_policies_compliance(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=projects/*/locations/*/instanceOSPoliciesCompliances/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_instance_os_policies_compliance_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_instance_os_policies_compliance(
-            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest(),
-            name="name_value",
-        )
-
-
-def test_get_instance_os_policies_compliance_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.list_instance_os_policies_compliances(request)
 
 
 @pytest.mark.parametrize(
@@ -10952,10 +12811,9 @@ def test_get_instance_os_policies_compliance_rest_error():
         dict,
     ],
 )
-def test_list_instance_os_policies_compliances_rest(request_type):
+def test_list_instance_os_policies_compliances_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -10972,172 +12830,21 @@ def test_list_instance_os_policies_compliances_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_instance_os_policies_compliances(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceOSPoliciesCompliancesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_instance_os_policies_compliances_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_instance_os_policies_compliances
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_instance_os_policies_compliances
-        ] = mock_rpc
-
-        request = {}
-        client.list_instance_os_policies_compliances(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_instance_os_policies_compliances(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_instance_os_policies_compliances_rest_required_fields(
-    request_type=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_instance_os_policies_compliances._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_instance_os_policies_compliances._get_unset_required_fields(
-        jsonified_request
-    )
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = (
-        instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
-    )
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_instance_os_policies_compliances(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_instance_os_policies_compliances_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_instance_os_policies_compliances._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -11149,6 +12856,7 @@ def test_list_instance_os_policies_compliances_rest_interceptors(null_intercepto
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -11172,12 +12880,12 @@ def test_list_instance_os_policies_compliances_rest_interceptors(null_intercepto
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.to_json(
+        return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.to_json(
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
         )
+        req.return_value.content = return_value
 
         request = (
             instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
@@ -11203,17 +12911,16 @@ def test_list_instance_os_policies_compliances_rest_interceptors(null_intercepto
         post.assert_called_once()
 
 
-def test_list_instance_os_policies_compliances_rest_bad_request(
-    transport: str = "rest",
-    request_type=instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
+def test_get_os_policy_assignment_report_rest_bad_request(
+    request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4/report"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -11221,145 +12928,13 @@ def test_list_instance_os_policies_compliances_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list_instance_os_policies_compliances(request)
-
-
-def test_list_instance_os_policies_compliances_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = (
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
-        )
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_instance_os_policies_compliances(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=projects/*/locations/*}/instanceOSPoliciesCompliances"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_instance_os_policies_compliances_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_instance_os_policies_compliances(
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_instance_os_policies_compliances_rest_pager(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[
-                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
-                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
-                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
-                ],
-                next_page_token="abc",
-            ),
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[],
-                next_page_token="def",
-            ),
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[
-                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
-                ],
-                next_page_token="ghi",
-            ),
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse(
-                instance_os_policies_compliances=[
-                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
-                    instance_os_policies_compliance.InstanceOSPoliciesCompliance(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.to_json(
-                x
-            )
-            for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        pager = client.list_instance_os_policies_compliances(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, instance_os_policies_compliance.InstanceOSPoliciesCompliance)
-            for i in results
-        )
-
-        pages = list(
-            client.list_instance_os_policies_compliances(request=sample_request).pages
-        )
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.get_os_policy_assignment_report(request)
 
 
 @pytest.mark.parametrize(
@@ -11369,10 +12944,9 @@ def test_list_instance_os_policies_compliances_rest_pager(transport: str = "rest
         dict,
     ],
 )
-def test_get_os_policy_assignment_report_rest(request_type):
+def test_get_os_policy_assignment_report_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -11392,15 +12966,15 @@ def test_get_os_policy_assignment_report_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_os_policy_assignment_report(request)
 
@@ -11412,134 +12986,6 @@ def test_get_os_policy_assignment_report_rest(request_type):
     assert response.last_run_id == "last_run_id_value"
 
 
-def test_get_os_policy_assignment_report_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_os_policy_assignment_report
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_os_policy_assignment_report
-        ] = mock_rpc
-
-        request = {}
-        client.get_os_policy_assignment_report(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_os_policy_assignment_report(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_os_policy_assignment_report_rest_required_fields(
-    request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_os_policy_assignment_report._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_os_policy_assignment_report._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_os_policy_assignment_report(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_os_policy_assignment_report_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_os_policy_assignment_report._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_os_policy_assignment_report_rest_interceptors(null_interceptor):
     transport = transports.OsConfigZonalServiceRestTransport(
@@ -11549,6 +12995,7 @@ def test_get_os_policy_assignment_report_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -11572,14 +13019,12 @@ def test_get_os_policy_assignment_report_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            os_policy_assignment_reports.OSPolicyAssignmentReport.to_json(
-                os_policy_assignment_reports.OSPolicyAssignmentReport()
-            )
+        return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.to_json(
+            os_policy_assignment_reports.OSPolicyAssignmentReport()
         )
+        req.return_value.content = return_value
 
         request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
         metadata = [
@@ -11601,18 +13046,15 @@ def test_get_os_policy_assignment_report_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_os_policy_assignment_report_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest,
+def test_list_os_policy_assignment_reports_rest_bad_request(
+    request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
-        "name": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4/report"
+        "parent": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4"
     }
     request = request_type(**request_init)
 
@@ -11621,78 +13063,13 @@ def test_get_os_policy_assignment_report_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.get_os_policy_assignment_report(request)
-
-
-def test_get_os_policy_assignment_report_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = os_policy_assignment_reports.OSPolicyAssignmentReport()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4/report"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_os_policy_assignment_report(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=projects/*/locations/*/instances/*/osPolicyAssignments/*/report}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_os_policy_assignment_report_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_os_policy_assignment_report(
-            os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(),
-            name="name_value",
-        )
-
-
-def test_get_os_policy_assignment_report_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.list_os_policy_assignment_reports(request)
 
 
 @pytest.mark.parametrize(
@@ -11702,10 +13079,9 @@ def test_get_os_policy_assignment_report_rest_error():
         dict,
     ],
 )
-def test_list_os_policy_assignment_reports_rest(request_type):
+def test_list_os_policy_assignment_reports_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -11724,8 +13100,9 @@ def test_list_os_policy_assignment_reports_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
@@ -11733,161 +13110,13 @@ def test_list_os_policy_assignment_reports_rest(request_type):
             )
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_os_policy_assignment_reports(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOSPolicyAssignmentReportsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_os_policy_assignment_reports_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_os_policy_assignment_reports
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_os_policy_assignment_reports
-        ] = mock_rpc
-
-        request = {}
-        client.list_os_policy_assignment_reports(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_os_policy_assignment_reports(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_os_policy_assignment_reports_rest_required_fields(
-    request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_os_policy_assignment_reports._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_os_policy_assignment_reports._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = (
-                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
-                    return_value
-                )
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_os_policy_assignment_reports(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_os_policy_assignment_reports_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_os_policy_assignment_reports._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -11899,6 +13128,7 @@ def test_list_os_policy_assignment_reports_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -11924,14 +13154,14 @@ def test_list_os_policy_assignment_reports_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
+        return_value = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.to_json(
                 os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
             )
         )
+        req.return_value.content = return_value
 
         request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
         metadata = [
@@ -11955,18 +13185,13 @@ def test_list_os_policy_assignment_reports_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_os_policy_assignment_reports_rest_bad_request(
-    transport: str = "rest",
-    request_type=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
-):
+def test_get_inventory_rest_bad_request(request_type=inventory.GetInventoryRequest):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
-        "parent": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4"
+        "name": "projects/sample1/locations/sample2/instances/sample3/inventory"
     }
     request = request_type(**request_init)
 
@@ -11975,151 +13200,13 @@ def test_list_os_policy_assignment_reports_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list_os_policy_assignment_reports(request)
-
-
-def test_list_os_policy_assignment_reports_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = (
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
-        )
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = (
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_os_policy_assignment_reports(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=projects/*/locations/*/instances/*/osPolicyAssignments/*}/reports"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_os_policy_assignment_reports_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_os_policy_assignment_reports(
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_os_policy_assignment_reports_rest_pager(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[
-                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
-                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
-                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
-                ],
-                next_page_token="abc",
-            ),
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[],
-                next_page_token="def",
-            ),
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[
-                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
-                ],
-                next_page_token="ghi",
-            ),
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse(
-                os_policy_assignment_reports=[
-                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
-                    os_policy_assignment_reports.OSPolicyAssignmentReport(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.to_json(
-                x
-            )
-            for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/instances/sample3/osPolicyAssignments/sample4"
-        }
-
-        pager = client.list_os_policy_assignment_reports(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, os_policy_assignment_reports.OSPolicyAssignmentReport)
-            for i in results
-        )
-
-        pages = list(
-            client.list_os_policy_assignment_reports(request=sample_request).pages
-        )
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.get_inventory(request)
 
 
 @pytest.mark.parametrize(
@@ -12129,10 +13216,9 @@ def test_list_os_policy_assignment_reports_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
-def test_get_inventory_rest(request_type):
+def test_get_inventory_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -12149,138 +13235,19 @@ def test_get_inventory_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = inventory.Inventory.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_inventory(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, inventory.Inventory)
     assert response.name == "name_value"
-
-
-def test_get_inventory_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.get_inventory in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.get_inventory] = mock_rpc
-
-        request = {}
-        client.get_inventory(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_inventory(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_inventory_rest_required_fields(request_type=inventory.GetInventoryRequest):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_inventory._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_inventory._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("view",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = inventory.Inventory()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = inventory.Inventory.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_inventory(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_inventory_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_inventory._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12292,6 +13259,7 @@ def test_get_inventory_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -12311,10 +13279,10 @@ def test_get_inventory_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = inventory.Inventory.to_json(inventory.Inventory())
+        return_value = inventory.Inventory.to_json(inventory.Inventory())
+        req.return_value.content = return_value
 
         request = inventory.GetInventoryRequest()
         metadata = [
@@ -12336,18 +13304,14 @@ def test_get_inventory_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_inventory_rest_bad_request(
-    transport: str = "rest", request_type=inventory.GetInventoryRequest
+def test_list_inventories_rest_bad_request(
+    request_type=inventory.ListInventoriesRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/instances/sample3/inventory"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12355,76 +13319,13 @@ def test_get_inventory_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.get_inventory(request)
-
-
-def test_get_inventory_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = inventory.Inventory()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/instances/sample3/inventory"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = inventory.Inventory.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_inventory(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=projects/*/locations/*/instances/*/inventory}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_inventory_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_inventory(
-            inventory.GetInventoryRequest(),
-            name="name_value",
-        )
-
-
-def test_get_inventory_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.list_inventories(request)
 
 
 @pytest.mark.parametrize(
@@ -12434,10 +13335,9 @@ def test_get_inventory_rest_error():
         dict,
     ],
 )
-def test_list_inventories_rest(request_type):
+def test_list_inventories_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -12452,159 +13352,19 @@ def test_list_inventories_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = inventory.ListInventoriesResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_inventories(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInventoriesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_inventories_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.list_inventories in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_inventories
-        ] = mock_rpc
-
-        request = {}
-        client.list_inventories(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_inventories(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_inventories_rest_required_fields(
-    request_type=inventory.ListInventoriesRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_inventories._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_inventories._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-            "view",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = inventory.ListInventoriesResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = inventory.ListInventoriesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_inventories(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_inventories_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_inventories._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-                "view",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12616,6 +13376,7 @@ def test_list_inventories_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -12637,12 +13398,12 @@ def test_list_inventories_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = inventory.ListInventoriesResponse.to_json(
+        return_value = inventory.ListInventoriesResponse.to_json(
             inventory.ListInventoriesResponse()
         )
+        req.return_value.content = return_value
 
         request = inventory.ListInventoriesRequest()
         metadata = [
@@ -12664,16 +13425,16 @@ def test_list_inventories_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_inventories_rest_bad_request(
-    transport: str = "rest", request_type=inventory.ListInventoriesRequest
+def test_get_vulnerability_report_rest_bad_request(
+    request_type=vulnerability.GetVulnerabilityReportRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/instances/sample3/vulnerabilityReport"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12681,133 +13442,13 @@ def test_list_inventories_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list_inventories(request)
-
-
-def test_list_inventories_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = inventory.ListInventoriesResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/instances/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = inventory.ListInventoriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_inventories(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=projects/*/locations/*/instances/*}/inventories"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_inventories_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_inventories(
-            inventory.ListInventoriesRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_inventories_rest_pager(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            inventory.ListInventoriesResponse(
-                inventories=[
-                    inventory.Inventory(),
-                    inventory.Inventory(),
-                    inventory.Inventory(),
-                ],
-                next_page_token="abc",
-            ),
-            inventory.ListInventoriesResponse(
-                inventories=[],
-                next_page_token="def",
-            ),
-            inventory.ListInventoriesResponse(
-                inventories=[
-                    inventory.Inventory(),
-                ],
-                next_page_token="ghi",
-            ),
-            inventory.ListInventoriesResponse(
-                inventories=[
-                    inventory.Inventory(),
-                    inventory.Inventory(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(inventory.ListInventoriesResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/instances/sample3"
-        }
-
-        pager = client.list_inventories(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, inventory.Inventory) for i in results)
-
-        pages = list(client.list_inventories(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.get_vulnerability_report(request)
 
 
 @pytest.mark.parametrize(
@@ -12817,10 +13458,9 @@ def test_list_inventories_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
-def test_get_vulnerability_report_rest(request_type):
+def test_get_vulnerability_report_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -12837,143 +13477,19 @@ def test_get_vulnerability_report_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = vulnerability.VulnerabilityReport.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_vulnerability_report(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vulnerability.VulnerabilityReport)
     assert response.name == "name_value"
-
-
-def test_get_vulnerability_report_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_vulnerability_report
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_vulnerability_report
-        ] = mock_rpc
-
-        request = {}
-        client.get_vulnerability_report(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_vulnerability_report(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_vulnerability_report_rest_required_fields(
-    request_type=vulnerability.GetVulnerabilityReportRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_vulnerability_report._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_vulnerability_report._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = vulnerability.VulnerabilityReport()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = vulnerability.VulnerabilityReport.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_vulnerability_report(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_vulnerability_report_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_vulnerability_report._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12985,6 +13501,7 @@ def test_get_vulnerability_report_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -13006,12 +13523,12 @@ def test_get_vulnerability_report_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = vulnerability.VulnerabilityReport.to_json(
+        return_value = vulnerability.VulnerabilityReport.to_json(
             vulnerability.VulnerabilityReport()
         )
+        req.return_value.content = return_value
 
         request = vulnerability.GetVulnerabilityReportRequest()
         metadata = [
@@ -13033,18 +13550,14 @@ def test_get_vulnerability_report_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_vulnerability_report_rest_bad_request(
-    transport: str = "rest", request_type=vulnerability.GetVulnerabilityReportRequest
+def test_list_vulnerability_reports_rest_bad_request(
+    request_type=vulnerability.ListVulnerabilityReportsRequest,
 ):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/instances/sample3/vulnerabilityReport"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -13052,76 +13565,13 @@ def test_get_vulnerability_report_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.get_vulnerability_report(request)
-
-
-def test_get_vulnerability_report_rest_flattened():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = vulnerability.VulnerabilityReport()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/instances/sample3/vulnerabilityReport"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = vulnerability.VulnerabilityReport.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_vulnerability_report(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{name=projects/*/locations/*/instances/*/vulnerabilityReport}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_vulnerability_report_rest_flattened_error(transport: str = "rest"):
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_vulnerability_report(
-            vulnerability.GetVulnerabilityReportRequest(),
-            name="name_value",
-        )
-
-
-def test_get_vulnerability_report_rest_error():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.list_vulnerability_reports(request)
 
 
 @pytest.mark.parametrize(
@@ -13131,10 +13581,9 @@ def test_get_vulnerability_report_rest_error():
         dict,
     ],
 )
-def test_list_vulnerability_reports_rest(request_type):
+def test_list_vulnerability_reports_rest_call_success(request_type):
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -13149,162 +13598,19 @@ def test_list_vulnerability_reports_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = vulnerability.ListVulnerabilityReportsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_vulnerability_reports(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVulnerabilityReportsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_vulnerability_reports_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_vulnerability_reports
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_vulnerability_reports
-        ] = mock_rpc
-
-        request = {}
-        client.list_vulnerability_reports(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_vulnerability_reports(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_vulnerability_reports_rest_required_fields(
-    request_type=vulnerability.ListVulnerabilityReportsRequest,
-):
-    transport_class = transports.OsConfigZonalServiceRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_vulnerability_reports._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_vulnerability_reports._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = vulnerability.ListVulnerabilityReportsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = vulnerability.ListVulnerabilityReportsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_vulnerability_reports(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_vulnerability_reports_rest_unset_required_fields():
-    transport = transports.OsConfigZonalServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_vulnerability_reports._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -13316,6 +13622,7 @@ def test_list_vulnerability_reports_rest_interceptors(null_interceptor):
         else transports.OsConfigZonalServiceRestInterceptor(),
     )
     client = OsConfigZonalServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -13338,14 +13645,12 @@ def test_list_vulnerability_reports_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            vulnerability.ListVulnerabilityReportsResponse.to_json(
-                vulnerability.ListVulnerabilityReportsResponse()
-            )
+        return_value = vulnerability.ListVulnerabilityReportsResponse.to_json(
+            vulnerability.ListVulnerabilityReportsResponse()
         )
+        req.return_value.content = return_value
 
         request = vulnerability.ListVulnerabilityReportsRequest()
         metadata = [
@@ -13367,258 +13672,338 @@ def test_list_vulnerability_reports_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_vulnerability_reports_rest_bad_request(
-    transport: str = "rest", request_type=vulnerability.ListVulnerabilityReportsRequest
-):
+def test_initialize_client_w_rest():
     client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/instances/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_vulnerability_reports(request)
+    assert client is not None
 
 
-def test_list_vulnerability_reports_rest_flattened():
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_os_policy_assignment_empty_call_rest():
     client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = vulnerability.ListVulnerabilityReportsResponse()
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_os_policy_assignment), "__call__"
+    ) as call:
+        client.create_os_policy_assignment(request=None)
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/instances/sample3"
-        }
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.CreateOSPolicyAssignmentRequest()
 
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = vulnerability.ListVulnerabilityReportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_vulnerability_reports(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1alpha/{parent=projects/*/locations/*/instances/*}/vulnerabilityReports"
-            % client.transport._host,
-            args[1],
-        )
+        assert args[0] == request_msg
 
 
-def test_list_vulnerability_reports_rest_flattened_error(transport: str = "rest"):
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_os_policy_assignment_empty_call_rest():
     client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
 
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_vulnerability_reports(
-            vulnerability.ListVulnerabilityReportsRequest(),
-            parent="parent_value",
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_os_policy_assignment), "__call__"
+    ) as call:
+        client.update_os_policy_assignment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.UpdateOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
 
 
-def test_list_vulnerability_reports_rest_pager(transport: str = "rest"):
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_os_policy_assignment_empty_call_rest():
     client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
 
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[
-                    vulnerability.VulnerabilityReport(),
-                    vulnerability.VulnerabilityReport(),
-                    vulnerability.VulnerabilityReport(),
-                ],
-                next_page_token="abc",
-            ),
-            vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[],
-                next_page_token="def",
-            ),
-            vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[
-                    vulnerability.VulnerabilityReport(),
-                ],
-                next_page_token="ghi",
-            ),
-            vulnerability.ListVulnerabilityReportsResponse(
-                vulnerability_reports=[
-                    vulnerability.VulnerabilityReport(),
-                    vulnerability.VulnerabilityReport(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment), "__call__"
+    ) as call:
+        client.get_os_policy_assignment(request=None)
 
-        # Wrap the values into proper Response objs
-        response = tuple(
-            vulnerability.ListVulnerabilityReportsResponse.to_json(x) for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.GetOSPolicyAssignmentRequest()
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/instances/sample3"
-        }
-
-        pager = client.list_vulnerability_reports(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, vulnerability.VulnerabilityReport) for i in results)
-
-        pages = list(client.list_vulnerability_reports(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        assert args[0] == request_msg
 
 
-def test_credentials_transport_error():
-    # It is an error to provide credentials and a transport instance.
-    transport = transports.OsConfigZonalServiceGrpcTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_os_policy_assignments_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
 
-    # It is an error to provide a credentials file and a transport instance.
-    transport = transports.OsConfigZonalServiceGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignments), "__call__"
+    ) as call:
+        client.list_os_policy_assignments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_os_policy_assignment_revisions_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = OsConfigZonalServiceClient(
-            client_options={"credentials_file": "credentials.json"},
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a transport instance.
-    transport = transports.OsConfigZonalServiceGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_revisions), "__call__"
+    ) as call:
+        client.list_os_policy_assignment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_os_policy_assignment_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = OsConfigZonalServiceClient(
-            client_options=options,
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a credential.
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = OsConfigZonalServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_os_policy_assignment), "__call__"
+    ) as call:
+        client.delete_os_policy_assignment(request=None)
 
-    # It is an error to provide scopes and a transport instance.
-    transport = transports.OsConfigZonalServiceGrpcTransport(
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignments.DeleteOSPolicyAssignmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_instance_os_policies_compliance_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = OsConfigZonalServiceClient(
-            client_options={"scopes": ["1", "2"]},
-            transport=transport,
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_instance_os_policies_compliance), "__call__"
+    ) as call:
+        client.get_instance_os_policies_compliance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest()
         )
 
+        assert args[0] == request_msg
 
-def test_transport_instance():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.OsConfigZonalServiceGrpcTransport(
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_instance_os_policies_compliances_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    client = OsConfigZonalServiceClient(transport=transport)
-    assert client.transport is transport
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instance_os_policies_compliances), "__call__"
+    ) as call:
+        client.list_instance_os_policies_compliances(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest()
+        )
+
+        assert args[0] == request_msg
 
 
-def test_transport_get_channel():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.OsConfigZonalServiceGrpcTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_os_policy_assignment_report_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    channel = transport.grpc_channel
-    assert channel
 
-    transport = transports.OsConfigZonalServiceGrpcAsyncIOTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_os_policy_assignment_report), "__call__"
+    ) as call:
+        client.get_os_policy_assignment_report(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_os_policy_assignment_reports_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    channel = transport.grpc_channel
-    assert channel
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_policy_assignment_reports), "__call__"
+    ) as call:
+        client.list_os_policy_assignment_reports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest()
+        )
+
+        assert args[0] == request_msg
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.OsConfigZonalServiceGrpcTransport,
-        transports.OsConfigZonalServiceGrpcAsyncIOTransport,
-        transports.OsConfigZonalServiceRestTransport,
-    ],
-)
-def test_transport_adc(transport_class):
-    # Test default credentials are used if not provided.
-    with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class()
-        adc.assert_called_once()
-
-
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-        "rest",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = OsConfigZonalServiceClient.get_transport_class(transport_name)(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_inventory_empty_call_rest():
+    client = OsConfigZonalServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    assert transport.kind == transport_name
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_inventory), "__call__") as call:
+        client.get_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = inventory.GetInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_inventories_empty_call_rest():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_inventories), "__call__") as call:
+        client.list_inventories(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = inventory.ListInventoriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_vulnerability_report_empty_call_rest():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vulnerability_report), "__call__"
+    ) as call:
+        client.get_vulnerability_report(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vulnerability.GetVulnerabilityReportRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_vulnerability_reports_empty_call_rest():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vulnerability_reports), "__call__"
+    ) as call:
+        client.list_vulnerability_reports(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = vulnerability.ListVulnerabilityReportsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_os_config_zonal_service_rest_lro_client():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -13870,23 +14255,6 @@ def test_os_config_zonal_service_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_os_config_zonal_service_rest_lro_client():
-    client = OsConfigZonalServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -14482,36 +14850,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = OsConfigZonalServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = OsConfigZonalServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = OsConfigZonalServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = OsConfigZonalServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
