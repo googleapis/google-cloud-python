@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dataflow_v1beta3.types import messages
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseMessagesV1Beta3RestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.dataflow_v1beta3.types import messages
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import MessagesV1Beta3Transport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -108,8 +105,8 @@ class MessagesV1Beta3RestStub:
     _interceptor: MessagesV1Beta3RestInterceptor
 
 
-class MessagesV1Beta3RestTransport(MessagesV1Beta3Transport):
-    """REST backend transport for MessagesV1Beta3.
+class MessagesV1Beta3RestTransport(_BaseMessagesV1Beta3RestTransport):
+    """REST backend synchronous transport for MessagesV1Beta3.
 
     The Dataflow Messages API is used for monitoring the progress
     of Dataflow jobs.
@@ -119,7 +116,6 @@ class MessagesV1Beta3RestTransport(MessagesV1Beta3Transport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -173,21 +169,12 @@ class MessagesV1Beta3RestTransport(MessagesV1Beta3Transport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -198,9 +185,33 @@ class MessagesV1Beta3RestTransport(MessagesV1Beta3Transport):
         self._interceptor = interceptor or MessagesV1Beta3RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListJobMessages(MessagesV1Beta3RestStub):
+    class _ListJobMessages(
+        _BaseMessagesV1Beta3RestTransport._BaseListJobMessages, MessagesV1Beta3RestStub
+    ):
         def __hash__(self):
-            return hash("ListJobMessages")
+            return hash("MessagesV1Beta3RestTransport.ListJobMessages")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -232,43 +243,29 @@ class MessagesV1Beta3RestTransport(MessagesV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs/{job_id}/messages",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/jobs/{job_id}/messages",
-                },
-            ]
+            http_options = (
+                _BaseMessagesV1Beta3RestTransport._BaseListJobMessages._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_job_messages(
                 request, metadata
             )
-            pb_request = messages.ListJobMessagesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseMessagesV1Beta3RestTransport._BaseListJobMessages._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseMessagesV1Beta3RestTransport._BaseListJobMessages._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = MessagesV1Beta3RestTransport._ListJobMessages._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

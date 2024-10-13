@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dataflow_v1beta3.types import templates
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseFlexTemplatesServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.dataflow_v1beta3.types import templates
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import FlexTemplatesServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -108,8 +105,8 @@ class FlexTemplatesServiceRestStub:
     _interceptor: FlexTemplatesServiceRestInterceptor
 
 
-class FlexTemplatesServiceRestTransport(FlexTemplatesServiceTransport):
-    """REST backend transport for FlexTemplatesService.
+class FlexTemplatesServiceRestTransport(_BaseFlexTemplatesServiceRestTransport):
+    """REST backend synchronous transport for FlexTemplatesService.
 
     Provides a service for Flex templates. This feature is not
     ready yet.
@@ -119,7 +116,6 @@ class FlexTemplatesServiceRestTransport(FlexTemplatesServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -173,21 +169,12 @@ class FlexTemplatesServiceRestTransport(FlexTemplatesServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -198,9 +185,35 @@ class FlexTemplatesServiceRestTransport(FlexTemplatesServiceTransport):
         self._interceptor = interceptor or FlexTemplatesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _LaunchFlexTemplate(FlexTemplatesServiceRestStub):
+    class _LaunchFlexTemplate(
+        _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate,
+        FlexTemplatesServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("LaunchFlexTemplate")
+            return hash("FlexTemplatesServiceRestTransport.LaunchFlexTemplate")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -229,46 +242,36 @@ class FlexTemplatesServiceRestTransport(FlexTemplatesServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/flexTemplates:launch",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_launch_flex_template(
                 request, metadata
             )
-            pb_request = templates.LaunchFlexTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseFlexTemplatesServiceRestTransport._BaseLaunchFlexTemplate._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                FlexTemplatesServiceRestTransport._LaunchFlexTemplate._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

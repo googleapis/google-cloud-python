@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.privatecatalog_v1beta1.types import private_catalog
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BasePrivateCatalogRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.privatecatalog_v1beta1.types import private_catalog
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import PrivateCatalogTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -170,8 +167,8 @@ class PrivateCatalogRestStub:
     _interceptor: PrivateCatalogRestInterceptor
 
 
-class PrivateCatalogRestTransport(PrivateCatalogTransport):
-    """REST backend transport for PrivateCatalog.
+class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
+    """REST backend synchronous transport for PrivateCatalog.
 
     ``PrivateCatalog`` allows catalog consumers to retrieve ``Catalog``,
     ``Product`` and ``Version`` resources under a target resource
@@ -201,7 +198,6 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -255,21 +251,12 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -280,19 +267,33 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
         self._interceptor = interceptor or PrivateCatalogRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _SearchCatalogs(PrivateCatalogRestStub):
+    class _SearchCatalogs(
+        _BasePrivateCatalogRestTransport._BaseSearchCatalogs, PrivateCatalogRestStub
+    ):
         def __hash__(self):
-            return hash("SearchCatalogs")
+            return hash("PrivateCatalogRestTransport.SearchCatalogs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -321,46 +322,27 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*}/catalogs:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=organizations/*}/catalogs:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=folders/*}/catalogs:search",
-                },
-            ]
+            http_options = (
+                _BasePrivateCatalogRestTransport._BaseSearchCatalogs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_catalogs(request, metadata)
-            pb_request = private_catalog.SearchCatalogsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BasePrivateCatalogRestTransport._BaseSearchCatalogs._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BasePrivateCatalogRestTransport._BaseSearchCatalogs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = PrivateCatalogRestTransport._SearchCatalogs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -376,19 +358,33 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
             resp = self._interceptor.post_search_catalogs(resp)
             return resp
 
-    class _SearchProducts(PrivateCatalogRestStub):
+    class _SearchProducts(
+        _BasePrivateCatalogRestTransport._BaseSearchProducts, PrivateCatalogRestStub
+    ):
         def __hash__(self):
-            return hash("SearchProducts")
+            return hash("PrivateCatalogRestTransport.SearchProducts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -417,46 +413,27 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*}/products:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=organizations/*}/products:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=folders/*}/products:search",
-                },
-            ]
+            http_options = (
+                _BasePrivateCatalogRestTransport._BaseSearchProducts._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_products(request, metadata)
-            pb_request = private_catalog.SearchProductsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BasePrivateCatalogRestTransport._BaseSearchProducts._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BasePrivateCatalogRestTransport._BaseSearchProducts._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = PrivateCatalogRestTransport._SearchProducts._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -472,21 +449,33 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
             resp = self._interceptor.post_search_products(resp)
             return resp
 
-    class _SearchVersions(PrivateCatalogRestStub):
+    class _SearchVersions(
+        _BasePrivateCatalogRestTransport._BaseSearchVersions, PrivateCatalogRestStub
+    ):
         def __hash__(self):
-            return hash("SearchVersions")
+            return hash("PrivateCatalogRestTransport.SearchVersions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "query": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -515,46 +504,27 @@ class PrivateCatalogRestTransport(PrivateCatalogTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=projects/*}/versions:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=organizations/*}/versions:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{resource=folders/*}/versions:search",
-                },
-            ]
+            http_options = (
+                _BasePrivateCatalogRestTransport._BaseSearchVersions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_versions(request, metadata)
-            pb_request = private_catalog.SearchVersionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BasePrivateCatalogRestTransport._BaseSearchVersions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BasePrivateCatalogRestTransport._BaseSearchVersions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = PrivateCatalogRestTransport._SearchVersions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

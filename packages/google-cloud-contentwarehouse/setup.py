@@ -50,6 +50,7 @@ dependencies = [
     "google-cloud-documentai >= 2.0.0, <3.0.0dev",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
 ]
+extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contentwarehouse"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -92,6 +93,7 @@ setuptools.setup(
     packages=packages,
     python_requires=">=3.7",
     install_requires=dependencies,
+    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -235,6 +236,9 @@ class SecretManagerServiceGrpcAsyncIOTransport(SecretManagerServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -713,47 +717,47 @@ class SecretManagerServiceGrpcAsyncIOTransport(SecretManagerServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_secrets: gapic_v1.method_async.wrap_method(
+            self.list_secrets: self._wrap_method(
                 self.list_secrets,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_secret: gapic_v1.method_async.wrap_method(
+            self.create_secret: self._wrap_method(
                 self.create_secret,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.add_secret_version: gapic_v1.method_async.wrap_method(
+            self.add_secret_version: self._wrap_method(
                 self.add_secret_version,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_secret: gapic_v1.method_async.wrap_method(
+            self.get_secret: self._wrap_method(
                 self.get_secret,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_secret: gapic_v1.method_async.wrap_method(
+            self.update_secret: self._wrap_method(
                 self.update_secret,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_secret: gapic_v1.method_async.wrap_method(
+            self.delete_secret: self._wrap_method(
                 self.delete_secret,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_secret_versions: gapic_v1.method_async.wrap_method(
+            self.list_secret_versions: self._wrap_method(
                 self.list_secret_versions,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_secret_version: gapic_v1.method_async.wrap_method(
+            self.get_secret_version: self._wrap_method(
                 self.get_secret_version,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.access_secret_version: gapic_v1.method_async.wrap_method(
+            self.access_secret_version: self._wrap_method(
                 self.access_secret_version,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -768,40 +772,49 @@ class SecretManagerServiceGrpcAsyncIOTransport(SecretManagerServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.disable_secret_version: gapic_v1.method_async.wrap_method(
+            self.disable_secret_version: self._wrap_method(
                 self.disable_secret_version,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.enable_secret_version: gapic_v1.method_async.wrap_method(
+            self.enable_secret_version: self._wrap_method(
                 self.enable_secret_version,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.destroy_secret_version: gapic_v1.method_async.wrap_method(
+            self.destroy_secret_version: self._wrap_method(
                 self.destroy_secret_version,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("SecretManagerServiceGrpcAsyncIOTransport",)

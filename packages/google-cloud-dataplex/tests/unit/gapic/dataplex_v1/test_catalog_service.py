@@ -24,6 +24,20 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import (
     future,
     gapic_v1,
@@ -33,7 +47,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -50,11 +64,6 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.dataplex_v1.services.catalog_service import (
     CatalogServiceAsyncClient,
@@ -65,8 +74,22 @@ from google.cloud.dataplex_v1.services.catalog_service import (
 from google.cloud.dataplex_v1.types import catalog, service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1147,27 +1170,6 @@ def test_create_entry_type(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_entry_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entry_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryTypeRequest()
-
-
 def test_create_entry_type_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1243,29 +1245,6 @@ def test_create_entry_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_entry_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entry_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_entry_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1273,7 +1252,7 @@ async def test_create_entry_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1317,7 +1296,7 @@ async def test_create_entry_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.CreateEntryTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1384,7 +1363,7 @@ def test_create_entry_type_field_headers():
 @pytest.mark.asyncio
 async def test_create_entry_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1468,7 +1447,7 @@ def test_create_entry_type_flattened_error():
 @pytest.mark.asyncio
 async def test_create_entry_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1507,7 +1486,7 @@ async def test_create_entry_type_flattened_async():
 @pytest.mark.asyncio
 async def test_create_entry_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1554,27 +1533,6 @@ def test_update_entry_type(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_entry_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_entry_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryTypeRequest()
 
 
 def test_update_entry_type_non_empty_request_with_auto_populated_field():
@@ -1646,29 +1604,6 @@ def test_update_entry_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_entry_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_entry_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_entry_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1676,7 +1611,7 @@ async def test_update_entry_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1720,7 +1655,7 @@ async def test_update_entry_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.UpdateEntryTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1787,7 +1722,7 @@ def test_update_entry_type_field_headers():
 @pytest.mark.asyncio
 async def test_update_entry_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1866,7 +1801,7 @@ def test_update_entry_type_flattened_error():
 @pytest.mark.asyncio
 async def test_update_entry_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1901,7 +1836,7 @@ async def test_update_entry_type_flattened_async():
 @pytest.mark.asyncio
 async def test_update_entry_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1947,27 +1882,6 @@ def test_delete_entry_type(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_entry_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_entry_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryTypeRequest()
 
 
 def test_delete_entry_type_non_empty_request_with_auto_populated_field():
@@ -2045,29 +1959,6 @@ def test_delete_entry_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_entry_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_entry_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2075,7 +1966,7 @@ async def test_delete_entry_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2119,7 +2010,7 @@ async def test_delete_entry_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2186,7 +2077,7 @@ def test_delete_entry_type_field_headers():
 @pytest.mark.asyncio
 async def test_delete_entry_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2260,7 +2151,7 @@ def test_delete_entry_type_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_entry_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2291,7 +2182,7 @@ async def test_delete_entry_type_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_entry_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2339,25 +2230,6 @@ def test_list_entry_types(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListEntryTypesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_entry_types_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_entry_types), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_entry_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntryTypesRequest()
 
 
 def test_list_entry_types_non_empty_request_with_auto_populated_field():
@@ -2432,30 +2304,6 @@ def test_list_entry_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_entry_types_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_entry_types), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.ListEntryTypesResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_entry_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntryTypesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_entry_types_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2463,7 +2311,7 @@ async def test_list_entry_types_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2502,7 +2350,7 @@ async def test_list_entry_types_async(
     transport: str = "grpc_asyncio", request_type=catalog.ListEntryTypesRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2570,7 +2418,7 @@ def test_list_entry_types_field_headers():
 @pytest.mark.asyncio
 async def test_list_entry_types_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2640,7 +2488,7 @@ def test_list_entry_types_flattened_error():
 @pytest.mark.asyncio
 async def test_list_entry_types_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2669,7 +2517,7 @@ async def test_list_entry_types_flattened_async():
 @pytest.mark.asyncio
 async def test_list_entry_types_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2779,7 +2627,7 @@ def test_list_entry_types_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_entry_types_async_pager():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2829,7 +2677,7 @@ async def test_list_entry_types_async_pager():
 @pytest.mark.asyncio
 async def test_list_entry_types_async_pages():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2925,25 +2773,6 @@ def test_get_entry_type(request_type, transport: str = "grpc"):
     assert response.system == "system_value"
 
 
-def test_get_entry_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entry_type), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryTypeRequest()
-
-
 def test_get_entry_type_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3008,36 +2837,6 @@ def test_get_entry_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_entry_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entry_type), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.EntryType(
-                name="name_value",
-                uid="uid_value",
-                description="description_value",
-                display_name="display_name_value",
-                etag="etag_value",
-                type_aliases=["type_aliases_value"],
-                platform="platform_value",
-                system="system_value",
-            )
-        )
-        response = await client.get_entry_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_entry_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3045,7 +2844,7 @@ async def test_get_entry_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3084,7 +2883,7 @@ async def test_get_entry_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.GetEntryTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3164,7 +2963,7 @@ def test_get_entry_type_field_headers():
 @pytest.mark.asyncio
 async def test_get_entry_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3232,7 +3031,7 @@ def test_get_entry_type_flattened_error():
 @pytest.mark.asyncio
 async def test_get_entry_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3259,7 +3058,7 @@ async def test_get_entry_type_flattened_async():
 @pytest.mark.asyncio
 async def test_get_entry_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3304,27 +3103,6 @@ def test_create_aspect_type(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_aspect_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aspect_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateAspectTypeRequest()
 
 
 def test_create_aspect_type_non_empty_request_with_auto_populated_field():
@@ -3404,29 +3182,6 @@ def test_create_aspect_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_aspect_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_aspect_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateAspectTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_aspect_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3434,7 +3189,7 @@ async def test_create_aspect_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3478,7 +3233,7 @@ async def test_create_aspect_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.CreateAspectTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3545,7 +3300,7 @@ def test_create_aspect_type_field_headers():
 @pytest.mark.asyncio
 async def test_create_aspect_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3629,7 +3384,7 @@ def test_create_aspect_type_flattened_error():
 @pytest.mark.asyncio
 async def test_create_aspect_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3668,7 +3423,7 @@ async def test_create_aspect_type_flattened_async():
 @pytest.mark.asyncio
 async def test_create_aspect_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3715,27 +3470,6 @@ def test_update_aspect_type(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_aspect_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aspect_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateAspectTypeRequest()
 
 
 def test_update_aspect_type_non_empty_request_with_auto_populated_field():
@@ -3809,29 +3543,6 @@ def test_update_aspect_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_aspect_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_aspect_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateAspectTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_aspect_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3839,7 +3550,7 @@ async def test_update_aspect_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3883,7 +3594,7 @@ async def test_update_aspect_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.UpdateAspectTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3950,7 +3661,7 @@ def test_update_aspect_type_field_headers():
 @pytest.mark.asyncio
 async def test_update_aspect_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4029,7 +3740,7 @@ def test_update_aspect_type_flattened_error():
 @pytest.mark.asyncio
 async def test_update_aspect_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4064,7 +3775,7 @@ async def test_update_aspect_type_flattened_async():
 @pytest.mark.asyncio
 async def test_update_aspect_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4110,27 +3821,6 @@ def test_delete_aspect_type(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_aspect_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aspect_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteAspectTypeRequest()
 
 
 def test_delete_aspect_type_non_empty_request_with_auto_populated_field():
@@ -4210,29 +3900,6 @@ def test_delete_aspect_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_aspect_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_aspect_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteAspectTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_aspect_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4240,7 +3907,7 @@ async def test_delete_aspect_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4284,7 +3951,7 @@ async def test_delete_aspect_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.DeleteAspectTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4351,7 +4018,7 @@ def test_delete_aspect_type_field_headers():
 @pytest.mark.asyncio
 async def test_delete_aspect_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4425,7 +4092,7 @@ def test_delete_aspect_type_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_aspect_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4456,7 +4123,7 @@ async def test_delete_aspect_type_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_aspect_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4506,27 +4173,6 @@ def test_list_aspect_types(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListAspectTypesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_aspect_types_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aspect_types), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_aspect_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListAspectTypesRequest()
 
 
 def test_list_aspect_types_non_empty_request_with_auto_populated_field():
@@ -4603,32 +4249,6 @@ def test_list_aspect_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_aspect_types_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_aspect_types), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.ListAspectTypesResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_aspect_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListAspectTypesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_aspect_types_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4636,7 +4256,7 @@ async def test_list_aspect_types_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4675,7 +4295,7 @@ async def test_list_aspect_types_async(
     transport: str = "grpc_asyncio", request_type=catalog.ListAspectTypesRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4747,7 +4367,7 @@ def test_list_aspect_types_field_headers():
 @pytest.mark.asyncio
 async def test_list_aspect_types_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4821,7 +4441,7 @@ def test_list_aspect_types_flattened_error():
 @pytest.mark.asyncio
 async def test_list_aspect_types_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4852,7 +4472,7 @@ async def test_list_aspect_types_flattened_async():
 @pytest.mark.asyncio
 async def test_list_aspect_types_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4966,7 +4586,7 @@ def test_list_aspect_types_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_aspect_types_async_pager():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5018,7 +4638,7 @@ async def test_list_aspect_types_async_pager():
 @pytest.mark.asyncio
 async def test_list_aspect_types_async_pages():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5112,25 +4732,6 @@ def test_get_aspect_type(request_type, transport: str = "grpc"):
     assert response.transfer_status == catalog.TransferStatus.TRANSFER_STATUS_MIGRATED
 
 
-def test_get_aspect_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aspect_type), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetAspectTypeRequest()
-
-
 def test_get_aspect_type_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5195,34 +4796,6 @@ def test_get_aspect_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_aspect_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_aspect_type), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.AspectType(
-                name="name_value",
-                uid="uid_value",
-                description="description_value",
-                display_name="display_name_value",
-                etag="etag_value",
-                transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
-            )
-        )
-        response = await client.get_aspect_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetAspectTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_aspect_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5230,7 +4803,7 @@ async def test_get_aspect_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5269,7 +4842,7 @@ async def test_get_aspect_type_async(
     transport: str = "grpc_asyncio", request_type=catalog.GetAspectTypeRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5345,7 +4918,7 @@ def test_get_aspect_type_field_headers():
 @pytest.mark.asyncio
 async def test_get_aspect_type_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5413,7 +4986,7 @@ def test_get_aspect_type_flattened_error():
 @pytest.mark.asyncio
 async def test_get_aspect_type_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5440,7 +5013,7 @@ async def test_get_aspect_type_flattened_async():
 @pytest.mark.asyncio
 async def test_get_aspect_type_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5485,27 +5058,6 @@ def test_create_entry_group(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_entry_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entry_group), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryGroupRequest()
 
 
 def test_create_entry_group_non_empty_request_with_auto_populated_field():
@@ -5585,29 +5137,6 @@ def test_create_entry_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_entry_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entry_group), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_entry_group_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5615,7 +5144,7 @@ async def test_create_entry_group_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5659,7 +5188,7 @@ async def test_create_entry_group_async(
     transport: str = "grpc_asyncio", request_type=catalog.CreateEntryGroupRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5726,7 +5255,7 @@ def test_create_entry_group_field_headers():
 @pytest.mark.asyncio
 async def test_create_entry_group_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5810,7 +5339,7 @@ def test_create_entry_group_flattened_error():
 @pytest.mark.asyncio
 async def test_create_entry_group_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5849,7 +5378,7 @@ async def test_create_entry_group_flattened_async():
 @pytest.mark.asyncio
 async def test_create_entry_group_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5896,27 +5425,6 @@ def test_update_entry_group(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_entry_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_entry_group), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryGroupRequest()
 
 
 def test_update_entry_group_non_empty_request_with_auto_populated_field():
@@ -5990,29 +5498,6 @@ def test_update_entry_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_entry_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_entry_group), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_entry_group_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6020,7 +5505,7 @@ async def test_update_entry_group_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6064,7 +5549,7 @@ async def test_update_entry_group_async(
     transport: str = "grpc_asyncio", request_type=catalog.UpdateEntryGroupRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6131,7 +5616,7 @@ def test_update_entry_group_field_headers():
 @pytest.mark.asyncio
 async def test_update_entry_group_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6210,7 +5695,7 @@ def test_update_entry_group_flattened_error():
 @pytest.mark.asyncio
 async def test_update_entry_group_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6245,7 +5730,7 @@ async def test_update_entry_group_flattened_async():
 @pytest.mark.asyncio
 async def test_update_entry_group_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6291,27 +5776,6 @@ def test_delete_entry_group(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_entry_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_entry_group), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryGroupRequest()
 
 
 def test_delete_entry_group_non_empty_request_with_auto_populated_field():
@@ -6391,29 +5855,6 @@ def test_delete_entry_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_entry_group), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_entry_group_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6421,7 +5862,7 @@ async def test_delete_entry_group_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6465,7 +5906,7 @@ async def test_delete_entry_group_async(
     transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryGroupRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6532,7 +5973,7 @@ def test_delete_entry_group_field_headers():
 @pytest.mark.asyncio
 async def test_delete_entry_group_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6606,7 +6047,7 @@ def test_delete_entry_group_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_entry_group_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6637,7 +6078,7 @@ async def test_delete_entry_group_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_entry_group_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6687,27 +6128,6 @@ def test_list_entry_groups(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListEntryGroupsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_entry_groups_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entry_groups), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_entry_groups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntryGroupsRequest()
 
 
 def test_list_entry_groups_non_empty_request_with_auto_populated_field():
@@ -6784,32 +6204,6 @@ def test_list_entry_groups_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_entry_groups_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entry_groups), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.ListEntryGroupsResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_entry_groups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntryGroupsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_entry_groups_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6817,7 +6211,7 @@ async def test_list_entry_groups_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6856,7 +6250,7 @@ async def test_list_entry_groups_async(
     transport: str = "grpc_asyncio", request_type=catalog.ListEntryGroupsRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6928,7 +6322,7 @@ def test_list_entry_groups_field_headers():
 @pytest.mark.asyncio
 async def test_list_entry_groups_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7002,7 +6396,7 @@ def test_list_entry_groups_flattened_error():
 @pytest.mark.asyncio
 async def test_list_entry_groups_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7033,7 +6427,7 @@ async def test_list_entry_groups_flattened_async():
 @pytest.mark.asyncio
 async def test_list_entry_groups_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7147,7 +6541,7 @@ def test_list_entry_groups_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_entry_groups_async_pager():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7199,7 +6593,7 @@ async def test_list_entry_groups_async_pager():
 @pytest.mark.asyncio
 async def test_list_entry_groups_async_pages():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7293,25 +6687,6 @@ def test_get_entry_group(request_type, transport: str = "grpc"):
     assert response.transfer_status == catalog.TransferStatus.TRANSFER_STATUS_MIGRATED
 
 
-def test_get_entry_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryGroupRequest()
-
-
 def test_get_entry_group_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7376,34 +6751,6 @@ def test_get_entry_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_entry_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.EntryGroup(
-                name="name_value",
-                uid="uid_value",
-                description="description_value",
-                display_name="display_name_value",
-                etag="etag_value",
-                transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
-            )
-        )
-        response = await client.get_entry_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_entry_group_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7411,7 +6758,7 @@ async def test_get_entry_group_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7450,7 +6797,7 @@ async def test_get_entry_group_async(
     transport: str = "grpc_asyncio", request_type=catalog.GetEntryGroupRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7526,7 +6873,7 @@ def test_get_entry_group_field_headers():
 @pytest.mark.asyncio
 async def test_get_entry_group_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7594,7 +6941,7 @@ def test_get_entry_group_flattened_error():
 @pytest.mark.asyncio
 async def test_get_entry_group_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7621,7 +6968,7 @@ async def test_get_entry_group_flattened_async():
 @pytest.mark.asyncio
 async def test_get_entry_group_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7673,25 +7020,6 @@ def test_create_entry(request_type, transport: str = "grpc"):
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-def test_create_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryRequest()
 
 
 def test_create_entry_non_empty_request_with_auto_populated_field():
@@ -7760,32 +7088,6 @@ def test_create_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.Entry(
-                name="name_value",
-                entry_type="entry_type_value",
-                parent_entry="parent_entry_value",
-                fully_qualified_name="fully_qualified_name_value",
-            )
-        )
-        response = await client.create_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.CreateEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7793,7 +7095,7 @@ async def test_create_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7832,7 +7134,7 @@ async def test_create_entry_async(
     transport: str = "grpc_asyncio", request_type=catalog.CreateEntryRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7904,7 +7206,7 @@ def test_create_entry_field_headers():
 @pytest.mark.asyncio
 async def test_create_entry_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7982,7 +7284,7 @@ def test_create_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_create_entry_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8017,7 +7319,7 @@ async def test_create_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_create_entry_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8071,25 +7373,6 @@ def test_update_entry(request_type, transport: str = "grpc"):
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-def test_update_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryRequest()
 
 
 def test_update_entry_non_empty_request_with_auto_populated_field():
@@ -8152,32 +7435,6 @@ def test_update_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.Entry(
-                name="name_value",
-                entry_type="entry_type_value",
-                parent_entry="parent_entry_value",
-                fully_qualified_name="fully_qualified_name_value",
-            )
-        )
-        response = await client.update_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.UpdateEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8185,7 +7442,7 @@ async def test_update_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8224,7 +7481,7 @@ async def test_update_entry_async(
     transport: str = "grpc_asyncio", request_type=catalog.UpdateEntryRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8296,7 +7553,7 @@ def test_update_entry_field_headers():
 @pytest.mark.asyncio
 async def test_update_entry_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8369,7 +7626,7 @@ def test_update_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_update_entry_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8400,7 +7657,7 @@ async def test_update_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_update_entry_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8453,25 +7710,6 @@ def test_delete_entry(request_type, transport: str = "grpc"):
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-def test_delete_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryRequest()
 
 
 def test_delete_entry_non_empty_request_with_auto_populated_field():
@@ -8538,32 +7776,6 @@ def test_delete_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.Entry(
-                name="name_value",
-                entry_type="entry_type_value",
-                parent_entry="parent_entry_value",
-                fully_qualified_name="fully_qualified_name_value",
-            )
-        )
-        response = await client.delete_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.DeleteEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8571,7 +7783,7 @@ async def test_delete_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8610,7 +7822,7 @@ async def test_delete_entry_async(
     transport: str = "grpc_asyncio", request_type=catalog.DeleteEntryRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8682,7 +7894,7 @@ def test_delete_entry_field_headers():
 @pytest.mark.asyncio
 async def test_delete_entry_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8750,7 +7962,7 @@ def test_delete_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_entry_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8777,7 +7989,7 @@ async def test_delete_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_entry_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8823,25 +8035,6 @@ def test_list_entries(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntriesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_entries_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_entries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntriesRequest()
 
 
 def test_list_entries_non_empty_request_with_auto_populated_field():
@@ -8912,29 +8105,6 @@ def test_list_entries_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_entries_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.ListEntriesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_entries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.ListEntriesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_entries_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8942,7 +8112,7 @@ async def test_list_entries_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8981,7 +8151,7 @@ async def test_list_entries_async(
     transport: str = "grpc_asyncio", request_type=catalog.ListEntriesRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9047,7 +8217,7 @@ def test_list_entries_field_headers():
 @pytest.mark.asyncio
 async def test_list_entries_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9117,7 +8287,7 @@ def test_list_entries_flattened_error():
 @pytest.mark.asyncio
 async def test_list_entries_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9146,7 +8316,7 @@ async def test_list_entries_flattened_async():
 @pytest.mark.asyncio
 async def test_list_entries_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9256,7 +8426,7 @@ def test_list_entries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_entries_async_pager():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9306,7 +8476,7 @@ async def test_list_entries_async_pager():
 @pytest.mark.asyncio
 async def test_list_entries_async_pages():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9394,25 +8564,6 @@ def test_get_entry(request_type, transport: str = "grpc"):
     assert response.fully_qualified_name == "fully_qualified_name_value"
 
 
-def test_get_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryRequest()
-
-
 def test_get_entry_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -9477,38 +8628,12 @@ def test_get_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.Entry(
-                name="name_value",
-                entry_type="entry_type_value",
-                parent_entry="parent_entry_value",
-                fully_qualified_name="fully_qualified_name_value",
-            )
-        )
-        response = await client.get_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.GetEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_entry_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9547,7 +8672,7 @@ async def test_get_entry_async(
     transport: str = "grpc_asyncio", request_type=catalog.GetEntryRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9619,7 +8744,7 @@ def test_get_entry_field_headers():
 @pytest.mark.asyncio
 async def test_get_entry_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9687,7 +8812,7 @@ def test_get_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_get_entry_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9714,7 +8839,7 @@ async def test_get_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_get_entry_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9766,25 +8891,6 @@ def test_lookup_entry(request_type, transport: str = "grpc"):
     assert response.entry_type == "entry_type_value"
     assert response.parent_entry == "parent_entry_value"
     assert response.fully_qualified_name == "fully_qualified_name_value"
-
-
-def test_lookup_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.lookup_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.LookupEntryRequest()
 
 
 def test_lookup_entry_non_empty_request_with_auto_populated_field():
@@ -9853,32 +8959,6 @@ def test_lookup_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_lookup_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.Entry(
-                name="name_value",
-                entry_type="entry_type_value",
-                parent_entry="parent_entry_value",
-                fully_qualified_name="fully_qualified_name_value",
-            )
-        )
-        response = await client.lookup_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.LookupEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_lookup_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9886,7 +8966,7 @@ async def test_lookup_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9925,7 +9005,7 @@ async def test_lookup_entry_async(
     transport: str = "grpc_asyncio", request_type=catalog.LookupEntryRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9997,7 +9077,7 @@ def test_lookup_entry_field_headers():
 @pytest.mark.asyncio
 async def test_lookup_entry_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10062,25 +9142,6 @@ def test_search_entries(request_type, transport: str = "grpc"):
     assert response.total_size == 1086
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_search_entries_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_entries), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.search_entries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.SearchEntriesRequest()
 
 
 def test_search_entries_non_empty_request_with_auto_populated_field():
@@ -10155,31 +9216,6 @@ def test_search_entries_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_entries_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_entries), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            catalog.SearchEntriesResponse(
-                total_size=1086,
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.search_entries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog.SearchEntriesRequest()
-
-
-@pytest.mark.asyncio
 async def test_search_entries_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10187,7 +9223,7 @@ async def test_search_entries_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CatalogServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10226,7 +9262,7 @@ async def test_search_entries_async(
     transport: str = "grpc_asyncio", request_type=catalog.SearchEntriesRequest
 ):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10296,7 +9332,7 @@ def test_search_entries_field_headers():
 @pytest.mark.asyncio
 async def test_search_entries_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10371,7 +9407,7 @@ def test_search_entries_flattened_error():
 @pytest.mark.asyncio
 async def test_search_entries_flattened_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10404,7 +9440,7 @@ async def test_search_entries_flattened_async():
 @pytest.mark.asyncio
 async def test_search_entries_flattened_error_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10515,7 +9551,7 @@ def test_search_entries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_entries_async_pager():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10565,7 +9601,7 @@ async def test_search_entries_async_pager():
 @pytest.mark.asyncio
 async def test_search_entries_async_pages():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10702,17 +9738,1151 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = CatalogServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = CatalogServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entry_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_entry_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entry_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_entry_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_entry_types_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_entry_types), "__call__") as call:
+        call.return_value = catalog.ListEntryTypesResponse()
+        client.list_entry_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListEntryTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entry_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_type), "__call__") as call:
+        call.return_value = catalog.EntryType()
+        client.get_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_aspect_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_aspect_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_aspect_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_aspect_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_aspect_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_aspect_type), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_aspect_types_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_aspect_types), "__call__"
+    ) as call:
+        call.return_value = catalog.ListAspectTypesResponse()
+        client.list_aspect_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListAspectTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_aspect_type_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_aspect_type), "__call__") as call:
+        call.return_value = catalog.AspectType()
+        client.get_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entry_group_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_group), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_entry_group_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entry_group), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_entry_group_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_group), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_entry_groups_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entry_groups), "__call__"
+    ) as call:
+        call.return_value = catalog.ListEntryGroupsResponse()
+        client.list_entry_groups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListEntryGroupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entry_group_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
+        call.return_value = catalog.EntryGroup()
+        client.get_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entry_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
+        call.return_value = catalog.Entry()
+        client.create_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_entry_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
+        call.return_value = catalog.Entry()
+        client.update_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_entry_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
+        call.return_value = catalog.Entry()
+        client.delete_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_entries_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
+        call.return_value = catalog.ListEntriesResponse()
+        client.list_entries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListEntriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entry_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
+        call.return_value = catalog.Entry()
+        client.get_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_lookup_entry_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
+        call.return_value = catalog.Entry()
+        client.lookup_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.LookupEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_entries_empty_call_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_entries), "__call__") as call:
+        call.return_value = catalog.SearchEntriesResponse()
+        client.search_entries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.SearchEntriesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = CatalogServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_entry_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_entry_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entry_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_entry_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_entry_types_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_entry_types), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.ListEntryTypesResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_entry_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListEntryTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_entry_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_type), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryType(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                etag="etag_value",
+                type_aliases=["type_aliases_value"],
+                platform="platform_value",
+                system="system_value",
+            )
+        )
+        await client.get_entry_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_aspect_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_aspect_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_aspect_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_aspect_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_aspect_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_aspect_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_aspect_types_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_aspect_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.ListAspectTypesResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_aspect_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListAspectTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_aspect_type_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_aspect_type), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AspectType(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                etag="etag_value",
+                transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
+            )
+        )
+        await client.get_aspect_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetAspectTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_entry_group_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_entry_group_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entry_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_entry_group_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_group), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_entry_groups_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entry_groups), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.ListEntryGroupsResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_entry_groups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListEntryGroupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_entry_group_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.EntryGroup(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                etag="etag_value",
+                transfer_status=catalog.TransferStatus.TRANSFER_STATUS_MIGRATED,
+            )
+        )
+        await client.get_entry_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_entry_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.Entry(
+                name="name_value",
+                entry_type="entry_type_value",
+                parent_entry="parent_entry_value",
+                fully_qualified_name="fully_qualified_name_value",
+            )
+        )
+        await client.create_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.CreateEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_entry_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.Entry(
+                name="name_value",
+                entry_type="entry_type_value",
+                parent_entry="parent_entry_value",
+                fully_qualified_name="fully_qualified_name_value",
+            )
+        )
+        await client.update_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.UpdateEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_entry_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.Entry(
+                name="name_value",
+                entry_type="entry_type_value",
+                parent_entry="parent_entry_value",
+                fully_qualified_name="fully_qualified_name_value",
+            )
+        )
+        await client.delete_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.DeleteEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_entries_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.ListEntriesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_entries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.ListEntriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_entry_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.Entry(
+                name="name_value",
+                entry_type="entry_type_value",
+                parent_entry="parent_entry_value",
+                fully_qualified_name="fully_qualified_name_value",
+            )
+        )
+        await client.get_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.GetEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_lookup_entry_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.Entry(
+                name="name_value",
+                entry_type="entry_type_value",
+                parent_entry="parent_entry_value",
+                fully_qualified_name="fully_qualified_name_value",
+            )
+        )
+        await client.lookup_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.LookupEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_search_entries_empty_call_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_entries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.SearchEntriesResponse(
+                total_size=1086,
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.search_entries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = catalog.SearchEntriesRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -11397,20 +11567,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = CatalogServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11438,7 +11594,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11491,7 +11647,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11536,7 +11692,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -11577,7 +11733,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11630,7 +11786,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11675,7 +11831,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -11716,7 +11872,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11771,7 +11927,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11818,7 +11974,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -11861,7 +12017,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11916,7 +12072,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11963,7 +12119,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -12006,7 +12162,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12061,7 +12217,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12108,7 +12264,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -12151,7 +12307,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12203,9 +12359,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = CatalogServiceAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -12251,7 +12405,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = CatalogServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -12267,21 +12421,29 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = CatalogServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = CatalogServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

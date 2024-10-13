@@ -24,10 +24,24 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -38,11 +52,6 @@ from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.monitoring_v3.services.notification_channel_service import (
     NotificationChannelServiceAsyncClient,
@@ -58,8 +67,22 @@ from google.cloud.monitoring_v3.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1206,29 +1229,6 @@ def test_list_notification_channel_descriptors(request_type, transport: str = "g
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_notification_channel_descriptors_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_notification_channel_descriptors), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_notification_channel_descriptors()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == notification_service.ListNotificationChannelDescriptorsRequest()
-        )
-
-
 def test_list_notification_channel_descriptors_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1304,33 +1304,6 @@ def test_list_notification_channel_descriptors_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_notification_channel_descriptors_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_notification_channel_descriptors), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification_service.ListNotificationChannelDescriptorsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_notification_channel_descriptors()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == notification_service.ListNotificationChannelDescriptorsRequest()
-        )
-
-
-@pytest.mark.asyncio
 async def test_list_notification_channel_descriptors_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1338,7 +1311,7 @@ async def test_list_notification_channel_descriptors_async_use_cached_wrapped_rp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1378,7 +1351,7 @@ async def test_list_notification_channel_descriptors_async(
     request_type=notification_service.ListNotificationChannelDescriptorsRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1450,7 +1423,7 @@ def test_list_notification_channel_descriptors_field_headers():
 @pytest.mark.asyncio
 async def test_list_notification_channel_descriptors_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1526,7 +1499,7 @@ def test_list_notification_channel_descriptors_flattened_error():
 @pytest.mark.asyncio
 async def test_list_notification_channel_descriptors_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1559,7 +1532,7 @@ async def test_list_notification_channel_descriptors_flattened_async():
 @pytest.mark.asyncio
 async def test_list_notification_channel_descriptors_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1677,7 +1650,7 @@ def test_list_notification_channel_descriptors_pages(transport_name: str = "grpc
 @pytest.mark.asyncio
 async def test_list_notification_channel_descriptors_async_pager():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1731,7 +1704,7 @@ async def test_list_notification_channel_descriptors_async_pager():
 @pytest.mark.asyncio
 async def test_list_notification_channel_descriptors_async_pages():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1827,27 +1800,6 @@ def test_get_notification_channel_descriptor(request_type, transport: str = "grp
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
 
 
-def test_get_notification_channel_descriptor_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_notification_channel_descriptor), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_notification_channel_descriptor()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.GetNotificationChannelDescriptorRequest()
-
-
 def test_get_notification_channel_descriptor_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1919,36 +1871,6 @@ def test_get_notification_channel_descriptor_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_notification_channel_descriptor_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_notification_channel_descriptor), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification.NotificationChannelDescriptor(
-                name="name_value",
-                type_="type__value",
-                display_name="display_name_value",
-                description="description_value",
-                supported_tiers=[common.ServiceTier.SERVICE_TIER_BASIC],
-                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
-            )
-        )
-        response = await client.get_notification_channel_descriptor()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.GetNotificationChannelDescriptorRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_notification_channel_descriptor_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1956,7 +1878,7 @@ async def test_get_notification_channel_descriptor_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1996,7 +1918,7 @@ async def test_get_notification_channel_descriptor_async(
     request_type=notification_service.GetNotificationChannelDescriptorRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2076,7 +1998,7 @@ def test_get_notification_channel_descriptor_field_headers():
 @pytest.mark.asyncio
 async def test_get_notification_channel_descriptor_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2150,7 +2072,7 @@ def test_get_notification_channel_descriptor_flattened_error():
 @pytest.mark.asyncio
 async def test_get_notification_channel_descriptor_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2181,7 +2103,7 @@ async def test_get_notification_channel_descriptor_flattened_async():
 @pytest.mark.asyncio
 async def test_get_notification_channel_descriptor_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2231,27 +2153,6 @@ def test_list_notification_channels(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListNotificationChannelsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_notification_channels_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_notification_channels), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_notification_channels()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.ListNotificationChannelsRequest()
 
 
 def test_list_notification_channels_non_empty_request_with_auto_populated_field():
@@ -2331,32 +2232,6 @@ def test_list_notification_channels_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_notification_channels_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_notification_channels), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification_service.ListNotificationChannelsResponse(
-                next_page_token="next_page_token_value",
-                total_size=1086,
-            )
-        )
-        response = await client.list_notification_channels()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.ListNotificationChannelsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_notification_channels_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2364,7 +2239,7 @@ async def test_list_notification_channels_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2404,7 +2279,7 @@ async def test_list_notification_channels_async(
     request_type=notification_service.ListNotificationChannelsRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2476,7 +2351,7 @@ def test_list_notification_channels_field_headers():
 @pytest.mark.asyncio
 async def test_list_notification_channels_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2550,7 +2425,7 @@ def test_list_notification_channels_flattened_error():
 @pytest.mark.asyncio
 async def test_list_notification_channels_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2581,7 +2456,7 @@ async def test_list_notification_channels_flattened_async():
 @pytest.mark.asyncio
 async def test_list_notification_channels_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2697,7 +2572,7 @@ def test_list_notification_channels_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_notification_channels_async_pager():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2749,7 +2624,7 @@ async def test_list_notification_channels_async_pager():
 @pytest.mark.asyncio
 async def test_list_notification_channels_async_pages():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2846,27 +2721,6 @@ def test_get_notification_channel(request_type, transport: str = "grpc"):
     )
 
 
-def test_get_notification_channel_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_notification_channel), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.GetNotificationChannelRequest()
-
-
 def test_get_notification_channel_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2938,35 +2792,6 @@ def test_get_notification_channel_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_notification_channel_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_notification_channel), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification.NotificationChannel(
-                type_="type__value",
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
-            )
-        )
-        response = await client.get_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.GetNotificationChannelRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_notification_channel_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2974,7 +2799,7 @@ async def test_get_notification_channel_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3014,7 +2839,7 @@ async def test_get_notification_channel_async(
     request_type=notification_service.GetNotificationChannelRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3095,7 +2920,7 @@ def test_get_notification_channel_field_headers():
 @pytest.mark.asyncio
 async def test_get_notification_channel_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3169,7 +2994,7 @@ def test_get_notification_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_get_notification_channel_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3200,7 +3025,7 @@ async def test_get_notification_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_get_notification_channel_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3259,27 +3084,6 @@ def test_create_notification_channel(request_type, transport: str = "grpc"):
         response.verification_status
         == notification.NotificationChannel.VerificationStatus.UNVERIFIED
     )
-
-
-def test_create_notification_channel_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_notification_channel), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.CreateNotificationChannelRequest()
 
 
 def test_create_notification_channel_non_empty_request_with_auto_populated_field():
@@ -3353,35 +3157,6 @@ def test_create_notification_channel_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_notification_channel_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_notification_channel), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification.NotificationChannel(
-                type_="type__value",
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
-            )
-        )
-        response = await client.create_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.CreateNotificationChannelRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_notification_channel_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3389,7 +3164,7 @@ async def test_create_notification_channel_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3429,7 +3204,7 @@ async def test_create_notification_channel_async(
     request_type=notification_service.CreateNotificationChannelRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3510,7 +3285,7 @@ def test_create_notification_channel_field_headers():
 @pytest.mark.asyncio
 async def test_create_notification_channel_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3589,7 +3364,7 @@ def test_create_notification_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_create_notification_channel_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3624,7 +3399,7 @@ async def test_create_notification_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_create_notification_channel_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3684,27 +3459,6 @@ def test_update_notification_channel(request_type, transport: str = "grpc"):
         response.verification_status
         == notification.NotificationChannel.VerificationStatus.UNVERIFIED
     )
-
-
-def test_update_notification_channel_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_notification_channel), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.UpdateNotificationChannelRequest()
 
 
 def test_update_notification_channel_non_empty_request_with_auto_populated_field():
@@ -3774,35 +3528,6 @@ def test_update_notification_channel_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_notification_channel_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_notification_channel), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification.NotificationChannel(
-                type_="type__value",
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
-            )
-        )
-        response = await client.update_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.UpdateNotificationChannelRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_notification_channel_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3810,7 +3535,7 @@ async def test_update_notification_channel_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3850,7 +3575,7 @@ async def test_update_notification_channel_async(
     request_type=notification_service.UpdateNotificationChannelRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3931,7 +3656,7 @@ def test_update_notification_channel_field_headers():
 @pytest.mark.asyncio
 async def test_update_notification_channel_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4010,7 +3735,7 @@ def test_update_notification_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_update_notification_channel_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4045,7 +3770,7 @@ async def test_update_notification_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_update_notification_channel_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4091,27 +3816,6 @@ def test_delete_notification_channel(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_notification_channel_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_notification_channel), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.DeleteNotificationChannelRequest()
 
 
 def test_delete_notification_channel_non_empty_request_with_auto_populated_field():
@@ -4185,27 +3889,6 @@ def test_delete_notification_channel_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_notification_channel_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_notification_channel), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.DeleteNotificationChannelRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_notification_channel_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4213,7 +3896,7 @@ async def test_delete_notification_channel_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4253,7 +3936,7 @@ async def test_delete_notification_channel_async(
     request_type=notification_service.DeleteNotificationChannelRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4318,7 +4001,7 @@ def test_delete_notification_channel_field_headers():
 @pytest.mark.asyncio
 async def test_delete_notification_channel_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4395,7 +4078,7 @@ def test_delete_notification_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_notification_channel_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4428,7 +4111,7 @@ async def test_delete_notification_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_notification_channel_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4476,30 +4159,6 @@ def test_send_notification_channel_verification_code(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_send_notification_channel_verification_code_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.send_notification_channel_verification_code), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.send_notification_channel_verification_code()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == notification_service.SendNotificationChannelVerificationCodeRequest()
-        )
 
 
 def test_send_notification_channel_verification_code_non_empty_request_with_auto_populated_field():
@@ -4575,30 +4234,6 @@ def test_send_notification_channel_verification_code_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_send_notification_channel_verification_code_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.send_notification_channel_verification_code), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.send_notification_channel_verification_code()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == notification_service.SendNotificationChannelVerificationCodeRequest()
-        )
-
-
-@pytest.mark.asyncio
 async def test_send_notification_channel_verification_code_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4606,7 +4241,7 @@ async def test_send_notification_channel_verification_code_async_use_cached_wrap
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4646,7 +4281,7 @@ async def test_send_notification_channel_verification_code_async(
     request_type=notification_service.SendNotificationChannelVerificationCodeRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4711,7 +4346,7 @@ def test_send_notification_channel_verification_code_field_headers():
 @pytest.mark.asyncio
 async def test_send_notification_channel_verification_code_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4783,7 +4418,7 @@ def test_send_notification_channel_verification_code_flattened_error():
 @pytest.mark.asyncio
 async def test_send_notification_channel_verification_code_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4812,7 +4447,7 @@ async def test_send_notification_channel_verification_code_flattened_async():
 @pytest.mark.asyncio
 async def test_send_notification_channel_verification_code_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4866,30 +4501,6 @@ def test_get_notification_channel_verification_code(
         response, notification_service.GetNotificationChannelVerificationCodeResponse
     )
     assert response.code == "code_value"
-
-
-def test_get_notification_channel_verification_code_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_notification_channel_verification_code), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_notification_channel_verification_code()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == notification_service.GetNotificationChannelVerificationCodeRequest()
-        )
 
 
 def test_get_notification_channel_verification_code_non_empty_request_with_auto_populated_field():
@@ -4965,34 +4576,6 @@ def test_get_notification_channel_verification_code_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_notification_channel_verification_code_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_notification_channel_verification_code), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification_service.GetNotificationChannelVerificationCodeResponse(
-                code="code_value",
-            )
-        )
-        response = await client.get_notification_channel_verification_code()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == notification_service.GetNotificationChannelVerificationCodeRequest()
-        )
-
-
-@pytest.mark.asyncio
 async def test_get_notification_channel_verification_code_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5000,7 +4583,7 @@ async def test_get_notification_channel_verification_code_async_use_cached_wrapp
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5040,7 +4623,7 @@ async def test_get_notification_channel_verification_code_async(
     request_type=notification_service.GetNotificationChannelVerificationCodeRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5114,7 +4697,7 @@ def test_get_notification_channel_verification_code_field_headers():
 @pytest.mark.asyncio
 async def test_get_notification_channel_verification_code_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5190,7 +4773,7 @@ def test_get_notification_channel_verification_code_flattened_error():
 @pytest.mark.asyncio
 async def test_get_notification_channel_verification_code_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5223,7 +4806,7 @@ async def test_get_notification_channel_verification_code_flattened_async():
 @pytest.mark.asyncio
 async def test_get_notification_channel_verification_code_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5282,27 +4865,6 @@ def test_verify_notification_channel(request_type, transport: str = "grpc"):
         response.verification_status
         == notification.NotificationChannel.VerificationStatus.UNVERIFIED
     )
-
-
-def test_verify_notification_channel_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.verify_notification_channel), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.verify_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.VerifyNotificationChannelRequest()
 
 
 def test_verify_notification_channel_non_empty_request_with_auto_populated_field():
@@ -5378,35 +4940,6 @@ def test_verify_notification_channel_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_verify_notification_channel_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.verify_notification_channel), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            notification.NotificationChannel(
-                type_="type__value",
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
-            )
-        )
-        response = await client.verify_notification_channel()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == notification_service.VerifyNotificationChannelRequest()
-
-
-@pytest.mark.asyncio
 async def test_verify_notification_channel_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5414,7 +4947,7 @@ async def test_verify_notification_channel_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = NotificationChannelServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5454,7 +4987,7 @@ async def test_verify_notification_channel_async(
     request_type=notification_service.VerifyNotificationChannelRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5535,7 +5068,7 @@ def test_verify_notification_channel_field_headers():
 @pytest.mark.asyncio
 async def test_verify_notification_channel_field_headers_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5614,7 +5147,7 @@ def test_verify_notification_channel_flattened_error():
 @pytest.mark.asyncio
 async def test_verify_notification_channel_flattened_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5649,7 +5182,7 @@ async def test_verify_notification_channel_flattened_async():
 @pytest.mark.asyncio
 async def test_verify_notification_channel_flattened_error_async():
     client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5753,17 +5286,578 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = NotificationChannelServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = NotificationChannelServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_notification_channel_descriptors_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_notification_channel_descriptors), "__call__"
+    ) as call:
+        call.return_value = (
+            notification_service.ListNotificationChannelDescriptorsResponse()
+        )
+        client.list_notification_channel_descriptors(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.ListNotificationChannelDescriptorsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_notification_channel_descriptor_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_notification_channel_descriptor), "__call__"
+    ) as call:
+        call.return_value = notification.NotificationChannelDescriptor()
+        client.get_notification_channel_descriptor(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.GetNotificationChannelDescriptorRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_notification_channels_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_notification_channels), "__call__"
+    ) as call:
+        call.return_value = notification_service.ListNotificationChannelsResponse()
+        client.list_notification_channels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.ListNotificationChannelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_notification_channel_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_notification_channel), "__call__"
+    ) as call:
+        call.return_value = notification.NotificationChannel()
+        client.get_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.GetNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_notification_channel_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_notification_channel), "__call__"
+    ) as call:
+        call.return_value = notification.NotificationChannel()
+        client.create_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.CreateNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_notification_channel_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_notification_channel), "__call__"
+    ) as call:
+        call.return_value = notification.NotificationChannel()
+        client.update_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.UpdateNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_notification_channel_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_notification_channel), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.DeleteNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_send_notification_channel_verification_code_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.send_notification_channel_verification_code), "__call__"
+    ) as call:
+        call.return_value = None
+        client.send_notification_channel_verification_code(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            notification_service.SendNotificationChannelVerificationCodeRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_notification_channel_verification_code_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_notification_channel_verification_code), "__call__"
+    ) as call:
+        call.return_value = (
+            notification_service.GetNotificationChannelVerificationCodeResponse()
+        )
+        client.get_notification_channel_verification_code(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            notification_service.GetNotificationChannelVerificationCodeRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_verify_notification_channel_empty_call_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_notification_channel), "__call__"
+    ) as call:
+        call.return_value = notification.NotificationChannel()
+        client.verify_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.VerifyNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = NotificationChannelServiceAsyncClient.get_transport_class(
+        "grpc_asyncio"
+    )(credentials=async_anonymous_credentials())
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_notification_channel_descriptors_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_notification_channel_descriptors), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification_service.ListNotificationChannelDescriptorsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_notification_channel_descriptors(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.ListNotificationChannelDescriptorsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_notification_channel_descriptor_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_notification_channel_descriptor), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification.NotificationChannelDescriptor(
+                name="name_value",
+                type_="type__value",
+                display_name="display_name_value",
+                description="description_value",
+                supported_tiers=[common.ServiceTier.SERVICE_TIER_BASIC],
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+            )
+        )
+        await client.get_notification_channel_descriptor(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.GetNotificationChannelDescriptorRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_notification_channels_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_notification_channels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification_service.ListNotificationChannelsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_notification_channels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.ListNotificationChannelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_notification_channel_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_notification_channel), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification.NotificationChannel(
+                type_="type__value",
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
+            )
+        )
+        await client.get_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.GetNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_notification_channel_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_notification_channel), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification.NotificationChannel(
+                type_="type__value",
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
+            )
+        )
+        await client.create_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.CreateNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_notification_channel_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_notification_channel), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification.NotificationChannel(
+                type_="type__value",
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
+            )
+        )
+        await client.update_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.UpdateNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_notification_channel_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_notification_channel), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.DeleteNotificationChannelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_send_notification_channel_verification_code_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.send_notification_channel_verification_code), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.send_notification_channel_verification_code(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            notification_service.SendNotificationChannelVerificationCodeRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_notification_channel_verification_code_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_notification_channel_verification_code), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification_service.GetNotificationChannelVerificationCodeResponse(
+                code="code_value",
+            )
+        )
+        await client.get_notification_channel_verification_code(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            notification_service.GetNotificationChannelVerificationCodeRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_verify_notification_channel_empty_call_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_notification_channel), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            notification.NotificationChannel(
+                type_="type__value",
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                verification_status=notification.NotificationChannel.VerificationStatus.UNVERIFIED,
+            )
+        )
+        await client.verify_notification_channel(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = notification_service.VerifyNotificationChannelRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -6360,35 +6454,29 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = NotificationChannelServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = NotificationChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
-        async with client:
+        with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = NotificationChannelServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = NotificationChannelServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

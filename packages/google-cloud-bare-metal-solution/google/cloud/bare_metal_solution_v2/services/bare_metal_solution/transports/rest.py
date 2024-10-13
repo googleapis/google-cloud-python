@@ -16,37 +16,21 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
 from google.cloud.bare_metal_solution_v2.types import (
@@ -65,8 +49,14 @@ from google.cloud.bare_metal_solution_v2.types import volume
 from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
-from .base import BareMetalSolutionTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseBareMetalSolutionRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1438,8 +1428,8 @@ class BareMetalSolutionRestStub:
     _interceptor: BareMetalSolutionRestInterceptor
 
 
-class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
-    """REST backend transport for BareMetalSolution.
+class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
+    """REST backend synchronous transport for BareMetalSolution.
 
     Performs management operations on Bare Metal Solution servers.
 
@@ -1456,7 +1446,6 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -1510,21 +1499,12 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1563,19 +1543,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateNfsShare(BareMetalSolutionRestStub):
+    class _CreateNfsShare(
+        _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateNfsShare")
+            return hash("BareMetalSolutionRestTransport.CreateNfsShare")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1604,47 +1600,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/nfsShares",
-                    "body": "nfs_share",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_nfs_share(
                 request, metadata
             )
-            pb_request = gcb_nfs_share.CreateNfsShareRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._CreateNfsShare._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1658,19 +1641,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_create_nfs_share(resp)
             return resp
 
-    class _CreateProvisioningConfig(BareMetalSolutionRestStub):
+    class _CreateProvisioningConfig(
+        _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateProvisioningConfig")
+            return hash("BareMetalSolutionRestTransport.CreateProvisioningConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1697,47 +1696,36 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                         A provisioning configuration.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/provisioningConfigs",
-                    "body": "provisioning_config",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_provisioning_config(
                 request, metadata
             )
-            pb_request = provisioning.CreateProvisioningConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BareMetalSolutionRestTransport._CreateProvisioningConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1753,21 +1741,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_create_provisioning_config(resp)
             return resp
 
-    class _CreateSSHKey(BareMetalSolutionRestStub):
+    class _CreateSSHKey(
+        _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("CreateSSHKey")
+            return hash("BareMetalSolutionRestTransport.CreateSSHKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "sshKeyId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1796,45 +1797,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/sshKeys",
-                    "body": "ssh_key",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_ssh_key(request, metadata)
-            pb_request = gcb_ssh_key.CreateSSHKeyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_ssh_key(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._CreateSSHKey._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1850,19 +1838,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_create_ssh_key(resp)
             return resp
 
-    class _CreateVolumeSnapshot(BareMetalSolutionRestStub):
+    class _CreateVolumeSnapshot(
+        _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateVolumeSnapshot")
+            return hash("BareMetalSolutionRestTransport.CreateVolumeSnapshot")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1891,47 +1895,36 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*/volumes/*}/snapshots",
-                    "body": "volume_snapshot",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_volume_snapshot(
                 request, metadata
             )
-            pb_request = gcb_volume_snapshot.CreateVolumeSnapshotRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BareMetalSolutionRestTransport._CreateVolumeSnapshot._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1947,19 +1940,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_create_volume_snapshot(resp)
             return resp
 
-    class _DeleteNfsShare(BareMetalSolutionRestStub):
+    class _DeleteNfsShare(
+        _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteNfsShare")
+            return hash("BareMetalSolutionRestTransport.DeleteNfsShare")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1988,40 +1996,29 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/nfsShares/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_nfs_share(
                 request, metadata
             )
-            pb_request = nfs_share.DeleteNfsShareRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._DeleteNfsShare._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2035,19 +2032,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_delete_nfs_share(resp)
             return resp
 
-    class _DeleteSSHKey(BareMetalSolutionRestStub):
+    class _DeleteSSHKey(
+        _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteSSHKey")
+            return hash("BareMetalSolutionRestTransport.DeleteSSHKey")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2070,38 +2081,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/sshKeys/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_ssh_key(request, metadata)
-            pb_request = ssh_key.DeleteSSHKeyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._DeleteSSHKey._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2109,19 +2109,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteVolumeSnapshot(BareMetalSolutionRestStub):
+    class _DeleteVolumeSnapshot(
+        _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteVolumeSnapshot")
+            return hash("BareMetalSolutionRestTransport.DeleteVolumeSnapshot")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2144,40 +2159,31 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/volumes/*/snapshots/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_volume_snapshot(
                 request, metadata
             )
-            pb_request = volume_snapshot.DeleteVolumeSnapshotRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BareMetalSolutionRestTransport._DeleteVolumeSnapshot._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2185,19 +2191,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DetachLun(BareMetalSolutionRestStub):
+    class _DetachLun(
+        _BaseBareMetalSolutionRestTransport._BaseDetachLun, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("DetachLun")
+            return hash("BareMetalSolutionRestTransport.DetachLun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2227,45 +2248,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{instance=projects/*/locations/*/instances/*}:detachLun",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_detach_lun(request, metadata)
-            pb_request = gcb_instance.DetachLunRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_detach_lun(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._DetachLun._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2279,19 +2287,37 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_detach_lun(resp)
             return resp
 
-    class _DisableInteractiveSerialConsole(BareMetalSolutionRestStub):
+    class _DisableInteractiveSerialConsole(
+        _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("DisableInteractiveSerialConsole")
+            return hash(
+                "BareMetalSolutionRestTransport.DisableInteractiveSerialConsole"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2322,50 +2348,37 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:disableInteractiveSerialConsole",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_disable_interactive_serial_console(
                 request, metadata
             )
-            pb_request = instance.DisableInteractiveSerialConsoleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._DisableInteractiveSerialConsole._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2379,19 +2392,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_disable_interactive_serial_console(resp)
             return resp
 
-    class _EnableInteractiveSerialConsole(BareMetalSolutionRestStub):
+    class _EnableInteractiveSerialConsole(
+        _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("EnableInteractiveSerialConsole")
+            return hash("BareMetalSolutionRestTransport.EnableInteractiveSerialConsole")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2422,47 +2451,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:enableInteractiveSerialConsole",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_http_options()
+            )
             request, metadata = self._interceptor.pre_enable_interactive_serial_console(
                 request, metadata
             )
-            pb_request = instance.EnableInteractiveSerialConsoleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._EnableInteractiveSerialConsole._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2476,19 +2492,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_enable_interactive_serial_console(resp)
             return resp
 
-    class _EvictLun(BareMetalSolutionRestStub):
+    class _EvictLun(
+        _BaseBareMetalSolutionRestTransport._BaseEvictLun, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("EvictLun")
+            return hash("BareMetalSolutionRestTransport.EvictLun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2518,45 +2549,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/volumes/*/luns/*}:evict",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_evict_lun(request, metadata)
-            pb_request = lun.EvictLunRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_evict_lun(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._EvictLun._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2570,19 +2588,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_evict_lun(resp)
             return resp
 
-    class _EvictVolume(BareMetalSolutionRestStub):
+    class _EvictVolume(
+        _BaseBareMetalSolutionRestTransport._BaseEvictVolume, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("EvictVolume")
+            return hash("BareMetalSolutionRestTransport.EvictVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2612,45 +2645,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/volumes/*}:evict",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_evict_volume(request, metadata)
-            pb_request = volume.EvictVolumeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_evict_volume(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._EvictVolume._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2664,19 +2684,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_evict_volume(resp)
             return resp
 
-    class _GetInstance(BareMetalSolutionRestStub):
+    class _GetInstance(
+        _BaseBareMetalSolutionRestTransport._BaseGetInstance, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("GetInstance")
+            return hash("BareMetalSolutionRestTransport.GetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2703,38 +2737,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     A server.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/instances/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            pb_request = instance.GetInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._GetInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2750,19 +2773,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_instance(resp)
             return resp
 
-    class _GetLun(BareMetalSolutionRestStub):
+    class _GetLun(
+        _BaseBareMetalSolutionRestTransport._BaseGetLun, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("GetLun")
+            return hash("BareMetalSolutionRestTransport.GetLun")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2791,38 +2828,31 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/volumes/*/luns/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetLun._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_lun(request, metadata)
-            pb_request = lun.GetLunRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseBareMetalSolutionRestTransport._BaseGetLun._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseBareMetalSolutionRestTransport._BaseGetLun._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._GetLun._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2838,19 +2868,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_lun(resp)
             return resp
 
-    class _GetNetwork(BareMetalSolutionRestStub):
+    class _GetNetwork(
+        _BaseBareMetalSolutionRestTransport._BaseGetNetwork, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("GetNetwork")
+            return hash("BareMetalSolutionRestTransport.GetNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2877,38 +2921,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     A Network.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/networks/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_network(request, metadata)
-            pb_request = network.GetNetworkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._GetNetwork._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2924,19 +2957,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_network(resp)
             return resp
 
-    class _GetNfsShare(BareMetalSolutionRestStub):
+    class _GetNfsShare(
+        _BaseBareMetalSolutionRestTransport._BaseGetNfsShare, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("GetNfsShare")
+            return hash("BareMetalSolutionRestTransport.GetNfsShare")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2963,38 +3010,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     An NFS share.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/nfsShares/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_nfs_share(request, metadata)
-            pb_request = nfs_share.GetNfsShareRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._GetNfsShare._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3010,19 +3046,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_nfs_share(resp)
             return resp
 
-    class _GetProvisioningConfig(BareMetalSolutionRestStub):
+    class _GetProvisioningConfig(
+        _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("GetProvisioningConfig")
+            return hash("BareMetalSolutionRestTransport.GetProvisioningConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3048,40 +3099,31 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     A provisioning configuration.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/provisioningConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_provisioning_config(
                 request, metadata
             )
-            pb_request = provisioning.GetProvisioningConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BareMetalSolutionRestTransport._GetProvisioningConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3097,19 +3139,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_provisioning_config(resp)
             return resp
 
-    class _GetVolume(BareMetalSolutionRestStub):
+    class _GetVolume(
+        _BaseBareMetalSolutionRestTransport._BaseGetVolume, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("GetVolume")
+            return hash("BareMetalSolutionRestTransport.GetVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3136,38 +3192,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     A storage volume.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/volumes/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_volume(request, metadata)
-            pb_request = volume.GetVolumeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._GetVolume._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3183,19 +3228,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_volume(resp)
             return resp
 
-    class _GetVolumeSnapshot(BareMetalSolutionRestStub):
+    class _GetVolumeSnapshot(
+        _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("GetVolumeSnapshot")
+            return hash("BareMetalSolutionRestTransport.GetVolumeSnapshot")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3224,40 +3284,29 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/volumes/*/snapshots/*}",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_volume_snapshot(
                 request, metadata
             )
-            pb_request = volume_snapshot.GetVolumeSnapshotRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._GetVolumeSnapshot._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3273,19 +3322,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_volume_snapshot(resp)
             return resp
 
-    class _ListInstances(BareMetalSolutionRestStub):
+    class _ListInstances(
+        _BaseBareMetalSolutionRestTransport._BaseListInstances,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("ListInstances")
+            return hash("BareMetalSolutionRestTransport.ListInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3314,38 +3378,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/instances",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            pb_request = instance.ListInstancesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3361,19 +3414,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_instances(resp)
             return resp
 
-    class _ListLuns(BareMetalSolutionRestStub):
+    class _ListLuns(
+        _BaseBareMetalSolutionRestTransport._BaseListLuns, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("ListLuns")
+            return hash("BareMetalSolutionRestTransport.ListLuns")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3402,38 +3469,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*/volumes/*}/luns",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListLuns._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_luns(request, metadata)
-            pb_request = lun.ListLunsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListLuns._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3449,19 +3505,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_luns(resp)
             return resp
 
-    class _ListNetworks(BareMetalSolutionRestStub):
+    class _ListNetworks(
+        _BaseBareMetalSolutionRestTransport._BaseListNetworks, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("ListNetworks")
+            return hash("BareMetalSolutionRestTransport.ListNetworks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3490,38 +3560,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/networks",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_networks(request, metadata)
-            pb_request = network.ListNetworksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListNetworks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3537,19 +3596,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_networks(resp)
             return resp
 
-    class _ListNetworkUsage(BareMetalSolutionRestStub):
+    class _ListNetworkUsage(
+        _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("ListNetworkUsage")
+            return hash("BareMetalSolutionRestTransport.ListNetworkUsage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3575,40 +3649,29 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     Response with Networks with IPs
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{location=projects/*/locations/*}/networks:listNetworkUsage",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_network_usage(
                 request, metadata
             )
-            pb_request = network.ListNetworkUsageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListNetworkUsage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3624,19 +3687,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_network_usage(resp)
             return resp
 
-    class _ListNfsShares(BareMetalSolutionRestStub):
+    class _ListNfsShares(
+        _BaseBareMetalSolutionRestTransport._BaseListNfsShares,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("ListNfsShares")
+            return hash("BareMetalSolutionRestTransport.ListNfsShares")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3665,38 +3743,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/nfsShares",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_nfs_shares(request, metadata)
-            pb_request = nfs_share.ListNfsSharesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListNfsShares._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3712,19 +3779,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_nfs_shares(resp)
             return resp
 
-    class _ListOSImages(BareMetalSolutionRestStub):
+    class _ListOSImages(
+        _BaseBareMetalSolutionRestTransport._BaseListOSImages, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("ListOSImages")
+            return hash("BareMetalSolutionRestTransport.ListOSImages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3753,38 +3834,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/osImages",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_os_images(request, metadata)
-            pb_request = osimage.ListOSImagesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListOSImages._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3800,19 +3870,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_os_images(resp)
             return resp
 
-    class _ListProvisioningQuotas(BareMetalSolutionRestStub):
+    class _ListProvisioningQuotas(
+        _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("ListProvisioningQuotas")
+            return hash("BareMetalSolutionRestTransport.ListProvisioningQuotas")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3841,40 +3926,31 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/provisioningQuotas",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_provisioning_quotas(
                 request, metadata
             )
-            pb_request = provisioning.ListProvisioningQuotasRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BareMetalSolutionRestTransport._ListProvisioningQuotas._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3890,19 +3966,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_provisioning_quotas(resp)
             return resp
 
-    class _ListSSHKeys(BareMetalSolutionRestStub):
+    class _ListSSHKeys(
+        _BaseBareMetalSolutionRestTransport._BaseListSSHKeys, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("ListSSHKeys")
+            return hash("BareMetalSolutionRestTransport.ListSSHKeys")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3929,38 +4019,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     Message for response of ListSSHKeys.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/sshKeys",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_ssh_keys(request, metadata)
-            pb_request = ssh_key.ListSSHKeysRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListSSHKeys._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3976,19 +4055,33 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_ssh_keys(resp)
             return resp
 
-    class _ListVolumes(BareMetalSolutionRestStub):
+    class _ListVolumes(
+        _BaseBareMetalSolutionRestTransport._BaseListVolumes, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("ListVolumes")
+            return hash("BareMetalSolutionRestTransport.ListVolumes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4017,38 +4110,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/volumes",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_volumes(request, metadata)
-            pb_request = volume.ListVolumesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BareMetalSolutionRestTransport._ListVolumes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4064,19 +4146,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_volumes(resp)
             return resp
 
-    class _ListVolumeSnapshots(BareMetalSolutionRestStub):
+    class _ListVolumeSnapshots(
+        _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("ListVolumeSnapshots")
+            return hash("BareMetalSolutionRestTransport.ListVolumeSnapshots")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4105,40 +4202,31 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*/volumes/*}/snapshots",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_volume_snapshots(
                 request, metadata
             )
-            pb_request = volume_snapshot.ListVolumeSnapshotsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BareMetalSolutionRestTransport._ListVolumeSnapshots._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4154,19 +4242,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_volume_snapshots(resp)
             return resp
 
-    class _RenameInstance(BareMetalSolutionRestStub):
+    class _RenameInstance(
+        _BaseBareMetalSolutionRestTransport._BaseRenameInstance,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("RenameInstance")
+            return hash("BareMetalSolutionRestTransport.RenameInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4193,45 +4297,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     A server.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:rename",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_rename_instance(request, metadata)
-            pb_request = instance.RenameInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_rename_instance(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._RenameInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4247,19 +4338,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_rename_instance(resp)
             return resp
 
-    class _RenameNetwork(BareMetalSolutionRestStub):
+    class _RenameNetwork(
+        _BaseBareMetalSolutionRestTransport._BaseRenameNetwork,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("RenameNetwork")
+            return hash("BareMetalSolutionRestTransport.RenameNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4286,45 +4393,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     A Network.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/networks/*}:rename",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_rename_network(request, metadata)
-            pb_request = network.RenameNetworkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_rename_network(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._RenameNetwork._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4340,19 +4434,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_rename_network(resp)
             return resp
 
-    class _RenameNfsShare(BareMetalSolutionRestStub):
+    class _RenameNfsShare(
+        _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("RenameNfsShare")
+            return hash("BareMetalSolutionRestTransport.RenameNfsShare")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4379,47 +4489,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     An NFS share.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/nfsShares/*}:rename",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_http_options()
+            )
             request, metadata = self._interceptor.pre_rename_nfs_share(
                 request, metadata
             )
-            pb_request = nfs_share.RenameNfsShareRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._RenameNfsShare._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4435,19 +4532,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_rename_nfs_share(resp)
             return resp
 
-    class _RenameVolume(BareMetalSolutionRestStub):
+    class _RenameVolume(
+        _BaseBareMetalSolutionRestTransport._BaseRenameVolume, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("RenameVolume")
+            return hash("BareMetalSolutionRestTransport.RenameVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4474,45 +4586,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                     A storage volume.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/volumes/*}:rename",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_rename_volume(request, metadata)
-            pb_request = volume.RenameVolumeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_rename_volume(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._RenameVolume._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4528,19 +4627,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_rename_volume(resp)
             return resp
 
-    class _ResetInstance(BareMetalSolutionRestStub):
+    class _ResetInstance(
+        _BaseBareMetalSolutionRestTransport._BaseResetInstance,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("ResetInstance")
+            return hash("BareMetalSolutionRestTransport.ResetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4569,45 +4684,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:reset",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_reset_instance(request, metadata)
-            pb_request = instance.ResetInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_reset_instance(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._ResetInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4621,19 +4723,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_reset_instance(resp)
             return resp
 
-    class _ResizeVolume(BareMetalSolutionRestStub):
+    class _ResizeVolume(
+        _BaseBareMetalSolutionRestTransport._BaseResizeVolume, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("ResizeVolume")
+            return hash("BareMetalSolutionRestTransport.ResizeVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4662,45 +4779,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{volume=projects/*/locations/*/volumes/*}:resize",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_resize_volume(request, metadata)
-            pb_request = gcb_volume.ResizeVolumeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_resize_volume(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._ResizeVolume._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4714,19 +4818,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_resize_volume(resp)
             return resp
 
-    class _RestoreVolumeSnapshot(BareMetalSolutionRestStub):
+    class _RestoreVolumeSnapshot(
+        _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("RestoreVolumeSnapshot")
+            return hash("BareMetalSolutionRestTransport.RestoreVolumeSnapshot")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4756,47 +4876,36 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{volume_snapshot=projects/*/locations/*/volumes/*/snapshots/*}:restoreVolumeSnapshot",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_http_options()
+            )
             request, metadata = self._interceptor.pre_restore_volume_snapshot(
                 request, metadata
             )
-            pb_request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BareMetalSolutionRestTransport._RestoreVolumeSnapshot._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4810,19 +4919,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_restore_volume_snapshot(resp)
             return resp
 
-    class _StartInstance(BareMetalSolutionRestStub):
+    class _StartInstance(
+        _BaseBareMetalSolutionRestTransport._BaseStartInstance,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("StartInstance")
+            return hash("BareMetalSolutionRestTransport.StartInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4851,45 +4976,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:start",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_start_instance(request, metadata)
-            pb_request = instance.StartInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_start_instance(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._StartInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4903,19 +5015,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_start_instance(resp)
             return resp
 
-    class _StopInstance(BareMetalSolutionRestStub):
+    class _StopInstance(
+        _BaseBareMetalSolutionRestTransport._BaseStopInstance, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("StopInstance")
+            return hash("BareMetalSolutionRestTransport.StopInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4944,45 +5071,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:stop",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_stop_instance(request, metadata)
-            pb_request = instance.StopInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_stop_instance(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._StopInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4996,19 +5110,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_stop_instance(resp)
             return resp
 
-    class _SubmitProvisioningConfig(BareMetalSolutionRestStub):
+    class _SubmitProvisioningConfig(
+        _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("SubmitProvisioningConfig")
+            return hash("BareMetalSolutionRestTransport.SubmitProvisioningConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5037,47 +5167,36 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/provisioningConfigs:submit",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_submit_provisioning_config(
                 request, metadata
             )
-            pb_request = provisioning.SubmitProvisioningConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BareMetalSolutionRestTransport._SubmitProvisioningConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5093,19 +5212,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_submit_provisioning_config(resp)
             return resp
 
-    class _UpdateInstance(BareMetalSolutionRestStub):
+    class _UpdateInstance(
+        _BaseBareMetalSolutionRestTransport._BaseUpdateInstance,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateInstance")
+            return hash("BareMetalSolutionRestTransport.UpdateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5135,45 +5270,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{instance.name=projects/*/locations/*/instances/*}",
-                    "body": "instance",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            pb_request = gcb_instance.UpdateInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_instance(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._UpdateInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5187,19 +5309,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_update_instance(resp)
             return resp
 
-    class _UpdateNetwork(BareMetalSolutionRestStub):
+    class _UpdateNetwork(
+        _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateNetwork")
+            return hash("BareMetalSolutionRestTransport.UpdateNetwork")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5229,45 +5367,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{network.name=projects/*/locations/*/networks/*}",
-                    "body": "network",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_network(request, metadata)
-            pb_request = gcb_network.UpdateNetworkRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_network(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._UpdateNetwork._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5281,19 +5406,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_update_network(resp)
             return resp
 
-    class _UpdateNfsShare(BareMetalSolutionRestStub):
+    class _UpdateNfsShare(
+        _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateNfsShare")
+            return hash("BareMetalSolutionRestTransport.UpdateNfsShare")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5323,47 +5464,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{nfs_share.name=projects/*/locations/*/nfsShares/*}",
-                    "body": "nfs_share",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_nfs_share(
                 request, metadata
             )
-            pb_request = gcb_nfs_share.UpdateNfsShareRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._UpdateNfsShare._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5377,21 +5505,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_update_nfs_share(resp)
             return resp
 
-    class _UpdateProvisioningConfig(BareMetalSolutionRestStub):
+    class _UpdateProvisioningConfig(
+        _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig,
+        BareMetalSolutionRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateProvisioningConfig")
+            return hash("BareMetalSolutionRestTransport.UpdateProvisioningConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5419,47 +5561,36 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                         A provisioning configuration.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{provisioning_config.name=projects/*/locations/*/provisioningConfigs/*}",
-                    "body": "provisioning_config",
-                },
-            ]
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_provisioning_config(
                 request, metadata
             )
-            pb_request = provisioning.UpdateProvisioningConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BareMetalSolutionRestTransport._UpdateProvisioningConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5475,19 +5606,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_update_provisioning_config(resp)
             return resp
 
-    class _UpdateVolume(BareMetalSolutionRestStub):
+    class _UpdateVolume(
+        _BaseBareMetalSolutionRestTransport._BaseUpdateVolume, BareMetalSolutionRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateVolume")
+            return hash("BareMetalSolutionRestTransport.UpdateVolume")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5516,45 +5662,32 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{volume.name=projects/*/locations/*/volumes/*}",
-                    "body": "volume",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_volume(request, metadata)
-            pb_request = gcb_volume.UpdateVolumeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_volume(request, metadata)
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BareMetalSolutionRestTransport._UpdateVolume._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5938,7 +6071,34 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(BareMetalSolutionRestStub):
+    class _GetLocation(
+        _BaseBareMetalSolutionRestTransport._BaseGetLocation, BareMetalSolutionRestStub
+    ):
+        def __hash__(self):
+            return hash("BareMetalSolutionRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -5962,32 +6122,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = BareMetalSolutionRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5995,8 +6150,9 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -6004,7 +6160,35 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(BareMetalSolutionRestStub):
+    class _ListLocations(
+        _BaseBareMetalSolutionRestTransport._BaseListLocations,
+        BareMetalSolutionRestStub,
+    ):
+        def __hash__(self):
+            return hash("BareMetalSolutionRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -6028,32 +6212,27 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseBareMetalSolutionRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = BareMetalSolutionRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6061,8 +6240,9 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 

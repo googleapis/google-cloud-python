@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -230,6 +231,9 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -806,7 +810,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_clusters: gapic_v1.method_async.wrap_method(
+            self.list_clusters: self._wrap_method(
                 self.list_clusters,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -820,7 +824,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_cluster: gapic_v1.method_async.wrap_method(
+            self.get_cluster: self._wrap_method(
                 self.get_cluster,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -834,27 +838,27 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_cluster: gapic_v1.method_async.wrap_method(
+            self.create_cluster: self._wrap_method(
                 self.create_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_cluster: gapic_v1.method_async.wrap_method(
+            self.update_cluster: self._wrap_method(
                 self.update_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.upgrade_cluster: gapic_v1.method_async.wrap_method(
+            self.upgrade_cluster: self._wrap_method(
                 self.upgrade_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_cluster: gapic_v1.method_async.wrap_method(
+            self.delete_cluster: self._wrap_method(
                 self.delete_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.generate_access_token: gapic_v1.method_async.wrap_method(
+            self.generate_access_token: self._wrap_method(
                 self.generate_access_token,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -868,7 +872,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.generate_offline_credential: gapic_v1.method_async.wrap_method(
+            self.generate_offline_credential: self._wrap_method(
                 self.generate_offline_credential,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -882,7 +886,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_node_pools: gapic_v1.method_async.wrap_method(
+            self.list_node_pools: self._wrap_method(
                 self.list_node_pools,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -896,7 +900,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_node_pool: gapic_v1.method_async.wrap_method(
+            self.get_node_pool: self._wrap_method(
                 self.get_node_pool,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -910,22 +914,22 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_node_pool: gapic_v1.method_async.wrap_method(
+            self.create_node_pool: self._wrap_method(
                 self.create_node_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_node_pool: gapic_v1.method_async.wrap_method(
+            self.update_node_pool: self._wrap_method(
                 self.update_node_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_node_pool: gapic_v1.method_async.wrap_method(
+            self.delete_node_pool: self._wrap_method(
                 self.delete_node_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_machines: gapic_v1.method_async.wrap_method(
+            self.list_machines: self._wrap_method(
                 self.list_machines,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -939,7 +943,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_machine: gapic_v1.method_async.wrap_method(
+            self.get_machine: self._wrap_method(
                 self.get_machine,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -953,7 +957,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_vpn_connections: gapic_v1.method_async.wrap_method(
+            self.list_vpn_connections: self._wrap_method(
                 self.list_vpn_connections,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -967,7 +971,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_vpn_connection: gapic_v1.method_async.wrap_method(
+            self.get_vpn_connection: self._wrap_method(
                 self.get_vpn_connection,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -981,17 +985,17 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_vpn_connection: gapic_v1.method_async.wrap_method(
+            self.create_vpn_connection: self._wrap_method(
                 self.create_vpn_connection,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_vpn_connection: gapic_v1.method_async.wrap_method(
+            self.delete_vpn_connection: self._wrap_method(
                 self.delete_vpn_connection,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_server_config: gapic_v1.method_async.wrap_method(
+            self.get_server_config: self._wrap_method(
                 self.get_server_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1005,10 +1009,49 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

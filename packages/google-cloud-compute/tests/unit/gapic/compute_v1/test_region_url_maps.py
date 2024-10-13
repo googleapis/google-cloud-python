@@ -22,25 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    path_template,
-)
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation  # type: ignore
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -50,6 +36,29 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation  # type: ignore
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+
 from google.cloud.compute_v1.services.region_url_maps import (
     RegionUrlMapsClient,
     pagers,
@@ -58,8 +67,22 @@ from google.cloud.compute_v1.services.region_url_maps import (
 from google.cloud.compute_v1.types import compute
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -954,88 +977,6 @@ def test_region_url_maps_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeleteRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_delete_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
-
-
 def test_delete_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1176,85 +1117,6 @@ def test_delete_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_delete"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeleteRegionUrlMapRequest.pb(
-            compute.DeleteRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeleteRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.delete(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete(request)
-
-
 def test_delete_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1318,72 +1180,6 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             url_map="url_map_value",
         )
-
-
-def test_delete_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeleteRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_delete_unary_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_delete_unary_rest_use_cached_wrapped_rpc():
@@ -1528,85 +1324,6 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_delete"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeleteRegionUrlMapRequest.pb(
-            compute.DeleteRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeleteRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.delete_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_unary(request)
-
-
 def test_delete_unary_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1670,68 +1387,6 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             url_map="url_map_value",
         )
-
-
-def test_delete_unary_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.GetRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_get_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.UrlMap(
-            creation_timestamp="creation_timestamp_value",
-            default_service="default_service_value",
-            description="description_value",
-            fingerprint="fingerprint_value",
-            id=205,
-            kind="kind_value",
-            name="name_value",
-            region="region_value",
-            self_link="self_link_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.UrlMap.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.UrlMap)
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.default_service == "default_service_value"
-    assert response.description == "description_value"
-    assert response.fingerprint == "fingerprint_value"
-    assert response.id == 205
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
 
 
 def test_get_rest_use_cached_wrapped_rpc():
@@ -1868,83 +1523,6 @@ def test_get_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_get"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.GetRegionUrlMapRequest.pb(compute.GetRegionUrlMapRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.UrlMap.to_json(compute.UrlMap())
-
-        request = compute.GetRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.UrlMap()
-
-        client.get(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_rest_bad_request(
-    transport: str = "rest", request_type=compute.GetRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get(request)
-
-
 def test_get_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2008,332 +1586,6 @@ def test_get_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             url_map="url_map_value",
         )
-
-
-def test_get_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.InsertRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_insert_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.InsertRegionUrlMapRequest.meta.fields["url_map_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["url_map_resource"][field])):
-                    del request_init["url_map_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.insert(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_insert_rest_use_cached_wrapped_rpc():
@@ -2473,85 +1725,6 @@ def test_insert_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_insert"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.InsertRegionUrlMapRequest.pb(
-            compute.InsertRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.InsertRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.insert(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_insert_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.insert(request)
-
-
 def test_insert_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2615,310 +1788,6 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
                 creation_timestamp="creation_timestamp_value"
             ),
         )
-
-
-def test_insert_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.InsertRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_insert_unary_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.InsertRegionUrlMapRequest.meta.fields["url_map_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["url_map_resource"][field])):
-                    del request_init["url_map_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.insert_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_insert_unary_rest_use_cached_wrapped_rpc():
@@ -3060,85 +1929,6 @@ def test_insert_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_insert"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.InsertRegionUrlMapRequest.pb(
-            compute.InsertRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.InsertRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.insert_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_insert_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.insert_unary(request)
-
-
 def test_insert_unary_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3202,58 +1992,6 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
                 creation_timestamp="creation_timestamp_value"
             ),
         )
-
-
-def test_insert_unary_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.ListRegionUrlMapsRequest,
-        dict,
-    ],
-)
-def test_list_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.UrlMapList(
-            id="id_value",
-            kind="kind_value",
-            next_page_token="next_page_token_value",
-            self_link="self_link_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.UrlMapList.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListPager)
-    assert response.id == "id_value"
-    assert response.kind == "kind_value"
-    assert response.next_page_token == "next_page_token_value"
-    assert response.self_link == "self_link_value"
 
 
 def test_list_rest_use_cached_wrapped_rpc():
@@ -3403,85 +2141,6 @@ def test_list_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_list"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.ListRegionUrlMapsRequest.pb(
-            compute.ListRegionUrlMapsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.UrlMapList.to_json(compute.UrlMapList())
-
-        request = compute.ListRegionUrlMapsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.UrlMapList()
-
-        client.list(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_rest_bad_request(
-    transport: str = "rest", request_type=compute.ListRegionUrlMapsRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list(request)
-
-
 def test_list_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3600,326 +2259,6 @@ def test_list_rest_pager(transport: str = "rest"):
         pages = list(client.list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.PatchRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_patch_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.PatchRegionUrlMapRequest.meta.fields["url_map_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["url_map_resource"][field])):
-                    del request_init["url_map_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.patch(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_patch_rest_use_cached_wrapped_rpc():
@@ -4064,85 +2403,6 @@ def test_patch_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_patch_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_patch"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.PatchRegionUrlMapRequest.pb(
-            compute.PatchRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.PatchRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.patch(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_patch_rest_bad_request(
-    transport: str = "rest", request_type=compute.PatchRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.patch(request)
-
-
 def test_patch_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4212,310 +2472,6 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
                 creation_timestamp="creation_timestamp_value"
             ),
         )
-
-
-def test_patch_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.PatchRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_patch_unary_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.PatchRegionUrlMapRequest.meta.fields["url_map_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["url_map_resource"][field])):
-                    del request_init["url_map_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.patch_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_patch_unary_rest_use_cached_wrapped_rpc():
@@ -4662,85 +2618,6 @@ def test_patch_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_patch_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_patch"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.PatchRegionUrlMapRequest.pb(
-            compute.PatchRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.PatchRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.patch_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_patch_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.PatchRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.patch_unary(request)
-
-
 def test_patch_unary_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4810,332 +2687,6 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
                 creation_timestamp="creation_timestamp_value"
             ),
         )
-
-
-def test_patch_unary_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.UpdateRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_update_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.UpdateRegionUrlMapRequest.meta.fields["url_map_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["url_map_resource"][field])):
-                    del request_init["url_map_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_update_rest_use_cached_wrapped_rpc():
@@ -5280,85 +2831,6 @@ def test_update_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_update"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_update"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.UpdateRegionUrlMapRequest.pb(
-            compute.UpdateRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.UpdateRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.update(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_rest_bad_request(
-    transport: str = "rest", request_type=compute.UpdateRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update(request)
-
-
 def test_update_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5428,310 +2900,6 @@ def test_update_rest_flattened_error(transport: str = "rest"):
                 creation_timestamp="creation_timestamp_value"
             ),
         )
-
-
-def test_update_rest_error():
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.UpdateRegionUrlMapRequest,
-        dict,
-    ],
-)
-def test_update_unary_rest(request_type):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request_init["url_map_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "default_route_action": {
-            "cors_policy": {
-                "allow_credentials": True,
-                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
-                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
-                "allow_origin_regexes": [
-                    "allow_origin_regexes_value1",
-                    "allow_origin_regexes_value2",
-                ],
-                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
-                "disabled": True,
-                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
-                "max_age": 722,
-            },
-            "fault_injection_policy": {
-                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
-                "delay": {
-                    "fixed_delay": {"nanos": 543, "seconds": 751},
-                    "percentage": 0.10540000000000001,
-                },
-            },
-            "max_stream_duration": {},
-            "request_mirror_policy": {"backend_service": "backend_service_value"},
-            "retry_policy": {
-                "num_retries": 1197,
-                "per_try_timeout": {},
-                "retry_conditions": [
-                    "retry_conditions_value1",
-                    "retry_conditions_value2",
-                ],
-            },
-            "timeout": {},
-            "url_rewrite": {
-                "host_rewrite": "host_rewrite_value",
-                "path_prefix_rewrite": "path_prefix_rewrite_value",
-                "path_template_rewrite": "path_template_rewrite_value",
-            },
-            "weighted_backend_services": [
-                {
-                    "backend_service": "backend_service_value",
-                    "header_action": {
-                        "request_headers_to_add": [
-                            {
-                                "header_name": "header_name_value",
-                                "header_value": "header_value_value",
-                                "replace": True,
-                            }
-                        ],
-                        "request_headers_to_remove": [
-                            "request_headers_to_remove_value1",
-                            "request_headers_to_remove_value2",
-                        ],
-                        "response_headers_to_add": {},
-                        "response_headers_to_remove": [
-                            "response_headers_to_remove_value1",
-                            "response_headers_to_remove_value2",
-                        ],
-                    },
-                    "weight": 648,
-                }
-            ],
-        },
-        "default_service": "default_service_value",
-        "default_url_redirect": {
-            "host_redirect": "host_redirect_value",
-            "https_redirect": True,
-            "path_redirect": "path_redirect_value",
-            "prefix_redirect": "prefix_redirect_value",
-            "redirect_response_code": "redirect_response_code_value",
-            "strip_query": True,
-        },
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "header_action": {},
-        "host_rules": [
-            {
-                "description": "description_value",
-                "hosts": ["hosts_value1", "hosts_value2"],
-                "path_matcher": "path_matcher_value",
-            }
-        ],
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "path_matchers": [
-            {
-                "default_route_action": {},
-                "default_service": "default_service_value",
-                "default_url_redirect": {},
-                "description": "description_value",
-                "header_action": {},
-                "name": "name_value",
-                "path_rules": [
-                    {
-                        "paths": ["paths_value1", "paths_value2"],
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-                "route_rules": [
-                    {
-                        "description": "description_value",
-                        "header_action": {},
-                        "match_rules": [
-                            {
-                                "full_path_match": "full_path_match_value",
-                                "header_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "header_name": "header_name_value",
-                                        "invert_match": True,
-                                        "prefix_match": "prefix_match_value",
-                                        "present_match": True,
-                                        "range_match": {
-                                            "range_end": 931,
-                                            "range_start": 1178,
-                                        },
-                                        "regex_match": "regex_match_value",
-                                        "suffix_match": "suffix_match_value",
-                                    }
-                                ],
-                                "ignore_case": True,
-                                "metadata_filters": [
-                                    {
-                                        "filter_labels": [
-                                            {
-                                                "name": "name_value",
-                                                "value": "value_value",
-                                            }
-                                        ],
-                                        "filter_match_criteria": "filter_match_criteria_value",
-                                    }
-                                ],
-                                "path_template_match": "path_template_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "query_parameter_matches": [
-                                    {
-                                        "exact_match": "exact_match_value",
-                                        "name": "name_value",
-                                        "present_match": True,
-                                        "regex_match": "regex_match_value",
-                                    }
-                                ],
-                                "regex_match": "regex_match_value",
-                            }
-                        ],
-                        "priority": 898,
-                        "route_action": {},
-                        "service": "service_value",
-                        "url_redirect": {},
-                    }
-                ],
-            }
-        ],
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "tests": [
-            {
-                "description": "description_value",
-                "expected_output_url": "expected_output_url_value",
-                "expected_redirect_response_code": 3275,
-                "headers": [{"name": "name_value", "value": "value_value"}],
-                "host": "host_value",
-                "path": "path_value",
-                "service": "service_value",
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.UpdateRegionUrlMapRequest.meta.fields["url_map_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["url_map_resource"][field])):
-                    del request_init["url_map_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_update_unary_rest_use_cached_wrapped_rpc():
@@ -5878,85 +3046,6 @@ def test_update_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionUrlMapsRestInterceptor(),
-    )
-    client = RegionUrlMapsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "post_update"
-    ) as post, mock.patch.object(
-        transports.RegionUrlMapsRestInterceptor, "pre_update"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.UpdateRegionUrlMapRequest.pb(
-            compute.UpdateRegionUrlMapRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.UpdateRegionUrlMapRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.update_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.UpdateRegionUrlMapRequest
-):
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_unary(request)
-
-
 def test_update_unary_rest_flattened():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6028,10 +3117,1921 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_update_unary_rest_error():
+def test_validate_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RegionUrlMapsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.validate in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.validate] = mock_rpc
+
+        request = {}
+        client.validate(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.validate(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_validate_rest_required_fields(
+    request_type=compute.ValidateRegionUrlMapRequest,
+):
+    transport_class = transports.RegionUrlMapsRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["url_map"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["urlMap"] = "url_map_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).validate._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "urlMap" in jsonified_request
+    assert jsonified_request["urlMap"] == "url_map_value"
+
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.UrlMapsValidateResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.UrlMapsValidateResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.validate(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_validate_rest_unset_required_fields():
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.validate._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "project",
+                "region",
+                "regionUrlMapsValidateRequestResource",
+                "urlMap",
+            )
+        )
+    )
+
+
+def test_validate_rest_flattened():
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.UrlMapsValidateResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "url_map": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            url_map="url_map_value",
+            region_url_maps_validate_request_resource=compute.RegionUrlMapsValidateRequest(
+                resource=compute.UrlMap(creation_timestamp="creation_timestamp_value")
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.UrlMapsValidateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.validate(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/urlMaps/{url_map}/validate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_validate_rest_flattened_error(transport: str = "rest"):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.validate(
+            compute.ValidateRegionUrlMapRequest(),
+            project="project_value",
+            region="region_value",
+            url_map="url_map_value",
+            region_url_maps_validate_request_resource=compute.RegionUrlMapsValidateRequest(
+                resource=compute.UrlMap(creation_timestamp="creation_timestamp_value")
+            ),
+        )
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RegionUrlMapsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RegionUrlMapsClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RegionUrlMapsClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RegionUrlMapsClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RegionUrlMapsClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = RegionUrlMapsClient(transport=transport)
+    assert client.transport is transport
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.RegionUrlMapsRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+def test_transport_kind_rest():
+    transport = RegionUrlMapsClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_delete_rest_bad_request(request_type=compute.DeleteRegionUrlMapRequest):
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteRegionUrlMapRequest,
+        dict,
+    ],
+)
+def test_delete_rest_call_success(request_type):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_rest_interceptors(null_interceptor):
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionUrlMapsRestInterceptor(),
+    )
+    client = RegionUrlMapsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.DeleteRegionUrlMapRequest.pb(
+            compute.DeleteRegionUrlMapRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.DeleteRegionUrlMapRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.delete(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_rest_bad_request(request_type=compute.GetRegionUrlMapRequest):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetRegionUrlMapRequest,
+        dict,
+    ],
+)
+def test_get_rest_call_success(request_type):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.UrlMap(
+            creation_timestamp="creation_timestamp_value",
+            default_service="default_service_value",
+            description="description_value",
+            fingerprint="fingerprint_value",
+            id=205,
+            kind="kind_value",
+            name="name_value",
+            region="region_value",
+            self_link="self_link_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.UrlMap.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.UrlMap)
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.default_service == "default_service_value"
+    assert response.description == "description_value"
+    assert response.fingerprint == "fingerprint_value"
+    assert response.id == 205
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionUrlMapsRestInterceptor(),
+    )
+    client = RegionUrlMapsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetRegionUrlMapRequest.pb(compute.GetRegionUrlMapRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.UrlMap.to_json(compute.UrlMap())
+        req.return_value.content = return_value
+
+        request = compute.GetRegionUrlMapRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.UrlMap()
+
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_insert_rest_bad_request(request_type=compute.InsertRegionUrlMapRequest):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.insert(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertRegionUrlMapRequest,
+        dict,
+    ],
+)
+def test_insert_rest_call_success(request_type):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request_init["url_map_resource"] = {
+        "creation_timestamp": "creation_timestamp_value",
+        "default_route_action": {
+            "cors_policy": {
+                "allow_credentials": True,
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
+                "allow_origin_regexes": [
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
+                ],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
+                "disabled": True,
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
+                "max_age": 722,
+            },
+            "fault_injection_policy": {
+                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
+                "delay": {
+                    "fixed_delay": {"nanos": 543, "seconds": 751},
+                    "percentage": 0.10540000000000001,
+                },
+            },
+            "max_stream_duration": {},
+            "request_mirror_policy": {"backend_service": "backend_service_value"},
+            "retry_policy": {
+                "num_retries": 1197,
+                "per_try_timeout": {},
+                "retry_conditions": [
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
+                ],
+            },
+            "timeout": {},
+            "url_rewrite": {
+                "host_rewrite": "host_rewrite_value",
+                "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
+            },
+            "weighted_backend_services": [
+                {
+                    "backend_service": "backend_service_value",
+                    "header_action": {
+                        "request_headers_to_add": [
+                            {
+                                "header_name": "header_name_value",
+                                "header_value": "header_value_value",
+                                "replace": True,
+                            }
+                        ],
+                        "request_headers_to_remove": [
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
+                        ],
+                        "response_headers_to_add": {},
+                        "response_headers_to_remove": [
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
+                        ],
+                    },
+                    "weight": 648,
+                }
+            ],
+        },
+        "default_service": "default_service_value",
+        "default_url_redirect": {
+            "host_redirect": "host_redirect_value",
+            "https_redirect": True,
+            "path_redirect": "path_redirect_value",
+            "prefix_redirect": "prefix_redirect_value",
+            "redirect_response_code": "redirect_response_code_value",
+            "strip_query": True,
+        },
+        "description": "description_value",
+        "fingerprint": "fingerprint_value",
+        "header_action": {},
+        "host_rules": [
+            {
+                "description": "description_value",
+                "hosts": ["hosts_value1", "hosts_value2"],
+                "path_matcher": "path_matcher_value",
+            }
+        ],
+        "id": 205,
+        "kind": "kind_value",
+        "name": "name_value",
+        "path_matchers": [
+            {
+                "default_route_action": {},
+                "default_service": "default_service_value",
+                "default_url_redirect": {},
+                "description": "description_value",
+                "header_action": {},
+                "name": "name_value",
+                "path_rules": [
+                    {
+                        "paths": ["paths_value1", "paths_value2"],
+                        "route_action": {},
+                        "service": "service_value",
+                        "url_redirect": {},
+                    }
+                ],
+                "route_rules": [
+                    {
+                        "description": "description_value",
+                        "header_action": {},
+                        "match_rules": [
+                            {
+                                "full_path_match": "full_path_match_value",
+                                "header_matches": [
+                                    {
+                                        "exact_match": "exact_match_value",
+                                        "header_name": "header_name_value",
+                                        "invert_match": True,
+                                        "prefix_match": "prefix_match_value",
+                                        "present_match": True,
+                                        "range_match": {
+                                            "range_end": 931,
+                                            "range_start": 1178,
+                                        },
+                                        "regex_match": "regex_match_value",
+                                        "suffix_match": "suffix_match_value",
+                                    }
+                                ],
+                                "ignore_case": True,
+                                "metadata_filters": [
+                                    {
+                                        "filter_labels": [
+                                            {
+                                                "name": "name_value",
+                                                "value": "value_value",
+                                            }
+                                        ],
+                                        "filter_match_criteria": "filter_match_criteria_value",
+                                    }
+                                ],
+                                "path_template_match": "path_template_match_value",
+                                "prefix_match": "prefix_match_value",
+                                "query_parameter_matches": [
+                                    {
+                                        "exact_match": "exact_match_value",
+                                        "name": "name_value",
+                                        "present_match": True,
+                                        "regex_match": "regex_match_value",
+                                    }
+                                ],
+                                "regex_match": "regex_match_value",
+                            }
+                        ],
+                        "priority": 898,
+                        "route_action": {},
+                        "service": "service_value",
+                        "url_redirect": {},
+                    }
+                ],
+            }
+        ],
+        "region": "region_value",
+        "self_link": "self_link_value",
+        "tests": [
+            {
+                "description": "description_value",
+                "expected_output_url": "expected_output_url_value",
+                "expected_redirect_response_code": 3275,
+                "headers": [{"name": "name_value", "value": "value_value"}],
+                "host": "host_value",
+                "path": "path_value",
+                "service": "service_value",
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.insert(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_rest_interceptors(null_interceptor):
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionUrlMapsRestInterceptor(),
+    )
+    client = RegionUrlMapsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.InsertRegionUrlMapRequest.pb(
+            compute.InsertRegionUrlMapRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.InsertRegionUrlMapRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.insert(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_rest_bad_request(request_type=compute.ListRegionUrlMapsRequest):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListRegionUrlMapsRequest,
+        dict,
+    ],
+)
+def test_list_rest_call_success(request_type):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.UrlMapList(
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
+            self_link="self_link_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.UrlMapList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPager)
+    assert response.id == "id_value"
+    assert response.kind == "kind_value"
+    assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionUrlMapsRestInterceptor(),
+    )
+    client = RegionUrlMapsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.ListRegionUrlMapsRequest.pb(
+            compute.ListRegionUrlMapsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.UrlMapList.to_json(compute.UrlMapList())
+        req.return_value.content = return_value
+
+        request = compute.ListRegionUrlMapsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.UrlMapList()
+
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_patch_rest_bad_request(request_type=compute.PatchRegionUrlMapRequest):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.patch(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchRegionUrlMapRequest,
+        dict,
+    ],
+)
+def test_patch_rest_call_success(request_type):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request_init["url_map_resource"] = {
+        "creation_timestamp": "creation_timestamp_value",
+        "default_route_action": {
+            "cors_policy": {
+                "allow_credentials": True,
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
+                "allow_origin_regexes": [
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
+                ],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
+                "disabled": True,
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
+                "max_age": 722,
+            },
+            "fault_injection_policy": {
+                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
+                "delay": {
+                    "fixed_delay": {"nanos": 543, "seconds": 751},
+                    "percentage": 0.10540000000000001,
+                },
+            },
+            "max_stream_duration": {},
+            "request_mirror_policy": {"backend_service": "backend_service_value"},
+            "retry_policy": {
+                "num_retries": 1197,
+                "per_try_timeout": {},
+                "retry_conditions": [
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
+                ],
+            },
+            "timeout": {},
+            "url_rewrite": {
+                "host_rewrite": "host_rewrite_value",
+                "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
+            },
+            "weighted_backend_services": [
+                {
+                    "backend_service": "backend_service_value",
+                    "header_action": {
+                        "request_headers_to_add": [
+                            {
+                                "header_name": "header_name_value",
+                                "header_value": "header_value_value",
+                                "replace": True,
+                            }
+                        ],
+                        "request_headers_to_remove": [
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
+                        ],
+                        "response_headers_to_add": {},
+                        "response_headers_to_remove": [
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
+                        ],
+                    },
+                    "weight": 648,
+                }
+            ],
+        },
+        "default_service": "default_service_value",
+        "default_url_redirect": {
+            "host_redirect": "host_redirect_value",
+            "https_redirect": True,
+            "path_redirect": "path_redirect_value",
+            "prefix_redirect": "prefix_redirect_value",
+            "redirect_response_code": "redirect_response_code_value",
+            "strip_query": True,
+        },
+        "description": "description_value",
+        "fingerprint": "fingerprint_value",
+        "header_action": {},
+        "host_rules": [
+            {
+                "description": "description_value",
+                "hosts": ["hosts_value1", "hosts_value2"],
+                "path_matcher": "path_matcher_value",
+            }
+        ],
+        "id": 205,
+        "kind": "kind_value",
+        "name": "name_value",
+        "path_matchers": [
+            {
+                "default_route_action": {},
+                "default_service": "default_service_value",
+                "default_url_redirect": {},
+                "description": "description_value",
+                "header_action": {},
+                "name": "name_value",
+                "path_rules": [
+                    {
+                        "paths": ["paths_value1", "paths_value2"],
+                        "route_action": {},
+                        "service": "service_value",
+                        "url_redirect": {},
+                    }
+                ],
+                "route_rules": [
+                    {
+                        "description": "description_value",
+                        "header_action": {},
+                        "match_rules": [
+                            {
+                                "full_path_match": "full_path_match_value",
+                                "header_matches": [
+                                    {
+                                        "exact_match": "exact_match_value",
+                                        "header_name": "header_name_value",
+                                        "invert_match": True,
+                                        "prefix_match": "prefix_match_value",
+                                        "present_match": True,
+                                        "range_match": {
+                                            "range_end": 931,
+                                            "range_start": 1178,
+                                        },
+                                        "regex_match": "regex_match_value",
+                                        "suffix_match": "suffix_match_value",
+                                    }
+                                ],
+                                "ignore_case": True,
+                                "metadata_filters": [
+                                    {
+                                        "filter_labels": [
+                                            {
+                                                "name": "name_value",
+                                                "value": "value_value",
+                                            }
+                                        ],
+                                        "filter_match_criteria": "filter_match_criteria_value",
+                                    }
+                                ],
+                                "path_template_match": "path_template_match_value",
+                                "prefix_match": "prefix_match_value",
+                                "query_parameter_matches": [
+                                    {
+                                        "exact_match": "exact_match_value",
+                                        "name": "name_value",
+                                        "present_match": True,
+                                        "regex_match": "regex_match_value",
+                                    }
+                                ],
+                                "regex_match": "regex_match_value",
+                            }
+                        ],
+                        "priority": 898,
+                        "route_action": {},
+                        "service": "service_value",
+                        "url_redirect": {},
+                    }
+                ],
+            }
+        ],
+        "region": "region_value",
+        "self_link": "self_link_value",
+        "tests": [
+            {
+                "description": "description_value",
+                "expected_output_url": "expected_output_url_value",
+                "expected_redirect_response_code": 3275,
+                "headers": [{"name": "name_value", "value": "value_value"}],
+                "host": "host_value",
+                "path": "path_value",
+                "service": "service_value",
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.PatchRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.patch(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_rest_interceptors(null_interceptor):
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionUrlMapsRestInterceptor(),
+    )
+    client = RegionUrlMapsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "post_patch"
+    ) as post, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "pre_patch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.PatchRegionUrlMapRequest.pb(
+            compute.PatchRegionUrlMapRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.PatchRegionUrlMapRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.patch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_rest_bad_request(request_type=compute.UpdateRegionUrlMapRequest):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.UpdateRegionUrlMapRequest,
+        dict,
+    ],
+)
+def test_update_rest_call_success(request_type):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request_init["url_map_resource"] = {
+        "creation_timestamp": "creation_timestamp_value",
+        "default_route_action": {
+            "cors_policy": {
+                "allow_credentials": True,
+                "allow_headers": ["allow_headers_value1", "allow_headers_value2"],
+                "allow_methods": ["allow_methods_value1", "allow_methods_value2"],
+                "allow_origin_regexes": [
+                    "allow_origin_regexes_value1",
+                    "allow_origin_regexes_value2",
+                ],
+                "allow_origins": ["allow_origins_value1", "allow_origins_value2"],
+                "disabled": True,
+                "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
+                "max_age": 722,
+            },
+            "fault_injection_policy": {
+                "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
+                "delay": {
+                    "fixed_delay": {"nanos": 543, "seconds": 751},
+                    "percentage": 0.10540000000000001,
+                },
+            },
+            "max_stream_duration": {},
+            "request_mirror_policy": {"backend_service": "backend_service_value"},
+            "retry_policy": {
+                "num_retries": 1197,
+                "per_try_timeout": {},
+                "retry_conditions": [
+                    "retry_conditions_value1",
+                    "retry_conditions_value2",
+                ],
+            },
+            "timeout": {},
+            "url_rewrite": {
+                "host_rewrite": "host_rewrite_value",
+                "path_prefix_rewrite": "path_prefix_rewrite_value",
+                "path_template_rewrite": "path_template_rewrite_value",
+            },
+            "weighted_backend_services": [
+                {
+                    "backend_service": "backend_service_value",
+                    "header_action": {
+                        "request_headers_to_add": [
+                            {
+                                "header_name": "header_name_value",
+                                "header_value": "header_value_value",
+                                "replace": True,
+                            }
+                        ],
+                        "request_headers_to_remove": [
+                            "request_headers_to_remove_value1",
+                            "request_headers_to_remove_value2",
+                        ],
+                        "response_headers_to_add": {},
+                        "response_headers_to_remove": [
+                            "response_headers_to_remove_value1",
+                            "response_headers_to_remove_value2",
+                        ],
+                    },
+                    "weight": 648,
+                }
+            ],
+        },
+        "default_service": "default_service_value",
+        "default_url_redirect": {
+            "host_redirect": "host_redirect_value",
+            "https_redirect": True,
+            "path_redirect": "path_redirect_value",
+            "prefix_redirect": "prefix_redirect_value",
+            "redirect_response_code": "redirect_response_code_value",
+            "strip_query": True,
+        },
+        "description": "description_value",
+        "fingerprint": "fingerprint_value",
+        "header_action": {},
+        "host_rules": [
+            {
+                "description": "description_value",
+                "hosts": ["hosts_value1", "hosts_value2"],
+                "path_matcher": "path_matcher_value",
+            }
+        ],
+        "id": 205,
+        "kind": "kind_value",
+        "name": "name_value",
+        "path_matchers": [
+            {
+                "default_route_action": {},
+                "default_service": "default_service_value",
+                "default_url_redirect": {},
+                "description": "description_value",
+                "header_action": {},
+                "name": "name_value",
+                "path_rules": [
+                    {
+                        "paths": ["paths_value1", "paths_value2"],
+                        "route_action": {},
+                        "service": "service_value",
+                        "url_redirect": {},
+                    }
+                ],
+                "route_rules": [
+                    {
+                        "description": "description_value",
+                        "header_action": {},
+                        "match_rules": [
+                            {
+                                "full_path_match": "full_path_match_value",
+                                "header_matches": [
+                                    {
+                                        "exact_match": "exact_match_value",
+                                        "header_name": "header_name_value",
+                                        "invert_match": True,
+                                        "prefix_match": "prefix_match_value",
+                                        "present_match": True,
+                                        "range_match": {
+                                            "range_end": 931,
+                                            "range_start": 1178,
+                                        },
+                                        "regex_match": "regex_match_value",
+                                        "suffix_match": "suffix_match_value",
+                                    }
+                                ],
+                                "ignore_case": True,
+                                "metadata_filters": [
+                                    {
+                                        "filter_labels": [
+                                            {
+                                                "name": "name_value",
+                                                "value": "value_value",
+                                            }
+                                        ],
+                                        "filter_match_criteria": "filter_match_criteria_value",
+                                    }
+                                ],
+                                "path_template_match": "path_template_match_value",
+                                "prefix_match": "prefix_match_value",
+                                "query_parameter_matches": [
+                                    {
+                                        "exact_match": "exact_match_value",
+                                        "name": "name_value",
+                                        "present_match": True,
+                                        "regex_match": "regex_match_value",
+                                    }
+                                ],
+                                "regex_match": "regex_match_value",
+                            }
+                        ],
+                        "priority": 898,
+                        "route_action": {},
+                        "service": "service_value",
+                        "url_redirect": {},
+                    }
+                ],
+            }
+        ],
+        "region": "region_value",
+        "self_link": "self_link_value",
+        "tests": [
+            {
+                "description": "description_value",
+                "expected_output_url": "expected_output_url_value",
+                "expected_redirect_response_code": 3275,
+                "headers": [{"name": "name_value", "value": "value_value"}],
+                "host": "host_value",
+                "path": "path_value",
+                "service": "service_value",
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.UpdateRegionUrlMapRequest.meta.fields["url_map_resource"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["url_map_resource"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["url_map_resource"][field])):
+                    del request_init["url_map_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_rest_interceptors(null_interceptor):
+    transport = transports.RegionUrlMapsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionUrlMapsRestInterceptor(),
+    )
+    client = RegionUrlMapsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "post_update"
+    ) as post, mock.patch.object(
+        transports.RegionUrlMapsRestInterceptor, "pre_update"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.UpdateRegionUrlMapRequest.pb(
+            compute.UpdateRegionUrlMapRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.UpdateRegionUrlMapRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.update(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_validate_rest_bad_request(request_type=compute.ValidateRegionUrlMapRequest):
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.validate(request)
 
 
 @pytest.mark.parametrize(
@@ -6041,10 +5041,9 @@ def test_update_unary_rest_error():
         dict,
     ],
 )
-def test_validate_rest(request_type):
+def test_validate_rest_call_success(request_type):
     client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -6313,156 +5312,18 @@ def test_validate_rest(request_type):
         return_value = compute.UrlMapsValidateResponse()
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = compute.UrlMapsValidateResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.validate(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.UrlMapsValidateResponse)
-
-
-def test_validate_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = RegionUrlMapsClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.validate in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.validate] = mock_rpc
-
-        request = {}
-        client.validate(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.validate(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_validate_rest_required_fields(
-    request_type=compute.ValidateRegionUrlMapRequest,
-):
-    transport_class = transports.RegionUrlMapsRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request_init["region"] = ""
-    request_init["url_map"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).validate._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-    jsonified_request["region"] = "region_value"
-    jsonified_request["urlMap"] = "url_map_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).validate._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-    assert "region" in jsonified_request
-    assert jsonified_request["region"] == "region_value"
-    assert "urlMap" in jsonified_request
-    assert jsonified_request["urlMap"] == "url_map_value"
-
-    client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.UrlMapsValidateResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.UrlMapsValidateResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.validate(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_validate_rest_unset_required_fields():
-    transport = transports.RegionUrlMapsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.validate._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "project",
-                "region",
-                "regionUrlMapsValidateRequestResource",
-                "urlMap",
-            )
-        )
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6474,6 +5335,7 @@ def test_validate_rest_interceptors(null_interceptor):
         else transports.RegionUrlMapsRestInterceptor(),
     )
     client = RegionUrlMapsClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -6495,12 +5357,12 @@ def test_validate_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.UrlMapsValidateResponse.to_json(
+        return_value = compute.UrlMapsValidateResponse.to_json(
             compute.UrlMapsValidateResponse()
         )
+        req.return_value.content = return_value
 
         request = compute.ValidateRegionUrlMapRequest()
         metadata = [
@@ -6522,193 +5384,151 @@ def test_validate_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_validate_rest_bad_request(
-    transport: str = "rest", request_type=compute.ValidateRegionUrlMapRequest
-):
+def test_initialize_client_w_rest():
     client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.validate(request)
+    assert client is not None
 
 
-def test_validate_rest_flattened():
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_unary_empty_call_rest():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.UrlMapsValidateResponse()
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete), "__call__") as call:
+        client.delete_unary(request=None)
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "project": "sample1",
-            "region": "sample2",
-            "url_map": "sample3",
-        }
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.DeleteRegionUrlMapRequest()
 
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            region="region_value",
-            url_map="url_map_value",
-            region_url_maps_validate_request_resource=compute.RegionUrlMapsValidateRequest(
-                resource=compute.UrlMap(creation_timestamp="creation_timestamp_value")
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.UrlMapsValidateResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.validate(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/regions/{region}/urlMaps/{url_map}/validate"
-            % client.transport._host,
-            args[1],
-        )
+        assert args[0] == request_msg
 
 
-def test_validate_rest_flattened_error(transport: str = "rest"):
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_empty_call_rest():
     client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
 
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.validate(
-            compute.ValidateRegionUrlMapRequest(),
-            project="project_value",
-            region="region_value",
-            url_map="url_map_value",
-            region_url_maps_validate_request_resource=compute.RegionUrlMapsValidateRequest(
-                resource=compute.UrlMap(creation_timestamp="creation_timestamp_value")
-            ),
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get), "__call__") as call:
+        client.get(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetRegionUrlMapRequest()
+
+        assert args[0] == request_msg
 
 
-def test_validate_rest_error():
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_insert_unary_empty_call_rest():
     client = RegionUrlMapsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-def test_credentials_transport_error():
-    # It is an error to provide credentials and a transport instance.
-    transport = transports.RegionUrlMapsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = RegionUrlMapsClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
 
-    # It is an error to provide a credentials file and a transport instance.
-    transport = transports.RegionUrlMapsRestTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        client.insert_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.InsertRegionUrlMapRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_empty_call_rest():
+    client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = RegionUrlMapsClient(
-            client_options={"credentials_file": "credentials.json"},
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a transport instance.
-    transport = transports.RegionUrlMapsRestTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list), "__call__") as call:
+        client.list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.ListRegionUrlMapsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_patch_unary_empty_call_rest():
+    client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = RegionUrlMapsClient(
-            client_options=options,
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a credential.
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = RegionUrlMapsClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.patch), "__call__") as call:
+        client.patch_unary(request=None)
 
-    # It is an error to provide scopes and a transport instance.
-    transport = transports.RegionUrlMapsRestTransport(
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.PatchRegionUrlMapRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_unary_empty_call_rest():
+    client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = RegionUrlMapsClient(
-            client_options={"scopes": ["1", "2"]},
-            transport=transport,
-        )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update), "__call__") as call:
+        client.update_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.UpdateRegionUrlMapRequest()
+
+        assert args[0] == request_msg
 
 
-def test_transport_instance():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.RegionUrlMapsRestTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_validate_empty_call_rest():
+    client = RegionUrlMapsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    client = RegionUrlMapsClient(transport=transport)
-    assert client.transport is transport
 
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.validate), "__call__") as call:
+        client.validate(request=None)
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.RegionUrlMapsRestTransport,
-    ],
-)
-def test_transport_adc(transport_class):
-    # Test default credentials are used if not provided.
-    with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class()
-        adc.assert_called_once()
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.ValidateRegionUrlMapRequest()
 
-
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "rest",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = RegionUrlMapsClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    assert transport.kind == transport_name
+        assert args[0] == request_msg
 
 
 def test_region_url_maps_base_transport_error():
@@ -7026,21 +5846,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = RegionUrlMapsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = RegionUrlMapsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

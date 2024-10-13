@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -233,6 +234,9 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1547,7 +1551,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_delivery_pipelines: gapic_v1.method_async.wrap_method(
+            self.list_delivery_pipelines: self._wrap_method(
                 self.list_delivery_pipelines,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1561,7 +1565,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_delivery_pipeline: gapic_v1.method_async.wrap_method(
+            self.get_delivery_pipeline: self._wrap_method(
                 self.get_delivery_pipeline,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1575,22 +1579,22 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_delivery_pipeline: gapic_v1.method_async.wrap_method(
+            self.create_delivery_pipeline: self._wrap_method(
                 self.create_delivery_pipeline,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_delivery_pipeline: gapic_v1.method_async.wrap_method(
+            self.update_delivery_pipeline: self._wrap_method(
                 self.update_delivery_pipeline,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_delivery_pipeline: gapic_v1.method_async.wrap_method(
+            self.delete_delivery_pipeline: self._wrap_method(
                 self.delete_delivery_pipeline,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_targets: gapic_v1.method_async.wrap_method(
+            self.list_targets: self._wrap_method(
                 self.list_targets,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1604,12 +1608,12 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.rollback_target: gapic_v1.method_async.wrap_method(
+            self.rollback_target: self._wrap_method(
                 self.rollback_target,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_target: gapic_v1.method_async.wrap_method(
+            self.get_target: self._wrap_method(
                 self.get_target,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1623,22 +1627,22 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_target: gapic_v1.method_async.wrap_method(
+            self.create_target: self._wrap_method(
                 self.create_target,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_target: gapic_v1.method_async.wrap_method(
+            self.update_target: self._wrap_method(
                 self.update_target,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_target: gapic_v1.method_async.wrap_method(
+            self.delete_target: self._wrap_method(
                 self.delete_target,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_custom_target_types: gapic_v1.method_async.wrap_method(
+            self.list_custom_target_types: self._wrap_method(
                 self.list_custom_target_types,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1652,7 +1656,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_custom_target_type: gapic_v1.method_async.wrap_method(
+            self.get_custom_target_type: self._wrap_method(
                 self.get_custom_target_type,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1666,22 +1670,22 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_custom_target_type: gapic_v1.method_async.wrap_method(
+            self.create_custom_target_type: self._wrap_method(
                 self.create_custom_target_type,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_custom_target_type: gapic_v1.method_async.wrap_method(
+            self.update_custom_target_type: self._wrap_method(
                 self.update_custom_target_type,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_custom_target_type: gapic_v1.method_async.wrap_method(
+            self.delete_custom_target_type: self._wrap_method(
                 self.delete_custom_target_type,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_releases: gapic_v1.method_async.wrap_method(
+            self.list_releases: self._wrap_method(
                 self.list_releases,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1695,7 +1699,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_release: gapic_v1.method_async.wrap_method(
+            self.get_release: self._wrap_method(
                 self.get_release,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1709,32 +1713,32 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_release: gapic_v1.method_async.wrap_method(
+            self.create_release: self._wrap_method(
                 self.create_release,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.abandon_release: gapic_v1.method_async.wrap_method(
+            self.abandon_release: self._wrap_method(
                 self.abandon_release,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_deploy_policy: gapic_v1.method_async.wrap_method(
+            self.create_deploy_policy: self._wrap_method(
                 self.create_deploy_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_deploy_policy: gapic_v1.method_async.wrap_method(
+            self.update_deploy_policy: self._wrap_method(
                 self.update_deploy_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_deploy_policy: gapic_v1.method_async.wrap_method(
+            self.delete_deploy_policy: self._wrap_method(
                 self.delete_deploy_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_deploy_policies: gapic_v1.method_async.wrap_method(
+            self.list_deploy_policies: self._wrap_method(
                 self.list_deploy_policies,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1748,7 +1752,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_deploy_policy: gapic_v1.method_async.wrap_method(
+            self.get_deploy_policy: self._wrap_method(
                 self.get_deploy_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1762,22 +1766,22 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.approve_rollout: gapic_v1.method_async.wrap_method(
+            self.approve_rollout: self._wrap_method(
                 self.approve_rollout,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.advance_rollout: gapic_v1.method_async.wrap_method(
+            self.advance_rollout: self._wrap_method(
                 self.advance_rollout,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.cancel_rollout: gapic_v1.method_async.wrap_method(
+            self.cancel_rollout: self._wrap_method(
                 self.cancel_rollout,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_rollouts: gapic_v1.method_async.wrap_method(
+            self.list_rollouts: self._wrap_method(
                 self.list_rollouts,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1791,7 +1795,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_rollout: gapic_v1.method_async.wrap_method(
+            self.get_rollout: self._wrap_method(
                 self.get_rollout,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1805,22 +1809,22 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_rollout: gapic_v1.method_async.wrap_method(
+            self.create_rollout: self._wrap_method(
                 self.create_rollout,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.ignore_job: gapic_v1.method_async.wrap_method(
+            self.ignore_job: self._wrap_method(
                 self.ignore_job,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.retry_job: gapic_v1.method_async.wrap_method(
+            self.retry_job: self._wrap_method(
                 self.retry_job,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_job_runs: gapic_v1.method_async.wrap_method(
+            self.list_job_runs: self._wrap_method(
                 self.list_job_runs,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1834,7 +1838,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_job_run: gapic_v1.method_async.wrap_method(
+            self.get_job_run: self._wrap_method(
                 self.get_job_run,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1848,12 +1852,12 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.terminate_job_run: gapic_v1.method_async.wrap_method(
+            self.terminate_job_run: self._wrap_method(
                 self.terminate_job_run,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_config: gapic_v1.method_async.wrap_method(
+            self.get_config: self._wrap_method(
                 self.get_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1867,22 +1871,22 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_automation: gapic_v1.method_async.wrap_method(
+            self.create_automation: self._wrap_method(
                 self.create_automation,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_automation: gapic_v1.method_async.wrap_method(
+            self.update_automation: self._wrap_method(
                 self.update_automation,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_automation: gapic_v1.method_async.wrap_method(
+            self.delete_automation: self._wrap_method(
                 self.delete_automation,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_automation: gapic_v1.method_async.wrap_method(
+            self.get_automation: self._wrap_method(
                 self.get_automation,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1896,7 +1900,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_automations: gapic_v1.method_async.wrap_method(
+            self.list_automations: self._wrap_method(
                 self.list_automations,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1910,7 +1914,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_automation_run: gapic_v1.method_async.wrap_method(
+            self.get_automation_run: self._wrap_method(
                 self.get_automation_run,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1924,7 +1928,7 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_automation_runs: gapic_v1.method_async.wrap_method(
+            self.list_automation_runs: self._wrap_method(
                 self.list_automation_runs,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1938,15 +1942,69 @@ class CloudDeployGrpcAsyncIOTransport(CloudDeployTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.cancel_automation_run: gapic_v1.method_async.wrap_method(
+            self.cancel_automation_run: self._wrap_method(
                 self.cancel_automation_run,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

@@ -96,6 +96,7 @@ replacements:
       packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/transports/base.py,
       packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/transports/grpc_asyncio.py,
       packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/transports/grpc.py,
+      packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/transports/rest_base.py,
       packages/google-cloud-os-login/google/cloud/oslogin_v1/services/os_login_service/transports/rest.py,
       packages/google-cloud-os-login/google/cloud/oslogin_v1/types/oslogin.py,
       packages/google-cloud-os-login/tests/unit/gapic/oslogin_v1/test_os_login_service.py,
@@ -104,7 +105,7 @@ replacements:
       from google.cloud.oslogin.common.types import common
     after: |
       from google.cloud.oslogin_v1.common.types import common
-    count: 8
+    count: 9
   - paths: [
       packages/google-cloud-os-login/docs/index.rst,
     ]
