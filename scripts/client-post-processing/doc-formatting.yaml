@@ -474,3 +474,25 @@ replacements:
                   issue. Make sure shipping setting data
                   didn't change between get call and insert call.
     count: 1
+  - paths: [
+      packages/google-shopping-merchant-reports/google/shopping/merchant_reports_v1beta/types/reports.py
+    ]
+    before: |
+      Here's an example of how the aggregated status is computed:\n
+      \        Free listings \\\| Shopping ads \\\| Status
+      \        --------------\|--------------\|------------------------------
+      \        Approved \\\| Approved \\\| ELIGIBLE Approved \\\| Pending \\\| ELIGIBLE
+      \        Approved \\\| Disapproved \\\| ELIGIBLE_LIMITED Pending \\\| Pending \\\|
+      \        PENDING Disapproved \\\| Disapproved \\\| NOT_ELIGIBLE_OR_DISAPPROVED\n
+      \        Values:
+    after: |
+      Here's an example of how the aggregated status is computed:\n
+              ```
+              Free listings \| Shopping ads \| Status
+              --------------|--------------|------------------------------
+              Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
+              Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
+              PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
+              ```\n
+              Values:
+    count: 1
