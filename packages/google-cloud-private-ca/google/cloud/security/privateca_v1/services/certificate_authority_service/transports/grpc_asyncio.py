@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -235,6 +236,9 @@ class CertificateAuthorityServiceGrpcAsyncIOTransport(
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1140,155 +1144,209 @@ class CertificateAuthorityServiceGrpcAsyncIOTransport(
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_certificate: gapic_v1.method_async.wrap_method(
+            self.create_certificate: self._wrap_method(
                 self.create_certificate,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_certificate: gapic_v1.method_async.wrap_method(
+            self.get_certificate: self._wrap_method(
                 self.get_certificate,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_certificates: gapic_v1.method_async.wrap_method(
+            self.list_certificates: self._wrap_method(
                 self.list_certificates,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.revoke_certificate: gapic_v1.method_async.wrap_method(
+            self.revoke_certificate: self._wrap_method(
                 self.revoke_certificate,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_certificate: gapic_v1.method_async.wrap_method(
+            self.update_certificate: self._wrap_method(
                 self.update_certificate,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.activate_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.activate_certificate_authority: self._wrap_method(
                 self.activate_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.create_certificate_authority: self._wrap_method(
                 self.create_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.disable_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.disable_certificate_authority: self._wrap_method(
                 self.disable_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.enable_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.enable_certificate_authority: self._wrap_method(
                 self.enable_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_certificate_authority_csr: gapic_v1.method_async.wrap_method(
+            self.fetch_certificate_authority_csr: self._wrap_method(
                 self.fetch_certificate_authority_csr,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.get_certificate_authority: self._wrap_method(
                 self.get_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_certificate_authorities: gapic_v1.method_async.wrap_method(
+            self.list_certificate_authorities: self._wrap_method(
                 self.list_certificate_authorities,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.undelete_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.undelete_certificate_authority: self._wrap_method(
                 self.undelete_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.delete_certificate_authority: self._wrap_method(
                 self.delete_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_certificate_authority: gapic_v1.method_async.wrap_method(
+            self.update_certificate_authority: self._wrap_method(
                 self.update_certificate_authority,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_ca_pool: gapic_v1.method_async.wrap_method(
+            self.create_ca_pool: self._wrap_method(
                 self.create_ca_pool,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_ca_pool: gapic_v1.method_async.wrap_method(
+            self.update_ca_pool: self._wrap_method(
                 self.update_ca_pool,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_ca_pool: gapic_v1.method_async.wrap_method(
+            self.get_ca_pool: self._wrap_method(
                 self.get_ca_pool,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_ca_pools: gapic_v1.method_async.wrap_method(
+            self.list_ca_pools: self._wrap_method(
                 self.list_ca_pools,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_ca_pool: gapic_v1.method_async.wrap_method(
+            self.delete_ca_pool: self._wrap_method(
                 self.delete_ca_pool,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_ca_certs: gapic_v1.method_async.wrap_method(
+            self.fetch_ca_certs: self._wrap_method(
                 self.fetch_ca_certs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_certificate_revocation_list: gapic_v1.method_async.wrap_method(
+            self.get_certificate_revocation_list: self._wrap_method(
                 self.get_certificate_revocation_list,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_certificate_revocation_lists: gapic_v1.method_async.wrap_method(
+            self.list_certificate_revocation_lists: self._wrap_method(
                 self.list_certificate_revocation_lists,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_certificate_revocation_list: gapic_v1.method_async.wrap_method(
+            self.update_certificate_revocation_list: self._wrap_method(
                 self.update_certificate_revocation_list,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_certificate_template: gapic_v1.method_async.wrap_method(
+            self.create_certificate_template: self._wrap_method(
                 self.create_certificate_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_certificate_template: gapic_v1.method_async.wrap_method(
+            self.delete_certificate_template: self._wrap_method(
                 self.delete_certificate_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_certificate_template: gapic_v1.method_async.wrap_method(
+            self.get_certificate_template: self._wrap_method(
                 self.get_certificate_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_certificate_templates: gapic_v1.method_async.wrap_method(
+            self.list_certificate_templates: self._wrap_method(
                 self.list_certificate_templates,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_certificate_template: gapic_v1.method_async.wrap_method(
+            self.update_certificate_template: self._wrap_method(
                 self.update_certificate_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
