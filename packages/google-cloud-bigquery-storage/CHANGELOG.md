@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.27.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.26.0...v2.27.0) (2024-10-14)
+
+
+### Features
+
+* Add experimental ArrowData type and arrow_data field within AppendRowsRequest ([#837](https://github.com/googleapis/python-bigquery-storage/issues/837)) ([03a99ff](https://github.com/googleapis/python-bigquery-storage/commit/03a99ff89af37ff6254f94ad083820f176c47064))
+
+
+### Bug Fixes
+
+* Increase method timeout to 240s for BigQuery Metastore Partition Service API version v1alpha ([#830](https://github.com/googleapis/python-bigquery-storage/issues/830)) ([826a23f](https://github.com/googleapis/python-bigquery-storage/commit/826a23f653033c910f612b80803d20f155b906ff))
+
 ## [2.26.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.25.0...v2.26.0) (2024-09-04)
 
 
