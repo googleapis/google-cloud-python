@@ -4,6 +4,7 @@
 
 import google.api_core.exceptions
 import google.cloud.bigquery
+import pandas as pd
 from pandas import DataFrame
 import pytest
 
@@ -158,3 +159,27 @@ def test_to_gbq_with_if_exists_unknown():
             project_id="myproj",
             if_exists="unknown",
         )
+
+
+@pytest.mark.parametrize(
+    "user_agent,rfc9110_delimiter,expected",
+    [
+        (
+            "test_user_agent/2.0.42",
+            False,
+            f"test_user_agent/2.0.42 pandas-{pd.__version__}",
+        ),
+        (None, False, f"pandas-{pd.__version__}"),
+        (
+            "test_user_agent/2.0.42",
+            True,
+            f"test_user_agent/2.0.42 pandas/{pd.__version__}",
+        ),
+        (None, True, f"pandas/{pd.__version__}"),
+    ],
+)
+def test_create_user_agent(user_agent, rfc9110_delimiter, expected):
+    from pandas_gbq.gbq import create_user_agent
+
+    result = create_user_agent(user_agent, rfc9110_delimiter)
+    assert result == expected

@@ -267,6 +267,8 @@ class GbqConnector(object):
         auth_redirect_uri=None,
         client_id=None,
         client_secret=None,
+        user_agent=None,
+        rfc9110_delimiter=False,
     ):
         global context
         from google.api_core.exceptions import ClientError, GoogleAPIError
@@ -284,6 +286,8 @@ class GbqConnector(object):
         self.auth_redirect_uri = auth_redirect_uri
         self.client_id = client_id
         self.client_secret = client_secret
+        self.user_agent = user_agent
+        self.rfc9110_delimiter = rfc9110_delimiter
 
         default_project = None
 
@@ -337,11 +341,15 @@ class GbqConnector(object):
 
     def get_client(self):
         import google.api_core.client_info
-        import pandas
 
         bigquery = FEATURES.bigquery_try_import()
+
+        user_agent = create_user_agent(
+            user_agent=self.user_agent, rfc9110_delimiter=self.rfc9110_delimiter
+        )
+
         client_info = google.api_core.client_info.ClientInfo(
-            user_agent="pandas-{}".format(pandas.__version__)
+            user_agent=user_agent,
         )
         return bigquery.Client(
             project=self.project_id,
@@ -961,6 +969,8 @@ def to_gbq(
     auth_redirect_uri=None,
     client_id=None,
     client_secret=None,
+    user_agent=None,
+    rfc9110_delimiter=False,
 ):
     """Write a DataFrame to a Google BigQuery table.
 
@@ -1072,6 +1082,13 @@ def to_gbq(
     client_secret : str
         The Client Secret associated with the Client ID for the Google Cloud Project
         the user is attempting to connect to.
+    user_agent : str
+        Custom user agent string used as a prefix to the pandas version.
+    rfc9110_delimiter : bool
+        Sets user agent delimiter to a hyphen or a slash.
+        Default is False, meaning a hyphen will be used.
+
+        .. versionadded:: 0.23.3
     """
 
     _test_google_api_imports()
@@ -1130,6 +1147,8 @@ def to_gbq(
         auth_redirect_uri=auth_redirect_uri,
         client_id=client_id,
         client_secret=client_secret,
+        user_agent=user_agent,
+        rfc9110_delimiter=rfc9110_delimiter,
     )
     bqclient = connector.client
 
@@ -1409,3 +1428,59 @@ class _Dataset(GbqConnector):
             self.client.create_dataset(dataset)
         except self.http_error as ex:
             self.process_http_error(ex)
+
+
+def create_user_agent(
+    user_agent: Optional[str] = None, rfc9110_delimiter: bool = False
+) -> str:
+    """Creates a user agent string.
+
+    The legacy format of our the user agent string was: `product-x.y.z` (where x,
+    y, and z are the major, minor, and micro version numbers).
+
+    Users are able to prepend this string with their own user agent identifier
+    to render something similar to `<my_user_agent> pandas-x.y.z`.
+
+    The legacy format used a hyphen to separate the product from the product
+    version which differs slightly from the format recommended by RFC9110, which is:
+    `product/x.y.z`. To produce a user agent more in line with the RFC, set
+    rfc9110_delimiter to True. This setting does not depend on whether a
+    user_agent is also supplied.
+
+    Reference:
+        https://www.rfc-editor.org/info/rfc9110
+
+    Args:
+        user_agent (Optional[str]): User agent string.
+
+        rfc9110_delimiter (Optional[bool]): Sets delimiter to a hyphen or a slash.
+        Default is False, meaning a hyphen will be used.
+
+    Returns (str):
+        Customized user agent string.
+
+    Deprecation Warning:
+        In a future major release, the default delimiter will be changed to
+        a `/` in accordance with RFC9110.
+    """
+    import pandas as pd
+
+    if rfc9110_delimiter:
+        delimiter = "/"
+    else:
+        warnings.warn(
+            "In a future major release, the default delimiter will be "
+            "changed to a `/` in accordance with RFC9110.",
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+        delimiter = "-"
+
+    identity = f"pandas{delimiter}{pd.__version__}"
+
+    if user_agent is None:
+        user_agent = identity
+    else:
+        user_agent = f"{user_agent} {identity}"
+
+    return user_agent
