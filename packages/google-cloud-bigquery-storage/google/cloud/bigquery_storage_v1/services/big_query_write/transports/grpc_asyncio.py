@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -232,6 +233,9 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -463,7 +467,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_write_stream: gapic_v1.method_async.wrap_method(
+            self.create_write_stream: self._wrap_method(
                 self.create_write_stream,
                 default_retry=retries.AsyncRetry(
                     initial=10.0,
@@ -479,7 +483,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
                 default_timeout=1200.0,
                 client_info=client_info,
             ),
-            self.append_rows: gapic_v1.method_async.wrap_method(
+            self.append_rows: self._wrap_method(
                 self.append_rows,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -493,7 +497,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
                 default_timeout=86400.0,
                 client_info=client_info,
             ),
-            self.get_write_stream: gapic_v1.method_async.wrap_method(
+            self.get_write_stream: self._wrap_method(
                 self.get_write_stream,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -509,7 +513,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.finalize_write_stream: gapic_v1.method_async.wrap_method(
+            self.finalize_write_stream: self._wrap_method(
                 self.finalize_write_stream,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -525,7 +529,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.batch_commit_write_streams: gapic_v1.method_async.wrap_method(
+            self.batch_commit_write_streams: self._wrap_method(
                 self.batch_commit_write_streams,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -541,7 +545,7 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.flush_rows: gapic_v1.method_async.wrap_method(
+            self.flush_rows: self._wrap_method(
                 self.flush_rows,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -559,8 +563,17 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("BigQueryWriteGrpcAsyncIOTransport",)

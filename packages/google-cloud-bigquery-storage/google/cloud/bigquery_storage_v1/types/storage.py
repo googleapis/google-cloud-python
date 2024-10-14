@@ -389,6 +389,10 @@ class AppendRowsRequest(proto.Message):
     size. Requests larger than this return an error, typically
     ``INVALID_ARGUMENT``.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -435,6 +439,11 @@ class AppendRowsRequest(proto.Message):
             AppendRows for the '_default' stream.
         proto_rows (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.ProtoData):
             Rows in proto format.
+
+            This field is a member of `oneof`_ ``rows``.
+        arrow_rows (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.ArrowData):
+            Rows in arrow format. This is an experimental
+            feature only selected for allowlisted customers.
 
             This field is a member of `oneof`_ ``rows``.
         trace_id (str):
@@ -496,6 +505,31 @@ class AppendRowsRequest(proto.Message):
         NULL_VALUE = 1
         DEFAULT_VALUE = 2
 
+    class ArrowData(proto.Message):
+        r"""Arrow schema and data.
+        Arrow format is an experimental feature only selected for
+        allowlisted customers.
+
+        Attributes:
+            writer_schema (google.cloud.bigquery_storage_v1.types.ArrowSchema):
+                Optional. Arrow Schema used to serialize the
+                data.
+            rows (google.cloud.bigquery_storage_v1.types.ArrowRecordBatch):
+                Required. Serialized row data in Arrow
+                format.
+        """
+
+        writer_schema: arrow.ArrowSchema = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=arrow.ArrowSchema,
+        )
+        rows: arrow.ArrowRecordBatch = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=arrow.ArrowRecordBatch,
+        )
+
     class ProtoData(proto.Message):
         r"""ProtoData contains the data rows and schema when constructing
         append requests.
@@ -543,6 +577,12 @@ class AppendRowsRequest(proto.Message):
         number=4,
         oneof="rows",
         message=ProtoData,
+    )
+    arrow_rows: ArrowData = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="rows",
+        message=ArrowData,
     )
     trace_id: str = proto.Field(
         proto.STRING,
