@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -248,6 +249,9 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -642,7 +646,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_constraints: gapic_v1.method_async.wrap_method(
+            self.list_constraints: self._wrap_method(
                 self.list_constraints,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -657,7 +661,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_policies: gapic_v1.method_async.wrap_method(
+            self.list_policies: self._wrap_method(
                 self.list_policies,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -672,7 +676,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_policy: gapic_v1.method_async.wrap_method(
+            self.get_policy: self._wrap_method(
                 self.get_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -687,7 +691,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_effective_policy: gapic_v1.method_async.wrap_method(
+            self.get_effective_policy: self._wrap_method(
                 self.get_effective_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -702,7 +706,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_policy: gapic_v1.method_async.wrap_method(
+            self.create_policy: self._wrap_method(
                 self.create_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -717,7 +721,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_policy: gapic_v1.method_async.wrap_method(
+            self.update_policy: self._wrap_method(
                 self.update_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -732,7 +736,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_policy: gapic_v1.method_async.wrap_method(
+            self.delete_policy: self._wrap_method(
                 self.delete_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -747,7 +751,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_custom_constraint: gapic_v1.method_async.wrap_method(
+            self.create_custom_constraint: self._wrap_method(
                 self.create_custom_constraint,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -762,7 +766,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_custom_constraint: gapic_v1.method_async.wrap_method(
+            self.update_custom_constraint: self._wrap_method(
                 self.update_custom_constraint,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -777,7 +781,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_custom_constraint: gapic_v1.method_async.wrap_method(
+            self.get_custom_constraint: self._wrap_method(
                 self.get_custom_constraint,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -792,7 +796,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_custom_constraints: gapic_v1.method_async.wrap_method(
+            self.list_custom_constraints: self._wrap_method(
                 self.list_custom_constraints,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -807,7 +811,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_custom_constraint: gapic_v1.method_async.wrap_method(
+            self.delete_custom_constraint: self._wrap_method(
                 self.delete_custom_constraint,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -824,8 +828,17 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("OrgPolicyGrpcAsyncIOTransport",)

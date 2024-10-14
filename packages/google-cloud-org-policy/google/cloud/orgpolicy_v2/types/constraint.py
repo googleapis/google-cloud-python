@@ -264,11 +264,19 @@ class CustomConstraint(proto.Message):
             DELETE (3):
                 Constraint applied when deleting the
                 resource. Not supported yet.
+            REMOVE_GRANT (4):
+                Constraint applied when removing an IAM
+                grant.
+            GOVERN_TAGS (5):
+                Constraint applied when enforcing forced
+                tagging.
         """
         METHOD_TYPE_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
         DELETE = 3
+        REMOVE_GRANT = 4
+        GOVERN_TAGS = 5
 
     class ActionType(proto.Enum):
         r"""Allow or deny type.

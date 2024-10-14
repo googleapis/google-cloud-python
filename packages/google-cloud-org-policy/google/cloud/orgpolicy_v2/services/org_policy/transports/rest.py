@@ -16,32 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseOrgPolicyRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import OrgPolicyTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -411,8 +407,8 @@ class OrgPolicyRestStub:
     _interceptor: OrgPolicyRestInterceptor
 
 
-class OrgPolicyRestTransport(OrgPolicyTransport):
-    """REST backend transport for OrgPolicy.
+class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
+    """REST backend synchronous transport for OrgPolicy.
 
     An interface for managing organization policies.
 
@@ -442,7 +438,6 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -496,21 +491,12 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -521,19 +507,35 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
         self._interceptor = interceptor or OrgPolicyRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateCustomConstraint(OrgPolicyRestStub):
+    class _CreateCustomConstraint(
+        _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCustomConstraint")
+            return hash("OrgPolicyRestTransport.CreateCustomConstraint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -569,47 +571,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*}/customConstraints",
-                    "body": "custom_constraint",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_custom_constraint(
                 request, metadata
             )
-            pb_request = orgpolicy.CreateCustomConstraintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OrgPolicyRestTransport._CreateCustomConstraint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -625,19 +614,35 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_create_custom_constraint(resp)
             return resp
 
-    class _CreatePolicy(OrgPolicyRestStub):
+    class _CreatePolicy(
+        _BaseOrgPolicyRestTransport._BaseCreatePolicy, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("CreatePolicy")
+            return hash("OrgPolicyRestTransport.CreatePolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -669,55 +674,36 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/policies",
-                    "body": "policy",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=folders/*}/policies",
-                    "body": "policy",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*}/policies",
-                    "body": "policy",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_policy(request, metadata)
-            pb_request = orgpolicy.CreatePolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_policy(request, metadata)
+            transcoded_request = (
+                _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OrgPolicyRestTransport._CreatePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -733,19 +719,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_create_policy(resp)
             return resp
 
-    class _DeleteCustomConstraint(OrgPolicyRestStub):
+    class _DeleteCustomConstraint(
+        _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteCustomConstraint")
+            return hash("OrgPolicyRestTransport.DeleteCustomConstraint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -769,40 +770,29 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/customConstraints/*}",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_custom_constraint(
                 request, metadata
             )
-            pb_request = orgpolicy.DeleteCustomConstraintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._DeleteCustomConstraint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -810,19 +800,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeletePolicy(OrgPolicyRestStub):
+    class _DeletePolicy(
+        _BaseOrgPolicyRestTransport._BaseDeletePolicy, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("DeletePolicy")
+            return hash("OrgPolicyRestTransport.DeletePolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -846,46 +851,31 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/policies/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=folders/*/policies/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/policies/*}",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_policy(request, metadata)
-            pb_request = orgpolicy.DeletePolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._DeletePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -893,19 +883,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetCustomConstraint(OrgPolicyRestStub):
+    class _GetCustomConstraint(
+        _BaseOrgPolicyRestTransport._BaseGetCustomConstraint, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("GetCustomConstraint")
+            return hash("OrgPolicyRestTransport.GetCustomConstraint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -941,40 +946,29 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/customConstraints/*}",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_custom_constraint(
                 request, metadata
             )
-            pb_request = orgpolicy.GetCustomConstraintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._GetCustomConstraint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -990,19 +984,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_get_custom_constraint(resp)
             return resp
 
-    class _GetEffectivePolicy(OrgPolicyRestStub):
+    class _GetEffectivePolicy(
+        _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("GetEffectivePolicy")
+            return hash("OrgPolicyRestTransport.GetEffectivePolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1034,48 +1043,29 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/policies/*}:getEffectivePolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=folders/*/policies/*}:getEffectivePolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/policies/*}:getEffectivePolicy",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_effective_policy(
                 request, metadata
             )
-            pb_request = orgpolicy.GetEffectivePolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._GetEffectivePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1091,19 +1081,32 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_get_effective_policy(resp)
             return resp
 
-    class _GetPolicy(OrgPolicyRestStub):
+    class _GetPolicy(_BaseOrgPolicyRestTransport._BaseGetPolicy, OrgPolicyRestStub):
         def __hash__(self):
-            return hash("GetPolicy")
+            return hash("OrgPolicyRestTransport.GetPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1134,46 +1137,31 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/policies/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=folders/*/policies/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/policies/*}",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseGetPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
-            pb_request = orgpolicy.GetPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseOrgPolicyRestTransport._BaseGetPolicy._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseOrgPolicyRestTransport._BaseGetPolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._GetPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1189,19 +1177,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_get_policy(resp)
             return resp
 
-    class _ListConstraints(OrgPolicyRestStub):
+    class _ListConstraints(
+        _BaseOrgPolicyRestTransport._BaseListConstraints, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("ListConstraints")
+            return hash("OrgPolicyRestTransport.ListConstraints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1232,48 +1235,31 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/constraints",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=folders/*}/constraints",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/constraints",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseListConstraints._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_constraints(
                 request, metadata
             )
-            pb_request = orgpolicy.ListConstraintsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseListConstraints._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseOrgPolicyRestTransport._BaseListConstraints._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._ListConstraints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1289,19 +1275,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_list_constraints(resp)
             return resp
 
-    class _ListCustomConstraints(OrgPolicyRestStub):
+    class _ListCustomConstraints(
+        _BaseOrgPolicyRestTransport._BaseListCustomConstraints, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("ListCustomConstraints")
+            return hash("OrgPolicyRestTransport.ListCustomConstraints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1333,40 +1334,29 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/customConstraints",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_custom_constraints(
                 request, metadata
             )
-            pb_request = orgpolicy.ListCustomConstraintsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._ListCustomConstraints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1382,19 +1372,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_list_custom_constraints(resp)
             return resp
 
-    class _ListPolicies(OrgPolicyRestStub):
+    class _ListPolicies(
+        _BaseOrgPolicyRestTransport._BaseListPolicies, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("ListPolicies")
+            return hash("OrgPolicyRestTransport.ListPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1426,46 +1431,31 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/policies",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=folders/*}/policies",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/policies",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseListPolicies._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_policies(request, metadata)
-            pb_request = orgpolicy.ListPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseOrgPolicyRestTransport._BaseListPolicies._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseOrgPolicyRestTransport._BaseListPolicies._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OrgPolicyRestTransport._ListPolicies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1481,19 +1471,35 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_list_policies(resp)
             return resp
 
-    class _UpdateCustomConstraint(OrgPolicyRestStub):
+    class _UpdateCustomConstraint(
+        _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateCustomConstraint")
+            return hash("OrgPolicyRestTransport.UpdateCustomConstraint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1529,47 +1535,34 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{custom_constraint.name=organizations/*/customConstraints/*}",
-                    "body": "custom_constraint",
-                },
-            ]
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_custom_constraint(
                 request, metadata
             )
-            pb_request = orgpolicy.UpdateCustomConstraintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OrgPolicyRestTransport._UpdateCustomConstraint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1585,19 +1578,35 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
             resp = self._interceptor.post_update_custom_constraint(resp)
             return resp
 
-    class _UpdatePolicy(OrgPolicyRestStub):
+    class _UpdatePolicy(
+        _BaseOrgPolicyRestTransport._BaseUpdatePolicy, OrgPolicyRestStub
+    ):
         def __hash__(self):
-            return hash("UpdatePolicy")
+            return hash("OrgPolicyRestTransport.UpdatePolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1629,55 +1638,36 @@ class OrgPolicyRestTransport(OrgPolicyTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{policy.name=projects/*/policies/*}",
-                    "body": "policy",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{policy.name=folders/*/policies/*}",
-                    "body": "policy",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{policy.name=organizations/*/policies/*}",
-                    "body": "policy",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_policy(request, metadata)
-            pb_request = orgpolicy.UpdatePolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_policy(request, metadata)
+            transcoded_request = (
+                _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OrgPolicyRestTransport._UpdatePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
