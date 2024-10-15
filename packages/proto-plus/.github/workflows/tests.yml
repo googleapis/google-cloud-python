@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python: ['3.12']
+        python: ['3.13']
         variant: ['python', 'upb']
     steps:
       - uses: actions/checkout@v4

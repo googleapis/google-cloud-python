@@ -77,7 +77,7 @@ def unit(session, implementation):
 # Only test upb and python implementation backends.
 # As of protobuf 4.x, the "ccp" implementation is not available in the PyPI package as per
 # https://github.com/protocolbuffers/protobuf/tree/main/python#implementation-backends
-@nox.session(python=PYTHON_VERSIONS[-2])
+@nox.session(python=PYTHON_VERSIONS[-1])
 @nox.parametrize("implementation", ["python", "upb"])
 def prerelease_deps(session, implementation):
     """Run the unit test suite against pre-release versions of dependencies."""
