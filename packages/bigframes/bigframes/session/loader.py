@@ -300,7 +300,9 @@ class GbqDataLoader:
         ):
             # TODO(b/338111344): If we are running a query anyway, we might as
             # well generate ROW_NUMBER() at the same time.
-            all_columns = itertools.chain(index_cols, columns) if columns else ()
+            all_columns: Iterable[str] = (
+                itertools.chain(index_cols, columns) if columns else ()
+            )
             query = bf_io_bigquery.to_query(
                 query,
                 columns=all_columns,

@@ -44,7 +44,7 @@ class ExecutionMetrics:
 
 def get_performance_stats(
     query_job: bigquery.QueryJob,
-) -> Optional[Tuple[int, int, float]]:
+) -> Optional[Tuple[int, int, Optional[float]]]:
     """Parse the query job for performance stats.
 
     Return None if the stats do not reflect real work done in bigquery.
@@ -73,7 +73,9 @@ def get_performance_stats(
     return bytes_processed, slot_millis, exec_seconds
 
 
-def write_stats_to_disk(bytes_processed: int, slot_millis: int, exec_seconds: float):
+def write_stats_to_disk(
+    bytes_processed: int, slot_millis: int, exec_seconds: Optional[float]
+):
     """For pytest runs only, log information about the query job
     to a file in order to create a performance report.
     """

@@ -744,6 +744,7 @@ def notebook(session: nox.Session):
         # The experimental notebooks imagine features that don't yet
         # exist or only exist as temporary prototypes.
         "notebooks/experimental/longer_ml_demo.ipynb",
+        "notebooks/experimental/semantic_operators.ipynb",
         # The notebooks that are added for more use cases, such as backing a
         # blog post, which may take longer to execute and need not be
         # continuously tested.

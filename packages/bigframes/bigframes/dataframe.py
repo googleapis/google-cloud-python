@@ -81,6 +81,8 @@ import bigframes.series as bf_series
 import bigframes.session._io.bigquery
 
 if typing.TYPE_CHECKING:
+    from _typeshed import SupportsRichComparison
+
     import bigframes.session
 
     SingleItemValue = Union[bigframes.series.Series, int, float, Callable]
@@ -2464,7 +2466,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             values = [values]
 
         # Unlike pivot, pivot_table has values always ordered.
-        values.sort()
+        values.sort(key=lambda val: typing.cast("SupportsRichComparison", val))
 
         keys = index + columns
         agged = self.groupby(keys, dropna=True)[values].agg(aggfunc)
