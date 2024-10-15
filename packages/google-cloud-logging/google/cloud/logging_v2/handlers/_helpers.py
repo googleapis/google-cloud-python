@@ -174,13 +174,22 @@ def _parse_xcloud_trace(header):
     Args:
         header (str): the string extracted from the X_CLOUD_TRACE header
     Returns:
-        Tuple[Optional[dict], Optional[str], bool]:
+        Tuple[Optional[str], Optional[str], bool]:
             The trace_id, span_id and trace_sampled extracted from the header
             Each field will be None if not found.
     """
     trace_id = span_id = None
     trace_sampled = False
-    # see https://cloud.google.com/trace/docs/setup for X-Cloud-Trace_Context format
+
+    # As per the format described at https://cloud.google.com/trace/docs/trace-context#legacy-http-header
+    #    "X-Cloud-Trace-Context: TRACE_ID[/SPAN_ID][;o=OPTIONS]"
+    # for example:
+    #    "X-Cloud-Trace-Context: 105445aa7843bc8bf206b12000100000/1;o=1"
+    #
+    # We expect:
+    #   * trace_id (optional, 128-bit hex string):  "105445aa7843bc8bf206b12000100000"
+    #   * span_id (optional, 16-bit hex string):   "0000000000000001" (needs to be converted into 16 bit hex string)
+    #   * trace_sampled (optional, bool): 	       true
     if header:
         try:
             regex = r"([\w-]+)?(\/?([\w-]+))?(;?o=(\d))?"
@@ -188,6 +197,17 @@ def _parse_xcloud_trace(header):
             trace_id = match.group(1)
             span_id = match.group(3)
             trace_sampled = match.group(5) == "1"
+
+            # Convert the span ID to 16-bit hexadecimal instead of decimal
+            try:
+                span_id_int = int(span_id)
+                if span_id_int > 0 and span_id_int < 2**64:
+                    span_id = f"{span_id_int:016x}"
+                else:
+                    span_id = None
+            except (ValueError, TypeError):
+                span_id = None
+
         except IndexError:
             pass
     return trace_id, span_id, trace_sampled

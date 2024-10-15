@@ -382,7 +382,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         result = handler.format(record)
         self.assertIn(expected_result, result)
 
-    def test_format_with_request(self):
+    def test_format_with_xctc_request(self):
         import logging
         import json
 
@@ -393,8 +393,9 @@ class TestStructuredLogHandler(unittest.TestCase):
         expected_path = "http://testserver/123"
         expected_agent = "Mozilla/5.0"
         expected_trace = "123"
-        expected_span = "456"
-        trace_header = f"{expected_trace}/{expected_span};o=1"
+        input_span = "456"
+        expected_span = "1c8".zfill(16)
+        trace_header = f"{expected_trace}/{input_span};o=1"
         expected_payload = {
             "logging.googleapis.com/trace": expected_trace,
             "logging.googleapis.com/spanId": expected_span,
