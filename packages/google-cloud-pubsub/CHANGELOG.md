@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.26.1](https://github.com/googleapis/python-pubsub/compare/v2.26.0...v2.26.1) (2024-10-10)
+
+
+### Documentation
+
+* Add ingestion from GCS sample ([#1273](https://github.com/googleapis/python-pubsub/issues/1273)) ([b59cc8d](https://github.com/googleapis/python-pubsub/commit/b59cc8d4fae593eb7592455a1696d7ab996a53dd))
+
 ## [2.26.0](https://github.com/googleapis/python-pubsub/compare/v2.25.2...v2.26.0) (2024-10-09)
 
 
