@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.11.3](https://github.com/googleapis/python-logging/compare/v3.11.2...v3.11.3) (2024-10-15)
+
+
+### Bug Fixes
+
+* 16-bit hexadecimal formatting for XCTC span IDs ([#946](https://github.com/googleapis/python-logging/issues/946)) ([1f2b190](https://github.com/googleapis/python-logging/commit/1f2b190c0d1a7125d9412c157915d0011cdd4c47))
+
 ## [3.11.2](https://github.com/googleapis/python-logging/compare/v3.11.1...v3.11.2) (2024-08-15)
 
 
