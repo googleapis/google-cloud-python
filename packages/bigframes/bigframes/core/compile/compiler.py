@@ -36,6 +36,7 @@ import bigframes.core.guid as guids
 import bigframes.core.identifiers as ids
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
+import bigframes.core.rewrite as rewrites
 
 if typing.TYPE_CHECKING:
     import bigframes.core
@@ -48,20 +49,32 @@ class Compiler:
     # In unstrict mode, ordering from ReadTable or after joins may be ambiguous to improve query performance.
     strict: bool = True
     scalar_op_compiler = compile_scalar.ScalarOpCompiler()
+    enable_pruning: bool = False
+
+    def _preprocess(self, node: nodes.BigFrameNode):
+        if self.enable_pruning:
+            used_fields = frozenset(field.id for field in node.fields)
+            node = node.prune(used_fields)
+        node = functools.cache(rewrites.replace_slice_ops)(node)
+        return node
 
     def compile_ordered_ir(self, node: nodes.BigFrameNode) -> compiled.OrderedIR:
-        ir = typing.cast(compiled.OrderedIR, self.compile_node(node, True))
+        ir = typing.cast(
+            compiled.OrderedIR, self.compile_node(self._preprocess(node), True)
+        )
         if self.strict:
             assert ir.has_total_order
         return ir
 
     def compile_unordered_ir(self, node: nodes.BigFrameNode) -> compiled.UnorderedIR:
-        return typing.cast(compiled.UnorderedIR, self.compile_node(node, False))
+        return typing.cast(
+            compiled.UnorderedIR, self.compile_node(self._preprocess(node), False)
+        )
 
     def compile_peak_sql(
         self, node: nodes.BigFrameNode, n_rows: int
     ) -> typing.Optional[str]:
-        return self.compile_unordered_ir(node).peek_sql(n_rows)
+        return self.compile_unordered_ir(self._preprocess(node)).peek_sql(n_rows)
 
     # TODO: Remove cache when schema no longer requires compilation to derive schema (and therefor only compiles for execution)
     @functools.lru_cache(maxsize=5000)

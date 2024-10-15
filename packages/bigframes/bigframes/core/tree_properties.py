@@ -113,6 +113,9 @@ def select_cache_target(
 
     node_counts = _node_counts_inner(root)
 
+    if len(node_counts) == 0:
+        raise ValueError("node counts should be non-zero")
+
     return max(
         node_counts.keys(),
         key=lambda node: heuristic(
