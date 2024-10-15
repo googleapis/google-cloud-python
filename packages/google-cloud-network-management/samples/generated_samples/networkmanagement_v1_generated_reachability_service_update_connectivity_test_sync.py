@@ -39,11 +39,7 @@ def sample_update_connectivity_test():
     client = network_management_v1.ReachabilityServiceClient()
 
     # Initialize request argument(s)
-    resource = network_management_v1.ConnectivityTest()
-    resource.name = "name_value"
-
     request = network_management_v1.UpdateConnectivityTestRequest(
-        resource=resource,
     )
 
     # Make the request
