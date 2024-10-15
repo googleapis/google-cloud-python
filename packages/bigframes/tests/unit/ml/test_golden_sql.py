@@ -36,6 +36,7 @@ def mock_session():
         TEMP_MODEL_ID.project, TEMP_MODEL_ID.dataset_id
     )
     mock_session._bq_kms_key_name = None
+    mock_session._metrics = None
 
     query_job = mock.create_autospec(bigquery.QueryJob)
     type(query_job).destination = mock.PropertyMock(

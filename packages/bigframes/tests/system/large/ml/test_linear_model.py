@@ -128,10 +128,20 @@ def test_unordered_mode_linear_regression_configure_fit_score_predict(
         ]
     ]
     y_train = df[["body_mass_g"]]
+
+    start_execution_count = df._block._expr.session._metrics.execution_count
     model.fit(X_train, y_train)
+    end_execution_count = df._block._expr.session._metrics.execution_count
+    # The fit function initiates two queries: the first generates and caches
+    # the training data, while the second creates and fits the model.
+    assert end_execution_count - start_execution_count == 2
 
     # Check score to ensure the model was fitted
+    start_execution_count = end_execution_count
     result = model.score(X_train, y_train).to_pandas()
+    end_execution_count = df._block._expr.session._metrics.execution_count
+    assert end_execution_count - start_execution_count == 1
+
     utils.check_pandas_df_schema_and_index(
         result, columns=utils.ML_REGRESSION_METRICS, index=1
     )
@@ -154,7 +164,10 @@ def test_unordered_mode_linear_regression_configure_fit_score_predict(
     assert reloaded_model.max_iterations == 20
     assert reloaded_model.tol == 0.01
 
+    start_execution_count = df._block._expr.session._metrics.execution_count
     pred = reloaded_model.predict(df)
+    end_execution_count = df._block._expr.session._metrics.execution_count
+    assert end_execution_count - start_execution_count == 1
     utils.check_pandas_df_schema_and_index(
         pred,
         columns=("predicted_body_mass_g",),

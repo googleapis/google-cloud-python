@@ -383,7 +383,13 @@ def test_model_forecast(time_series_bqml_arima_plus_model: core.BqmlModel):
 
 def test_model_register(ephemera_penguins_bqml_linear_model: core.BqmlModel):
     model = ephemera_penguins_bqml_linear_model
+
+    start_execution_count = model.session._metrics.execution_count
+
     model.register()
+
+    end_execution_count = model.session._metrics.execution_count
+    assert end_execution_count - start_execution_count == 1
 
     assert model.model.model_id is not None
     model_name = "bigframes_" + model.model.model_id
