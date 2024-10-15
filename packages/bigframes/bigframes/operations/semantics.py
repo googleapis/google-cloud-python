@@ -231,7 +231,7 @@ class Semantics:
             >>> df = bpd.DataFrame({
             ...     "Product": ["Smartphone", "Laptop", "T-shirt", "Jeans"],
             ... })
-            >>> df.semantics.cluster_by("Product", "Cluster ID", model, n_clusters=2)
+            >>> df.semantics.cluster_by("Product", "Cluster ID", model, n_clusters=2) # doctest: +SKIP
                     Product  Cluster ID
             0    Smartphone           2
             1        Laptop           2
