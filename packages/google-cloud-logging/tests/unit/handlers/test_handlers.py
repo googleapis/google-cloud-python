@@ -140,7 +140,7 @@ class TestCloudLoggingFilter(unittest.TestCase):
         self.assertIsNone(record._labels)
         self.assertEqual(record._labels_str, "{}")
 
-    def test_record_with_request(self):
+    def test_record_with_xctc_request(self):
         """
         test filter adds http request data when available
         """
@@ -161,8 +161,9 @@ class TestCloudLoggingFilter(unittest.TestCase):
         expected_path = "http://testserver/123"
         expected_agent = "Mozilla/5.0"
         expected_trace = "123"
-        expected_span = "456"
-        combined_trace = f"{expected_trace}/{expected_span};o=1"
+        input_span = "456"
+        expected_span = "1c8".zfill(16)
+        combined_trace = f"{expected_trace}/{input_span};o=1"
         expected_request = {
             "requestMethod": "GET",
             "requestUrl": expected_path,
