@@ -1110,6 +1110,10 @@ class InstanceFlexibilityPolicy(proto.Message):
     and provisioning models.
 
     Attributes:
+        provisioning_model_mix (google.cloud.dataproc_v1.types.InstanceFlexibilityPolicy.ProvisioningModelMix):
+            Optional. Defines how the Group selects the
+            provisioning model to ensure required
+            reliability.
         instance_selection_list (MutableSequence[google.cloud.dataproc_v1.types.InstanceFlexibilityPolicy.InstanceSelection]):
             Optional. List of instance selection options
             that the group will use when creating new VMs.
@@ -1117,6 +1121,51 @@ class InstanceFlexibilityPolicy(proto.Message):
             Output only. A list of instance selection
             results in the group.
     """
+
+    class ProvisioningModelMix(proto.Message):
+        r"""Defines how Dataproc should create VMs with a mixture of
+        provisioning models.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            standard_capacity_base (int):
+                Optional. The base capacity that will always use Standard
+                VMs to avoid risk of more preemption than the minimum
+                capacity you need. Dataproc will create only standard VMs
+                until it reaches standard_capacity_base, then it will start
+                using standard_capacity_percent_above_base to mix Spot with
+                Standard VMs. eg. If 15 instances are requested and
+                standard_capacity_base is 5, Dataproc will create 5 standard
+                VMs and then start mixing spot and standard VMs for
+                remaining 10 instances.
+
+                This field is a member of `oneof`_ ``_standard_capacity_base``.
+            standard_capacity_percent_above_base (int):
+                Optional. The percentage of target capacity that should use
+                Standard VM. The remaining percentage will use Spot VMs. The
+                percentage applies only to the capacity above
+                standard_capacity_base. eg. If 15 instances are requested
+                and standard_capacity_base is 5 and
+                standard_capacity_percent_above_base is 30, Dataproc will
+                create 5 standard VMs and then start mixing spot and
+                standard VMs for remaining 10 instances. The mix will be 30%
+                standard and 70% spot.
+
+                This field is a member of `oneof`_ ``_standard_capacity_percent_above_base``.
+        """
+
+        standard_capacity_base: int = proto.Field(
+            proto.INT32,
+            number=1,
+            optional=True,
+        )
+        standard_capacity_percent_above_base: int = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
+        )
 
     class InstanceSelection(proto.Message):
         r"""Defines machines types and a rank to which the machines types
@@ -1175,6 +1224,11 @@ class InstanceFlexibilityPolicy(proto.Message):
             optional=True,
         )
 
+    provisioning_model_mix: ProvisioningModelMix = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=ProvisioningModelMix,
+    )
     instance_selection_list: MutableSequence[InstanceSelection] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
@@ -1230,6 +1284,9 @@ class DiskConfig(proto.Message):
     r"""Specifies the config of disk options for a group of VM
     instances.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         boot_disk_type (str):
             Optional. Type of the boot disk (default is "pd-standard").
@@ -1257,6 +1314,21 @@ class DiskConfig(proto.Message):
             Valid values: "scsi" (Small Computer System Interface),
             "nvme" (Non-Volatile Memory Express). See `local SSD
             performance <https://cloud.google.com/compute/docs/disks/local-ssd#performance>`__.
+        boot_disk_provisioned_iops (int):
+            Optional. Indicates how many IOPS to provision for the disk.
+            This sets the number of I/O operations per second that the
+            disk can handle. Note: This field is only supported if
+            boot_disk_type is hyperdisk-balanced.
+
+            This field is a member of `oneof`_ ``_boot_disk_provisioned_iops``.
+        boot_disk_provisioned_throughput (int):
+            Optional. Indicates how much throughput to provision for the
+            disk. This sets the number of throughput mb per second that
+            the disk can handle. Values must be greater than or equal to
+            1. Note: This field is only supported if boot_disk_type is
+            hyperdisk-balanced.
+
+            This field is a member of `oneof`_ ``_boot_disk_provisioned_throughput``.
     """
 
     boot_disk_type: str = proto.Field(
@@ -1274,6 +1346,16 @@ class DiskConfig(proto.Message):
     local_ssd_interface: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    boot_disk_provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+    boot_disk_provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=6,
+        optional=True,
     )
 
 
