@@ -3175,6 +3175,8 @@ def test_create_node_group_rest_call_success(request_type):
                 "boot_disk_size_gb": 1792,
                 "num_local_ssds": 1494,
                 "local_ssd_interface": "local_ssd_interface_value",
+                "boot_disk_provisioned_iops": 2793,
+                "boot_disk_provisioned_throughput": 3464,
             },
             "is_preemptible": True,
             "preemptibility": 1,
@@ -3192,6 +3194,10 @@ def test_create_node_group_rest_call_success(request_type):
             "min_cpu_platform": "min_cpu_platform_value",
             "min_num_instances": 1818,
             "instance_flexibility_policy": {
+                "provisioning_model_mix": {
+                    "standard_capacity_base": 2296,
+                    "standard_capacity_percent_above_base": 3764,
+                },
                 "instance_selection_list": [
                     {
                         "machine_types": [
