@@ -19,6 +19,7 @@ __protobuf__ = proto.module(
     manifest={
         "Clam",
         "Species",
+        "Color",
     },
 )
 
@@ -30,6 +31,14 @@ class Species(proto.Enum):
     GIGAS = 3
 
 
+class Color(proto.Enum):
+    COLOR_UNKNOWN = 0
+    BLUE = 1
+    ORANGE = 2
+    GREEN = 3
+
+
 class Clam(proto.Message):
     species = proto.Field(proto.ENUM, number=1, enum="Species")
     mass_kg = proto.Field(proto.DOUBLE, number=2)
+    color = proto.Field(proto.ENUM, number=3, enum="Color")
