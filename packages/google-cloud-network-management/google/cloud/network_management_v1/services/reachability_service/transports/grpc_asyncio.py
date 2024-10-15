@@ -396,7 +396,7 @@ class ReachabilityServiceGrpcAsyncIOTransport(ReachabilityServiceTransport):
         If the endpoint specifications in ``ConnectivityTest`` are
         incomplete, the reachability result returns a value of
         ``AMBIGUOUS``. See the documentation in ``ConnectivityTest`` for
-        for more details.
+        more details.
 
         Returns:
             Callable[[~.UpdateConnectivityTestRequest],

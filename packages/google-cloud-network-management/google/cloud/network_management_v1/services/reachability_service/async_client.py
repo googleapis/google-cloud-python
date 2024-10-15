@@ -553,13 +553,9 @@ class ReachabilityServiceAsyncClient:
                 client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
-                resource = network_management_v1.ConnectivityTest()
-                resource.name = "name_value"
-
                 request = network_management_v1.CreateConnectivityTestRequest(
                     parent="parent_value",
                     test_id="test_id_value",
-                    resource=resource,
                 )
 
                 # Make the request
@@ -701,7 +697,7 @@ class ReachabilityServiceAsyncClient:
         If the endpoint specifications in ``ConnectivityTest`` are
         incomplete, the reachability result returns a value of
         ``AMBIGUOUS``. See the documentation in ``ConnectivityTest`` for
-        for more details.
+        more details.
 
         .. code-block:: python
 
@@ -719,11 +715,7 @@ class ReachabilityServiceAsyncClient:
                 client = network_management_v1.ReachabilityServiceAsyncClient()
 
                 # Initialize request argument(s)
-                resource = network_management_v1.ConnectivityTest()
-                resource.name = "name_value"
-
                 request = network_management_v1.UpdateConnectivityTestRequest(
-                    resource=resource,
                 )
 
                 # Make the request

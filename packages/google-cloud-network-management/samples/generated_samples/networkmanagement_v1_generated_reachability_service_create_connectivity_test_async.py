@@ -39,13 +39,9 @@ async def sample_create_connectivity_test():
     client = network_management_v1.ReachabilityServiceAsyncClient()
 
     # Initialize request argument(s)
-    resource = network_management_v1.ConnectivityTest()
-    resource.name = "name_value"
-
     request = network_management_v1.CreateConnectivityTestRequest(
         parent="parent_value",
         test_id="test_id_value",
-        resource=resource,
     )
 
     # Make the request

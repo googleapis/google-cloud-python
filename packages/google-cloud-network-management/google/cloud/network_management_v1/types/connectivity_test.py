@@ -41,7 +41,7 @@ class ConnectivityTest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Unique name of the resource using the form:
+            Identifier. Unique name of the resource using the form:
             ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
         description (str):
             The user-supplied description of the
@@ -245,6 +245,14 @@ class Endpoint(proto.Message):
             master <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
         cloud_sql_instance (str):
             A `Cloud SQL <https://cloud.google.com/sql>`__ instance URI.
+        redis_instance (str):
+            A `Redis
+            Instance <https://cloud.google.com/memorystore/docs/redis>`__
+            URI.
+        redis_cluster (str):
+            A `Redis
+            Cluster <https://cloud.google.com/memorystore/docs/cluster>`__
+            URI.
         cloud_function (google.cloud.network_management_v1.types.Endpoint.CloudFunctionEndpoint):
             A `Cloud Function <https://cloud.google.com/functions>`__.
         app_engine_version (google.cloud.network_management_v1.types.Endpoint.AppEngineVersionEndpoint):
@@ -408,6 +416,14 @@ class Endpoint(proto.Message):
     cloud_sql_instance: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    redis_instance: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    redis_cluster: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
     cloud_function: CloudFunctionEndpoint = proto.Field(
         proto.MESSAGE,
