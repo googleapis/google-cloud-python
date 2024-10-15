@@ -18,6 +18,11 @@ Python Client for Generative Language API
 .. _Client Library Documentation: https://googleapis.dev/python/generativelanguage/latest
 .. _Product Documentation:  https://ai.google.dev/docs
 
+Documentation
+-------------
+
+See the `docs folder <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage/docs>`_ for additional documentation.
+
 Quick Start
 -----------
 
