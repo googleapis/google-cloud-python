@@ -529,6 +529,9 @@ class GbqDataLoader:
             configuration=configuration,
         )
 
+        if self._metrics is not None:
+            self._metrics.count_job_stats(query_job)
+
         # If there was no destination table, that means the query must have
         # been DDL or DML. Return some job metadata, instead.
         if not destination:
