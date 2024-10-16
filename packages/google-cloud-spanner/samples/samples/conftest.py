@@ -22,6 +22,7 @@ from google.cloud import spanner_admin_database_v1
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 from google.cloud.spanner_v1 import backup, client, database, instance
 from test_utils import retry
+from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 
 INSTANCE_CREATION_TIMEOUT = 560  # seconds
 
@@ -128,17 +129,24 @@ def sample_instance(
     instance_config,
     sample_name,
 ):
-    sample_instance = spanner_client.instance(
-        instance_id,
-        instance_config,
-        labels={
-            "cloud_spanner_samples": "true",
-            "sample_name": sample_name,
-            "created": str(int(time.time())),
-        },
+    operation = spanner_client.instance_admin_api.create_instance(
+        parent=spanner_client.project_name,
+        instance_id=instance_id,
+        instance=spanner_instance_admin.Instance(
+            config=instance_config,
+            display_name="This is a display name.",
+            node_count=1,
+            labels={
+                "cloud_spanner_samples": "true",
+                "sample_name": sample_name,
+                "created": str(int(time.time())),
+            },
+            edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,  # Optional
+        ),
     )
-    op = retry_429(sample_instance.create)()
-    op.result(INSTANCE_CREATION_TIMEOUT)  # block until completion
+    operation.result(INSTANCE_CREATION_TIMEOUT)  # block until completion
+
+    sample_instance = spanner_client.instance(instance_id)
 
     # Eventual consistency check
     retry_found = retry.RetryResult(bool)

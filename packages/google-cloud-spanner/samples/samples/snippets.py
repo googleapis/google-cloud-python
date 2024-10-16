@@ -128,6 +128,7 @@ def create_instance_with_processing_units(instance_id, processing_units):
                 "sample_name": "snippets-create_instance_with_processing_units",
                 "created": str(int(time.time())),
             },
+            edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,
         ),
     )
 
