@@ -16,6 +16,8 @@ branchProtectionRules:
     - 'showcase (3.12, showcase)'
     - 'showcase (3.7, showcase_alternative_templates)'
     - 'showcase (3.12, showcase_alternative_templates)'
+    - 'showcase (3.7, _w_rest_async)'
+    - 'showcase (3.12, _w_rest_async)'
     # TODO(dovs): reenable these when the mtls tests have been debugged and fixed
     # See #1218 for details
     # - 'showcase-mtls (showcase_mtls)'
@@ -46,6 +48,12 @@ branchProtectionRules:
     - 'showcase-unit (3.10, _mixins)'
     - 'showcase-unit (3.11, _mixins)'
     - 'showcase-unit (3.12, _mixins)'
+    - 'showcase-unit (3.7, _w_rest_async)'
+    - 'showcase-unit (3.8, _w_rest_async)'
+    - 'showcase-unit (3.9, _w_rest_async)'
+    - 'showcase-unit (3.10, _w_rest_async)'
+    - 'showcase-unit (3.11, _w_rest_async)'
+    - 'showcase-unit (3.12, _w_rest_async)'
     - 'showcase-unit-add-iam-methods'
     - 'integration'
     - 'goldens-lint'
