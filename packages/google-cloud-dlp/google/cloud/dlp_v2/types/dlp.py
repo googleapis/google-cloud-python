@@ -426,7 +426,7 @@ class ProfileGeneration(proto.Enum):
 
 class BigQueryTableTypeCollection(proto.Enum):
     r"""Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW,
-    and SNAPSHOT are not supported.
+    and non-BigLake external tables are not supported.
 
     Values:
         BIG_QUERY_COLLECTION_UNSPECIFIED (0):
@@ -453,7 +453,7 @@ class BigQueryTableTypeCollection(proto.Enum):
 
 class BigQueryTableType(proto.Enum):
     r"""Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW,
-    SNAPSHOT, and non-BigLake external tables are not supported.
+    and non-BigLake external tables are not supported.
 
     Values:
         BIG_QUERY_TABLE_TYPE_UNSPECIFIED (0):
@@ -463,10 +463,13 @@ class BigQueryTableType(proto.Enum):
         BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE (2):
             A table that references data stored in Cloud
             Storage.
+        BIG_QUERY_TABLE_TYPE_SNAPSHOT (3):
+            A snapshot of a BigQuery table.
     """
     BIG_QUERY_TABLE_TYPE_UNSPECIFIED = 0
     BIG_QUERY_TABLE_TYPE_TABLE = 1
     BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE = 2
+    BIG_QUERY_TABLE_TYPE_SNAPSHOT = 3
 
 
 class DataProfileUpdateFrequency(proto.Enum):
@@ -11928,12 +11931,12 @@ class TableDataProfile(proto.Message):
             https://cloud.google.com/bigquery/docs/locations
             for supported locations.
         dataset_id (str):
-            If the resource is BigQuery, the  dataset ID.
+            If the resource is BigQuery, the dataset ID.
         table_id (str):
-            If the resource is BigQuery, the BigQuery
-            table ID.
+            The table ID.
         full_resource (str):
-            The resource name of the resource profiled.
+            The Cloud Asset Inventory resource that was profiled in
+            order to generate this TableDataProfile.
             https://cloud.google.com/apis/design/resource_names#full_resource_name
         profile_status (google.cloud.dlp_v2.types.ProfileStatus):
             Success or error status from the most recent
@@ -12219,14 +12222,15 @@ class ColumnDataProfile(proto.Message):
             The Google Cloud project ID that owns the
             profiled resource.
         dataset_location (str):
-            The BigQuery location where the dataset's
-            data is stored. See
+            If supported, the location where the
+            dataset's data is stored. See
             https://cloud.google.com/bigquery/docs/locations
-            for supported locations.
+            for supported BigQuery locations.
         dataset_id (str):
-            The BigQuery dataset ID.
+            The BigQuery dataset ID, if the resource
+            profiled is a BigQuery table.
         table_id (str):
-            The BigQuery table ID.
+            The table ID.
         column (str):
             The name of the column.
         sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
