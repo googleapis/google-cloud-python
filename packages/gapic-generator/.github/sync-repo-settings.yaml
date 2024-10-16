@@ -50,6 +50,7 @@ branchProtectionRules:
     - 'integration'
     - 'goldens-lint'
     - 'goldens-prerelease'
+    - 'goldens-unit'
     - 'style-check'
     - 'snippetgen'
     - 'unit (3.7)'
