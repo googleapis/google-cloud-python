@@ -66,7 +66,7 @@ except AttributeError:  # pragma: NO COVER
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=google.auth.__version__
+    rest_version=f"google-auth@{google.auth.__version__}",
 )
 
 {{ shared_macros.create_interceptor_class(api, service, method, is_async=True) }}
