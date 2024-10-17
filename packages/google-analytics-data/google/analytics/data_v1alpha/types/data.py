@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "MetricAggregation",
         "MetricType",
         "RestrictedMetricType",
+        "SamplingLevel",
         "DateRange",
         "Dimension",
         "DimensionExpression",
@@ -306,6 +307,32 @@ class RestrictedMetricType(proto.Enum):
     RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
     COST_DATA = 1
     REVENUE_DATA = 2
+
+
+class SamplingLevel(proto.Enum):
+    r"""Categories of sampling levels for the requests.
+
+    Values:
+        SAMPLING_LEVEL_UNSPECIFIED (0):
+            Unspecified type.
+        LOW (1):
+            Applies a sampling level of 10 million to
+            standard properties and 100 million to Google
+            Analytics 360 properties.
+        MEDIUM (2):
+            Exclusive to Google Analytics 360 properties
+            with a sampling level of 1 billion.
+        UNSAMPLED (3):
+            Exclusive to Google Analytics 360 properties.
+            Unsampled explorations are more accurate and can
+            reveal insights that aren't visible in standard
+            explorations. To learn more, see
+            https://support.google.com/analytics/answer/10896953.
+    """
+    SAMPLING_LEVEL_UNSPECIFIED = 0
+    LOW = 1
+    MEDIUM = 2
+    UNSAMPLED = 3
 
 
 class DateRange(proto.Message):
