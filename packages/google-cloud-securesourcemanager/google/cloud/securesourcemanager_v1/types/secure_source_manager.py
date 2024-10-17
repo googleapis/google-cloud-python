@@ -253,9 +253,11 @@ class Repository(proto.Message):
             Optional. The name of the instance in which the repository
             is hosted, formatted as
             ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``
-            For data plane CreateRepository requests, this field is
-            output only. For control plane CreateRepository requests,
-            this field is used as input.
+            When creating repository via
+            securesourcemanager.googleapis.com (Control Plane API), this
+            field is used as input. When creating repository via
+            \*.sourcemanager.dev (Data Plane API), this field is output
+            only.
         uid (str):
             Output only. Unique identifier of the
             repository.
@@ -833,6 +835,15 @@ class ListRepositoriesRequest(proto.Message):
             server should return.
         filter (str):
             Optional. Filter results.
+        instance (str):
+            Optional. The name of the instance in which the repository
+            is hosted, formatted as
+            ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``.
+            When listing repositories via
+            securesourcemanager.googleapis.com (Control Plane API), this
+            field is required. When listing repositories via
+            \*.sourcemanager.dev (Data Plane API), this field is
+            ignored.
     """
 
     parent: str = proto.Field(
@@ -850,6 +861,10 @@ class ListRepositoriesRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    instance: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
