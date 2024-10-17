@@ -101,6 +101,39 @@ case ${TEST_TYPE} in
         *)
             ;;
         esac
+    integration)
+        case ${PY_VERSION} in
+        "3.7")
+            nox -s integration-3.7
+            retval=$?
+            ;;
+        "3.8")
+            nox -s integration-3.8
+            retval=$?
+            ;;
+        "3.9")
+            nox -s integration-3.9
+            retval=$?
+            ;;
+        "3.10")
+            nox -s integration-3.10
+            retval=$?
+            ;;
+        "3.11")
+            nox -s integration-3.11
+            retval=$?
+            ;;
+        "3.12")
+            nox -s integration-3.12
+            retval=$?
+            ;;
+        *)
+            ;;
+        esac
+    format)
+        nox -s format
+        retval=$?
+        ;;
 esac
 
 # Clean up `__pycache__` and `.nox` directories to avoid error
