@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.25.0](https://github.com/googleapis/proto-plus-python/compare/v1.24.0...v1.25.0) (2024-10-15)
+
+
+### Features
+
+* Add support for Python 3.13 ([#493](https://github.com/googleapis/proto-plus-python/issues/493)) ([e9643a1](https://github.com/googleapis/proto-plus-python/commit/e9643a1f6135267d4389c77722120e6c98342a74))
+
+
+### Bug Fixes
+
+* Construct messages with nested struct ([#479](https://github.com/googleapis/proto-plus-python/issues/479)) ([aa4aa61](https://github.com/googleapis/proto-plus-python/commit/aa4aa61b8c7ac0cc34d2d5797999bb434de88737))
+* Fix 'Couldn't build proto file' when using Python 3.13 ([#492](https://github.com/googleapis/proto-plus-python/issues/492)) ([a48c39f](https://github.com/googleapis/proto-plus-python/commit/a48c39ff2212261bc932d10132086a6c55be22e9))
+* Fix conda compatibility issue ([#475](https://github.com/googleapis/proto-plus-python/issues/475)) ([e2f9c9d](https://github.com/googleapis/proto-plus-python/commit/e2f9c9d1c87230d0e8d9ccacdfd0872792d54f1b))
+* Fix issue with equality comparison of repeated field with None ([#477](https://github.com/googleapis/proto-plus-python/issues/477)) ([3476348](https://github.com/googleapis/proto-plus-python/commit/3476348c995af2ce5dfcbcc688e9ddf98fa36360))
+* Remove check for Protobuf version ([#474](https://github.com/googleapis/proto-plus-python/issues/474)) ([a1748a3](https://github.com/googleapis/proto-plus-python/commit/a1748a315b6b50128b0d9927b2fee353ec55975f))
+
+
+### Documentation
+
+* Fix typos in proto/message.py ([#463](https://github.com/googleapis/proto-plus-python/issues/463)) ([4d8ee65](https://github.com/googleapis/proto-plus-python/commit/4d8ee656e008ec2b22f347e5da539b6285ec4b1b))
+* Update message.py spelling error `paylod` → `payload` ([e59fc9a](https://github.com/googleapis/proto-plus-python/commit/e59fc9a4f8dd9fcb0804b77347662ae29d1a31a1))
+
 ## [1.24.0](https://github.com/googleapis/proto-plus-python/compare/v1.23.0...v1.24.0) (2024-06-11)
 
 
