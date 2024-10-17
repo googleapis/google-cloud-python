@@ -2831,6 +2831,7 @@ def test_list_repositories_non_empty_request_with_auto_populated_field():
         parent="parent_value",
         page_token="page_token_value",
         filter="filter_value",
+        instance="instance_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2847,6 +2848,7 @@ def test_list_repositories_non_empty_request_with_auto_populated_field():
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
+            instance="instance_value",
         )
 
 
@@ -6351,6 +6353,7 @@ def test_list_repositories_rest_required_fields(
     assert not set(unset_fields) - set(
         (
             "filter",
+            "instance",
             "page_size",
             "page_token",
         )
@@ -6414,6 +6417,7 @@ def test_list_repositories_rest_unset_required_fields():
         set(
             (
                 "filter",
+                "instance",
                 "pageSize",
                 "pageToken",
             )

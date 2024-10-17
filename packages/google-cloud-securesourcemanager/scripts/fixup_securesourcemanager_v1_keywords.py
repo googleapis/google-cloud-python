@@ -47,7 +47,7 @@ class securesourcemanagerCallTransformer(cst.CSTTransformer):
         'get_instance': ('name', ),
         'get_repository': ('name', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-        'list_repositories': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_repositories': ('parent', 'page_size', 'page_token', 'filter', 'instance', ),
         'set_iam_policy_repo': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions_repo': ('resource', 'permissions', ),
     }
