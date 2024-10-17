@@ -45,3 +45,15 @@ body:
     label: API client name and version
     description: If there's a particular API client for which this feature would be helpful, enter it here. Try `pip list | grep google`, which should give you a name corresponding to one of the packages listed [here](https://github.com/googleapis/google-cloud-python/tree/main/packages).
     placeholder: e.g. google-cloud-vision v3.7.2
+- type: textarea
+  attributes:
+    label: 'Use case'
+    description: Describe the use case or scenario where this feature would be helpful.
+    value: |
+      _e.g. This feature would be useful in a scenario where I need to process large amounts of data efficiently._
+- type: textarea
+  attributes:
+    label: 'Additional context'
+    description: Add any other context or information about the feature request here.
+    value: |
+      _e.g. This feature would help improve the performance of my application._
