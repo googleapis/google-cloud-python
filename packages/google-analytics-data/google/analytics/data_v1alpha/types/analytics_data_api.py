@@ -1221,6 +1221,8 @@ class ReportTask(proto.Message):
     class ReportDefinition(proto.Message):
         r"""The definition of how a report should be run.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             dimensions (MutableSequence[google.analytics.data_v1alpha.types.Dimension]):
                 Optional. The dimensions requested and
@@ -1299,6 +1301,10 @@ class ReportTask(proto.Message):
                 then a query for the ``eventName`` dimension and
                 ``eventCount`` metric will not have a row containing
                 eventName: "purchase" and eventCount: 0.
+            sampling_level (google.analytics.data_v1alpha.types.SamplingLevel):
+                Optional. The report's sampling level.
+
+                This field is a member of `oneof`_ ``_sampling_level``.
         """
 
         dimensions: MutableSequence[data.Dimension] = proto.RepeatedField(
@@ -1358,6 +1364,12 @@ class ReportTask(proto.Message):
         keep_empty_rows: bool = proto.Field(
             proto.BOOL,
             number=13,
+        )
+        sampling_level: data.SamplingLevel = proto.Field(
+            proto.ENUM,
+            number=14,
+            optional=True,
+            enum=data.SamplingLevel,
         )
 
     class ReportMetadata(proto.Message):
