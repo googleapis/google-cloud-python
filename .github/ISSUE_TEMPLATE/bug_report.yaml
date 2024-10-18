@@ -91,3 +91,8 @@ body:
       pip list
       Package                     Version
       --------------------------- ------------------------
+- type: textarea
+  attributes:
+    label: Additional context
+    description: Add any other context about the problem here.
+    placeholder: Additional context
