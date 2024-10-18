@@ -128,7 +128,7 @@ class LanguageServiceTransport(abc.ABC):
     def host(self):
         return self._host
 
-    def _prep_wrapped_messages(self, client_info):
+    def _prep_wrapped_messages(self, client_info, with_call=False):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.analyze_sentiment: gapic_v1.method.wrap_method(
@@ -145,6 +145,7 @@ class LanguageServiceTransport(abc.ABC):
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
+                with_call=with_call,
             ),
             self.analyze_entities: gapic_v1.method.wrap_method(
                 self.analyze_entities,

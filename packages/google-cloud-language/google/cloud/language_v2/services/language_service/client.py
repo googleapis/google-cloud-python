@@ -667,6 +667,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
+        raw_response_callback: Optional[callable] = None,
     ) -> language_service.AnalyzeSentimentResponse:
         r"""Analyzes the sentiment of the provided text.
 
@@ -720,7 +721,10 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
-
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, google.auth.response]`.
         Returns:
             google.cloud.language_v2.types.AnalyzeSentimentResponse:
                 The sentiment analysis response
@@ -761,10 +765,12 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+            raw_response_callback=raw_response_callback
         )
-
+        if raw_response_callback:
+            raw_response_callback(response[1])
         # Done; return the response.
-        return response
+        return response[0]
 
     def analyze_entities(
         self,

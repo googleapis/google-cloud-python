@@ -181,7 +181,7 @@ class LanguageServiceGrpcTransport(LanguageServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
-        self._prep_wrapped_messages(client_info)
+        self._prep_wrapped_messages(client_info, with_call=True)
 
     @classmethod
     def create_channel(

@@ -231,7 +231,7 @@ class LanguageServiceGrpcAsyncIOTransport(LanguageServiceTransport):
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
-        self._prep_wrapped_messages(client_info)
+        self._prep_wrapped_messages(client_info, with_call=True)
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -393,7 +393,7 @@ class LanguageServiceGrpcAsyncIOTransport(LanguageServiceTransport):
             )
         return self._stubs["annotate_text"]
 
-    def _prep_wrapped_messages(self, client_info):
+    def _prep_wrapped_messages(self, client_info, with_call=False):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.analyze_sentiment: self._wrap_method(

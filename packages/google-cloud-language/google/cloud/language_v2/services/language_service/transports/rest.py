@@ -502,7 +502,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_sentiment(resp)
-            return resp
+            return (resp, response)
 
     class _AnnotateText(
         _BaseLanguageServiceRestTransport._BaseAnnotateText, LanguageServiceRestStub
