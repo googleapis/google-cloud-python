@@ -11681,6 +11681,7 @@ def test_create_report_task_rest_call_success(request_type):
                 "cohort_report_settings": {"accumulate": True},
             },
             "keep_empty_rows": True,
+            "sampling_level": 1,
         },
         "report_metadata": {
             "state": 1,
