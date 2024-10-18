@@ -3091,6 +3091,8 @@ def test_get_dataset_schema(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataset.DatasetSchema(
             name="name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_dataset_schema(request)
 
@@ -3103,6 +3105,8 @@ def test_get_dataset_schema(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DatasetSchema)
     assert response.name == "name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_dataset_schema_non_empty_request_with_auto_populated_field():
@@ -3238,6 +3242,8 @@ async def test_get_dataset_schema_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataset.DatasetSchema(
                 name="name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_dataset_schema(request)
@@ -3251,6 +3257,8 @@ async def test_get_dataset_schema_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DatasetSchema)
     assert response.name == "name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -3433,6 +3441,8 @@ def test_update_dataset_schema(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = dataset.DatasetSchema(
             name="name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.update_dataset_schema(request)
 
@@ -3445,6 +3455,8 @@ def test_update_dataset_schema(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DatasetSchema)
     assert response.name == "name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_update_dataset_schema_non_empty_request_with_auto_populated_field():
@@ -3577,6 +3589,8 @@ async def test_update_dataset_schema_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataset.DatasetSchema(
                 name="name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.update_dataset_schema(request)
@@ -3590,6 +3604,8 @@ async def test_update_dataset_schema_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DatasetSchema)
     assert response.name == "name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -5561,6 +5577,8 @@ async def test_get_dataset_schema_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataset.DatasetSchema(
                 name="name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_dataset_schema(request=None)
@@ -5590,6 +5608,8 @@ async def test_update_dataset_schema_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             dataset.DatasetSchema(
                 name="name_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.update_dataset_schema(request=None)
@@ -6350,6 +6370,8 @@ def test_get_dataset_schema_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataset.DatasetSchema(
             name="name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -6366,6 +6388,8 @@ def test_get_dataset_schema_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DatasetSchema)
     assert response.name == "name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6507,6 +6531,8 @@ def test_update_dataset_schema_rest_call_success(request_type):
                 "skip_naming_validation": True,
             },
         },
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6584,6 +6610,8 @@ def test_update_dataset_schema_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = dataset.DatasetSchema(
             name="name_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -6600,6 +6628,8 @@ def test_update_dataset_schema_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DatasetSchema)
     assert response.name == "name_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
