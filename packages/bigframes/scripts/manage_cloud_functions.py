@@ -153,6 +153,12 @@ def list_str(values):
     return [val for val in values.split(",") if val]
 
 
+def get_project_from_environment():
+    from google.cloud import bigquery
+
+    return bigquery.Client().project
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Manage cloud functions created to serve bigframes remote functions."
@@ -161,9 +167,10 @@ if __name__ == "__main__":
         "-p",
         "--project-id",
         type=str,
-        required=True,
+        required=False,
         action="store",
-        help="GCP project-id.",
+        help="GCP project-id. If not provided, the project-id resolved by the"
+        " BigQuery client from the user environment would be used.",
     )
     parser.add_argument(
         "-r",
@@ -212,4 +219,10 @@ if __name__ == "__main__":
     parser_cleanup.set_defaults(func=cleanup_gcfs)
 
     args = parser.parse_args(sys.argv[1:])
+    if args.project_id is None:
+        args.project_id = get_project_from_environment()
+        if args.project_id is None:
+            raise ValueError(
+                "Could not resolve a project. Plese set it via --project-id option."
+            )
     args.func(args)

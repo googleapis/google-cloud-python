@@ -30,7 +30,7 @@ _global_session_state = threading.local()
 _global_session_state.thread_local_session = None
 
 
-def _try_close_session(session):
+def _try_close_session(session: bigframes.session.Session):
     """Try to close the session and warn if couldn't."""
     try:
         session.close()

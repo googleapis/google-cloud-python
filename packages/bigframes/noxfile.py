@@ -105,6 +105,7 @@ nox.options.sessions = [
     "system-3.9",
     "system-3.12",
     "cover",
+    "cleanup",
 ]
 
 # Error if a python version is missing
@@ -952,25 +953,24 @@ def release_dry_run(session):
 def cleanup(session):
     """Clean up stale and/or temporary resources in the test project."""
     google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
-    if not google_cloud_project:
-        session.error(
-            "Set GOOGLE_CLOUD_PROJECT environment variable to run notebook session."
-        )
+    cleanup_options = []
+    if google_cloud_project:
+        cleanup_options.append(f"--project-id={google_cloud_project}")
 
     # Cleanup a few stale (more than 12 hours old) temporary cloud run
     # functions created by bigframems. This will help keeping the test GCP
     # project within the "Number of functions" quota
     # https://cloud.google.com/functions/quotas#resource_limits
     recency_cutoff_hours = 12
-    cleanup_count_per_location = 10
+    cleanup_count_per_location = 20
+    cleanup_options.extend(
+        [
+            f"--recency-cutoff={recency_cutoff_hours}",
+            "cleanup",
+            f"--number={cleanup_count_per_location}",
+        ]
+    )
 
     session.install("-e", ".")
 
-    session.run(
-        "python",
-        "scripts/manage_cloud_functions.py",
-        f"--project-id={google_cloud_project}",
-        f"--recency-cutoff={recency_cutoff_hours}",
-        "cleanup",
-        f"--number={cleanup_count_per_location}",
-    )
+    session.run("python", "scripts/manage_cloud_functions.py", *cleanup_options)
