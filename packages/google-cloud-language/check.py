@@ -29,13 +29,13 @@ async def test_language():
         "type_": language_v2.Document.Type.PLAIN_TEXT,
         "language_code": language_code,
     }
-    async def custom_callback(response):
-        trailing_metadata= await response.trailing_metadata()
-        print(f"something{trailing_metadata}")
+
+    async def custom_callback(grpc_call):
+        print(await grpc_call.trailing_metadata())
 
     response = await client.analyze_sentiment(
         request={"document": document, "encoding_type": language_v2.EncodingType.UTF8},
-        raw_response_callback=custom_callback
+        raw_grpc_callback=custom_callback
     )
     print(response)
 

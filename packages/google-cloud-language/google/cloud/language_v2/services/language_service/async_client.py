@@ -266,7 +266,7 @@ class LanguageServiceAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-        raw_response_callback: Optional[Callable[[aio.UnaryUnaryCall], Awaitable[None]]] = None,
+        raw_grpc_callback: Optional[Callable[[aio.UnaryUnaryCall], Awaitable[None]]] = None,
     ) -> language_service.AnalyzeSentimentResponse:
         r"""Analyzes the sentiment of the provided text.
 
@@ -368,8 +368,8 @@ class LanguageServiceAsyncClient:
 
         response = await call
         # execute callback
-        if raw_response_callback is not None:
-            await raw_response_callback(call)
+        if raw_grpc_callback is not None:
+            await raw_grpc_callback(call)
 
         # Done; return the response.
         return response
