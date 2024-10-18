@@ -707,10 +707,8 @@ class Session(
         try:
             local_block = blocks.Block.from_local(pandas_dataframe, self)
             inline_df = dataframe.DataFrame(local_block)
-        except pa.ArrowInvalid as e:
-            raise pa.ArrowInvalid(
-                f"Could not convert with a BigQuery type: `{e}`. "
-            ) from e
+        except pa.ArrowInvalid:  # Thrown by arrow for unsupported types, such as geo.
+            return None
         except ValueError:  # Thrown by ibis for some unhandled types
             return None
         except pa.ArrowTypeError:  # Thrown by arrow for types without mapping (geo).

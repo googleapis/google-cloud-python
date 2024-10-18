@@ -23,6 +23,7 @@ from packaging.version import Version
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
+import shapely  # type: ignore
 
 import bigframes.pandas
 import bigframes.series as series
@@ -211,6 +212,19 @@ def test_series_construct_from_list_escaped_strings():
     pd_result.index = pd_result.index.astype("Int64")
 
     pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
+
+
+def test_series_construct_geodata():
+    pd_series = pd.Series(
+        [shapely.Point(1, 1), shapely.Point(2, 2), shapely.Point(3, 3)],
+        dtype=gpd.array.GeometryDtype(),
+    )
+
+    series = bigframes.pandas.Series(pd_series)
+
+    pd.testing.assert_series_equal(
+        pd_series, series.to_pandas(), check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
