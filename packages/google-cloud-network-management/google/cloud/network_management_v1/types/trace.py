@@ -42,6 +42,8 @@ __protobuf__ = proto.module(
         "DropInfo",
         "GKEMasterInfo",
         "CloudSQLInstanceInfo",
+        "RedisInstanceInfo",
+        "RedisClusterInfo",
         "CloudFunctionInfo",
         "CloudRunRevisionInfo",
         "AppEngineVersionInfo",
@@ -50,6 +52,7 @@ __protobuf__ = proto.module(
         "ProxyConnectionInfo",
         "LoadBalancerBackendInfo",
         "StorageBucketInfo",
+        "ServerlessNegInfo",
     },
 )
 
@@ -265,6 +268,14 @@ class Step(proto.Message):
             Display information of a Cloud SQL instance.
 
             This field is a member of `oneof`_ ``step_info``.
+        redis_instance (google.cloud.network_management_v1.types.RedisInstanceInfo):
+            Display information of a Redis Instance.
+
+            This field is a member of `oneof`_ ``step_info``.
+        redis_cluster (google.cloud.network_management_v1.types.RedisClusterInfo):
+            Display information of a Redis Cluster.
+
+            This field is a member of `oneof`_ ``step_info``.
         cloud_function (google.cloud.network_management_v1.types.CloudFunctionInfo):
             Display information of a Cloud Function.
 
@@ -294,6 +305,12 @@ class Step(proto.Message):
         storage_bucket (google.cloud.network_management_v1.types.StorageBucketInfo):
             Display information of a Storage Bucket. Used
             only for return traces.
+
+            This field is a member of `oneof`_ ``step_info``.
+        serverless_neg (google.cloud.network_management_v1.types.ServerlessNegInfo):
+            Display information of a Serverless network
+            endpoint group backend. Used only for return
+            traces.
 
             This field is a member of `oneof`_ ``step_info``.
     """
@@ -330,6 +347,14 @@ class Step(proto.Message):
                 Initial state: packet originating from a
                 Cloud SQL instance. A CloudSQLInstanceInfo is
                 populated with starting instance information.
+            START_FROM_REDIS_INSTANCE (32):
+                Initial state: packet originating from a
+                Redis instance. A RedisInstanceInfo is populated
+                with starting instance information.
+            START_FROM_REDIS_CLUSTER (33):
+                Initial state: packet originating from a
+                Redis Cluster. A RedisClusterInfo is populated
+                with starting Cluster information.
             START_FROM_CLOUD_FUNCTION (23):
                 Initial state: packet originating from a
                 Cloud Function. A CloudFunctionInfo is populated
@@ -350,6 +375,10 @@ class Step(proto.Message):
                 Initial state: packet originating from a
                 published service that uses Private Service
                 Connect. Used only for return traces.
+            START_FROM_SERVERLESS_NEG (31):
+                Initial state: packet originating from a serverless network
+                endpoint group backend. Used only for return traces. The
+                serverless_neg information is populated.
             APPLY_INGRESS_FIREWALL_RULE (4):
                 Config checking state: verify ingress
                 firewall rule.
@@ -411,11 +440,14 @@ class Step(proto.Message):
         START_FROM_PRIVATE_NETWORK = 3
         START_FROM_GKE_MASTER = 21
         START_FROM_CLOUD_SQL_INSTANCE = 22
+        START_FROM_REDIS_INSTANCE = 32
+        START_FROM_REDIS_CLUSTER = 33
         START_FROM_CLOUD_FUNCTION = 23
         START_FROM_APP_ENGINE_VERSION = 25
         START_FROM_CLOUD_RUN_REVISION = 26
         START_FROM_STORAGE_BUCKET = 29
         START_FROM_PSC_PUBLISHED_SERVICE = 30
+        START_FROM_SERVERLESS_NEG = 31
         APPLY_INGRESS_FIREWALL_RULE = 4
         APPLY_EGRESS_FIREWALL_RULE = 5
         APPLY_ROUTE = 6
@@ -555,6 +587,18 @@ class Step(proto.Message):
         oneof="step_info",
         message="CloudSQLInstanceInfo",
     )
+    redis_instance: "RedisInstanceInfo" = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        oneof="step_info",
+        message="RedisInstanceInfo",
+    )
+    redis_cluster: "RedisClusterInfo" = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        oneof="step_info",
+        message="RedisClusterInfo",
+    )
     cloud_function: "CloudFunctionInfo" = proto.Field(
         proto.MESSAGE,
         number=20,
@@ -597,6 +641,12 @@ class Step(proto.Message):
         oneof="step_info",
         message="StorageBucketInfo",
     )
+    serverless_neg: "ServerlessNegInfo" = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        oneof="step_info",
+        message="ServerlessNegInfo",
+    )
 
 
 class InstanceInfo(proto.Message):
@@ -621,6 +671,9 @@ class InstanceInfo(proto.Message):
             Network tags configured on the instance.
         service_account (str):
             Service account authorized for the instance.
+        psc_network_attachment_uri (str):
+            URI of the PSC network attachment the NIC is
+            attached to (if relevant).
     """
 
     display_name: str = proto.Field(
@@ -655,19 +708,30 @@ class InstanceInfo(proto.Message):
         proto.STRING,
         number=8,
     )
+    psc_network_attachment_uri: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class NetworkInfo(proto.Message):
     r"""For display only. Metadata associated with a Compute Engine
-    network.
+    network. Next ID: 7
 
     Attributes:
         display_name (str):
             Name of a Compute Engine network.
         uri (str):
             URI of a Compute Engine network.
+        matched_subnet_uri (str):
+            URI of the subnet matching the source IP
+            address of the test.
         matched_ip_range (str):
-            The IP range that matches the test.
+            The IP range of the subnet matching the
+            source IP address of the test.
+        region (str):
+            The region of the subnet matching the source
+            IP address of the test.
     """
 
     display_name: str = proto.Field(
@@ -678,26 +742,31 @@ class NetworkInfo(proto.Message):
         proto.STRING,
         number=2,
     )
+    matched_subnet_uri: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
     matched_ip_range: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
 class FirewallInfo(proto.Message):
     r"""For display only. Metadata associated with a VPC firewall
-    rule, an implied VPC firewall rule, or a hierarchical firewall
-    policy rule.
+    rule, an implied VPC firewall rule, or a firewall policy rule.
 
     Attributes:
         display_name (str):
-            The display name of the VPC firewall rule.
-            This field is not applicable to hierarchical
-            firewall policy rules.
+            The display name of the firewall rule. This
+            field might be empty for firewall policy rules.
         uri (str):
-            The URI of the VPC firewall rule. This field
-            is not applicable to implied firewall rules or
-            hierarchical firewall policy rules.
+            The URI of the firewall rule. This field is
+            not applicable to implied VPC firewall rules.
         direction (str):
             Possible values: INGRESS, EGRESS
         action (str):
@@ -711,15 +780,21 @@ class FirewallInfo(proto.Message):
             rules.
         target_tags (MutableSequence[str]):
             The target tags defined by the VPC firewall
-            rule. This field is not applicable to
-            hierarchical firewall policy rules.
+            rule. This field is not applicable to firewall
+            policy rules.
         target_service_accounts (MutableSequence[str]):
             The target service accounts specified by the
             firewall rule.
         policy (str):
-            The hierarchical firewall policy that this
+            The name of the firewall policy that this
             rule is associated with. This field is not
-            applicable to VPC firewall rules.
+            applicable to VPC firewall rules and implied VPC
+            firewall rules.
+        policy_uri (str):
+            The URI of the firewall policy that this rule
+            is associated with. This field is not applicable
+            to VPC firewall rules and implied VPC firewall
+            rules.
         firewall_rule_type (google.cloud.network_management_v1.types.FirewallInfo.FirewallRuleType):
             The firewall rule's type.
     """
@@ -812,6 +887,10 @@ class FirewallInfo(proto.Message):
         proto.STRING,
         number=9,
     )
+    policy_uri: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
     firewall_rule_type: FirewallRuleType = proto.Field(
         proto.ENUM,
         number=10,
@@ -836,11 +915,9 @@ class RouteInfo(proto.Message):
         display_name (str):
             Name of a route.
         uri (str):
-            URI of a route.
-            Dynamic, peering static and peering dynamic
-            routes do not have an URI. Advertised route from
-            Google Cloud VPC to on-premises network also
-            does not have an URI.
+            URI of a route (if applicable).
+        region (str):
+            Region of the route (if applicable).
         dest_ip_range (str):
             Destination IP range of the route.
         next_hop (str):
@@ -872,6 +949,20 @@ class RouteInfo(proto.Message):
             URI of a NCC Spoke. NCC_HUB routes only.
 
             This field is a member of `oneof`_ ``_ncc_spoke_uri``.
+        advertised_route_source_router_uri (str):
+            For advertised dynamic routes, the URI of the
+            Cloud Router that advertised the corresponding
+            IP prefix.
+
+            This field is a member of `oneof`_ ``_advertised_route_source_router_uri``.
+        advertised_route_next_hop_uri (str):
+            For advertised routes, the URI of their next
+            hop, i.e. the URI of the hybrid endpoint (VPN
+            tunnel, Interconnect attachment, NCC router
+            appliance) the advertised prefix is advertised
+            through, or URI of the source peered network.
+
+            This field is a member of `oneof`_ ``_advertised_route_next_hop_uri``.
     """
 
     class RouteType(proto.Enum):
@@ -897,6 +988,11 @@ class RouteInfo(proto.Message):
                 network.
             POLICY_BASED (7):
                 Policy based route.
+            ADVERTISED (101):
+                Advertised route. Synthetic route which is
+                used to transition from the
+                StartFromPrivateNetwork state in Connectivity
+                tests.
         """
         ROUTE_TYPE_UNSPECIFIED = 0
         SUBNET = 1
@@ -906,6 +1002,7 @@ class RouteInfo(proto.Message):
         PEERING_STATIC = 5
         PEERING_DYNAMIC = 6
         POLICY_BASED = 7
+        ADVERTISED = 101
 
     class NextHopType(proto.Enum):
         r"""Type of next hop:
@@ -999,6 +1096,10 @@ class RouteInfo(proto.Message):
         proto.STRING,
         number=2,
     )
+    region: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
     dest_ip_range: str = proto.Field(
         proto.STRING,
         number=3,
@@ -1043,6 +1144,16 @@ class RouteInfo(proto.Message):
     ncc_spoke_uri: str = proto.Field(
         proto.STRING,
         number=16,
+        optional=True,
+    )
+    advertised_route_source_router_uri: str = proto.Field(
+        proto.STRING,
+        number=17,
+        optional=True,
+    )
+    advertised_route_next_hop_uri: str = proto.Field(
+        proto.STRING,
+        number=18,
         optional=True,
     )
 
@@ -1117,22 +1228,35 @@ class ForwardingRuleInfo(proto.Message):
 
     Attributes:
         display_name (str):
-            Name of a Compute Engine forwarding rule.
+            Name of the forwarding rule.
         uri (str):
-            URI of a Compute Engine forwarding rule.
+            URI of the forwarding rule.
         matched_protocol (str):
             Protocol defined in the forwarding rule that
-            matches the test.
+            matches the packet.
         matched_port_range (str):
             Port range defined in the forwarding rule
-            that matches the test.
+            that matches the packet.
         vip (str):
             VIP of the forwarding rule.
         target (str):
             Target type of the forwarding rule.
         network_uri (str):
-            Network URI. Only valid for Internal Load
-            Balancer.
+            Network URI.
+        region (str):
+            Region of the forwarding rule. Set only for
+            regional forwarding rules.
+        load_balancer_name (str):
+            Name of the load balancer the forwarding rule
+            belongs to. Empty for forwarding rules not
+            related to load balancers (like PSC forwarding
+            rules).
+        psc_service_attachment_uri (str):
+            URI of the PSC service attachment this
+            forwarding rule targets (if applicable).
+        psc_google_api_target (str):
+            PSC Google API target this forwarding rule
+            targets (if applicable).
     """
 
     display_name: str = proto.Field(
@@ -1162,6 +1286,22 @@ class ForwardingRuleInfo(proto.Message):
     network_uri: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    load_balancer_name: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    psc_service_attachment_uri: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    psc_google_api_target: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 
@@ -1536,6 +1676,12 @@ class DeliverInfo(proto.Message):
             delivered to.
         ip_address (str):
             IP address of the target (if applicable).
+        storage_bucket (str):
+            Name of the Cloud Storage Bucket the packet
+            is delivered to (if applicable).
+        psc_google_api_target (str):
+            PSC Google API target the packet is delivered
+            to (if applicable).
     """
 
     class Target(proto.Enum):
@@ -1559,7 +1705,7 @@ class DeliverInfo(proto.Message):
                 Target is a published service that uses `Private Service
                 Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-services>`__.
             PSC_GOOGLE_API (7):
-                Target is all Google APIs that use `Private Service
+                Target is Google APIs that use `Private Service
                 Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>`__.
             PSC_VPC_SC (8):
                 Target is a VPC-SC that uses `Private Service
@@ -1581,6 +1727,13 @@ class DeliverInfo(proto.Message):
             CLOUD_RUN_REVISION (14):
                 Target is a Cloud Run revision. Used only for
                 return traces.
+            GOOGLE_MANAGED_SERVICE (15):
+                Target is a Google-managed service. Used only
+                for return traces.
+            REDIS_INSTANCE (16):
+                Target is a Redis Instance.
+            REDIS_CLUSTER (17):
+                Target is a Redis Cluster.
         """
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
@@ -1597,6 +1750,9 @@ class DeliverInfo(proto.Message):
         CLOUD_FUNCTION = 12
         APP_ENGINE_VERSION = 13
         CLOUD_RUN_REVISION = 14
+        GOOGLE_MANAGED_SERVICE = 15
+        REDIS_INSTANCE = 16
+        REDIS_CLUSTER = 17
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -1610,6 +1766,14 @@ class DeliverInfo(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    storage_bucket: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    psc_google_api_target: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1737,6 +1901,10 @@ class AbortInfo(proto.Message):
             UNKNOWN_IP (2):
                 Aborted because no endpoint with the packet's
                 destination IP address is found.
+            GOOGLE_MANAGED_SERVICE_UNKNOWN_IP (32):
+                Aborted because no endpoint with the packet's
+                destination IP is found in the Google-managed
+                project.
             SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK (23):
                 Aborted because the source IP address doesn't
                 belong to any of the subnets of the source VPC
@@ -1753,6 +1921,10 @@ class AbortInfo(proto.Message):
                 Aborted because user lacks permission to
                 access Network endpoint group endpoint configs
                 required to run the test.
+            PERMISSION_DENIED_NO_CLOUD_ROUTER_CONFIGS (36):
+                Aborted because user lacks permission to
+                access Cloud Router configs required to run the
+                test.
             NO_SOURCE_LOCATION (5):
                 Aborted because no valid source or
                 destination endpoint is derived from the input
@@ -1808,6 +1980,12 @@ class AbortInfo(proto.Message):
             SOURCE_PSC_CLOUD_SQL_UNSUPPORTED (20):
                 Aborted because tests with a PSC-based Cloud
                 SQL instance as a source are not supported.
+            SOURCE_REDIS_CLUSTER_UNSUPPORTED (34):
+                Aborted because tests with a Redis Cluster as
+                a source are not supported.
+            SOURCE_REDIS_INSTANCE_UNSUPPORTED (35):
+                Aborted because tests with a Redis Instance
+                as a source are not supported.
             SOURCE_FORWARDING_RULE_UNSUPPORTED (21):
                 Aborted because tests with a forwarding rule
                 as a source are not supported.
@@ -1832,10 +2010,12 @@ class AbortInfo(proto.Message):
         DESTINATION_ENDPOINT_NOT_FOUND = 13
         MISMATCHED_DESTINATION_NETWORK = 14
         UNKNOWN_IP = 2
+        GOOGLE_MANAGED_SERVICE_UNKNOWN_IP = 32
         SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK = 23
         PERMISSION_DENIED = 4
         PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS = 28
         PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS = 29
+        PERMISSION_DENIED_NO_CLOUD_ROUTER_CONFIGS = 36
         NO_SOURCE_LOCATION = 5
         INVALID_ARGUMENT = 6
         TRACE_TOO_LONG = 9
@@ -1850,6 +2030,8 @@ class AbortInfo(proto.Message):
         ROUTE_CONFIG_NOT_FOUND = 27
         GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT = 19
         SOURCE_PSC_CLOUD_SQL_UNSUPPORTED = 20
+        SOURCE_REDIS_CLUSTER_UNSUPPORTED = 34
+        SOURCE_REDIS_INSTANCE_UNSUPPORTED = 35
         SOURCE_FORWARDING_RULE_UNSUPPORTED = 21
         NON_ROUTABLE_IP_ADDRESS = 22
         UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT = 30
@@ -1994,6 +2176,12 @@ class DropInfo(proto.Message):
             CLOUD_SQL_INSTANCE_NOT_RUNNING (28):
                 Packet sent from or to a Cloud SQL instance
                 that is not in running state.
+            REDIS_INSTANCE_NOT_RUNNING (68):
+                Packet sent from or to a Redis Instance that
+                is not in running state.
+            REDIS_CLUSTER_NOT_RUNNING (69):
+                Packet sent from or to a Redis Cluster that
+                is not in running state.
             TRAFFIC_TYPE_BLOCKED (15):
                 The type of traffic is blocked and the user cannot configure
                 a firewall rule to enable it. See `Always blocked
@@ -2054,6 +2242,11 @@ class DropInfo(proto.Message):
                 Packet was dropped because there is no route
                 from a Cloud SQL instance to a destination
                 network.
+            CLOUD_SQL_CONNECTOR_REQUIRED (63):
+                Packet was dropped because the Cloud SQL
+                instance requires all connections to use Cloud
+                SQL connectors and to target the Cloud SQL proxy
+                port (3307).
             CLOUD_FUNCTION_NOT_ACTIVE (22):
                 Packet could be dropped because the Cloud
                 Function is not in an active status.
@@ -2063,6 +2256,14 @@ class DropInfo(proto.Message):
             VPC_CONNECTOR_NOT_RUNNING (24):
                 Packet could be dropped because the VPC
                 connector is not in a running state.
+            VPC_CONNECTOR_SERVERLESS_TRAFFIC_BLOCKED (60):
+                Packet could be dropped because the traffic
+                from the serverless service to the VPC connector
+                is not allowed.
+            VPC_CONNECTOR_HEALTH_CHECK_TRAFFIC_BLOCKED (61):
+                Packet could be dropped because the health
+                check traffic to the VPC connector is not
+                allowed.
             FORWARDING_RULE_REGION_MISMATCH (25):
                 Packet could be dropped because it was sent
                 from a different region to a regional forwarding
@@ -2093,6 +2294,10 @@ class DropInfo(proto.Message):
             NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT (57):
                 No NAT subnets are defined for the PSC
                 service attachment.
+            PSC_TRANSITIVITY_NOT_PROPAGATED (64):
+                PSC endpoint is accessed via NCC, but PSC
+                transitivity configuration is not yet
+                propagated.
             HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED (55):
                 The packet sent from the hybrid NEG proxy
                 matches a non-dynamic route, but such a
@@ -2117,6 +2322,75 @@ class DropInfo(proto.Message):
                 IPs.
             ROUTING_LOOP (59):
                 Packet is stuck in a routing loop.
+            DROPPED_INSIDE_GOOGLE_MANAGED_SERVICE (62):
+                Packet is dropped inside a Google-managed
+                service due to being delivered in return trace
+                to an endpoint that doesn't match the endpoint
+                the packet was sent from in forward trace. Used
+                only for return traces.
+            LOAD_BALANCER_BACKEND_INVALID_NETWORK (65):
+                Packet is dropped due to a load balancer
+                backend instance not having a network interface
+                in the network expected by the load balancer.
+            BACKEND_SERVICE_NAMED_PORT_NOT_DEFINED (66):
+                Packet is dropped due to a backend service
+                named port not being defined on the instance
+                group level.
+            DESTINATION_IS_PRIVATE_NAT_IP_RANGE (67):
+                Packet is dropped due to a destination IP
+                range being part of a Private NAT IP range.
+            DROPPED_INSIDE_REDIS_INSTANCE_SERVICE (70):
+                Generic drop cause for a packet being dropped
+                inside a Redis Instance service project.
+            REDIS_INSTANCE_UNSUPPORTED_PORT (71):
+                Packet is dropped due to an unsupported port
+                being used to connect to a Redis Instance. Port
+                6379 should be used to connect to a Redis
+                Instance.
+            REDIS_INSTANCE_CONNECTING_FROM_PUPI_ADDRESS (72):
+                Packet is dropped due to connecting from PUPI
+                address to a PSA based Redis Instance.
+            REDIS_INSTANCE_NO_ROUTE_TO_DESTINATION_NETWORK (73):
+                Packet is dropped due to no route to the
+                destination network.
+            REDIS_INSTANCE_NO_EXTERNAL_IP (74):
+                Redis Instance does not have an external IP
+                address.
+            REDIS_INSTANCE_UNSUPPORTED_PROTOCOL (78):
+                Packet is dropped due to an unsupported
+                protocol being used to connect to a Redis
+                Instance. Only TCP connections are accepted by a
+                Redis Instance.
+            DROPPED_INSIDE_REDIS_CLUSTER_SERVICE (75):
+                Generic drop cause for a packet being dropped
+                inside a Redis Cluster service project.
+            REDIS_CLUSTER_UNSUPPORTED_PORT (76):
+                Packet is dropped due to an unsupported port
+                being used to connect to a Redis Cluster. Ports
+                6379 and 11000 to 13047 should be used to
+                connect to a Redis Cluster.
+            REDIS_CLUSTER_NO_EXTERNAL_IP (77):
+                Redis Cluster does not have an external IP
+                address.
+            REDIS_CLUSTER_UNSUPPORTED_PROTOCOL (79):
+                Packet is dropped due to an unsupported
+                protocol being used to connect to a Redis
+                Cluster. Only TCP connections are accepted by a
+                Redis Cluster.
+            NO_ADVERTISED_ROUTE_TO_GCP_DESTINATION (80):
+                Packet from the non-GCP (on-prem) or unknown
+                GCP network is dropped due to the destination IP
+                address not belonging to any IP prefix
+                advertised via BGP by the Cloud Router.
+            NO_TRAFFIC_SELECTOR_TO_GCP_DESTINATION (81):
+                Packet from the non-GCP (on-prem) or unknown
+                GCP network is dropped due to the destination IP
+                address not belonging to any IP prefix included
+                to the local traffic selector of the VPN tunnel.
+            NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION (82):
+                Packet from the unknown peered network is
+                dropped due to no known route from the source
+                network to the destination IP address.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -2146,6 +2420,8 @@ class DropInfo(proto.Message):
         INSTANCE_NOT_RUNNING = 14
         GKE_CLUSTER_NOT_RUNNING = 27
         CLOUD_SQL_INSTANCE_NOT_RUNNING = 28
+        REDIS_INSTANCE_NOT_RUNNING = 68
+        REDIS_CLUSTER_NOT_RUNNING = 69
         TRAFFIC_TYPE_BLOCKED = 15
         GKE_MASTER_UNAUTHORIZED_ACCESS = 16
         CLOUD_SQL_INSTANCE_UNAUTHORIZED_ACCESS = 17
@@ -2161,9 +2437,12 @@ class DropInfo(proto.Message):
         CLOUD_SQL_INSTANCE_NOT_CONFIGURED_FOR_EXTERNAL_TRAFFIC = 33
         PUBLIC_CLOUD_SQL_INSTANCE_TO_PRIVATE_DESTINATION = 34
         CLOUD_SQL_INSTANCE_NO_ROUTE = 35
+        CLOUD_SQL_CONNECTOR_REQUIRED = 63
         CLOUD_FUNCTION_NOT_ACTIVE = 22
         VPC_CONNECTOR_NOT_SET = 23
         VPC_CONNECTOR_NOT_RUNNING = 24
+        VPC_CONNECTOR_SERVERLESS_TRAFFIC_BLOCKED = 60
+        VPC_CONNECTOR_HEALTH_CHECK_TRAFFIC_BLOCKED = 61
         FORWARDING_RULE_REGION_MISMATCH = 25
         PSC_CONNECTION_NOT_ACCEPTED = 26
         PSC_ENDPOINT_ACCESSED_FROM_PEERED_NETWORK = 41
@@ -2171,6 +2450,7 @@ class DropInfo(proto.Message):
         PSC_NEG_PRODUCER_FORWARDING_RULE_MULTIPLE_PORTS = 54
         CLOUD_SQL_PSC_NEG_UNSUPPORTED = 58
         NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT = 57
+        PSC_TRANSITIVITY_NOT_PROPAGATED = 64
         HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED = 55
         HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED = 56
         CLOUD_RUN_REVISION_NOT_READY = 29
@@ -2178,6 +2458,23 @@ class DropInfo(proto.Message):
         LOAD_BALANCER_HAS_NO_PROXY_SUBNET = 39
         CLOUD_NAT_NO_ADDRESSES = 40
         ROUTING_LOOP = 59
+        DROPPED_INSIDE_GOOGLE_MANAGED_SERVICE = 62
+        LOAD_BALANCER_BACKEND_INVALID_NETWORK = 65
+        BACKEND_SERVICE_NAMED_PORT_NOT_DEFINED = 66
+        DESTINATION_IS_PRIVATE_NAT_IP_RANGE = 67
+        DROPPED_INSIDE_REDIS_INSTANCE_SERVICE = 70
+        REDIS_INSTANCE_UNSUPPORTED_PORT = 71
+        REDIS_INSTANCE_CONNECTING_FROM_PUPI_ADDRESS = 72
+        REDIS_INSTANCE_NO_ROUTE_TO_DESTINATION_NETWORK = 73
+        REDIS_INSTANCE_NO_EXTERNAL_IP = 74
+        REDIS_INSTANCE_UNSUPPORTED_PROTOCOL = 78
+        DROPPED_INSIDE_REDIS_CLUSTER_SERVICE = 75
+        REDIS_CLUSTER_UNSUPPORTED_PORT = 76
+        REDIS_CLUSTER_NO_EXTERNAL_IP = 77
+        REDIS_CLUSTER_UNSUPPORTED_PROTOCOL = 79
+        NO_ADVERTISED_ROUTE_TO_GCP_DESTINATION = 80
+        NO_TRAFFIC_SELECTOR_TO_GCP_DESTINATION = 81
+        NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION = 82
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2279,6 +2576,103 @@ class CloudSQLInstanceInfo(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class RedisInstanceInfo(proto.Message):
+    r"""For display only. Metadata associated with a Cloud Redis
+    Instance.
+
+    Attributes:
+        display_name (str):
+            Name of a Cloud Redis Instance.
+        uri (str):
+            URI of a Cloud Redis Instance.
+        network_uri (str):
+            URI of a Cloud Redis Instance network.
+        primary_endpoint_ip (str):
+            Primary endpoint IP address of a Cloud Redis
+            Instance.
+        read_endpoint_ip (str):
+            Read endpoint IP address of a Cloud Redis
+            Instance (if applicable).
+        region (str):
+            Region in which the Cloud Redis Instance is
+            defined.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    primary_endpoint_ip: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    read_endpoint_ip: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class RedisClusterInfo(proto.Message):
+    r"""For display only. Metadata associated with a Redis Cluster.
+
+    Attributes:
+        display_name (str):
+            Name of a Redis Cluster.
+        uri (str):
+            URI of a Redis Cluster in format
+            "projects/{project_id}/locations/{location}/clusters/{cluster_id}".
+        network_uri (str):
+            URI of a Redis Cluster network in format
+            "projects/{project_id}/global/networks/{network_id}".
+        discovery_endpoint_ip_address (str):
+            Discovery endpoint IP address of a Redis
+            Cluster.
+        secondary_endpoint_ip_address (str):
+            Secondary endpoint IP address of a Redis
+            Cluster.
+        location (str):
+            Name of the region in which the Redis Cluster
+            is defined. For example, "us-central1".
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    discovery_endpoint_ip_address: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    secondary_endpoint_ip_address: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -2746,6 +3140,21 @@ class StorageBucketInfo(proto.Message):
     """
 
     bucket: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ServerlessNegInfo(proto.Message):
+    r"""For display only. Metadata associated with the serverless
+    network endpoint group backend.
+
+    Attributes:
+        neg_uri (str):
+            URI of the serverless network endpoint group.
+    """
+
+    neg_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
