@@ -61,9 +61,10 @@ class Contact(proto.Message):
             languages <https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages>`__
             for a list of supported languages.
         validation_state (google.cloud.essential_contacts_v1.types.ValidationState):
-            The validity of the contact. A contact is
-            considered valid if it is the correct recipient
-            for notifications for a particular resource.
+            Output only. The validity of the contact. A
+            contact is considered valid if it is the correct
+            recipient for notifications for a particular
+            resource.
         validate_time (google.protobuf.timestamp_pb2.Timestamp):
             The last time the validation_state was updated, either
             manually or automatically. A contact is considered stale if
