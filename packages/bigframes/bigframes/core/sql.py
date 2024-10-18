@@ -19,7 +19,7 @@ Utility functions for SQL construction.
 
 import datetime
 import math
-from typing import Iterable, Mapping, TYPE_CHECKING, Union
+from typing import cast, Collection, Iterable, Mapping, TYPE_CHECKING, Union
 
 import bigframes.core.compile.googlesql as googlesql
 
@@ -116,6 +116,45 @@ def ordering_clause(
     return f"ORDER BY {' ,'.join(parts)}"
 
 
+def create_vector_index_ddl(
+    *,
+    replace: bool,
+    index_name: str,
+    table_name: str,
+    column_name: str,
+    stored_column_names: Collection[str],
+    options: Mapping[str, Union[str | int | bool | float]] = {},
+) -> str:
+    """Encode the VECTOR INDEX statement for BigQuery Vector Search."""
+
+    if replace:
+        create = "CREATE OR REPLACE VECTOR INDEX "
+    else:
+        create = "CREATE VECTOR INDEX IF NOT EXISTS "
+
+    if len(stored_column_names) > 0:
+        escaped_stored = [
+            f"{googlesql.identifier(name)}" for name in stored_column_names
+        ]
+        storing = f"STORING({', '.join(escaped_stored)}) "
+    else:
+        storing = ""
+
+    rendered_options = ", ".join(
+        [
+            f"{option_name} = {simple_literal(option_value)}"
+            for option_name, option_value in options.items()
+        ]
+    )
+
+    return f"""
+    {create} {googlesql.identifier(index_name)}
+    ON {googlesql.identifier(table_name)}({googlesql.identifier(column_name)})
+    {storing}
+    OPTIONS({rendered_options});
+    """
+
+
 def create_vector_search_sql(
     sql_string: str,
     options: Mapping[str, Union[str | int | bool | float]] = {},
@@ -135,7 +174,7 @@ def create_vector_search_sql(
         base.*,
         distance,
     FROM VECTOR_SEARCH(
-        TABLE `{base_table}`,
+        TABLE {googlesql.identifier(cast(str, base_table))},
         {simple_literal(column_to_search)},
         ({sql_string}),
         {simple_literal(query_column_to_search)},
@@ -150,7 +189,7 @@ def create_vector_search_sql(
         base.*,
         distance,
     FROM VECTOR_SEARCH(
-        TABLE `{base_table}`,
+        TABLE {googlesql.identifier(cast(str, base_table))},
         {simple_literal(column_to_search)},
         ({sql_string}),
         distance_type => {simple_literal(distance_type)},

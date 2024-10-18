@@ -242,6 +242,11 @@ def dataset_id_permanent_tokyo(
 
 
 @pytest.fixture(scope="session")
+def table_id_not_created(dataset_id: str):
+    return f"{dataset_id}.{prefixer.create_prefix()}"
+
+
+@pytest.fixture(scope="session")
 def scalars_schema(bigquery_client: bigquery.Client):
     # TODO(swast): Add missing scalar data types such as BIGNUMERIC.
     # See also: https://github.com/ibis-project/ibis-bigquery/pull/67

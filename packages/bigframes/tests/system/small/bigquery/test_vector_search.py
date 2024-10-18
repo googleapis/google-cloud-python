@@ -12,11 +12,107 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import random
+from typing import Any, cast, Dict, Iterable
+
+import google.cloud.bigquery
 import numpy as np
 import pandas as pd
+import pyarrow
+import pytest
 
 import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
+
+# Need at least 5,000 rows to create a vector index.
+VECTOR_DF = pd.DataFrame(
+    {
+        "rowid": np.arange(9_999),
+        # 3D values, clustered around the three unit vector axes.
+        "my_embedding": pd.Series(
+            [
+                [
+                    1 + (random.random() - 0.5) if (row % 3) == 0 else 0,
+                    1 + (random.random() - 0.5) if (row % 3) == 1 else 0,
+                    1 + (random.random() - 0.5) if (row % 3) == 2 else 0,
+                ]
+                for row in range(9_999)
+            ],
+            dtype=pd.ArrowDtype(pyarrow.list_(pyarrow.float64())),
+        ),
+        # Three groups of animal, vegetable, and mineral, corresponding to
+        # the embeddings above.
+        "mystery_word": [
+            "aarvark",
+            "broccoli",
+            "calcium",
+            "dog",
+            "eggplant",
+            "ferrite",
+            "gopher",
+            "huckleberry",
+            "ice",
+        ]
+        * 1_111,
+    },
+)
+
+
+@pytest.fixture
+def vector_table_id(
+    bigquery_client: google.cloud.bigquery.Client,
+    # Use non-US location to ensure location autodetection works.
+    table_id_not_created: str,
+):
+    table = google.cloud.bigquery.Table(
+        table_id_not_created,
+        [
+            {"name": "rowid", "type": "INT64"},
+            {"name": "my_embedding", "type": "FLOAT64", "mode": "REPEATED"},
+            {"name": "mystery_word", "type": "STRING"},
+        ],
+    )
+    bigquery_client.create_table(table)
+    bigquery_client.load_table_from_json(
+        cast(Iterable[Dict[str, Any]], VECTOR_DF.to_dict(orient="records")),
+        table_id_not_created,
+    ).result()
+    yield table_id_not_created
+    bigquery_client.delete_table(table_id_not_created, not_found_ok=True)
+
+
+def test_create_vector_index_ivf(
+    session, vector_table_id: str, bigquery_client: google.cloud.bigquery.Client
+):
+    bbq.create_vector_index(
+        vector_table_id,
+        "my_embedding",
+        distance_type="cosine",
+        stored_column_names=["mystery_word"],
+        index_type="ivf",
+        ivf_options={"num_lists": 3},
+        session=session,
+    )
+
+    # Check that the index was created successfully.
+    project_id, dataset_id, table_name = vector_table_id.split(".")
+    indexes = bigquery_client.query_and_wait(
+        f"""
+        SELECT index_catalog, index_schema, table_name, index_name, index_column_name
+        FROM `{project_id}`.`{dataset_id}`.INFORMATION_SCHEMA.VECTOR_INDEX_COLUMNS
+        WHERE table_name = '{table_name}';
+        """
+    ).to_dataframe()
+
+    # There should only be one vector index.
+    assert len(indexes.index) == 1
+    assert indexes["index_catalog"].iloc[0] == project_id
+    assert indexes["index_schema"].iloc[0] == dataset_id
+    assert indexes["table_name"].iloc[0] == table_name
+    assert indexes["index_column_name"].iloc[0] == "my_embedding"
+
+    # If no name is specified, use the table name as the index name
+    assert indexes["index_name"].iloc[0] == table_name
 
 
 def test_vector_search_basic_params_with_df():
