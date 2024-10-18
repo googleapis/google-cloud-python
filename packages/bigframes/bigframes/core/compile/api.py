@@ -18,6 +18,7 @@ from typing import Mapping, Sequence, Tuple, TYPE_CHECKING
 import google.cloud.bigquery as bigquery
 
 import bigframes.core.compile.compiler as compiler
+import bigframes.core.rewrite as rewrites
 
 if TYPE_CHECKING:
     import bigframes.core.nodes
@@ -42,6 +43,7 @@ class SQLCompiler:
         col_id_overrides: Mapping[str, str] = {},
     ) -> str:
         """Compile node into sql where rows are unsorted, and no ordering information is preserved."""
+        # TODO: Enable limit pullup, but only if not being used to write to clustered table.
         return self._compiler.compile_unordered_ir(node).to_sql(
             col_id_overrides=col_id_overrides
         )
@@ -53,8 +55,10 @@ class SQLCompiler:
         col_id_overrides: Mapping[str, str] = {},
     ) -> str:
         """Compile node into sql where rows are sorted with ORDER BY."""
-        return self._compiler.compile_ordered_ir(node).to_sql(
-            col_id_overrides=col_id_overrides, ordered=True
+        # If we are ordering the query anyways, compiling the slice as a limit is probably a good idea.
+        new_node, limit = rewrites.pullup_limit_from_slice(node)
+        return self._compiler.compile_ordered_ir(new_node).to_sql(
+            col_id_overrides=col_id_overrides, ordered=True, limit=limit
         )
 
     def compile_raw(

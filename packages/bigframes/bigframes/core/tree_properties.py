@@ -42,32 +42,35 @@ def can_fast_peek(node: nodes.BigFrameNode) -> bool:
 
 def can_fast_head(node: nodes.BigFrameNode) -> bool:
     """Can get head fast if can push head operator down to leafs and operators preserve rows."""
+    # To do fast head operation:
+    # (1) the underlying data must be arranged/indexed according to the logical ordering
+    # (2) transformations must support pushing down LIMIT or a filter on row numbers
+    return has_fast_offset_address(node) or has_fast_offset_address(node)
+
+
+def has_fast_orderby_limit(node: nodes.BigFrameNode) -> bool:
+    """True iff ORDER BY LIMIT can be performed without a large full table scan."""
+    # TODO: In theory compatible with some Slice nodes, potentially by adding OFFSET
     if isinstance(node, nodes.LeafNode):
-        return node.supports_fast_head
+        return node.fast_ordered_limit
     if isinstance(node, (nodes.ProjectionNode, nodes.SelectionNode)):
-        return can_fast_head(node.child)
+        return has_fast_orderby_limit(node.child)
+    return False
+
+
+def has_fast_offset_address(node: nodes.BigFrameNode) -> bool:
+    """True iff specific offsets can be scanned without a large full table scan."""
+    # TODO: In theory can push offset lookups through slice operators by translating indices
+    if isinstance(node, nodes.LeafNode):
+        return node.fast_offsets
+    if isinstance(node, (nodes.ProjectionNode, nodes.SelectionNode)):
+        return has_fast_offset_address(node.child)
     return False
 
 
 def row_count(node: nodes.BigFrameNode) -> Optional[int]:
     """Determine row count from local metadata, return None if unknown."""
-    if isinstance(node, nodes.LeafNode):
-        return node.row_count
-    if isinstance(node, nodes.AggregateNode):
-        if len(node.by_column_ids) == 0:
-            return 1
-        return None
-    if isinstance(node, nodes.ConcatNode):
-        sub_counts = list(map(row_count, node.child_nodes))
-        total = 0
-        for count in sub_counts:
-            if count is None:
-                return None
-            total += count
-        return total
-    if isinstance(node, nodes.UnaryNode) and node.row_preserving:
-        return row_count(node.child)
-    return None
+    return node.row_count
 
 
 # Replace modified_cost(node) = cost(apply_cache(node))

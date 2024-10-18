@@ -943,8 +943,9 @@ class OrderedIR(BaseIbisIR):
         self,
         col_id_overrides: typing.Mapping[str, str] = {},
         ordered: bool = False,
+        limit: Optional[int] = None,
     ) -> str:
-        if ordered:
+        if ordered or limit:
             # Need to bake ordering expressions into the selected column in order for our ordering clause builder to work.
             baked_ir = self._bake_ordering()
             sql = ibis_bigquery.Backend().compile(
@@ -969,7 +970,11 @@ class OrderedIR(BaseIbisIR):
                 order_by_clause = bigframes.core.sql.ordering_clause(
                     baked_ir._ordering.all_ordering_columns
                 )
-                sql += f"{order_by_clause}\n"
+                sql += f"\n{order_by_clause}"
+            if limit is not None:
+                if not isinstance(limit, int):
+                    raise TypeError(f"Limit param: {limit} must be an int.")
+                sql += f"\nLIMIT {limit}"
         else:
             sql = ibis_bigquery.Backend().compile(
                 self._to_ibis_expr(
