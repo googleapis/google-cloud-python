@@ -432,7 +432,15 @@ def cover(session):
     (including system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=90")
+
+    # Create a coverage report that includes only the product code.
+    session.run(
+        "coverage",
+        "report",
+        "--include=bigframes/*",
+        "--show-missing",
+        "--fail-under=86",
+    )
 
     # Make sure there is no dead code in our test directories.
     session.run(

@@ -130,6 +130,13 @@ assert 1 == s.replace(
     "BigQuery DataFrames provides DataFrame APIs on the BigQuery engine",
 )
 
+# Don't omit `*/core/*.py` when counting test coverages
+assert 1 == s.replace(
+    [".coveragerc"],
+    re.escape("  */core/*.py\n"),
+    "",
+)
+
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
