@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.3...google-cloud-discoveryengine-v0.13.0) (2024-10-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* [google-cloud-discoveryengine] fix the location type annotation
+
+### Bug Fixes
+
+* [google-cloud-discoveryengine] fix the location type annotation ([a341b84](https://github.com/googleapis/google-cloud-python/commit/a341b8400a535074618a970f6d001d7289cfb24a))
+* [google-cloud-discoveryengine] fix the location type annotation ([#13149](https://github.com/googleapis/google-cloud-python/issues/13149)) ([a341b84](https://github.com/googleapis/google-cloud-python/commit/a341b8400a535074618a970f6d001d7289cfb24a))
+
 ## [0.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.2...google-cloud-discoveryengine-v0.12.3) (2024-10-10)
 
 
