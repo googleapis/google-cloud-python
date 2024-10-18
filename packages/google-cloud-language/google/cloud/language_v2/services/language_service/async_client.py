@@ -255,6 +255,8 @@ class LanguageServiceAsyncClient:
             client_info=client_info,
         )
 
+    from typing import Awaitable
+    from grpc import aio
     async def analyze_sentiment(
         self,
         request: Optional[Union[language_service.AnalyzeSentimentRequest, dict]] = None,
@@ -264,6 +266,7 @@ class LanguageServiceAsyncClient:
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
+        raw_response_callback: Optional[Callable[[aio.UnaryUnaryCall], Awaitable[None]]] = None,
     ) -> language_service.AnalyzeSentimentResponse:
         r"""Analyzes the sentiment of the provided text.
 
@@ -356,12 +359,17 @@ class LanguageServiceAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        call = rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
+
+        response = await call
+        # execute callback
+        if raw_response_callback is not None:
+            await raw_response_callback(call)
 
         # Done; return the response.
         return response
