@@ -324,6 +324,7 @@ def test_call_iam_generate_id_token_endpoint():
         "fake_email",
         "fake_audience",
         "fake_access_token",
+        "googleapis.com",
     )
 
     assert (
@@ -361,6 +362,7 @@ def test_call_iam_generate_id_token_endpoint_no_id_token():
             "fake_email",
             "fake_audience",
             "fake_access_token",
+            "googleapis.com",
         )
     assert excinfo.match("No ID token in response")
 

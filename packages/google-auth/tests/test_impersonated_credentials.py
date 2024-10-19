@@ -146,6 +146,13 @@ class TestImpersonatedCredentials(object):
             "principal": "impersonated@project.iam.gserviceaccount.com",
         }
 
+    def test_universe_domain_matching_source(self):
+        source_credentials = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="foo.bar"
+        )
+        credentials = self.make_credentials(source_credentials=source_credentials)
+        assert credentials.universe_domain == "foo.bar"
+
     def test__make_copy_get_cred_info(self):
         credentials = self.make_credentials()
         credentials._cred_file_path = "/path/to/file"
@@ -229,6 +236,38 @@ class TestImpersonatedCredentials(object):
         assert (
             request.call_args.kwargs["headers"]["x-goog-api-client"]
             == ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE
+        )
+
+    @pytest.mark.parametrize("use_data_bytes", [True, False])
+    def test_refresh_success_nonGdu(self, use_data_bytes, mock_donor_credentials):
+        source_credentials = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="foo.bar"
+        )
+        credentials = self.make_credentials(
+            lifetime=None, source_credentials=source_credentials
+        )
+        token = "token"
+
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        response_body = {"accessToken": token, "expireTime": expire_time}
+
+        request = self.make_request(
+            data=json.dumps(response_body),
+            status=http_client.OK,
+            use_data_bytes=use_data_bytes,
+        )
+
+        credentials.refresh(request)
+
+        assert credentials.valid
+        assert not credentials.expired
+        # Confirm override endpoint used.
+        request_kwargs = request.call_args[1]
+        assert (
+            request_kwargs["url"]
+            == "https://iamcredentials.foo.bar/v1/projects/-/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateAccessToken"
         )
 
     @pytest.mark.parametrize("use_data_bytes", [True, False])
@@ -397,6 +436,38 @@ class TestImpersonatedCredentials(object):
 
     def test_sign_bytes(self, mock_donor_credentials, mock_authorizedsession_sign):
         credentials = self.make_credentials(lifetime=None)
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob"
+        self._sign_bytes_helper(
+            credentials,
+            mock_donor_credentials,
+            mock_authorizedsession_sign,
+            expected_url,
+        )
+
+    def test_sign_bytes_nonGdu(
+        self, mock_donor_credentials, mock_authorizedsession_sign
+    ):
+        source_credentials = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="foo.bar"
+        )
+        credentials = self.make_credentials(
+            lifetime=None, source_credentials=source_credentials
+        )
+        expected_url = "https://iamcredentials.foo.bar/v1/projects/-/serviceAccounts/impersonated@project.iam.gserviceaccount.com:signBlob"
+        self._sign_bytes_helper(
+            credentials,
+            mock_donor_credentials,
+            mock_authorizedsession_sign,
+            expected_url,
+        )
+
+    def _sign_bytes_helper(
+        self,
+        credentials,
+        mock_donor_credentials,
+        mock_authorizedsession_sign,
+        expected_url,
+    ):
         token = "token"
 
         expire_time = (
@@ -412,11 +483,19 @@ class TestImpersonatedCredentials(object):
         request.return_value = response
 
         credentials.refresh(request)
-
         assert credentials.valid
         assert not credentials.expired
 
         signature = credentials.sign_bytes(b"signed bytes")
+        mock_authorizedsession_sign.assert_called_with(
+            mock.ANY,
+            "POST",
+            expected_url,
+            None,
+            json={"payload": "c2lnbmVkIGJ5dGVz", "delegates": []},
+            headers={"Content-Type": "application/json"},
+        )
+
         assert signature == b"signature"
 
     def test_sign_bytes_failure(self):
@@ -563,6 +642,45 @@ class TestImpersonatedCredentials(object):
         self, mock_donor_credentials, mock_authorizedsession_idtoken
     ):
         credentials = self.make_credentials(lifetime=None)
+        target_credentials = self.make_credentials(lifetime=None)
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateIdToken"
+        self._test_id_token_helper(
+            credentials,
+            target_credentials,
+            mock_donor_credentials,
+            mock_authorizedsession_idtoken,
+            expected_url,
+        )
+
+    def test_id_token_from_credential_nonGdu(
+        self, mock_donor_credentials, mock_authorizedsession_idtoken
+    ):
+        source_credentials = service_account.Credentials(
+            SIGNER, "some@email.com", TOKEN_URI, universe_domain="foo.bar"
+        )
+        credentials = self.make_credentials(
+            lifetime=None, source_credentials=source_credentials
+        )
+        target_credentials = self.make_credentials(
+            lifetime=None, source_credentials=source_credentials
+        )
+        expected_url = "https://iamcredentials.foo.bar/v1/projects/-/serviceAccounts/impersonated@project.iam.gserviceaccount.com:generateIdToken"
+        self._test_id_token_helper(
+            credentials,
+            target_credentials,
+            mock_donor_credentials,
+            mock_authorizedsession_idtoken,
+            expected_url,
+        )
+
+    def _test_id_token_helper(
+        self,
+        credentials,
+        target_credentials,
+        mock_donor_credentials,
+        mock_authorizedsession_idtoken,
+        expected_url,
+    ):
         token = "token"
         target_audience = "https://foo.bar"
 
@@ -580,17 +698,19 @@ class TestImpersonatedCredentials(object):
         assert credentials.valid
         assert not credentials.expired
 
-        new_credentials = self.make_credentials(lifetime=None)
-
         id_creds = impersonated_credentials.IDTokenCredentials(
             credentials, target_audience=target_audience, include_email=True
         )
-        id_creds = id_creds.from_credentials(target_credentials=new_credentials)
+        id_creds = id_creds.from_credentials(target_credentials=target_credentials)
         id_creds.refresh(request)
+
+        args = mock_authorizedsession_idtoken.call_args.args
+
+        assert args[2] == expected_url
 
         assert id_creds.token == ID_TOKEN_DATA
         assert id_creds._include_email is True
-        assert id_creds._target_credentials is new_credentials
+        assert id_creds._target_credentials is target_credentials
 
     def test_id_token_with_target_audience(
         self, mock_donor_credentials, mock_authorizedsession_idtoken

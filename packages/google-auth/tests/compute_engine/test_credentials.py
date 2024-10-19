@@ -487,6 +487,16 @@ class TestIDTokenCredentials(object):
             },
         )
 
+        # mock information about universe_domain
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/universe/"
+            "universe_domain",
+            status=200,
+            content_type="application/json",
+            json={},
+        )
+
         # mock token for credentials
         responses.add(
             responses.GET,
@@ -657,6 +667,16 @@ class TestIDTokenCredentials(object):
                 "expires_in": 3210,
                 "token_type": "Bearer",
             },
+        )
+
+        # stubby response about universe_domain
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/universe/"
+            "universe_domain",
+            status=200,
+            content_type="application/json",
+            json={},
         )
 
         # mock sign blob endpoint

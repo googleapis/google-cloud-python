@@ -812,6 +812,7 @@ class IDTokenCredentials(
             self.signer_email,
             self._target_audience,
             jwt_credentials.token.decode(),
+            self._universe_domain,
         )
 
     @_helpers.copy_docstring(credentials.Credentials)

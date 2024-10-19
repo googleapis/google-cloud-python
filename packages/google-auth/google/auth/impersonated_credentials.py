@@ -46,7 +46,7 @@ _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 
 
 def _make_iam_token_request(
-    request, principal, headers, body, iam_endpoint_override=None
+    request, principal, headers, body, universe_domain, iam_endpoint_override=None
 ):
     """Makes a request to the Google Cloud IAM service for an access token.
     Args:
@@ -67,7 +67,9 @@ def _make_iam_token_request(
             `iamcredentials.googleapis.com` is not enabled or the
             `Service Account Token Creator` is not assigned
     """
-    iam_endpoint = iam_endpoint_override or iam._IAM_ENDPOINT.format(principal)
+    iam_endpoint = iam_endpoint_override or iam._IAM_ENDPOINT.format(
+        universe_domain, principal
+    )
 
     body = json.dumps(body).encode("utf-8")
 
@@ -219,6 +221,8 @@ class Credentials(
                 and self._source_credentials._always_use_jwt_access
             ):
                 self._source_credentials._create_self_signed_jwt(None)
+
+        self._universe_domain = source_credentials.universe_domain
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates
@@ -271,13 +275,16 @@ class Credentials(
             principal=self._target_principal,
             headers=headers,
             body=body,
+            universe_domain=self.universe_domain,
             iam_endpoint_override=self._iam_endpoint_override,
         )
 
     def sign_bytes(self, message):
         from google.auth.transport.requests import AuthorizedSession
 
-        iam_sign_endpoint = iam._IAM_SIGN_ENDPOINT.format(self._target_principal)
+        iam_sign_endpoint = iam._IAM_SIGN_ENDPOINT.format(
+            self.universe_domain, self._target_principal
+        )
 
         body = {
             "payload": base64.b64encode(message).decode("utf-8"),
@@ -428,7 +435,8 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         from google.auth.transport.requests import AuthorizedSession
 
         iam_sign_endpoint = iam._IAM_IDTOKEN_ENDPOINT.format(
-            self._target_credentials.signer_email
+            self._target_credentials.universe_domain,
+            self._target_credentials.signer_email,
         )
 
         body = {
