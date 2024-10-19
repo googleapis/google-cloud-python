@@ -279,6 +279,10 @@ class DatasetSchema(proto.Message):
             ``projects/{project}/locations/{location}/processors/{processor}/dataset/datasetSchema``
         document_schema (google.cloud.documentai_v1beta3.types.DocumentSchema):
             Optional. Schema of the dataset.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
     """
 
     name: str = proto.Field(
@@ -289,6 +293,14 @@ class DatasetSchema(proto.Message):
         proto.MESSAGE,
         number=3,
         message=gcd_document_schema.DocumentSchema,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
