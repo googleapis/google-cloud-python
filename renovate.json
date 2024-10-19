@@ -9,5 +9,4 @@
     ".kokoro/requirements.txt",
     ".kokoro/requirements-aoss.txt"
   ]
-  ]
 }
