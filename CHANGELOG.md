@@ -53,7 +53,7 @@ Changelogs
 - [google-cloud-certificate-manager==1.7.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-certificate-manager/CHANGELOG.md)
 - [google-cloud-channel==1.19.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-channel/CHANGELOG.md)
 - [google-cloud-cloudcontrolspartner==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-cloudcontrolspartner/CHANGELOG.md)
-- [google-cloud-cloudquotas==0.1.10](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-cloudquotas/CHANGELOG.md)
+- [google-cloud-quotas==0.1.10](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-quotas/CHANGELOG.md)
 - [google-cloud-commerce-consumer-procurement==0.1.8](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-commerce-consumer-procurement/CHANGELOG.md)
 - [google-cloud-common==1.3.5](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-common/CHANGELOG.md)
 - [google-cloud-compute==1.19.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute/CHANGELOG.md)

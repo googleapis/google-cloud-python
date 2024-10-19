@@ -212,7 +212,7 @@ instead of
 ``https://github.com/googleapis/google-cloud-python/blob/main/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/google-cloud-cloudquotas
+.. _description on PyPI: https://pypi.org/project/google-cloud-quotas
 
 
 *************************
@@ -238,7 +238,7 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/google-cloud-cloudquotas/noxfile.py
+.. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/google-cloud-quotas/noxfile.py
 
 
 **********
