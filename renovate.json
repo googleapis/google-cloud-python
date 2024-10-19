@@ -8,12 +8,6 @@
   "ignorePaths": [
     ".kokoro/requirements.txt",
     ".kokoro/requirements-aoss.txt"
-  ],
-  "packageRules": [
-    {
-      "packagePatterns": ["*"],
-      "groupName": "all dependencies",
-      "schedule": ["at any time"]
-    }
+  ]
   ]
 }
