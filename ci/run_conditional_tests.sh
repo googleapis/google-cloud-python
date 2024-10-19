@@ -15,7 +15,7 @@
 
 # This script requires the following environment variables to be set:
 # `BUILD_TYPE` should be one of ["presubmit", "continuous"]
-# `TEST_TYPE` should be one of ["lint", "lint_setup_py", "docs", "docfx", "prerelease"]
+# `TEST_TYPE` should be one of ["lint", "lint_setup_py", "docs", "docfx", "prerelease", "unit"]
 # `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
 # `TEST_TYPE` and `PY_VERSION` are required by the script `ci/run_single_test.sh`
