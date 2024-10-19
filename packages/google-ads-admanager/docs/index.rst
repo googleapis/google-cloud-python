@@ -21,11 +21,3 @@ For a list of all ``google-ads-admanager`` releases:
     :maxdepth: 2
 
     CHANGELOG
-
-
-Detailed Examples and Explanations
-----------------------------------
-
-This section provides detailed examples and explanations to help you understand how to use the Google Ads AdManager client library effectively.
-
-Example 1: Creating a New Ad Unit
