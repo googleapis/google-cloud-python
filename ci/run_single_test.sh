@@ -134,6 +134,7 @@ case ${TEST_TYPE} in
         nox -s format
         retval=$?
         ;;
+        
 esac
 
 # Clean up `__pycache__` and `.nox` directories to avoid error
