@@ -5380,6 +5380,8 @@ def test_create_connectivity_test_rest_call_success(request_type):
             "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
+            "redis_instance": "redis_instance_value",
+            "redis_cluster": "redis_cluster_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {"uri": "uri_value"},
@@ -5437,6 +5439,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                     "network_tags_value2",
                                 ],
                                 "service_account": "service_account_value",
+                                "psc_network_attachment_uri": "psc_network_attachment_uri_value",
                             },
                             "firewall": {
                                 "display_name": "display_name_value",
@@ -5454,6 +5457,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                     "target_service_accounts_value2",
                                 ],
                                 "policy": "policy_value",
+                                "policy_uri": "policy_uri_value",
                                 "firewall_rule_type": 1,
                             },
                             "route": {
@@ -5462,6 +5466,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "route_scope": 1,
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
+                                "region": "region_value",
                                 "dest_ip_range": "dest_ip_range_value",
                                 "next_hop": "next_hop_value",
                                 "network_uri": "network_uri_value",
@@ -5482,6 +5487,8 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "protocols": ["protocols_value1", "protocols_value2"],
                                 "ncc_hub_uri": "ncc_hub_uri_value",
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
+                                "advertised_route_source_router_uri": "advertised_route_source_router_uri_value",
+                                "advertised_route_next_hop_uri": "advertised_route_next_hop_uri_value",
                             },
                             "endpoint": {},
                             "google_service": {
@@ -5496,6 +5503,10 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "vip": "vip_value",
                                 "target": "target_value",
                                 "network_uri": "network_uri_value",
+                                "region": "region_value",
+                                "load_balancer_name": "load_balancer_name_value",
+                                "psc_service_attachment_uri": "psc_service_attachment_uri_value",
+                                "psc_google_api_target": "psc_google_api_target_value",
                             },
                             "vpn_gateway": {
                                 "display_name": "display_name_value",
@@ -5525,6 +5536,8 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
                                 "ip_address": "ip_address_value",
+                                "storage_bucket": "storage_bucket_value",
+                                "psc_google_api_target": "psc_google_api_target_value",
                             },
                             "forward": {
                                 "target": 1,
@@ -5571,7 +5584,9 @@ def test_create_connectivity_test_rest_call_success(request_type):
                             "network": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
+                                "matched_subnet_uri": "matched_subnet_uri_value",
                                 "matched_ip_range": "matched_ip_range_value",
+                                "region": "region_value",
                             },
                             "gke_master": {
                                 "cluster_uri": "cluster_uri_value",
@@ -5586,6 +5601,22 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "internal_ip": "internal_ip_value",
                                 "external_ip": "external_ip_value",
                                 "region": "region_value",
+                            },
+                            "redis_instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "primary_endpoint_ip": "primary_endpoint_ip_value",
+                                "read_endpoint_ip": "read_endpoint_ip_value",
+                                "region": "region_value",
+                            },
+                            "redis_cluster": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "discovery_endpoint_ip_address": "discovery_endpoint_ip_address_value",
+                                "secondary_endpoint_ip_address": "secondary_endpoint_ip_address_value",
+                                "location": "location_value",
                             },
                             "cloud_function": {
                                 "display_name": "display_name_value",
@@ -5646,6 +5677,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "health_check_firewalls_config_state": 1,
                             },
                             "storage_bucket": {"bucket": "bucket_value"},
+                            "serverless_neg": {"neg_uri": "neg_uri_value"},
                         }
                     ],
                     "forward_trace_id": 1679,
@@ -5872,6 +5904,8 @@ def test_update_connectivity_test_rest_call_success(request_type):
             "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
+            "redis_instance": "redis_instance_value",
+            "redis_cluster": "redis_cluster_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {"uri": "uri_value"},
@@ -5929,6 +5963,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                     "network_tags_value2",
                                 ],
                                 "service_account": "service_account_value",
+                                "psc_network_attachment_uri": "psc_network_attachment_uri_value",
                             },
                             "firewall": {
                                 "display_name": "display_name_value",
@@ -5946,6 +5981,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                     "target_service_accounts_value2",
                                 ],
                                 "policy": "policy_value",
+                                "policy_uri": "policy_uri_value",
                                 "firewall_rule_type": 1,
                             },
                             "route": {
@@ -5954,6 +5990,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "route_scope": 1,
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
+                                "region": "region_value",
                                 "dest_ip_range": "dest_ip_range_value",
                                 "next_hop": "next_hop_value",
                                 "network_uri": "network_uri_value",
@@ -5974,6 +6011,8 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "protocols": ["protocols_value1", "protocols_value2"],
                                 "ncc_hub_uri": "ncc_hub_uri_value",
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
+                                "advertised_route_source_router_uri": "advertised_route_source_router_uri_value",
+                                "advertised_route_next_hop_uri": "advertised_route_next_hop_uri_value",
                             },
                             "endpoint": {},
                             "google_service": {
@@ -5988,6 +6027,10 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "vip": "vip_value",
                                 "target": "target_value",
                                 "network_uri": "network_uri_value",
+                                "region": "region_value",
+                                "load_balancer_name": "load_balancer_name_value",
+                                "psc_service_attachment_uri": "psc_service_attachment_uri_value",
+                                "psc_google_api_target": "psc_google_api_target_value",
                             },
                             "vpn_gateway": {
                                 "display_name": "display_name_value",
@@ -6017,6 +6060,8 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
                                 "ip_address": "ip_address_value",
+                                "storage_bucket": "storage_bucket_value",
+                                "psc_google_api_target": "psc_google_api_target_value",
                             },
                             "forward": {
                                 "target": 1,
@@ -6063,7 +6108,9 @@ def test_update_connectivity_test_rest_call_success(request_type):
                             "network": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
+                                "matched_subnet_uri": "matched_subnet_uri_value",
                                 "matched_ip_range": "matched_ip_range_value",
+                                "region": "region_value",
                             },
                             "gke_master": {
                                 "cluster_uri": "cluster_uri_value",
@@ -6078,6 +6125,22 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "internal_ip": "internal_ip_value",
                                 "external_ip": "external_ip_value",
                                 "region": "region_value",
+                            },
+                            "redis_instance": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "primary_endpoint_ip": "primary_endpoint_ip_value",
+                                "read_endpoint_ip": "read_endpoint_ip_value",
+                                "region": "region_value",
+                            },
+                            "redis_cluster": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "network_uri": "network_uri_value",
+                                "discovery_endpoint_ip_address": "discovery_endpoint_ip_address_value",
+                                "secondary_endpoint_ip_address": "secondary_endpoint_ip_address_value",
+                                "location": "location_value",
                             },
                             "cloud_function": {
                                 "display_name": "display_name_value",
@@ -6138,6 +6201,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "health_check_firewalls_config_state": 1,
                             },
                             "storage_bucket": {"bucket": "bucket_value"},
+                            "serverless_neg": {"neg_uri": "neg_uri_value"},
                         }
                     ],
                     "forward_trace_id": 1679,
