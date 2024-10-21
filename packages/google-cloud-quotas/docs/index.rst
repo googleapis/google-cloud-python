@@ -15,7 +15,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-cloudquotas`` releases:
+For a list of all ``google-cloud-quotas`` releases:
 
 .. toctree::
     :maxdepth: 2

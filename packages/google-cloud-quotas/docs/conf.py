@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-cloud-cloudquotas documentation build configuration file
+# google-cloud-quotas documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -80,7 +80,7 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-cloudquotas"
+project = "google-cloud-quotas"
 copyright = "2019, Google"
 author = "Google APIs"
 
@@ -154,7 +154,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-cloudquotas",
+    "description": "Google Cloud Client Libraries for google-cloud-quotas",
     "github_user": "googleapis",
     "github_repo": "google-cloud-python",
     "github_banner": True,
@@ -248,7 +248,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-cloudquotas-doc"
+htmlhelp_basename = "google-cloud-quotas-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -281,8 +281,8 @@ latex_elements = {
 latex_documents = [
     (
         root_doc,
-        "google-cloud-cloudquotas.tex",
-        "google-cloud-cloudquotas Documentation",
+        "google-cloud-quotas.tex",
+        "google-cloud-quotas Documentation",
         author,
         "manual",
     )
@@ -316,8 +316,8 @@ latex_documents = [
 man_pages = [
     (
         root_doc,
-        "google-cloud-cloudquotas",
-        "google-cloud-cloudquotas Documentation",
+        "google-cloud-quotas",
+        "google-cloud-quotas Documentation",
         [author],
         1,
     )
@@ -335,11 +335,11 @@ man_pages = [
 texinfo_documents = [
     (
         root_doc,
-        "google-cloud-cloudquotas",
-        "google-cloud-cloudquotas Documentation",
+        "google-cloud-quotas",
+        "google-cloud-quotas Documentation",
         author,
-        "google-cloud-cloudquotas",
-        "google-cloud-cloudquotas Library",
+        "google-cloud-quotas",
+        "google-cloud-quotas Library",
         "APIs",
     )
 ]

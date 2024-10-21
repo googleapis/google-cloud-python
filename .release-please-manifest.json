@@ -50,7 +50,7 @@
     "packages/google-cloud-certificate-manager": "1.7.2",
     "packages/google-cloud-channel": "1.19.0",
     "packages/google-cloud-cloudcontrolspartner": "0.2.0",
-    "packages/google-cloud-cloudquotas": "0.1.10",
+    "packages/google-cloud-quotas": "0.1.10",
     "packages/google-cloud-commerce-consumer-procurement": "0.1.8",
     "packages/google-cloud-common": "1.3.5",
     "packages/google-cloud-compute": "1.19.2",

@@ -873,10 +873,10 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-cloudquotas": {
+        "packages/google-cloud-quotas": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-cloudquotas",
+            "component": "google-cloud-quotas",
             "extra-files": [
                 "google/cloud/cloudquotas/gapic_version.py",
                 "google/cloud/cloudquotas_v1/gapic_version.py",

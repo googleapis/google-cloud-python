@@ -10,10 +10,10 @@ Python Client for Cloud Quotas API
 
 .. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-cloudquotas.svg
-   :target: https://pypi.org/project/google-cloud-cloudquotas/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-cloudquotas.svg
-   :target: https://pypi.org/project/google-cloud-cloudquotas/
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-quotas.svg
+   :target: https://pypi.org/project/google-cloud-quotas/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-quotas.svg
+   :target: https://pypi.org/project/google-cloud-quotas/
 .. _Cloud Quotas API: https://cloud.google.com/docs/quota/api-overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-cloudquotas/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/docs/quota/api-overview
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-cloudquotas/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-quotas/samples
 
 
 Supported Python Versions
@@ -82,7 +82,7 @@ Mac/Linux
 
     python3 -m venv <your-env>
     source <your-env>/bin/activate
-    pip install google-cloud-cloudquotas
+    pip install google-cloud-quotas
 
 
 Windows
@@ -92,7 +92,7 @@ Windows
 
     py -m venv <your-env>
     .\<your-env>\Scripts\activate
-    pip install google-cloud-cloudquotas
+    pip install google-cloud-quotas
 
 Next Steps
 ~~~~~~~~~~
