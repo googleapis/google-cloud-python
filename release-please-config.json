@@ -873,21 +873,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-quotas": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-cloud-quotas",
-            "extra-files": [
-                "google/cloud/cloudquotas/gapic_version.py",
-                "google/cloud/cloudquotas_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.api.cloudquotas.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-cloud-commerce-consumer-procurement": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -2243,6 +2228,21 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.security.publicca.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-quotas": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-quotas",
+            "extra-files": [
+                "google/cloud/cloudquotas/gapic_version.py",
+                "google/cloud/cloudquotas_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.api.cloudquotas.v1.json",
                     "type": "json"
                 }
             ],
