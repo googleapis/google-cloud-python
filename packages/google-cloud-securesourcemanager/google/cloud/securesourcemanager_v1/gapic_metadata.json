@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "SecureSourceManagerClient",
           "rpcs": {
+            "CreateBranchRule": {
+              "methods": [
+                "create_branch_rule"
+              ]
+            },
             "CreateInstance": {
               "methods": [
                 "create_instance"
@@ -20,6 +25,11 @@
                 "create_repository"
               ]
             },
+            "DeleteBranchRule": {
+              "methods": [
+                "delete_branch_rule"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
@@ -28,6 +38,11 @@
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "GetBranchRule": {
+              "methods": [
+                "get_branch_rule"
               ]
             },
             "GetIamPolicyRepo": {
@@ -43,6 +58,11 @@
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "ListBranchRules": {
+              "methods": [
+                "list_branch_rules"
               ]
             },
             "ListInstances": {
@@ -63,6 +83,11 @@
             "TestIamPermissionsRepo": {
               "methods": [
                 "test_iam_permissions_repo"
+              ]
+            },
+            "UpdateBranchRule": {
+              "methods": [
+                "update_branch_rule"
               ]
             }
           }
@@ -70,6 +95,11 @@
         "grpc-async": {
           "libraryClient": "SecureSourceManagerAsyncClient",
           "rpcs": {
+            "CreateBranchRule": {
+              "methods": [
+                "create_branch_rule"
+              ]
+            },
             "CreateInstance": {
               "methods": [
                 "create_instance"
@@ -80,6 +110,11 @@
                 "create_repository"
               ]
             },
+            "DeleteBranchRule": {
+              "methods": [
+                "delete_branch_rule"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
@@ -88,6 +123,11 @@
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "GetBranchRule": {
+              "methods": [
+                "get_branch_rule"
               ]
             },
             "GetIamPolicyRepo": {
@@ -103,6 +143,11 @@
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "ListBranchRules": {
+              "methods": [
+                "list_branch_rules"
               ]
             },
             "ListInstances": {
@@ -123,6 +168,11 @@
             "TestIamPermissionsRepo": {
               "methods": [
                 "test_iam_permissions_repo"
+              ]
+            },
+            "UpdateBranchRule": {
+              "methods": [
+                "update_branch_rule"
               ]
             }
           }
@@ -130,6 +180,11 @@
         "rest": {
           "libraryClient": "SecureSourceManagerClient",
           "rpcs": {
+            "CreateBranchRule": {
+              "methods": [
+                "create_branch_rule"
+              ]
+            },
             "CreateInstance": {
               "methods": [
                 "create_instance"
@@ -140,6 +195,11 @@
                 "create_repository"
               ]
             },
+            "DeleteBranchRule": {
+              "methods": [
+                "delete_branch_rule"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
@@ -148,6 +208,11 @@
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "GetBranchRule": {
+              "methods": [
+                "get_branch_rule"
               ]
             },
             "GetIamPolicyRepo": {
@@ -163,6 +228,11 @@
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "ListBranchRules": {
+              "methods": [
+                "list_branch_rules"
               ]
             },
             "ListInstances": {
@@ -183,6 +253,11 @@
             "TestIamPermissionsRepo": {
               "methods": [
                 "test_iam_permissions_repo"
+              ]
+            },
+            "UpdateBranchRule": {
+              "methods": [
+                "update_branch_rule"
               ]
             }
           }

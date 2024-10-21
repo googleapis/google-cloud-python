@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -25,6 +26,7 @@ __protobuf__ = proto.module(
     manifest={
         "Instance",
         "Repository",
+        "BranchRule",
         "ListInstancesRequest",
         "ListInstancesResponse",
         "GetInstanceRequest",
@@ -36,6 +38,12 @@ __protobuf__ = proto.module(
         "GetRepositoryRequest",
         "CreateRepositoryRequest",
         "DeleteRepositoryRequest",
+        "GetBranchRuleRequest",
+        "CreateBranchRuleRequest",
+        "ListBranchRulesRequest",
+        "DeleteBranchRuleRequest",
+        "UpdateBranchRuleRequest",
+        "ListBranchRulesResponse",
     },
 )
 
@@ -174,6 +182,11 @@ class Instance(proto.Message):
                 Output only. Service Attachment for SSH, resource is in the
                 format of
                 ``projects/{project}/regions/{region}/serviceAttachments/{service_attachment}``.
+            psc_allowed_projects (MutableSequence[str]):
+                Optional. Additional allowed projects for
+                setting up PSC connections. Instance host
+                project is automatically allowed and does not
+                need to be included in this list.
         """
 
         is_private: bool = proto.Field(
@@ -191,6 +204,10 @@ class Instance(proto.Message):
         ssh_service_attachment: str = proto.Field(
             proto.STRING,
             number=4,
+        )
+        psc_allowed_projects: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=6,
         )
 
     name: str = proto.Field(
@@ -574,6 +591,144 @@ class Repository(proto.Message):
         proto.MESSAGE,
         number=10,
         message=InitialConfig,
+    )
+
+
+class BranchRule(proto.Message):
+    r"""Metadata of a BranchRule. BranchRule is the protection rule
+    to enforce pre-defined rules on desginated branches within a
+    repository.
+
+    Attributes:
+        name (str):
+            Optional. A unique identifier for a BranchRule. The name
+            should be of the format:
+            ``projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}``
+        uid (str):
+            Output only. Unique identifier of the
+            repository.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Create timestamp.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Update timestamp.
+        annotations (MutableMapping[str, str]):
+            Optional. User annotations. These attributes
+            can only be set and used by the user. See
+            https://google.aip.dev/128#annotations for more
+            details such as format and size limitations.
+        etag (str):
+            Optional. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+        include_pattern (str):
+            Optional. The pattern of the branch that can match to this
+            BranchRule. Specified as regex. .\* for all branches.
+            Examples: main, (main|release.*). Current MVP phase only
+            support ``.*`` for wildcard.
+        disabled (bool):
+            Optional. Determines if the branch rule is
+            disabled or not.
+        require_pull_request (bool):
+            Optional. Determines if the branch rule
+            requires a pull request or not.
+        minimum_reviews_count (int):
+            Optional. The minimum number of reviews
+            required for the branch rule to be matched.
+        minimum_approvals_count (int):
+            Optional. The minimum number of approvals
+            required for the branch rule to be matched.
+        require_comments_resolved (bool):
+            Optional. Determines if require comments
+            resolved before merging to the branch.
+        allow_stale_reviews (bool):
+            Optional. Determines if allow stale reviews
+            or approvals before merging to the branch.
+        require_linear_history (bool):
+            Optional. Determines if require linear
+            history before merging to the branch.
+        required_status_checks (MutableSequence[google.cloud.securesourcemanager_v1.types.BranchRule.Check]):
+            Optional. List of required status checks
+            before merging to the branch.
+    """
+
+    class Check(proto.Message):
+        r"""Check is a type for status check.
+
+        Attributes:
+            context (str):
+                Required. The context of the check.
+        """
+
+        context: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    include_pattern: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    disabled: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    require_pull_request: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    minimum_reviews_count: int = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    minimum_approvals_count: int = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    require_comments_resolved: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    allow_stale_reviews: bool = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    require_linear_history: bool = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    required_status_checks: MutableSequence[Check] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message=Check,
     )
 
 
@@ -962,6 +1117,163 @@ class DeleteRepositoryRequest(proto.Message):
     )
     allow_missing: bool = proto.Field(
         proto.BOOL,
+        number=2,
+    )
+
+
+class GetBranchRuleRequest(proto.Message):
+    r"""GetBranchRuleRequest is the request for getting a branch
+    rule.
+
+    Attributes:
+        name (str):
+            Required. Name of the repository to retrieve. The format is
+            ``projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateBranchRuleRequest(proto.Message):
+    r"""CreateBranchRuleRequest is the request to create a branch
+    rule.
+
+    Attributes:
+        parent (str):
+
+        branch_rule (google.cloud.securesourcemanager_v1.types.BranchRule):
+
+        branch_rule_id (str):
+
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    branch_rule: "BranchRule" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="BranchRule",
+    )
+    branch_rule_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListBranchRulesRequest(proto.Message):
+    r"""ListBranchRulesRequest is the request to list branch rules.
+
+    Attributes:
+        parent (str):
+
+        page_size (int):
+
+        page_token (str):
+
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteBranchRuleRequest(proto.Message):
+    r"""DeleteBranchRuleRequest is the request to delete a branch
+    rule.
+
+    Attributes:
+        name (str):
+
+        allow_missing (bool):
+            Optional. If set to true, and the branch rule
+            is not found, the request will succeed but no
+            action will be taken on the server.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class UpdateBranchRuleRequest(proto.Message):
+    r"""UpdateBranchRuleRequest is the request to update a
+    branchRule.
+
+    Attributes:
+        branch_rule (google.cloud.securesourcemanager_v1.types.BranchRule):
+
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not actually post it.
+            (https://google.aip.dev/163, for declarative
+            friendly)
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the branchRule resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. The special value "*" means full
+            replacement.
+    """
+
+    branch_rule: "BranchRule" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BranchRule",
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class ListBranchRulesResponse(proto.Message):
+    r"""ListBranchRulesResponse is the response to listing
+    branchRules.
+
+    Attributes:
+        branch_rules (MutableSequence[google.cloud.securesourcemanager_v1.types.BranchRule]):
+            The list of branch rules.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    branch_rules: MutableSequence["BranchRule"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BranchRule",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
         number=2,
     )
 

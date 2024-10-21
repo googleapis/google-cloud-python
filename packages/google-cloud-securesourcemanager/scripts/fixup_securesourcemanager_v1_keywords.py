@@ -39,17 +39,22 @@ def partition(
 class securesourcemanagerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_branch_rule': ('parent', 'branch_rule', 'branch_rule_id', ),
         'create_instance': ('parent', 'instance_id', 'instance', 'request_id', ),
         'create_repository': ('parent', 'repository', 'repository_id', ),
+        'delete_branch_rule': ('name', 'allow_missing', ),
         'delete_instance': ('name', 'request_id', ),
         'delete_repository': ('name', 'allow_missing', ),
+        'get_branch_rule': ('name', ),
         'get_iam_policy_repo': ('resource', 'options', ),
         'get_instance': ('name', ),
         'get_repository': ('name', ),
+        'list_branch_rules': ('parent', 'page_size', 'page_token', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_repositories': ('parent', 'page_size', 'page_token', 'filter', 'instance', ),
         'set_iam_policy_repo': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions_repo': ('resource', 'permissions', ),
+        'update_branch_rule': ('branch_rule', 'update_mask', 'validate_only', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
