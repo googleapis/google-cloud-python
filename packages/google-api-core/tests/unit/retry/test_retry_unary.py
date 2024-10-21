@@ -105,14 +105,20 @@ def test_retry_target_non_retryable_error(utcnow, sleep):
 )
 @pytest.mark.asyncio
 async def test_retry_target_warning_for_retry(utcnow, sleep):
-    predicate = retry.if_exception_type(ValueError)
-    target = mock.AsyncMock(spec=["__call__"])
+    """
+    retry.Retry should raise warning when wrapping an async function.
+    """
+
+    async def target():
+        pass  # pragma: NO COVER
+
+    retry_obj = retry.Retry()
 
     with pytest.warns(Warning) as exc_info:
-        # Note: predicate is just a filler and doesn't affect the test
-        retry.retry_target(target, predicate, range(10), None)
+        # raise warning when wrapping an async function
+        retry_obj(target)
 
-    assert len(exc_info) == 2
+    assert len(exc_info) == 1
     assert str(exc_info[0].message) == retry.retry_unary._ASYNC_RETRY_WARNING
     sleep.assert_not_called()
 
