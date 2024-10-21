@@ -610,6 +610,153 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
             )
         return self._stubs["test_iam_permissions_repo"]
 
+    @property
+    def create_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreateBranchRuleRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create branch rule method over gRPC.
+
+        CreateBranchRule creates a branch rule in a given
+        repository.
+
+        Returns:
+            Callable[[~.CreateBranchRuleRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_branch_rule" not in self._stubs:
+            self._stubs["create_branch_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateBranchRule",
+                request_serializer=secure_source_manager.CreateBranchRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_branch_rule"]
+
+    @property
+    def list_branch_rules(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListBranchRulesRequest],
+        Awaitable[secure_source_manager.ListBranchRulesResponse],
+    ]:
+        r"""Return a callable for the list branch rules method over gRPC.
+
+        ListBranchRules lists branch rules in a given
+        repository.
+
+        Returns:
+            Callable[[~.ListBranchRulesRequest],
+                    Awaitable[~.ListBranchRulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_branch_rules" not in self._stubs:
+            self._stubs["list_branch_rules"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListBranchRules",
+                request_serializer=secure_source_manager.ListBranchRulesRequest.serialize,
+                response_deserializer=secure_source_manager.ListBranchRulesResponse.deserialize,
+            )
+        return self._stubs["list_branch_rules"]
+
+    @property
+    def get_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetBranchRuleRequest],
+        Awaitable[secure_source_manager.BranchRule],
+    ]:
+        r"""Return a callable for the get branch rule method over gRPC.
+
+        GetBranchRule gets a branch rule.
+
+        Returns:
+            Callable[[~.GetBranchRuleRequest],
+                    Awaitable[~.BranchRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_branch_rule" not in self._stubs:
+            self._stubs["get_branch_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetBranchRule",
+                request_serializer=secure_source_manager.GetBranchRuleRequest.serialize,
+                response_deserializer=secure_source_manager.BranchRule.deserialize,
+            )
+        return self._stubs["get_branch_rule"]
+
+    @property
+    def update_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateBranchRuleRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update branch rule method over gRPC.
+
+        UpdateBranchRule updates a branch rule.
+
+        Returns:
+            Callable[[~.UpdateBranchRuleRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_branch_rule" not in self._stubs:
+            self._stubs["update_branch_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateBranchRule",
+                request_serializer=secure_source_manager.UpdateBranchRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_branch_rule"]
+
+    @property
+    def delete_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeleteBranchRuleRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete branch rule method over gRPC.
+
+        DeleteBranchRule deletes a branch rule.
+
+        Returns:
+            Callable[[~.DeleteBranchRuleRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_branch_rule" not in self._stubs:
+            self._stubs["delete_branch_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteBranchRule",
+                request_serializer=secure_source_manager.DeleteBranchRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_branch_rule"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -710,6 +857,31 @@ class SecureSourceManagerGrpcAsyncIOTransport(SecureSourceManagerTransport):
             ),
             self.test_iam_permissions_repo: self._wrap_method(
                 self.test_iam_permissions_repo,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_branch_rule: self._wrap_method(
+                self.create_branch_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_branch_rules: self._wrap_method(
+                self.list_branch_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_branch_rule: self._wrap_method(
+                self.get_branch_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_branch_rule: self._wrap_method(
+                self.update_branch_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_branch_rule: self._wrap_method(
+                self.delete_branch_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),

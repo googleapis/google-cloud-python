@@ -55,6 +55,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.securesourcemanager_v1.services.secure_source_manager import pagers
@@ -216,6 +217,30 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def branch_rule_path(
+        project: str,
+        location: str,
+        repository: str,
+        branch_rule: str,
+    ) -> str:
+        """Returns a fully-qualified branch_rule string."""
+        return "projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}".format(
+            project=project,
+            location=location,
+            repository=repository,
+            branch_rule=branch_rule,
+        )
+
+    @staticmethod
+    def parse_branch_rule_path(path: str) -> Dict[str, str]:
+        """Parses a branch_rule path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)/branchRules/(?P<branch_rule>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def ca_pool_path(
@@ -2164,6 +2189,627 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_branch_rule(
+        self,
+        request: Optional[
+            Union[secure_source_manager.CreateBranchRuleRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        branch_rule: Optional[secure_source_manager.BranchRule] = None,
+        branch_rule_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""CreateBranchRule creates a branch rule in a given
+        repository.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securesourcemanager_v1
+
+            def sample_create_branch_rule():
+                # Create a client
+                client = securesourcemanager_v1.SecureSourceManagerClient()
+
+                # Initialize request argument(s)
+                request = securesourcemanager_v1.CreateBranchRuleRequest(
+                    parent="parent_value",
+                    branch_rule_id="branch_rule_id_value",
+                )
+
+                # Make the request
+                operation = client.create_branch_rule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securesourcemanager_v1.types.CreateBranchRuleRequest, dict]):
+                The request object. CreateBranchRuleRequest is the
+                request to create a branch rule.
+            parent (str):
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            branch_rule (google.cloud.securesourcemanager_v1.types.BranchRule):
+
+                This corresponds to the ``branch_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            branch_rule_id (str):
+
+                This corresponds to the ``branch_rule_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.securesourcemanager_v1.types.BranchRule` Metadata of a BranchRule. BranchRule is the protection rule to enforce
+                   pre-defined rules on desginated branches within a
+                   repository.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, branch_rule, branch_rule_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, secure_source_manager.CreateBranchRuleRequest):
+            request = secure_source_manager.CreateBranchRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if branch_rule is not None:
+                request.branch_rule = branch_rule
+            if branch_rule_id is not None:
+                request.branch_rule_id = branch_rule_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_branch_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            secure_source_manager.BranchRule,
+            metadata_type=secure_source_manager.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_branch_rules(
+        self,
+        request: Optional[
+            Union[secure_source_manager.ListBranchRulesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBranchRulesPager:
+        r"""ListBranchRules lists branch rules in a given
+        repository.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securesourcemanager_v1
+
+            def sample_list_branch_rules():
+                # Create a client
+                client = securesourcemanager_v1.SecureSourceManagerClient()
+
+                # Initialize request argument(s)
+                request = securesourcemanager_v1.ListBranchRulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_branch_rules(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.securesourcemanager_v1.types.ListBranchRulesRequest, dict]):
+                The request object. ListBranchRulesRequest is the request
+                to list branch rules.
+            parent (str):
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securesourcemanager_v1.services.secure_source_manager.pagers.ListBranchRulesPager:
+                ListBranchRulesResponse is the
+                response to listing branchRules.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, secure_source_manager.ListBranchRulesRequest):
+            request = secure_source_manager.ListBranchRulesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_branch_rules]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBranchRulesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_branch_rule(
+        self,
+        request: Optional[
+            Union[secure_source_manager.GetBranchRuleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> secure_source_manager.BranchRule:
+        r"""GetBranchRule gets a branch rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securesourcemanager_v1
+
+            def sample_get_branch_rule():
+                # Create a client
+                client = securesourcemanager_v1.SecureSourceManagerClient()
+
+                # Initialize request argument(s)
+                request = securesourcemanager_v1.GetBranchRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_branch_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securesourcemanager_v1.types.GetBranchRuleRequest, dict]):
+                The request object. GetBranchRuleRequest is the request
+                for getting a branch rule.
+            name (str):
+                Required. Name of the repository to retrieve. The format
+                is
+                ``projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securesourcemanager_v1.types.BranchRule:
+                Metadata of a BranchRule. BranchRule
+                is the protection rule to enforce
+                pre-defined rules on desginated branches
+                within a repository.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, secure_source_manager.GetBranchRuleRequest):
+            request = secure_source_manager.GetBranchRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_branch_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_branch_rule(
+        self,
+        request: Optional[
+            Union[secure_source_manager.UpdateBranchRuleRequest, dict]
+        ] = None,
+        *,
+        branch_rule: Optional[secure_source_manager.BranchRule] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""UpdateBranchRule updates a branch rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securesourcemanager_v1
+
+            def sample_update_branch_rule():
+                # Create a client
+                client = securesourcemanager_v1.SecureSourceManagerClient()
+
+                # Initialize request argument(s)
+                request = securesourcemanager_v1.UpdateBranchRuleRequest(
+                )
+
+                # Make the request
+                operation = client.update_branch_rule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securesourcemanager_v1.types.UpdateBranchRuleRequest, dict]):
+                The request object. UpdateBranchRuleRequest is the
+                request to update a branchRule.
+            branch_rule (google.cloud.securesourcemanager_v1.types.BranchRule):
+
+                This corresponds to the ``branch_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the branchRule resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. The special value "*"
+                means full replacement.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.securesourcemanager_v1.types.BranchRule` Metadata of a BranchRule. BranchRule is the protection rule to enforce
+                   pre-defined rules on desginated branches within a
+                   repository.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([branch_rule, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, secure_source_manager.UpdateBranchRuleRequest):
+            request = secure_source_manager.UpdateBranchRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if branch_rule is not None:
+                request.branch_rule = branch_rule
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_branch_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("branch_rule.name", request.branch_rule.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            secure_source_manager.BranchRule,
+            metadata_type=secure_source_manager.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_branch_rule(
+        self,
+        request: Optional[
+            Union[secure_source_manager.DeleteBranchRuleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""DeleteBranchRule deletes a branch rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import securesourcemanager_v1
+
+            def sample_delete_branch_rule():
+                # Create a client
+                client = securesourcemanager_v1.SecureSourceManagerClient()
+
+                # Initialize request argument(s)
+                request = securesourcemanager_v1.DeleteBranchRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_branch_rule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.securesourcemanager_v1.types.DeleteBranchRuleRequest, dict]):
+                The request object. DeleteBranchRuleRequest is the
+                request to delete a branch rule.
+            name (str):
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, secure_source_manager.DeleteBranchRuleRequest):
+            request = secure_source_manager.DeleteBranchRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_branch_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=secure_source_manager.OperationMetadata,
         )
 
         # Done; return the response.

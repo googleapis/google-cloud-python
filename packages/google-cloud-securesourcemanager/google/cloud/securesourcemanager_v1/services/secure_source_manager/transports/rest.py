@@ -64,6 +64,14 @@ class SecureSourceManagerRestInterceptor:
 
     .. code-block:: python
         class MyCustomSecureSourceManagerInterceptor(SecureSourceManagerRestInterceptor):
+            def pre_create_branch_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_branch_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -80,6 +88,14 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_branch_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_branch_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -93,6 +109,14 @@ class SecureSourceManagerRestInterceptor:
                 return request, metadata
 
             def post_delete_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_branch_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_branch_rule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -117,6 +141,14 @@ class SecureSourceManagerRestInterceptor:
                 return request, metadata
 
             def post_get_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_branch_rules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_branch_rules(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -152,11 +184,44 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_branch_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_branch_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = SecureSourceManagerRestTransport(interceptor=MyCustomSecureSourceManagerInterceptor())
         client = SecureSourceManagerClient(transport=transport)
 
 
     """
+
+    def pre_create_branch_rule(
+        self,
+        request: secure_source_manager.CreateBranchRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        secure_source_manager.CreateBranchRuleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_branch_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_create_branch_rule(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_branch_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_instance(
         self,
@@ -206,6 +271,31 @@ class SecureSourceManagerRestInterceptor:
         """
         return response
 
+    def pre_delete_branch_rule(
+        self,
+        request: secure_source_manager.DeleteBranchRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        secure_source_manager.DeleteBranchRuleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_branch_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_delete_branch_rule(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_branch_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_instance(
         self,
         request: secure_source_manager.DeleteInstanceRequest,
@@ -247,6 +337,29 @@ class SecureSourceManagerRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_repository
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_branch_rule(
+        self,
+        request: secure_source_manager.GetBranchRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[secure_source_manager.GetBranchRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_branch_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_get_branch_rule(
+        self, response: secure_source_manager.BranchRule
+    ) -> secure_source_manager.BranchRule:
+        """Post-rpc interceptor for get_branch_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the SecureSourceManager server but before
@@ -316,6 +429,29 @@ class SecureSourceManagerRestInterceptor:
         self, response: secure_source_manager.Repository
     ) -> secure_source_manager.Repository:
         """Post-rpc interceptor for get_repository
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_branch_rules(
+        self,
+        request: secure_source_manager.ListBranchRulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[secure_source_manager.ListBranchRulesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_branch_rules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_list_branch_rules(
+        self, response: secure_source_manager.ListBranchRulesResponse
+    ) -> secure_source_manager.ListBranchRulesResponse:
+        """Post-rpc interceptor for list_branch_rules
 
         Override in a subclass to manipulate the response
         after it is returned by the SecureSourceManager server but before
@@ -410,6 +546,31 @@ class SecureSourceManagerRestInterceptor:
         self, response: iam_policy_pb2.TestIamPermissionsResponse
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions_repo
+
+        Override in a subclass to manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_branch_rule(
+        self,
+        request: secure_source_manager.UpdateBranchRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        secure_source_manager.UpdateBranchRuleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_branch_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_update_branch_rule(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_branch_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the SecureSourceManager server but before
@@ -781,6 +942,105 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _CreateBranchRule(
+        _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.CreateBranchRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.CreateBranchRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create branch rule method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.CreateBranchRuleRequest):
+                    The request object. CreateBranchRuleRequest is the
+                request to create a branch rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_branch_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._CreateBranchRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_branch_rule(resp)
+            return resp
+
     class _CreateInstance(
         _BaseSecureSourceManagerRestTransport._BaseCreateInstance,
         SecureSourceManagerRestStub,
@@ -977,6 +1237,99 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = self._interceptor.post_create_repository(resp)
             return resp
 
+    class _DeleteBranchRule(
+        _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.DeleteBranchRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.DeleteBranchRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete branch rule method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.DeleteBranchRuleRequest):
+                    The request object. DeleteBranchRuleRequest is the
+                request to delete a branch rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_branch_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._DeleteBranchRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_branch_rule(resp)
+            return resp
+
     class _DeleteInstance(
         _BaseSecureSourceManagerRestTransport._BaseDeleteInstance,
         SecureSourceManagerRestStub,
@@ -1159,6 +1512,100 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_repository(resp)
+            return resp
+
+    class _GetBranchRule(
+        _BaseSecureSourceManagerRestTransport._BaseGetBranchRule,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.GetBranchRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.GetBranchRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> secure_source_manager.BranchRule:
+            r"""Call the get branch rule method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.GetBranchRuleRequest):
+                    The request object. GetBranchRuleRequest is the request
+                for getting a branch rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.secure_source_manager.BranchRule:
+                    Metadata of a BranchRule. BranchRule
+                is the protection rule to enforce
+                pre-defined rules on desginated branches
+                within a repository.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_branch_rule(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._GetBranchRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.BranchRule()
+            pb_resp = secure_source_manager.BranchRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_branch_rule(resp)
             return resp
 
     class _GetIamPolicyRepo(
@@ -1509,6 +1956,100 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_repository(resp)
+            return resp
+
+    class _ListBranchRules(
+        _BaseSecureSourceManagerRestTransport._BaseListBranchRules,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ListBranchRules")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ListBranchRulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> secure_source_manager.ListBranchRulesResponse:
+            r"""Call the list branch rules method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.ListBranchRulesRequest):
+                    The request object. ListBranchRulesRequest is the request
+                to list branch rules.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.secure_source_manager.ListBranchRulesResponse:
+                    ListBranchRulesResponse is the
+                response to listing branchRules.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_branch_rules(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._ListBranchRules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.ListBranchRulesResponse()
+            pb_resp = secure_source_manager.ListBranchRulesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_branch_rules(resp)
             return resp
 
     class _ListInstances(
@@ -1964,6 +2505,115 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = self._interceptor.post_test_iam_permissions_repo(resp)
             return resp
 
+    class _UpdateBranchRule(
+        _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UpdateBranchRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UpdateBranchRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update branch rule method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.UpdateBranchRuleRequest):
+                    The request object. UpdateBranchRuleRequest is the
+                request to update a branchRule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_branch_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._UpdateBranchRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_branch_rule(resp)
+            return resp
+
+    @property
+    def create_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreateBranchRuleRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateBranchRule(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def create_instance(
         self,
@@ -1985,6 +2635,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         return self._CreateRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeleteBranchRuleRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBranchRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_instance(
         self,
     ) -> Callable[
@@ -2003,6 +2663,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetBranchRuleRequest], secure_source_manager.BranchRule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBranchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy_repo(
@@ -2031,6 +2701,17 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_branch_rules(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListBranchRulesRequest],
+        secure_source_manager.ListBranchRulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBranchRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(
@@ -2072,6 +2753,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissionsRepo(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_branch_rule(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateBranchRuleRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBranchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):
