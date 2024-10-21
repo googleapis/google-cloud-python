@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.8...google-cloud-securesourcemanager-v0.1.9) (2024-10-21)
+
+
+### Features
+
+* [google-cloud-securesourcemanager] Add field `instance` to message `.google.cloud.securesourcemanager.v1.ListRepositoriesRequest` ([#13176](https://github.com/googleapis/google-cloud-python/issues/13176)) ([18b266f](https://github.com/googleapis/google-cloud-python/commit/18b266f70010b8d233e3a3e9ce97a89caf2e0695))
+
+
+### Documentation
+
+* A comment for field `instance` in message ([18b266f](https://github.com/googleapis/google-cloud-python/commit/18b266f70010b8d233e3a3e9ce97a89caf2e0695))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.7...google-cloud-securesourcemanager-v0.1.8) (2024-07-30)
 
 

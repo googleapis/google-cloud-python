@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.33.0...google-cloud-documentai-v2.34.0) (2024-10-21)
+
+
+### Features
+
+* Add RESOURCE_EXHAUSTED to retryable status codes for ProcessDocument method ([98a4a8d](https://github.com/googleapis/google-cloud-python/commit/98a4a8de41dd24d542f592f06f68dd5adac0ceeb))
+* Updated the exponential backoff settings for the Document AI ProcessDocument and BatchProcessDocuments methods ([98a4a8d](https://github.com/googleapis/google-cloud-python/commit/98a4a8de41dd24d542f592f06f68dd5adac0ceeb))
+
 ## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.32.0...google-cloud-documentai-v2.33.0) (2024-10-08)
 
 
