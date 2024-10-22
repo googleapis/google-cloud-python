@@ -141,7 +141,10 @@ def retry_target(
 
     for sleep in sleep_generator:
         try:
-            return target()
+            result = target()
+            if inspect.isawaitable(result):
+                warnings.warn(_ASYNC_RETRY_WARNING)
+            return result
 
         # pylint: disable=broad-except
         # This function explicitly must deal with broad exceptions.
@@ -277,8 +280,6 @@ class Retry(_BaseRetry):
             Callable: A callable that will invoke ``func`` with retry
                 behavior.
         """
-        if inspect.iscoroutinefunction(func):
-            warnings.warn(_ASYNC_RETRY_WARNING)
         if self._on_error is not None:
             on_error = self._on_error
 
