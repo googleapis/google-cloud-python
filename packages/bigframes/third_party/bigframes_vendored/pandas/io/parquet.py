@@ -41,6 +41,6 @@ class ParquetIOMixin:
                 order is not preserved. Default, ``'auto'``.
 
         Returns:
-            bigframes.dataframe.DataFrame: A BigQuery DataFrames.
+            bigframes.pandas.DataFrame: A BigQuery DataFrames.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

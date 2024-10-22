@@ -64,7 +64,7 @@ class PickleIOMixin:
                 examples on storage options refer here.
 
         Returns:
-            bigframes.dataframe.DataFrame or bigframes.series.Series: same type as object
+            bigframes.pandas.DataFrame or bigframes.pandas.Series: same type as object
                 stored in file.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

@@ -162,6 +162,6 @@ class GBQIOMixin:
                 or partitioned tables without primary keys.
 
         Returns:
-            bigframes.dataframe.DataFrame: A DataFrame representing results of the query or table.
+            bigframes.pandas.DataFrame: A DataFrame representing results of the query or table.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
