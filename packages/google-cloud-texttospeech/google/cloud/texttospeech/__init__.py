@@ -48,6 +48,7 @@ from google.cloud.texttospeech_v1.types.cloud_tts import (
     SynthesizeSpeechRequest,
     SynthesizeSpeechResponse,
     Voice,
+    VoiceCloneParams,
     VoiceSelectionParams,
 )
 from google.cloud.texttospeech_v1.types.cloud_tts_lrs import (
@@ -76,6 +77,7 @@ __all__ = (
     "SynthesizeSpeechRequest",
     "SynthesizeSpeechResponse",
     "Voice",
+    "VoiceCloneParams",
     "VoiceSelectionParams",
     "AudioEncoding",
     "SsmlVoiceGender",

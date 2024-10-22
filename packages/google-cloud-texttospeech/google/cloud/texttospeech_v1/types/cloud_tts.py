@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "VoiceSelectionParams",
         "AudioConfig",
         "CustomVoiceParams",
+        "VoiceCloneParams",
         "SynthesizeSpeechResponse",
         "StreamingSynthesizeConfig",
         "StreamingSynthesisInput",
@@ -423,6 +424,10 @@ class VoiceSelectionParams(proto.Message):
             The configuration for a custom voice. If
             [CustomVoiceParams.model] is set, the service will choose
             the custom voice matching the specified configuration.
+        voice_clone (google.cloud.texttospeech_v1.types.VoiceCloneParams):
+            Optional. The configuration for a voice clone. If
+            [VoiceCloneParams.voice_clone_key] is set, the service will
+            choose the voice clone matching the specified configuration.
     """
 
     language_code: str = proto.Field(
@@ -442,6 +447,11 @@ class VoiceSelectionParams(proto.Message):
         proto.MESSAGE,
         number=4,
         message="CustomVoiceParams",
+    )
+    voice_clone: "VoiceCloneParams" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="VoiceCloneParams",
     )
 
 
@@ -562,6 +572,20 @@ class CustomVoiceParams(proto.Message):
         proto.ENUM,
         number=3,
         enum=ReportedUsage,
+    )
+
+
+class VoiceCloneParams(proto.Message):
+    r"""The configuration of Voice Clone feature.
+
+    Attributes:
+        voice_cloning_key (str):
+            Required. Created by GenerateVoiceCloningKey.
+    """
+
+    voice_cloning_key: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

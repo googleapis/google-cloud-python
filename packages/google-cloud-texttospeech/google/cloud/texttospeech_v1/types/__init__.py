@@ -31,6 +31,7 @@ from .cloud_tts import (
     SynthesizeSpeechRequest,
     SynthesizeSpeechResponse,
     Voice,
+    VoiceCloneParams,
     VoiceSelectionParams,
 )
 from .cloud_tts_lrs import (
@@ -55,6 +56,7 @@ __all__ = (
     "SynthesizeSpeechRequest",
     "SynthesizeSpeechResponse",
     "Voice",
+    "VoiceCloneParams",
     "VoiceSelectionParams",
     "AudioEncoding",
     "SsmlVoiceGender",
