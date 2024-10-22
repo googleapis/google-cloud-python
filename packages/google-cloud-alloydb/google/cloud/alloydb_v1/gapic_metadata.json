@@ -65,6 +65,11 @@
                 "delete_user"
               ]
             },
+            "ExecuteSql": {
+              "methods": [
+                "execute_sql"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -115,6 +120,11 @@
                 "list_clusters"
               ]
             },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
             "ListInstances": {
               "methods": [
                 "list_instances"
@@ -143,6 +153,11 @@
             "RestoreCluster": {
               "methods": [
                 "restore_cluster"
+              ]
+            },
+            "SwitchoverCluster": {
+              "methods": [
+                "switchover_cluster"
               ]
             },
             "UpdateBackup": {
@@ -225,6 +240,11 @@
                 "delete_user"
               ]
             },
+            "ExecuteSql": {
+              "methods": [
+                "execute_sql"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -275,6 +295,11 @@
                 "list_clusters"
               ]
             },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
             "ListInstances": {
               "methods": [
                 "list_instances"
@@ -303,6 +328,11 @@
             "RestoreCluster": {
               "methods": [
                 "restore_cluster"
+              ]
+            },
+            "SwitchoverCluster": {
+              "methods": [
+                "switchover_cluster"
               ]
             },
             "UpdateBackup": {
@@ -385,6 +415,11 @@
                 "delete_user"
               ]
             },
+            "ExecuteSql": {
+              "methods": [
+                "execute_sql"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -435,6 +470,11 @@
                 "list_clusters"
               ]
             },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
             "ListInstances": {
               "methods": [
                 "list_instances"
@@ -463,6 +503,11 @@
             "RestoreCluster": {
               "methods": [
                 "restore_cluster"
+              ]
+            },
+            "SwitchoverCluster": {
+              "methods": [
+                "switchover_cluster"
               ]
             },
             "UpdateBackup": {

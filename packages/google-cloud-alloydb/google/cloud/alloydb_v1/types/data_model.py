@@ -19,14 +19,13 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.alloydb.v1',
+    package="google.cloud.alloydb.v1",
     manifest={
-        'SqlResult',
-        'SqlResultColumn',
-        'SqlResultRow',
-        'SqlResultValue',
+        "SqlResult",
+        "SqlResultColumn",
+        "SqlResultRow",
+        "SqlResultValue",
     },
 )
 
@@ -43,15 +42,15 @@ class SqlResult(proto.Message):
             Rows returned by the SQL statement.
     """
 
-    columns: MutableSequence['SqlResultColumn'] = proto.RepeatedField(
+    columns: MutableSequence["SqlResultColumn"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='SqlResultColumn',
+        message="SqlResultColumn",
     )
-    rows: MutableSequence['SqlResultRow'] = proto.RepeatedField(
+    rows: MutableSequence["SqlResultRow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='SqlResultRow',
+        message="SqlResultRow",
     )
 
 
@@ -86,10 +85,10 @@ class SqlResultRow(proto.Message):
             List of values in a row of sql result.
     """
 
-    values: MutableSequence['SqlResultValue'] = proto.RepeatedField(
+    values: MutableSequence["SqlResultValue"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='SqlResultValue',
+        message="SqlResultValue",
     )
 
 

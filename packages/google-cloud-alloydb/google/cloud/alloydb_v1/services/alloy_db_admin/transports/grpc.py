@@ -413,6 +413,35 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["promote_cluster"]
 
     @property
+    def switchover_cluster(
+        self,
+    ) -> Callable[[service.SwitchoverClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the switchover cluster method over gRPC.
+
+        Switches the roles of PRIMARY and SECONDARY clusters
+        without any data loss. This promotes the SECONDARY
+        cluster to PRIMARY and sets up the original PRIMARY
+        cluster to replicate from this newly promoted cluster.
+
+        Returns:
+            Callable[[~.SwitchoverClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "switchover_cluster" not in self._stubs:
+            self._stubs["switchover_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/SwitchoverCluster",
+                request_serializer=service.SwitchoverClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["switchover_cluster"]
+
+    @property
     def restore_cluster(
         self,
     ) -> Callable[[service.RestoreClusterRequest], operations_pb2.Operation]:
@@ -745,6 +774,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restart_instance"]
+
+    @property
+    def execute_sql(
+        self,
+    ) -> Callable[[service.ExecuteSqlRequest], service.ExecuteSqlResponse]:
+        r"""Return a callable for the execute sql method over gRPC.
+
+        Executes a SQL statement in a database inside an
+        AlloyDB instance.
+
+        Returns:
+            Callable[[~.ExecuteSqlRequest],
+                    ~.ExecuteSqlResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_sql" not in self._stubs:
+            self._stubs["execute_sql"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/ExecuteSql",
+                request_serializer=service.ExecuteSqlRequest.serialize,
+                response_deserializer=service.ExecuteSqlResponse.deserialize,
+            )
+        return self._stubs["execute_sql"]
 
     @property
     def list_backups(
@@ -1089,6 +1145,32 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_user"]
+
+    @property
+    def list_databases(
+        self,
+    ) -> Callable[[service.ListDatabasesRequest], service.ListDatabasesResponse]:
+        r"""Return a callable for the list databases method over gRPC.
+
+        Lists Databases in a given project and location.
+
+        Returns:
+            Callable[[~.ListDatabasesRequest],
+                    ~.ListDatabasesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_databases" not in self._stubs:
+            self._stubs["list_databases"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/ListDatabases",
+                request_serializer=service.ListDatabasesRequest.serialize,
+                response_deserializer=service.ListDatabasesResponse.deserialize,
+            )
+        return self._stubs["list_databases"]
 
     def close(self):
         self.grpc_channel.close()
