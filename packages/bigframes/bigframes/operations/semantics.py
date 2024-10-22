@@ -98,17 +98,20 @@ class Semantics:
             ValueError: when the instruction refers to a non-existing column, or when
                 more than one columns are referred to.
         """
-        self._validate_model(model)
+        import bigframes.bigquery as bbq
+        import bigframes.dataframe
+        import bigframes.series
 
+        self._validate_model(model)
         columns = self._parse_columns(instruction)
+
+        df: bigframes.dataframe.DataFrame = self._df.copy()
         for column in columns:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
-            if self._df[column].dtype != dtypes.STRING_DTYPE:
-                raise TypeError(
-                    "Semantics aggregated column must be a string type, not "
-                    f"{type(self._df[column])}"
-                )
+
+            if df[column].dtype != dtypes.STRING_DTYPE:
+                df[column] = df[column].astype(dtypes.STRING_DTYPE)
 
         if len(columns) > 1:
             raise NotImplementedError(
@@ -122,11 +125,6 @@ class Semantics:
                 "It must be greater than 1."
             )
 
-        import bigframes.bigquery as bbq
-        import bigframes.dataframe
-        import bigframes.series
-
-        df: bigframes.dataframe.DataFrame = self._df.copy()
         user_instruction = self._format_instruction(instruction, columns)
 
         num_cluster = 1
@@ -325,26 +323,27 @@ class Semantics:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
+        import bigframes.dataframe
+        import bigframes.series
+
         self._validate_model(model)
         columns = self._parse_columns(instruction)
         for column in columns:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
-            if self._df[column].dtype != dtypes.STRING_DTYPE:
-                raise TypeError(
-                    "Semantics aggregated column must be a string type, not "
-                    f"{type(self._df[column])}"
-                )
+
+        df: bigframes.dataframe.DataFrame = self._df[columns].copy()
+        for column in columns:
+            if df[column].dtype != dtypes.STRING_DTYPE:
+                df[column] = df[column].astype(dtypes.STRING_DTYPE)
 
         user_instruction = self._format_instruction(instruction, columns)
         output_instruction = "Based on the provided context, reply to the following claim by only True or False:"
 
-        from bigframes.dataframe import DataFrame
-
         results = typing.cast(
-            DataFrame,
+            bigframes.dataframe.DataFrame,
             model.predict(
-                self._make_prompt(columns, user_instruction, output_instruction),
+                self._make_prompt(df, columns, user_instruction, output_instruction),
                 temperature=0.0,
             ),
         )
@@ -398,28 +397,29 @@ class Semantics:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
+        import bigframes.dataframe
+        import bigframes.series
+
         self._validate_model(model)
         columns = self._parse_columns(instruction)
         for column in columns:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
-            if self._df[column].dtype != dtypes.STRING_DTYPE:
-                raise TypeError(
-                    "Semantics aggregated column must be a string type, not "
-                    f"{type(self._df[column])}"
-                )
+
+        df: bigframes.dataframe.DataFrame = self._df[columns].copy()
+        for column in columns:
+            if df[column].dtype != dtypes.STRING_DTYPE:
+                df[column] = df[column].astype(dtypes.STRING_DTYPE)
 
         user_instruction = self._format_instruction(instruction, columns)
         output_instruction = (
             "Based on the provided contenxt, answer the following instruction:"
         )
 
-        from bigframes.series import Series
-
         results = typing.cast(
-            Series,
+            bigframes.series.Series,
             model.predict(
-                self._make_prompt(columns, user_instruction, output_instruction),
+                self._make_prompt(df, columns, user_instruction, output_instruction),
                 temperature=0.0,
             )["ml_generate_text_llm_result"],
         )
@@ -683,6 +683,9 @@ class Semantics:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
+        import bigframes.dataframe
+        import bigframes.series
+
         self._validate_model(model)
         columns = self._parse_columns(instruction)
         for column in columns:
@@ -692,12 +695,12 @@ class Semantics:
             raise NotImplementedError(
                 "Semantic aggregations are limited to a single column."
             )
+
+        df: bigframes.dataframe.DataFrame = self._df[columns].copy()
         column = columns[0]
-        if self._df[column].dtype != dtypes.STRING_DTYPE:
-            raise TypeError(
-                "Referred column must be a string type, not "
-                f"{type(self._df[column])}"
-            )
+        if df[column].dtype != dtypes.STRING_DTYPE:
+            df[column] = df[column].astype(dtypes.STRING_DTYPE)
+
         # `index` is reserved for the `reset_index` below.
         if column == "index":
             raise ValueError(
@@ -709,12 +712,7 @@ class Semantics:
 
         user_instruction = self._format_instruction(instruction, columns)
 
-        import bigframes.dataframe
-        import bigframes.series
-
-        df: bigframes.dataframe.DataFrame = self._df[columns].copy()
         n = df.shape[0]
-
         if k >= n:
             return df
 
@@ -762,7 +760,7 @@ class Semantics:
 
         # Random pivot selection for improved average quickselect performance.
         pending_df = df[df[status_column].isna()]
-        pivot_iloc = np.random.randint(0, pending_df.shape[0] - 1)
+        pivot_iloc = np.random.randint(0, pending_df.shape[0])
         pivot_index = pending_df.iloc[pivot_iloc]["index"]
         pivot_df = pending_df[pending_df["index"] == pivot_index]
 
@@ -770,9 +768,9 @@ class Semantics:
         prompt_s = pending_df[pending_df["index"] != pivot_index][column]
         prompt_s = (
             f"{output_instruction}\n\nQuestion: {user_instruction}\n"
-            + "\nDocument 1: "
+            + f"\nDocument 1: {column} "
             + pivot_df.iloc[0][column]
-            + "\nDocument 2: "
+            + f"\nDocument 2: {column} "
             + prompt_s  # type:ignore
         )
 
@@ -920,9 +918,8 @@ class Semantics:
         return result_df
 
     def _make_prompt(
-        self, columns: List[str], user_instruction: str, output_instruction: str
+        self, prompt_df, columns, user_instruction: str, output_instruction: str
     ):
-        prompt_df = self._df[columns].copy()
         prompt_df["prompt"] = f"{output_instruction}\n{user_instruction}\nContext: "
 
         # Combine context from multiple columns.
