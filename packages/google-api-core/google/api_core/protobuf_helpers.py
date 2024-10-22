@@ -63,9 +63,7 @@ def from_any_pb(pb_type, any_pb):
     # Unpack the Any object and populate the protobuf message instance.
     if not any_pb.Unpack(msg_pb):
         raise TypeError(
-            "Could not convert {} to {}".format(
-                any_pb.__class__.__name__, pb_type.__name__
-            )
+            f"Could not convert `{any_pb.TypeName()}` with underlying type `google.protobuf.any_pb2.Any` to `{msg_pb.DESCRIPTOR.full_name}`"
         )
 
     # Done; return the message.

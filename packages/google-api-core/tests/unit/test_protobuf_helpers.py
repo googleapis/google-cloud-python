@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pytest
+import re
 
 from google.api import http_pb2
 from google.api_core import protobuf_helpers
@@ -65,7 +66,12 @@ def test_from_any_pb_failure():
     in_message = any_pb2.Any()
     in_message.Pack(date_pb2.Date(year=1990))
 
-    with pytest.raises(TypeError):
+    with pytest.raises(
+        TypeError,
+        match=re.escape(
+            "Could not convert `google.type.Date` with underlying type `google.protobuf.any_pb2.Any` to `google.type.TimeOfDay`"
+        ),
+    ):
         protobuf_helpers.from_any_pb(timeofday_pb2.TimeOfDay, in_message)
 
 
