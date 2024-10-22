@@ -3,5 +3,5 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    asset_v1/services
-    asset_v1/types
+    asset_v1/services_
+    asset_v1/types_
