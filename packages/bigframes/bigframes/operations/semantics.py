@@ -193,7 +193,7 @@ class Semantics:
 
             # Run model
             predict_df = typing.cast(
-                bigframes.dataframe.DataFrame, model.predict(prompt_s)
+                bigframes.dataframe.DataFrame, model.predict(prompt_s, temperature=0.0)
             )
             agg_df[column] = predict_df["ml_generate_text_llm_result"].combine_first(
                 single_row_df
@@ -344,7 +344,8 @@ class Semantics:
         results = typing.cast(
             DataFrame,
             model.predict(
-                self._make_prompt(columns, user_instruction, output_instruction)
+                self._make_prompt(columns, user_instruction, output_instruction),
+                temperature=0.0,
             ),
         )
 
@@ -418,7 +419,8 @@ class Semantics:
         results = typing.cast(
             Series,
             model.predict(
-                self._make_prompt(columns, user_instruction, output_instruction)
+                self._make_prompt(columns, user_instruction, output_instruction),
+                temperature=0.0,
             )["ml_generate_text_llm_result"],
         )
 
@@ -776,7 +778,9 @@ class Semantics:
 
         import bigframes.dataframe
 
-        predict_df = typing.cast(bigframes.dataframe.DataFrame, model.predict(prompt_s))
+        predict_df = typing.cast(
+            bigframes.dataframe.DataFrame, model.predict(prompt_s, temperature=0.0)
+        )
 
         marks = predict_df["ml_generate_text_llm_result"].str.contains("2")
         more_relavant: bigframes.dataframe.DataFrame = df[marks]
