@@ -936,11 +936,12 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
             self.process_document: self._wrap_method(
                 self.process_document,
                 default_retry=retries.AsyncRetry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
+                    initial=1.0,
+                    maximum=90.0,
+                    multiplier=9.0,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
+                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=300.0,
@@ -951,9 +952,9 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
             self.batch_process_documents: self._wrap_method(
                 self.batch_process_documents,
                 default_retry=retries.AsyncRetry(
-                    initial=0.1,
+                    initial=1.0,
                     maximum=60.0,
-                    multiplier=1.3,
+                    multiplier=1.5,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
@@ -1046,9 +1047,9 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
             self.review_document: self._wrap_method(
                 self.review_document,
                 default_retry=retries.AsyncRetry(
-                    initial=0.1,
+                    initial=1.0,
                     maximum=60.0,
-                    multiplier=1.3,
+                    multiplier=1.5,
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
