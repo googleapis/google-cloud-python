@@ -3332,6 +3332,42 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def items(self):
+        """
+        Iterate over (index, value) pairs of a Series.
+
+        Iterates over the Series contents, returning a tuple with
+        the index and the value of a Series.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(['bear', 'bear', 'marsupial'],
+            ...                    index=['panda', 'polar', 'koala'])
+            >>> s
+            panda       bear
+            polar       bear
+            koala  marsupial
+            dtype: string
+
+            >>> for index, value in s.items():
+            ...     print(f'--> index: {index}')
+            ...     print(f'--> value: {value}')
+            ...
+            --> index: panda
+            --> value: bear
+            --> index: polar
+            --> value: bear
+            --> index: koala
+            --> value: marsupial
+
+        Returns:
+            Iterator: Iterator of index, value for each content of the Series.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def where(self, cond, other):
         """Replace values where the condition is False.
 

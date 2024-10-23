@@ -228,6 +228,30 @@ def test_series_construct_geodata():
 
 
 @pytest.mark.parametrize(
+    ["data", "index"],
+    [
+        (["a", "b", "c"], None),
+        ([1, 2, 3], ["a", "b", "c"]),
+        ([1, 2, None], ["a", "b", "c"]),
+        ([1, 2, 3], [pd.NA, "b", "c"]),
+        ([numpy.nan, 2, 3], ["a", "b", "c"]),
+    ],
+)
+def test_series_items(data, index):
+    bf_series = series.Series(data, index=index)
+    pd_series = pd.Series(data, index=index)
+
+    for (bf_index, bf_value), (pd_index, pd_value) in zip(
+        bf_series.items(), pd_series.items()
+    ):
+        # TODO(jialuo): Remove the if conditions after b/373699458 is addressed.
+        if not pd.isna(bf_index) or not pd.isna(pd_index):
+            assert bf_index == pd_index
+        if not pd.isna(bf_value) or not pd.isna(pd_value):
+            assert bf_value == pd_value
+
+
+@pytest.mark.parametrize(
     ["col_name", "expected_dtype"],
     [
         ("bool_col", pd.BooleanDtype()),

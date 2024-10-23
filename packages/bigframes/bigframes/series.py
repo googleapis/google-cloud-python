@@ -1117,6 +1117,14 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         # TODO: enforce stricter alignment
         return self._apply_binary_op(other, ops.ne_op)
 
+    def items(self):
+        for batch_df in self._block.to_pandas_batches():
+            assert (
+                batch_df.shape[1] == 1
+            ), f"Expected 1 column in the dataframe, but got {batch_df.shape[1]}."
+            for item in batch_df.squeeze(axis=1).items():
+                yield item
+
     def where(self, cond, other=None):
         value_id, cond_id, other_id, block = self._align3(cond, other)
         block, result_id = block.project_expr(
