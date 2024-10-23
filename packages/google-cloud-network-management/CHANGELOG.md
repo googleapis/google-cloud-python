@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.18.0...google-cloud-network-management-v1.19.0) (2024-10-23)
+
+
+### Features
+
+* add fields related to advertised routes to the RouteInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add firewall policy URI to the FirewallInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add load balancer name to the ForwardingRuleInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add messages and fields related to Redis Clusters ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add messages and fields related to Redis Instances ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add more detailed abort and drop causes to corresponding enums ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add PSC network attachment URI to the InstanceInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add PSC target fields to the ForwardingRuleInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add region name field to the RouteInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add region name to the ForwardingRuleInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+* add subnet URI and region name to the NetworkInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+
+
+### Documentation
+
+* update outdated comments in the FirewallInfo proto ([046e080](https://github.com/googleapis/google-cloud-python/commit/046e080dc9a580c0b700708fde0145527dc5227a))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.17.3...google-cloud-network-management-v1.18.0) (2024-08-08)
 
 

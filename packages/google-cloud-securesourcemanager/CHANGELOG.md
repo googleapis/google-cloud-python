@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.8...google-cloud-securesourcemanager-v0.1.9) (2024-10-23)
+
+
+### Features
+
+* [google-cloud-securesourcemanager] Add field `instance` to message `.google.cloud.securesourcemanager.v1.ListRepositoriesRequest` ([#13176](https://github.com/googleapis/google-cloud-python/issues/13176)) ([18b266f](https://github.com/googleapis/google-cloud-python/commit/18b266f70010b8d233e3a3e9ce97a89caf2e0695))
+* Add branch rule APIs ([e6a764b](https://github.com/googleapis/google-cloud-python/commit/e6a764b84fc0529e15c9c1a0721a50809af52369))
+* Add field `psc_allowed_projects` to message `.google.cloud.securesourcemanager.v1.Instance` ([e6a764b](https://github.com/googleapis/google-cloud-python/commit/e6a764b84fc0529e15c9c1a0721a50809af52369))
+
+
+### Documentation
+
+* A comment for field `instance` in message ([18b266f](https://github.com/googleapis/google-cloud-python/commit/18b266f70010b8d233e3a3e9ce97a89caf2e0695))
+* A comment for field `instance` in message `.google.cloud.securesourcemanager.v1.Repository` is changed ([e6a764b](https://github.com/googleapis/google-cloud-python/commit/e6a764b84fc0529e15c9c1a0721a50809af52369))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.7...google-cloud-securesourcemanager-v0.1.8) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.7.5...google-cloud-essential-contacts-v1.7.6) (2024-10-23)
+
+
+### Documentation
+
+* [google-cloud-essential-contacts] Marks the `google.cloud.essentialcontacts.v1.Contact.validation_state` field as `output_only` ([#13165](https://github.com/googleapis/google-cloud-python/issues/13165)) ([20472b8](https://github.com/googleapis/google-cloud-python/commit/20472b8af555f8fb778072237b2c7723f4df46e5))
+
 ## [1.7.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.7.4...google-cloud-essential-contacts-v1.7.5) (2024-07-30)
 
 
