@@ -58,9 +58,9 @@ if [[ -d "google/cloud" ]]; then
   # Push google cloud library docs to the Cloud RAD bucket `docs-staging-v2`
   staging_v2_bucket="docs-staging-v2"
 else
-  # Push non-cloud library docs to `docs-staging-v2-staging` instead of the
+  # Push non-cloud library docs to `docs-staging-v2-dev` instead of the
   # Cloud RAD bucket `docs-staging-v2`
-  staging_v2_bucket="docs-staging-v2-staging"
+  staging_v2_bucket="docs-staging-v2-dev"
 fi
 
 # upload docs
