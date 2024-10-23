@@ -23,7 +23,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.alloydb_v1.types import resources
+from google.cloud.alloydb_v1.types import data_model, resources
 
 __protobuf__ = proto.module(
     package="google.cloud.alloydb.v1",
@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "CreateClusterRequest",
         "UpdateClusterRequest",
         "DeleteClusterRequest",
+        "SwitchoverClusterRequest",
         "PromoteClusterRequest",
         "RestoreClusterRequest",
         "ListInstancesRequest",
@@ -52,6 +53,9 @@ __protobuf__ = proto.module(
         "FailoverInstanceRequest",
         "InjectFaultRequest",
         "RestartInstanceRequest",
+        "ExecuteSqlRequest",
+        "ExecuteSqlResponse",
+        "ExecuteSqlMetadata",
         "ListBackupsRequest",
         "ListBackupsResponse",
         "GetBackupRequest",
@@ -70,6 +74,8 @@ __protobuf__ = proto.module(
         "CreateUserRequest",
         "UpdateUserRequest",
         "DeleteUserRequest",
+        "ListDatabasesRequest",
+        "ListDatabasesResponse",
     },
 )
 
@@ -194,17 +200,17 @@ class CreateSecondaryClusterRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -212,10 +218,10 @@ class CreateSecondaryClusterRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            create request.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     parent: str = proto.Field(
@@ -256,17 +262,17 @@ class CreateClusterRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -274,10 +280,10 @@ class CreateClusterRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            create request.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     parent: str = proto.Field(
@@ -319,17 +325,17 @@ class UpdateClusterRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -337,10 +343,10 @@ class UpdateClusterRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            update request.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
         allow_missing (bool):
             Optional. If set to true, update succeeds even if cluster is
             not found. In that case, a new cluster is created and
@@ -382,17 +388,17 @@ class DeleteClusterRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -405,10 +411,10 @@ class DeleteClusterRequest(proto.Message):
             current etag of the Cluster, deletion will be
             blocked and an ABORTED error will be returned.
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            delete.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
         force (bool):
             Optional. Whether to cascade delete child
             instances for given cluster.
@@ -436,6 +442,55 @@ class DeleteClusterRequest(proto.Message):
     )
 
 
+class SwitchoverClusterRequest(proto.Message):
+    r"""Message for switching over to a cluster
+
+    Attributes:
+        name (str):
+            Required. The name of the resource. For the
+            required format, see the comment on the
+            Cluster.name field
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
 class PromoteClusterRequest(proto.Message):
     r"""Message for promoting a Cluster
 
@@ -447,10 +502,10 @@ class PromoteClusterRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
@@ -470,10 +525,10 @@ class PromoteClusterRequest(proto.Message):
             current etag of the Cluster, deletion will be
             blocked and an ABORTED error will be returned.
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            delete.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     name: str = proto.Field(
@@ -527,17 +582,17 @@ class RestoreClusterRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -545,10 +600,10 @@ class RestoreClusterRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            import request.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     backup_source: resources.BackupSource = proto.Field(
@@ -704,17 +759,17 @@ class CreateInstanceRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -722,10 +777,10 @@ class CreateInstanceRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            create request.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     parent: str = proto.Field(
@@ -766,17 +821,17 @@ class CreateSecondaryInstanceRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -784,10 +839,10 @@ class CreateSecondaryInstanceRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            create request.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     parent: str = proto.Field(
@@ -843,17 +898,17 @@ class BatchCreateInstancesRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -981,7 +1036,7 @@ class BatchCreateInstanceStatus(proto.Message):
                 The state of the instance is unknown.
             PENDING_CREATE (1):
                 Instance is pending creation and has not yet
-                been picked up for processsing in the backend.
+                been picked up for processing in the backend.
             READY (2):
                 The instance is active and running.
             CREATING (3):
@@ -1042,17 +1097,17 @@ class UpdateInstanceRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1060,10 +1115,10 @@ class UpdateInstanceRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            update request.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
         allow_missing (bool):
             Optional. If set to true, update succeeds even if instance
             is not found. In that case, a new instance is created and
@@ -1105,17 +1160,17 @@ class DeleteInstanceRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1128,10 +1183,10 @@ class DeleteInstanceRequest(proto.Message):
             current etag of the Instance, deletion will be
             blocked and an ABORTED error will be returned.
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            delete.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     name: str = proto.Field(
@@ -1163,17 +1218,17 @@ class FailoverInstanceRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1181,10 +1236,10 @@ class FailoverInstanceRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            failover.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     name: str = proto.Field(
@@ -1215,17 +1270,17 @@ class InjectFaultRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1233,10 +1288,10 @@ class InjectFaultRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            fault injection.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
     """
 
     class FaultType(proto.Enum):
@@ -1282,17 +1337,17 @@ class RestartInstanceRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1300,10 +1355,14 @@ class RestartInstanceRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         validate_only (bool):
-            Optional. If set, performs request validation
-            (e.g. permission checks and any other type of
-            validation), but do not actually execute the
-            restart.
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
+        node_ids (MutableSequence[str]):
+            Optional. Full name of the nodes as obtained from
+            INSTANCE_VIEW_FULL to restart upon. Applicable only to read
+            instances.
     """
 
     name: str = proto.Field(
@@ -1317,6 +1376,162 @@ class RestartInstanceRequest(proto.Message):
     validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    node_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ExecuteSqlRequest(proto.Message):
+    r"""Request for ExecuteSql rpc.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        password (str):
+            Optional. The database native user’s
+            password.
+
+            This field is a member of `oneof`_ ``user_credential``.
+        instance (str):
+            Required. The instance where the SQL will be
+            executed. For the required format, see the
+            comment on the Instance.name field.
+        database (str):
+            Required. Name of the database where the query will be
+            executed. Note - Value provided should be the same as
+            expected from ``SELECT current_database();`` and NOT as a
+            resource reference.
+        user (str):
+            Required. Database user to be used for executing the SQL.
+            Note - Value provided should be the same as expected from
+            ``SELECT current_user;`` and NOT as a resource reference.
+        sql_statement (str):
+            Required. SQL statement to execute on
+            database. Any valid statement is permitted,
+            including DDL, DML, DQL statements.
+    """
+
+    password: str = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="user_credential",
+    )
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    user: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    sql_statement: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ExecuteSqlResponse(proto.Message):
+    r"""Execute a SQL statement response.
+
+    Attributes:
+        sql_results (MutableSequence[google.cloud.alloydb_v1.types.SqlResult]):
+            SqlResult represents the results for the
+            execution of sql statements.
+        metadata (google.cloud.alloydb_v1.types.ExecuteSqlMetadata):
+            Any additional metadata information regarding
+            the execution of the sql statement.
+    """
+
+    sql_results: MutableSequence[data_model.SqlResult] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=data_model.SqlResult,
+    )
+    metadata: "ExecuteSqlMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExecuteSqlMetadata",
+    )
+
+
+class ExecuteSqlMetadata(proto.Message):
+    r"""Any additional metadata information regarding the execution
+    of the SQL
+
+    Attributes:
+        message (str):
+            Message related to SQL execution. Marked as
+            core content since it can potentially contain
+            details related to the query or result set. This
+            field can be used to convey messages such as
+            "when the SQL result set exceeds the acceptable
+            response size limits.".
+        partial_result (bool):
+            Set to true if SQL returned a result set
+            larger than the acceptable response size limits
+            and the result was truncated.
+        sql_statement_execution_duration (google.protobuf.duration_pb2.Duration):
+            The time duration taken to execute the sql
+            statement.
+        status (google.cloud.alloydb_v1.types.ExecuteSqlMetadata.Status):
+            Status of SQL execution.
+    """
+
+    class Status(proto.Enum):
+        r"""Status contains all valid Status a SQL execution can end up
+        in.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                The status is unknown.
+            OK (1):
+                No error during SQL execution i.e. All SQL
+                statements ran to completion. The "message" will
+                be empty.
+            PARTIAL (2):
+                Same as OK, except indicates that only
+                partial results were returned. The "message"
+                field will contain details on why results were
+                truncated.
+            ERROR (3):
+                Error during SQL execution. Atleast 1 SQL
+                statement execution resulted in a error. Side
+                effects of other statements are rolled back.
+                The "message" field will contain human readable
+                error given by Postgres of the first bad SQL
+                statement. SQL execution errors don't constitute
+                API errors as defined in
+                https://google.aip.dev/193 but will be returned
+                as part of this message.
+        """
+        STATUS_UNSPECIFIED = 0
+        OK = 1
+        PARTIAL = 2
+        ERROR = 3
+
+    message: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    partial_result: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    sql_statement_execution_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    status: Status = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Status,
     )
 
 
@@ -1420,17 +1635,17 @@ class CreateBackupRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1481,17 +1696,17 @@ class UpdateBackupRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1542,17 +1757,17 @@ class DeleteBackupRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1666,17 +1881,17 @@ class GenerateClientCertificateRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1758,17 +1973,17 @@ class GetConnectionInfoRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1965,17 +2180,17 @@ class CreateUserRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2026,17 +2241,17 @@ class UpdateUserRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes since the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2086,17 +2301,17 @@ class DeleteUserRequest(proto.Message):
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
-            you must retry your request, the server will
-            know to ignore the request if it has already
-            been completed. The server will guarantee that
-            for at least 60 minutes after the first request.
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, will ignore the second request. This
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2119,6 +2334,74 @@ class DeleteUserRequest(proto.Message):
     validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class ListDatabasesRequest(proto.Message):
+    r"""Message for requesting list of Databases.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            ListDatabasesRequest.
+        page_size (int):
+            Optional. The maximum number of databases to return. The
+            service may return fewer than this value. If unspecified,
+            2000 is the default page_size. The max value of page_size
+            will be 4000, values above max will be coerced to max.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListDatabases`` call. This should be provided to retrieve
+            the subsequent page. This field is currently not supported,
+            its value will be ignored if passed.
+        filter (str):
+            Optional. Filtering results.
+            This field is currently not supported, its value
+            will be ignored if passed.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListDatabasesResponse(proto.Message):
+    r"""Message for response to listing Databases.
+
+    Attributes:
+        databases (MutableSequence[google.cloud.alloydb_v1.types.Database]):
+            The list of databases
+        next_page_token (str):
+            A token identifying the next page of results
+            the server should return. If this field is
+            omitted, there are no subsequent pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    databases: MutableSequence[resources.Database] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Database,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
