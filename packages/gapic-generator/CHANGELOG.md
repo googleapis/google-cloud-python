@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.20.0](https://github.com/googleapis/gapic-generator-python/compare/v1.19.1...v1.20.0) (2024-10-23)
+
+
+### Features
+
+* Add support for Python 3.13 ([#2215](https://github.com/googleapis/gapic-generator-python/issues/2215)) ([4e1f9c6](https://github.com/googleapis/gapic-generator-python/commit/4e1f9c623065e5917dbd1d2178228776b7ea536d))
+
+
+### Bug Fixes
+
+* Added underscores in services/types in index.rst.j2 ([#2232](https://github.com/googleapis/gapic-generator-python/issues/2232)) ([f2053ee](https://github.com/googleapis/gapic-generator-python/commit/f2053ee04127f1f0d23fd04438ee4607ee1ce76c))
+* Allow `google-cloud-kms` 3.x ([#2226](https://github.com/googleapis/gapic-generator-python/issues/2226)) ([5e07501](https://github.com/googleapis/gapic-generator-python/commit/5e075016a2119782e611cd51335fa0af7e4c18c2))
+
 ## [1.19.1](https://github.com/googleapis/gapic-generator-python/compare/v1.19.0...v1.19.1) (2024-10-10)
 
 
