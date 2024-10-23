@@ -2495,6 +2495,16 @@ def test_insert_css_product_input_rest_call_success(request_type):
             "custom_label_2": "custom_label_2_value",
             "custom_label_3": "custom_label_3_value",
             "custom_label_4": "custom_label_4_value",
+            "headline_offer_installment": {
+                "months": 665,
+                "amount": {},
+                "downpayment": {},
+            },
+            "headline_offer_subscription_cost": {
+                "period": 1,
+                "period_length": 1380,
+                "amount": {},
+            },
         },
         "custom_attributes": [
             {"name": "name_value", "value": "value_value", "group_values": {}}

@@ -1,2 +1,0 @@
-recursive-include google/shopping/css *.py
-recursive-include google/shopping/css_v1 *.py
