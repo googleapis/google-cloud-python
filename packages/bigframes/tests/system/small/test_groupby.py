@@ -426,24 +426,12 @@ def test_dataframe_groupby_getitem_error(
     scalars_pandas_df_index,
 ):
     col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
-    with pytest.raises(KeyError, match="\"Columns not found: 'not_in_group'\""):
+    with pytest.raises(
+        KeyError, match=r"Columns not found: 'not_in_group'. Did you mean 'string_col'?"
+    ):
         (
             scalars_df_index[col_names]
-            .groupby("string_col")["not_in_group"]
-            .min()
-            .to_pandas()
-        )
-
-
-def test_dataframe_groupby_getitem_multiple_columns_error(
-    scalars_df_index,
-    scalars_pandas_df_index,
-):
-    col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
-    with pytest.raises(KeyError, match="\"Columns not found: 'col1', 'col2'\""):
-        (
-            scalars_df_index[col_names]
-            .groupby("string_col")["col1", "col2"]
+            .groupby("bool_col")["not_in_group"]
             .min()
             .to_pandas()
         )
@@ -462,6 +450,23 @@ def test_dataframe_groupby_getitem_list(
     )
 
     pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dataframe_groupby_getitem_list_error(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
+    with pytest.raises(
+        KeyError,
+        match=r"Columns not found: 'col1', 'float'. Did you mean 'bool_col', 'float64_col'?",
+    ):
+        (
+            scalars_df_index[col_names]
+            .groupby("string_col")["col1", "float"]
+            .min()
+            .to_pandas()
+        )
 
 
 def test_dataframe_groupby_nonnumeric_with_mean():

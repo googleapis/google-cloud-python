@@ -19,6 +19,7 @@ from typing import Sequence, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
+import jellyfish
 import pandas as pd
 
 from bigframes.core import log_adapter
@@ -91,8 +92,21 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
         bad_keys = [key for key in keys if key not in self._block.column_labels]
 
+        # Raise a KeyError message with the possible correct key(s)
         if len(bad_keys) > 0:
-            raise KeyError(f"Columns not found: {str(bad_keys)[1:-1]}")
+            possible_key = []
+            for bad_key in bad_keys:
+                possible_key.append(
+                    min(
+                        self._block.column_labels,
+                        key=lambda item: jellyfish.damerau_levenshtein_distance(
+                            bad_key, item
+                        ),
+                    )
+                )
+            raise KeyError(
+                f"Columns not found: {str(bad_keys)[1:-1]}. Did you mean {str(possible_key)[1:-1]}?"
+            )
 
         columns = [
             col_id for col_id, label in self._col_id_labels.items() if label in keys
