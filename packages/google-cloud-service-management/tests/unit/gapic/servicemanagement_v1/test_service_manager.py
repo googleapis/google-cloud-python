@@ -10617,6 +10617,7 @@ def test_create_service_config_rest_call_success(request_type):
                     "launch_stage": 6,
                     "sample_period": {"seconds": 751, "nanos": 543},
                     "ingest_delay": {},
+                    "time_series_resource_hierarchy_level": [1],
                 },
                 "launch_stage": 6,
                 "monitored_resource_types": [
@@ -10713,6 +10714,9 @@ def test_create_service_config_rest_call_success(request_type):
                         "common": {
                             "reference_docs_uri": "reference_docs_uri_value",
                             "destinations": [10],
+                            "selective_gapic_generation": {
+                                "methods": ["methods_value1", "methods_value2"]
+                            },
                         },
                     },
                     "cpp_settings": {"common": {}},
