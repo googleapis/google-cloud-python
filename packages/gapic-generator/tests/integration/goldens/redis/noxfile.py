@@ -29,7 +29,8 @@ ALL_PYTHON = [
     "3.9",
     "3.10",
     "3.11",
-    "3.12"
+    "3.12",
+    "3.13",
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -39,7 +40,7 @@ PACKAGE_NAME = 'google-cloud-redis'
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.12"
+DEFAULT_PYTHON_VERSION = "3.13"
 
 nox.sessions = [
     "unit",
@@ -61,7 +62,7 @@ nox.sessions = [
 def unit(session, protobuf_implementation):
     """Run the unit test suite."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
@@ -94,7 +95,7 @@ def unit(session, protobuf_implementation):
 def prerelease_deps(session, protobuf_implementation):
     """Run the unit test suite against pre-release versions of dependencies."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install test environment dependencies
@@ -129,7 +130,8 @@ def prerelease_deps(session, protobuf_implementation):
         "googleapis-common-protos",
         "google-api-core",
         "google-auth",
-        "grpcio",
+        # Exclude grpcio!=1.67.0rc1 which does not support python 3.13
+        "grpcio!=1.67.0rc1",
         "grpcio-status",
         "protobuf",
         "proto-plus",
