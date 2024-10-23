@@ -42,6 +42,24 @@ DEFAULT = _MethodDefault._DEFAULT_VALUE
 so the default should be used."""
 
 
+def _is_not_none_or_false(value):
+    return value is not None and value is not False
+
+
+def _apply_decorators(func, decorators):
+    """Apply a list of decorators to a given function.
+
+    ``decorators`` may contain items that are ``None`` or ``False`` which will
+    be ignored.
+    """
+    filtered_decorators = filter(_is_not_none_or_false, reversed(decorators))
+
+    for decorator in filtered_decorators:
+        func = decorator(func)
+
+    return func
+
+
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
@@ -73,53 +91,44 @@ class _GapicCallable(object):
     ):
         self._target = target
         self._retry = retry
-        if isinstance(timeout, (int, float)):
-            timeout = TimeToDeadlineTimeout(timeout=timeout)
         self._timeout = timeout
         self._compression = compression
-        self._metadata = list(metadata) if metadata is not None else None
+        self._metadata = metadata
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
     ):
         """Invoke the low-level RPC with retry, timeout, compression, and metadata."""
 
+        if retry is DEFAULT:
+            retry = self._retry
+
+        if timeout is DEFAULT:
+            timeout = self._timeout
+
         if compression is DEFAULT:
             compression = self._compression
-        if compression is not None:
-            kwargs["compression"] = compression
+
+        if isinstance(timeout, (int, float)):
+            timeout = TimeToDeadlineTimeout(timeout=timeout)
+
+        # Apply all applicable decorators.
+        wrapped_func = _apply_decorators(self._target, [retry, timeout])
 
         # Add the user agent metadata to the call.
         if self._metadata is not None:
-            try:
-                # attempt to concatenate default metadata with user-provided metadata
-                kwargs["metadata"] = [*kwargs["metadata"], *self._metadata]
-            except (KeyError, TypeError):
-                # if metadata is not provided, use just the default metadata
-                kwargs["metadata"] = self._metadata
+            metadata = kwargs.get("metadata", [])
+            # Due to the nature of invocation, None should be treated the same
+            # as not specified.
+            if metadata is None:
+                metadata = []
+            metadata = list(metadata)
+            metadata.extend(self._metadata)
+            kwargs["metadata"] = metadata
+        if self._compression is not None:
+            kwargs["compression"] = compression
 
-        call = self._build_wrapped_call(timeout, retry)
-        return call(*args, **kwargs)
-
-    @functools.lru_cache(maxsize=4)
-    def _build_wrapped_call(self, timeout, retry):
-        """
-        Build a wrapped callable that applies retry, timeout, and metadata logic.
-        """
-        wrapped_func = self._target
-        if timeout is DEFAULT:
-            timeout = self._timeout
-        elif isinstance(timeout, (int, float)):
-            timeout = TimeToDeadlineTimeout(timeout=timeout)
-        if timeout is not None:
-            wrapped_func = timeout(wrapped_func)
-
-        if retry is DEFAULT:
-            retry = self._retry
-        if retry is not None:
-            wrapped_func = retry(wrapped_func)
-
-        return wrapped_func
+        return wrapped_func(*args, **kwargs)
 
 
 def wrap_method(
@@ -193,9 +202,8 @@ def wrap_method(
 
     Args:
         func (Callable[Any]): The function to wrap. It should accept an
-            optional ``timeout`` (google.api_core.timeout.Timeout) argument.
-            If ``metadata`` is not ``None``, it should accept a ``metadata``
-            (Sequence[Tuple[str, str]]) argument.
+            optional ``timeout`` argument. If ``metadata`` is not ``None``, it
+            should accept a ``metadata`` argument.
         default_retry (Optional[google.api_core.Retry]): The default retry
             strategy. If ``None``, the method will not retry by default.
         default_timeout (Optional[google.api_core.Timeout]): The default
