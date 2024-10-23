@@ -58,13 +58,17 @@ _GEMINI_PRO_ENDPOINT = "gemini-pro"
 _GEMINI_1P5_PRO_PREVIEW_ENDPOINT = "gemini-1.5-pro-preview-0514"
 _GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT = "gemini-1.5-flash-preview-0514"
 _GEMINI_1P5_PRO_001_ENDPOINT = "gemini-1.5-pro-001"
+_GEMINI_1P5_PRO_002_ENDPOINT = "gemini-1.5-pro-002"
 _GEMINI_1P5_FLASH_001_ENDPOINT = "gemini-1.5-flash-001"
+_GEMINI_1P5_FLASH_002_ENDPOINT = "gemini-1.5-flash-002"
 _GEMINI_ENDPOINTS = (
     _GEMINI_PRO_ENDPOINT,
     _GEMINI_1P5_PRO_PREVIEW_ENDPOINT,
     _GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT,
     _GEMINI_1P5_PRO_001_ENDPOINT,
+    _GEMINI_1P5_PRO_002_ENDPOINT,
     _GEMINI_1P5_FLASH_001_ENDPOINT,
+    _GEMINI_1P5_FLASH_002_ENDPOINT,
 )
 
 _CLAUDE_3_SONNET_ENDPOINT = "claude-3-sonnet"
@@ -749,7 +753,7 @@ class GeminiTextGenerator(base.BaseEstimator):
 
     Args:
         model_name (str, Default to "gemini-pro"):
-            The model for natural language tasks. Accepted values are "gemini-pro", "gemini-1.5-pro-preview-0514", "gemini-1.5-flash-preview-0514", "gemini-1.5-pro-001" and "gemini-1.5-flash-001". Default to "gemini-pro".
+            The model for natural language tasks. Accepted values are "gemini-pro", "gemini-1.5-pro-preview-0514", "gemini-1.5-flash-preview-0514", "gemini-1.5-pro-001", "gemini-1.5-pro-002", "gemini-1.5-flash-001" and "gemini-1.5-flash-002". Default to "gemini-pro".
 
         .. note::
             "gemini-1.5-pro-preview-0514" and "gemini-1.5-flash-preview-0514" is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
@@ -775,7 +779,9 @@ class GeminiTextGenerator(base.BaseEstimator):
             "gemini-1.5-pro-preview-0514",
             "gemini-1.5-flash-preview-0514",
             "gemini-1.5-pro-001",
+            "gemini-1.5-pro-002",
             "gemini-1.5-flash-001",
+            "gemini-1.5-flash-002",
         ] = "gemini-pro",
         session: Optional[bigframes.Session] = None,
         connection_name: Optional[str] = None,
