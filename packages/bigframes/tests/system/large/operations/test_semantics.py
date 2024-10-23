@@ -387,7 +387,21 @@ def test_map_invalid_model_raise_error():
         )
 
 
-def test_join(session, gemini_flash_model):
+@pytest.mark.parametrize(
+    "instruction",
+    [
+        pytest.param("{city} is in {country}", id="no_dataframe_reference"),
+        pytest.param("{left.city} is in {country}", id="has_left_dataframe_reference"),
+        pytest.param(
+            "{city} is in {right.country}",
+            id="has_right_dataframe_reference",
+        ),
+        pytest.param(
+            "{left.city} is in {right.country}", id="has_both_dataframe_references"
+        ),
+    ],
+)
+def test_join(instruction, session, gemini_flash_model):
     bigframes.options.experiments.semantic_operators = True
     cities = dataframe.DataFrame(
         data={
@@ -402,7 +416,7 @@ def test_join(session, gemini_flash_model):
 
     actual_df = cities.semantics.join(
         countries,
-        "{city} belongs to {country}",
+        instruction,
         gemini_flash_model,
     ).to_pandas()
 
@@ -432,7 +446,7 @@ def test_self_join(session, gemini_flash_model):
 
     actual_df = animals.semantics.join(
         animals,
-        "{animal_left} is heavier than {animal_right}",
+        "{left.animal} is heavier than {right.animal}",
         gemini_flash_model,
     ).to_pandas()
 
@@ -483,22 +497,12 @@ def test_join_data_too_large_raise_error(session, gemini_flash_model):
             id="ambiguous_column",
         ),
         pytest.param(
-            "{city_left} is in {country}",
-            r"Unnecessary suffix for .+",
-            id="suffix_on_left_unique_column",
+            "{right.city} is in {country}", r"Column .+ not found", id="wrong_prefix"
         ),
         pytest.param(
-            "{city} is in {region_right}",
-            r"Unnecessary suffix for .+",
-            id="suffix_on_right_unique_column",
-        ),
-        pytest.param(
-            "{city_right} is in {country}", r"Column .+ not found", id="wrong_suffix"
-        ),
-        pytest.param(
-            "{city} is in {continent_right}",
+            "{city} is in {right.continent}",
             r"Column .+ not found",
-            id="suffix_on_non_existing_column",
+            id="prefix_on_non_existing_column",
         ),
     ],
 )

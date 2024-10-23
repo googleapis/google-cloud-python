@@ -462,10 +462,10 @@ class Semantics:
                 An instruction on how left and right rows can be joined. This value must contain
                 column references by name. which should be wrapped in a pair of braces.
                 For example: "The {city} belongs to the {country}".
-                For column names that are shared between two dataframes, you need to add "_left"
-                and "_right" suffix for differentiation. This is especially important when you do
-                self joins. For example: "The {employee_name_left} reports to {employee_name_right}"
-                You must not add "_left" or "_right" suffix to non-overlapping columns.
+                For column names that are shared between two dataframes, you need to add "left."
+                and "right." prefix for differentiation. This is especially important when you do
+                self joins. For example: "The {left.employee_name} reports to {right.employee_name}"
+                For unique column names, this prefix is optional.
 
             model:
                 A GeminiTextGenerator provided by Bigframes ML package.
@@ -503,27 +503,29 @@ class Semantics:
             elif col in other.columns:
                 right_columns.append(col)
 
-            elif col.endswith("_left"):
-                original_col_name = col[: -len("_left")]
+            elif col.startswith("left."):
+                original_col_name = col[len("left.") :]
                 if (
                     original_col_name in self._df.columns
                     and original_col_name in other.columns
                 ):
                     left_columns.append(col)
                 elif original_col_name in self._df.columns:
-                    raise ValueError(f"Unnecessary suffix for {col}")
+                    left_columns.append(col)
+                    instruction = instruction.replace(col, original_col_name)
                 else:
                     raise ValueError(f"Column {col} not found")
 
-            elif col.endswith("_right"):
-                original_col_name = col[: -len("_right")]
+            elif col.startswith("right."):
+                original_col_name = col[len("right.") :]
                 if (
                     original_col_name in self._df.columns
                     and original_col_name in other.columns
                 ):
                     right_columns.append(col)
                 elif original_col_name in other.columns:
-                    raise ValueError(f"Unnecessary suffix for {col}")
+                    right_columns.append(col)
+                    instruction = instruction.replace(col, original_col_name)
                 else:
                     raise ValueError(f"Column {col} not found")
 
@@ -535,6 +537,11 @@ class Semantics:
 
         if not right_columns:
             raise ValueError("No right column references.")
+
+        # Update column references to be compatible with internal naming scheme.
+        # That is, "left.col" -> "col_left" and "right.col" -> "col_right"
+        instruction = re.sub(r"(?<!{){left\.(\w+)}(?!})", r"{\1_left}", instruction)
+        instruction = re.sub(r"(?<!{){right\.(\w+)}(?!})", r"{\1_right}", instruction)
 
         joined_df = self._df.merge(other, how="cross", suffixes=("_left", "_right"))
 
