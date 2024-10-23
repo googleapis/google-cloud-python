@@ -53,7 +53,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.alloydb_v1.services.alloy_db_admin import pagers
-from google.cloud.alloydb_v1.types import resources, service
+from google.cloud.alloydb_v1.types import data_model, resources, service
 
 from .client import AlloyDBAdminClient
 from .transports.base import DEFAULT_CLIENT_INFO, AlloyDBAdminTransport
@@ -84,6 +84,8 @@ class AlloyDBAdminAsyncClient:
     parse_crypto_key_version_path = staticmethod(
         AlloyDBAdminClient.parse_crypto_key_version_path
     )
+    database_path = staticmethod(AlloyDBAdminClient.database_path)
+    parse_database_path = staticmethod(AlloyDBAdminClient.parse_database_path)
     instance_path = staticmethod(AlloyDBAdminClient.instance_path)
     parse_instance_path = staticmethod(AlloyDBAdminClient.parse_instance_path)
     network_path = staticmethod(AlloyDBAdminClient.network_path)
@@ -1027,6 +1029,132 @@ class AlloyDBAdminAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.promote_cluster
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            resources.Cluster,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def switchover_cluster(
+        self,
+        request: Optional[Union[service.SwitchoverClusterRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Switches the roles of PRIMARY and SECONDARY clusters
+        without any data loss. This promotes the SECONDARY
+        cluster to PRIMARY and sets up the original PRIMARY
+        cluster to replicate from this newly promoted cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1
+
+            async def sample_switchover_cluster():
+                # Create a client
+                client = alloydb_v1.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1.SwitchoverClusterRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.switchover_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1.types.SwitchoverClusterRequest, dict]]):
+                The request object. Message for switching over to a
+                cluster
+            name (:class:`str`):
+                Required. The name of the resource.
+                For the required format, see the comment
+                on the Cluster.name field
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.alloydb_v1.types.Cluster` A cluster is a collection of regional AlloyDB resources. It can include a
+                   primary instance and one or more read pool instances.
+                   All cluster resources share a storage layer, which
+                   scales as needed.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.SwitchoverClusterRequest):
+            request = service.SwitchoverClusterRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.switchover_cluster
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -2603,6 +2731,162 @@ class AlloyDBAdminAsyncClient:
         # Done; return the response.
         return response
 
+    async def execute_sql(
+        self,
+        request: Optional[Union[service.ExecuteSqlRequest, dict]] = None,
+        *,
+        instance: Optional[str] = None,
+        database: Optional[str] = None,
+        user: Optional[str] = None,
+        sql_statement: Optional[str] = None,
+        password: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.ExecuteSqlResponse:
+        r"""Executes a SQL statement in a database inside an
+        AlloyDB instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1
+
+            async def sample_execute_sql():
+                # Create a client
+                client = alloydb_v1.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1.ExecuteSqlRequest(
+                    password="password_value",
+                    instance="instance_value",
+                    database="database_value",
+                    user="user_value",
+                    sql_statement="sql_statement_value",
+                )
+
+                # Make the request
+                response = await client.execute_sql(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1.types.ExecuteSqlRequest, dict]]):
+                The request object. Request for ExecuteSql rpc.
+            instance (:class:`str`):
+                Required. The instance where the SQL
+                will be executed. For the required
+                format, see the comment on the
+                Instance.name field.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            database (:class:`str`):
+                Required. Name of the database where the query will be
+                executed. Note - Value provided should be the same as
+                expected from ``SELECT current_database();`` and NOT as
+                a resource reference.
+
+                This corresponds to the ``database`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            user (:class:`str`):
+                Required. Database user to be used for executing the
+                SQL. Note - Value provided should be the same as
+                expected from ``SELECT current_user;`` and NOT as a
+                resource reference.
+
+                This corresponds to the ``user`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            sql_statement (:class:`str`):
+                Required. SQL statement to execute on
+                database. Any valid statement is
+                permitted, including DDL, DML, DQL
+                statements.
+
+                This corresponds to the ``sql_statement`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            password (:class:`str`):
+                Optional. The database native user’s
+                password.
+
+                This corresponds to the ``password`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1.types.ExecuteSqlResponse:
+                Execute a SQL statement response.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([instance, database, user, sql_statement, password])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ExecuteSqlRequest):
+            request = service.ExecuteSqlRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if instance is not None:
+            request.instance = instance
+        if database is not None:
+            request.database = database
+        if user is not None:
+            request.user = user
+        if sql_statement is not None:
+            request.sql_statement = sql_statement
+        if password is not None:
+            request.password = password
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.execute_sql
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("instance", request.instance),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_backups(
         self,
         request: Optional[Union[service.ListBackupsRequest, dict]] = None,
@@ -4136,6 +4420,127 @@ class AlloyDBAdminAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def list_databases(
+        self,
+        request: Optional[Union[service.ListDatabasesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDatabasesAsyncPager:
+        r"""Lists Databases in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1
+
+            async def sample_list_databases():
+                # Create a client
+                client = alloydb_v1.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1.ListDatabasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_databases(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1.types.ListDatabasesRequest, dict]]):
+                The request object. Message for requesting list of
+                Databases.
+            parent (:class:`str`):
+                Required. Parent value for
+                ListDatabasesRequest.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1.services.alloy_db_admin.pagers.ListDatabasesAsyncPager:
+                Message for response to listing
+                Databases.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ListDatabasesRequest):
+            request = service.ListDatabasesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_databases
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListDatabasesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def list_operations(
         self,

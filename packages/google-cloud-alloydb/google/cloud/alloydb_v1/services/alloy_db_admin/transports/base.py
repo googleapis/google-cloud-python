@@ -181,6 +181,11 @@ class AlloyDBAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.switchover_cluster: gapic_v1.method.wrap_method(
+                self.switchover_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.restore_cluster: gapic_v1.method.wrap_method(
                 self.restore_cluster,
                 default_timeout=None,
@@ -256,6 +261,11 @@ class AlloyDBAdminTransport(abc.ABC):
             ),
             self.restart_instance: gapic_v1.method.wrap_method(
                 self.restart_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.execute_sql: gapic_v1.method.wrap_method(
+                self.execute_sql,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -369,6 +379,11 @@ class AlloyDBAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_databases: gapic_v1.method.wrap_method(
+                self.list_databases,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -465,6 +480,15 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.PromoteClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def switchover_cluster(
+        self,
+    ) -> Callable[
+        [service.SwitchoverClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -574,6 +598,15 @@ class AlloyDBAdminTransport(abc.ABC):
     ) -> Callable[
         [service.RestartInstanceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def execute_sql(
+        self,
+    ) -> Callable[
+        [service.ExecuteSqlRequest],
+        Union[service.ExecuteSqlResponse, Awaitable[service.ExecuteSqlResponse]],
     ]:
         raise NotImplementedError()
 
@@ -692,6 +725,15 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.DeleteUserRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_databases(
+        self,
+    ) -> Callable[
+        [service.ListDatabasesRequest],
+        Union[service.ListDatabasesResponse, Awaitable[service.ListDatabasesResponse]],
     ]:
         raise NotImplementedError()
 

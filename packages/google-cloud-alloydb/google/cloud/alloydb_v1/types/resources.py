@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "InstanceView",
         "ClusterView",
         "DatabaseVersion",
+        "SubscriptionType",
         "UserPassword",
         "MigrationSource",
         "EncryptionConfig",
@@ -40,12 +41,15 @@ __protobuf__ = proto.module(
         "ContinuousBackupInfo",
         "BackupSource",
         "ContinuousBackupSource",
+        "MaintenanceUpdatePolicy",
+        "MaintenanceSchedule",
         "Cluster",
         "Instance",
         "ConnectionInfo",
         "Backup",
         "SupportedDatabaseFlag",
         "User",
+        "Database",
     },
 )
 
@@ -108,10 +112,35 @@ class DatabaseVersion(proto.Enum):
             13.
         POSTGRES_14 (2):
             The database version is Postgres 14.
+        POSTGRES_15 (3):
+            The database version is Postgres 15.
+        POSTGRES_16 (4):
+            The database version is Postgres 16.
     """
     DATABASE_VERSION_UNSPECIFIED = 0
     POSTGRES_13 = 1
     POSTGRES_14 = 2
+    POSTGRES_15 = 3
+    POSTGRES_16 = 4
+
+
+class SubscriptionType(proto.Enum):
+    r"""Subscription_type added to distinguish between Standard and Trial
+    subscriptions. By default, a subscription type is considered
+    STANDARD unless explicitly specified.
+
+    Values:
+        SUBSCRIPTION_TYPE_UNSPECIFIED (0):
+            This is an unknown subscription type. By
+            default, the subscription type is STANDARD.
+        STANDARD (1):
+            Standard subscription.
+        TRIAL (2):
+            Trial subscription.
+    """
+    SUBSCRIPTION_TYPE_UNSPECIFIED = 0
+    STANDARD = 1
+    TRIAL = 2
 
 
 class UserPassword(proto.Message):
@@ -260,7 +289,7 @@ class SslConfig(proto.Message):
 
         Values:
             SSL_MODE_UNSPECIFIED (0):
-                SSL mode not specified. Defaults to ENCRYPTED_ONLY.
+                SSL mode is not specified. Defaults to ENCRYPTED_ONLY.
             SSL_MODE_ALLOW (1):
                 SSL connections are optional. CA verification
                 not enforced.
@@ -272,7 +301,7 @@ class SslConfig(proto.Message):
             SSL_MODE_VERIFY_CA (3):
                 SSL connections are required. CA verification
                 enforced. Clients must have certificates signed
-                by a Cluster CA, e.g. via
+                by a Cluster CA, for example, using
                 GenerateClientCertificate.
             ALLOW_UNENCRYPTED_AND_ENCRYPTED (4):
                 SSL connections are optional. CA verification
@@ -618,6 +647,69 @@ class ContinuousBackupSource(proto.Message):
     )
 
 
+class MaintenanceUpdatePolicy(proto.Message):
+    r"""MaintenanceUpdatePolicy defines the policy for system
+    updates.
+
+    Attributes:
+        maintenance_windows (MutableSequence[google.cloud.alloydb_v1.types.MaintenanceUpdatePolicy.MaintenanceWindow]):
+            Preferred windows to perform maintenance.
+            Currently limited to 1.
+    """
+
+    class MaintenanceWindow(proto.Message):
+        r"""MaintenanceWindow specifies a preferred day and time for
+        maintenance.
+
+        Attributes:
+            day (google.type.dayofweek_pb2.DayOfWeek):
+                Preferred day of the week for maintenance,
+                e.g. MONDAY, TUESDAY, etc.
+            start_time (google.type.timeofday_pb2.TimeOfDay):
+                Preferred time to start the maintenance
+                operation on the specified day. Maintenance will
+                start within 1 hour of this time.
+        """
+
+        day: dayofweek_pb2.DayOfWeek = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum=dayofweek_pb2.DayOfWeek,
+        )
+        start_time: timeofday_pb2.TimeOfDay = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timeofday_pb2.TimeOfDay,
+        )
+
+    maintenance_windows: MutableSequence[MaintenanceWindow] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=MaintenanceWindow,
+    )
+
+
+class MaintenanceSchedule(proto.Message):
+    r"""MaintenanceSchedule stores the maintenance schedule generated
+    from the MaintenanceUpdatePolicy, once a maintenance rollout is
+    triggered, if MaintenanceWindow is set, and if there is no
+    conflicting DenyPeriod. The schedule is cleared once the update
+    takes place. This field cannot be manually changed; modify the
+    MaintenanceUpdatePolicy instead.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The scheduled start time for the
+            maintenance.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
 class Cluster(proto.Message):
     r"""A cluster is a collection of regional AlloyDB resources. It
     can include a primary instance and one or more read pool
@@ -689,7 +781,7 @@ class Cluster(proto.Message):
             cluster resources are created and from which they are
             accessible via Private IP. The network must belong to the
             same project as the cluster. It is specified in the form:
-            "projects/{project}/global/networks/{network_id}". This is
+            ``projects/{project}/global/networks/{network_id}``. This is
             required to create a cluster. Deprecated, use
             network_config.network instead.
         etag (str):
@@ -746,6 +838,30 @@ class Cluster(proto.Message):
         primary_config (google.cloud.alloydb_v1.types.Cluster.PrimaryConfig):
             Output only. Cross Region replication config
             specific to PRIMARY cluster.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        psc_config (google.cloud.alloydb_v1.types.Cluster.PscConfig):
+            Optional. The configuration for Private
+            Service Connect (PSC) for the cluster.
+        maintenance_update_policy (google.cloud.alloydb_v1.types.MaintenanceUpdatePolicy):
+            Optional. The maintenance update policy
+            determines when to allow or deny updates.
+        maintenance_schedule (google.cloud.alloydb_v1.types.MaintenanceSchedule):
+            Output only. The maintenance schedule for the
+            cluster, generated for a specific rollout if a
+            maintenance window is set.
+        subscription_type (google.cloud.alloydb_v1.types.SubscriptionType):
+            Optional. Subscription type of the cluster.
+        trial_metadata (google.cloud.alloydb_v1.types.Cluster.TrialMetadata):
+            Output only. Metadata for free trial clusters
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag keys/values directly
+            bound to this resource. For example:
+
+            ::
+
+               "123/environment": "production",
+               "123/costCenter": "marketing".
     """
 
     class State(proto.Enum):
@@ -820,11 +936,11 @@ class Cluster(proto.Message):
 
         Attributes:
             network (str):
-                Required. The resource link for the VPC network in which
+                Optional. The resource link for the VPC network in which
                 cluster resources are created and from which they are
                 accessible via Private IP. The network must belong to the
                 same project as the cluster. It is specified in the form:
-                "projects/{project_number}/global/networks/{network_id}".
+                ``projects/{project_number}/global/networks/{network_id}``.
                 This is required to create a cluster.
             allocated_ip_range (str):
                 Optional. Name of the allocated IP range for the private IP
@@ -876,6 +992,59 @@ class Cluster(proto.Message):
         secondary_cluster_names: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
+        )
+
+    class PscConfig(proto.Message):
+        r"""PscConfig contains PSC related configuration at a cluster
+        level.
+
+        Attributes:
+            psc_enabled (bool):
+                Optional. Create an instance that allows
+                connections from Private Service Connect
+                endpoints to the instance.
+        """
+
+        psc_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
+    class TrialMetadata(proto.Message):
+        r"""Contains information and all metadata related to TRIAL
+        clusters.
+
+        Attributes:
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
+                start time of the trial cluster.
+            end_time (google.protobuf.timestamp_pb2.Timestamp):
+                End time of the trial cluster.
+            upgrade_time (google.protobuf.timestamp_pb2.Timestamp):
+                Upgrade time of trial cluster to Standard
+                cluster.
+            grace_end_time (google.protobuf.timestamp_pb2.Timestamp):
+                grace end time of the cluster.
+        """
+
+        start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        end_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+        upgrade_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+        grace_end_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
         )
 
     backup_source: "BackupSource" = proto.Field(
@@ -1004,6 +1173,40 @@ class Cluster(proto.Message):
         number=23,
         message=PrimaryConfig,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=30,
+    )
+    psc_config: PscConfig = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=PscConfig,
+    )
+    maintenance_update_policy: "MaintenanceUpdatePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message="MaintenanceUpdatePolicy",
+    )
+    maintenance_schedule: "MaintenanceSchedule" = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message="MaintenanceSchedule",
+    )
+    subscription_type: "SubscriptionType" = proto.Field(
+        proto.ENUM,
+        number=38,
+        enum="SubscriptionType",
+    )
+    trial_metadata: TrialMetadata = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        message=TrialMetadata,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=41,
+    )
 
 
 class Instance(proto.Message):
@@ -1099,6 +1302,10 @@ class Instance(proto.Message):
             Output only. The IP address for the Instance.
             This is the connection endpoint for an end-user
             application.
+        public_ip_address (str):
+            Output only. The public IP addresses for the Instance. This
+            is available ONLY when enable_public_ip is set. This is the
+            connection endpoint for an end-user application.
         reconciling (bool):
             Output only. Reconciling
             (https://google.aip.dev/128#reconciliation). Set
@@ -1118,6 +1325,17 @@ class Instance(proto.Message):
         client_connection_config (google.cloud.alloydb_v1.types.Instance.ClientConnectionConfig):
             Optional. Client connection specific
             configurations
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        psc_instance_config (google.cloud.alloydb_v1.types.Instance.PscInstanceConfig):
+            Optional. The configuration for Private
+            Service Connect (PSC) for the instance.
+        network_config (google.cloud.alloydb_v1.types.Instance.InstanceNetworkConfig):
+            Optional. Instance-level network
+            configuration.
+        outbound_public_ip_addresses (MutableSequence[str]):
+            Output only. All outbound public IP addresses
+            configured for the instance.
     """
 
     class State(proto.Enum):
@@ -1336,7 +1554,7 @@ class Instance(proto.Message):
                 only (ex: AuthProxy) connections to the
                 database.
             ssl_config (google.cloud.alloydb_v1.types.SslConfig):
-                Optional. SSL config option for this
+                Optional. SSL configuration option for this
                 instance.
         """
 
@@ -1348,6 +1566,86 @@ class Instance(proto.Message):
             proto.MESSAGE,
             number=2,
             message="SslConfig",
+        )
+
+    class PscInstanceConfig(proto.Message):
+        r"""PscInstanceConfig contains PSC related configuration at an
+        instance level.
+
+        Attributes:
+            service_attachment_link (str):
+                Output only. The service attachment created when Private
+                Service Connect (PSC) is enabled for the instance. The name
+                of the resource will be in the format of
+                ``projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>``
+            allowed_consumer_projects (MutableSequence[str]):
+                Optional. List of consumer projects that are
+                allowed to create PSC endpoints to
+                service-attachments to this instance.
+            psc_dns_name (str):
+                Output only. The DNS name of the instance for
+                PSC connectivity. Name convention:
+                <uid>.<uid>.<region>.alloydb-psc.goog
+        """
+
+        service_attachment_link: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        allowed_consumer_projects: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        psc_dns_name: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+
+    class InstanceNetworkConfig(proto.Message):
+        r"""Metadata related to instance-level network configuration.
+
+        Attributes:
+            authorized_external_networks (MutableSequence[google.cloud.alloydb_v1.types.Instance.InstanceNetworkConfig.AuthorizedNetwork]):
+                Optional. A list of external network
+                authorized to access this instance.
+            enable_public_ip (bool):
+                Optional. Enabling public ip for the
+                instance.
+            enable_outbound_public_ip (bool):
+                Optional. Enabling an outbound public IP
+                address to support a database server sending
+                requests out into the internet.
+        """
+
+        class AuthorizedNetwork(proto.Message):
+            r"""AuthorizedNetwork contains metadata for an authorized
+            network.
+
+            Attributes:
+                cidr_range (str):
+                    CIDR range for one authorzied network of the
+                    instance.
+            """
+
+            cidr_range: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        authorized_external_networks: MutableSequence[
+            "Instance.InstanceNetworkConfig.AuthorizedNetwork"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Instance.InstanceNetworkConfig.AuthorizedNetwork",
+        )
+        enable_public_ip: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        enable_outbound_public_ip: bool = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     name: str = proto.Field(
@@ -1435,6 +1733,10 @@ class Instance(proto.Message):
         proto.STRING,
         number=15,
     )
+    public_ip_address: str = proto.Field(
+        proto.STRING,
+        number=27,
+    )
     reconciling: bool = proto.Field(
         proto.BOOL,
         number=16,
@@ -1453,6 +1755,24 @@ class Instance(proto.Message):
         number=23,
         message=ClientConnectionConfig,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=24,
+    )
+    psc_instance_config: PscInstanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=PscInstanceConfig,
+    )
+    network_config: InstanceNetworkConfig = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message=InstanceNetworkConfig,
+    )
+    outbound_public_ip_addresses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=34,
+    )
 
 
 class ConnectionInfo(proto.Message):
@@ -1469,6 +1789,10 @@ class ConnectionInfo(proto.Message):
             Instance. This is the default IP for the instance and is
             always created (even if enable_public_ip is set). This is
             the connection endpoint for an end-user application.
+        public_ip_address (str):
+            Output only. The public IP addresses for the Instance. This
+            is available ONLY when enable_public_ip is set. This is the
+            connection endpoint for an end-user application.
         instance_uid (str):
             Output only. The unique ID of the Instance.
     """
@@ -1480,6 +1804,10 @@ class ConnectionInfo(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    public_ip_address: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
     instance_uid: str = proto.Field(
         proto.STRING,
@@ -1571,11 +1899,21 @@ class Backup(proto.Message):
             policy. Once the expiry quantity is over
             retention, the backup is eligible to be garbage
             collected.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
         database_version (google.cloud.alloydb_v1.types.DatabaseVersion):
             Output only. The database engine major
             version of the cluster this backup was created
             from. Any restored cluster created from this
             backup will have the same database version.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag keys/values directly
+            bound to this resource. For example:
+
+            ::
+
+               "123/environment": "production",
+               "123/costCenter": "marketing".
     """
 
     class State(proto.Enum):
@@ -1748,10 +2086,19 @@ class Backup(proto.Message):
         number=20,
         message=QuantityBasedExpiry,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
     database_version: "DatabaseVersion" = proto.Field(
         proto.ENUM,
         number=22,
         enum="DatabaseVersion",
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=25,
     )
 
 
@@ -1924,6 +2271,9 @@ class User(proto.Message):
             the PostgreSQL naming conventions.
         user_type (google.cloud.alloydb_v1.types.User.UserType):
             Optional. Type of this user.
+        keep_extra_roles (bool):
+            Input only. If the user already exists and it
+            has additional roles, keep them granted.
     """
 
     class UserType(proto.Enum):
@@ -1959,6 +2309,42 @@ class User(proto.Message):
         proto.ENUM,
         number=5,
         enum=UserType,
+    )
+    keep_extra_roles: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+
+
+class Database(proto.Message):
+    r"""Message describing Database object.
+
+    Attributes:
+        name (str):
+            Identifier. Name of the resource in the form of
+            ``projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}``.
+        charset (str):
+            Optional. Charset for the database. This field can contain
+            any PostgreSQL supported charset name. Example values
+            include "UTF8", "SQL_ASCII", etc.
+        collation (str):
+            Optional. Collation for the database.
+            Name of the custom or native collation for
+            postgres. Example values include "C", "POSIX",
+            etc
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    charset: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    collation: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
