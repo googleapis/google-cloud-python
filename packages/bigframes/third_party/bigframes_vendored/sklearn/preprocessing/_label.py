@@ -33,7 +33,7 @@ class LabelEncoder(BaseEstimator):
         """Fit label encoder.
 
         Args:
-            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series with training data.
 
         Returns:
@@ -45,7 +45,7 @@ class LabelEncoder(BaseEstimator):
         """Transform y using label encoding.
 
         Args:
-            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series to be transformed.
 
         Returns:

@@ -84,7 +84,7 @@ class PCA(
 
     def _fit(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
         y=None,
         transforms: Optional[List[str]] = None,
     ) -> PCA:
@@ -129,16 +129,19 @@ class PCA(
             ["principal_component_id", "explained_variance_ratio"]
         ]
 
-    def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
+    def predict(self, X: utils.ArrayType) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
     def detect_anomalies(
-        self, X: Union[bpd.DataFrame, bpd.Series], *, contamination: float = 0.1
+        self,
+        X: utils.ArrayType,
+        *,
+        contamination: float = 0.1,
     ) -> bpd.DataFrame:
         """Detect the anomaly data points of the input.
 
@@ -159,7 +162,7 @@ class PCA(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before detect_anomalies")
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.detect_anomalies(
             X, options={"contamination": contamination}

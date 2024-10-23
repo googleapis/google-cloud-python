@@ -47,10 +47,10 @@ class BaseForest(MetaEstimatorMixin, BaseEstimator, metaclass=ABCMeta):
         """Build a forest of trees from the training set (X, y).
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Series or DataFrame of shape (n_samples, n_features). Training data.
 
-            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Series or DataFrame of shape (n_samples,) or (n_samples, n_targets).
                 Target values. Will be cast to X's dtype if necessary.
 
@@ -73,7 +73,7 @@ class ForestRegressor(RegressorMixin, BaseForest, metaclass=ABCMeta):
         mean predicted regression targets of the trees in the forest.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Series or DataFrame of shape (n_samples, n_features). The data matrix for
                 which we want to get the predictions.
 

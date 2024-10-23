@@ -30,7 +30,7 @@ class SimpleImputer(_BaseImputer):
         """Fit the imputer on X.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The Dataframe or Series with training data.
 
             y (default None):
@@ -45,7 +45,7 @@ class SimpleImputer(_BaseImputer):
         """Impute all missing values in X.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series to be transformed.
 
         Returns:

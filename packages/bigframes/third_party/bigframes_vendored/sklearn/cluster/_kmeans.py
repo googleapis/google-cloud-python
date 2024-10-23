@@ -69,7 +69,7 @@ class KMeans(_BaseKMeans):
         """Compute k-means clustering.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 DataFrame of shape (n_samples, n_features). Training data.
             y (default None):
                 Not used, present here for API consistency by convention.
@@ -86,7 +86,7 @@ class KMeans(_BaseKMeans):
         """Predict the closest cluster each sample in X belongs to.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 DataFrame of shape (n_samples, n_features). New data to predict.
 
         Returns:
@@ -108,7 +108,7 @@ class KMeans(_BaseKMeans):
             for the outputs relevant to this model type.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 DataFrame of shape (n_samples, n_features). New Data.
             y (default None)
                 Not used, present here for API consistency by convention.

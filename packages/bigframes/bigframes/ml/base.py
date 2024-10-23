@@ -22,11 +22,12 @@ This library is an evolving attempt to
 """
 
 import abc
-from typing import cast, Optional, TypeVar, Union
+from typing import cast, Optional, TypeVar
 
 import bigframes_vendored.sklearn.base
 
 from bigframes.ml import core
+import bigframes.ml.utils as utils
 import bigframes.pandas as bpd
 
 
@@ -157,8 +158,8 @@ class SupervisedTrainablePredictor(TrainablePredictor):
 
     def fit(
         self: _T,
-        X: Union[bpd.DataFrame, bpd.Series],
-        y: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
+        y: utils.ArrayType,
     ) -> _T:
         return self._fit(X, y)
 
@@ -172,8 +173,8 @@ class UnsupervisedTrainablePredictor(TrainablePredictor):
 
     def fit(
         self: _T,
-        X: Union[bpd.DataFrame, bpd.Series],
-        y: Optional[Union[bpd.DataFrame, bpd.Series]] = None,
+        X: utils.ArrayType,
+        y: Optional[utils.ArrayType] = None,
     ) -> _T:
         return self._fit(X, y)
 
@@ -243,8 +244,8 @@ class Transformer(BaseTransformer):
 
     def fit_transform(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
-        y: Optional[Union[bpd.DataFrame, bpd.Series]] = None,
+        X: utils.ArrayType,
+        y: Optional[utils.ArrayType] = None,
     ) -> bpd.DataFrame:
         return self.fit(X, y).transform(X)
 
@@ -264,6 +265,6 @@ class LabelTransformer(BaseTransformer):
 
     def fit_transform(
         self,
-        y: Union[bpd.DataFrame, bpd.Series],
+        y: utils.ArrayType,
     ) -> bpd.DataFrame:
         return self.fit(y).transform(y)

@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from typing import Mapping, Optional, Union
+from typing import Mapping, Optional
 import warnings
 
 import bigframes
@@ -121,19 +121,19 @@ class VertexAIModel(base.BaseEstimator):
 
     def predict(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
     ) -> bpd.DataFrame:
         """Predict the result from the input DataFrame.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Input DataFrame or Series, which needs to comply with the input parameter of the model.
 
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.predict(X)
 

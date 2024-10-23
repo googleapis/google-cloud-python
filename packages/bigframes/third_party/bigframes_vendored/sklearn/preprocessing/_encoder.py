@@ -65,7 +65,7 @@ class OneHotEncoder(BaseEstimator):
         """Fit OneHotEncoder to X.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series with training data.
 
             y (default None):
@@ -80,7 +80,7 @@ class OneHotEncoder(BaseEstimator):
         """Transform X using one-hot encoding.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series to be transformed.
 
         Returns:

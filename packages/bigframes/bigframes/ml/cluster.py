@@ -21,6 +21,7 @@ from typing import List, Literal, Optional, Union
 
 import bigframes_vendored.sklearn.cluster._kmeans
 from google.cloud import bigquery
+import pandas as pd
 
 import bigframes
 from bigframes.core import log_adapter
@@ -101,7 +102,7 @@ class KMeans(
 
     def _fit(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
         y=None,  # ignored
         transforms: Optional[List[str]] = None,
     ) -> KMeans:
@@ -125,17 +126,20 @@ class KMeans(
 
     def predict(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
     ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
     def detect_anomalies(
-        self, X: Union[bpd.DataFrame, bpd.Series], *, contamination: float = 0.1
+        self,
+        X: Union[bpd.DataFrame, bpd.Series, pd.DataFrame, pd.Series],
+        *,
+        contamination: float = 0.1,
     ) -> bpd.DataFrame:
         """Detect the anomaly data points of the input.
 
@@ -156,7 +160,7 @@ class KMeans(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before detect_anomalies")
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.detect_anomalies(
             X, options={"contamination": contamination}
@@ -181,12 +185,12 @@ class KMeans(
 
     def score(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
         y=None,  # ignored
     ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.evaluate(X)

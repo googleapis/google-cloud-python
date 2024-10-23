@@ -48,7 +48,7 @@ class StandardScaler(BaseEstimator, TransformerMixin):
         """Compute the mean and std to be used for later scaling.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The Dataframe or Series with training data.
 
             y (default None):
@@ -63,7 +63,7 @@ class StandardScaler(BaseEstimator, TransformerMixin):
         """Perform standardization by centering and scaling.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series to be transformed.
 
         Returns:
@@ -85,7 +85,7 @@ class MaxAbsScaler(BaseEstimator, TransformerMixin):
         """Compute the maximum absolute value to be used for later scaling.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The Dataframe or Series with training data.
 
             y (default None):
@@ -100,7 +100,7 @@ class MaxAbsScaler(BaseEstimator, TransformerMixin):
         """Scale the data.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series to be transformed.
 
         Returns:
@@ -121,7 +121,7 @@ class MinMaxScaler(BaseEstimator, TransformerMixin):
         """Compute the minimum and maximum to be used for later scaling.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The Dataframe or Series with training data.
 
             y (default None):
@@ -136,7 +136,7 @@ class MinMaxScaler(BaseEstimator, TransformerMixin):
         """Scale the data.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The DataFrame or Series to be transformed.
 
         Returns:

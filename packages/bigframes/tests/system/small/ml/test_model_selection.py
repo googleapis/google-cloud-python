@@ -434,10 +434,10 @@ def test_KFold_seeded_correct_rows(session, penguins_pandas_df_default_index):
     y = df["body_mass_g"]
     X_train, X_test, y_train, y_test = next(kf.split(X, y))  # type: ignore
 
-    X_train_sorted = X_train.to_pandas().sort_index()
-    X_test_sorted = X_test.to_pandas().sort_index()
-    y_train_sorted = y_train.to_pandas().sort_index()
-    y_test_sorted = y_test.to_pandas().sort_index()
+    X_train_sorted = X_train.to_pandas().sort_index()  # type: ignore
+    X_test_sorted = X_test.to_pandas().sort_index()  # type: ignore
+    y_train_sorted = y_train.to_pandas().sort_index()  # type: ignore
+    y_test_sorted = y_test.to_pandas().sort_index()  # type: ignore
 
     train_index: pd.Index = pd.Index(
         [

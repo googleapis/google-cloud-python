@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Union
+from typing import List, Optional
 
 from google.cloud import bigquery
 
@@ -180,8 +180,8 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
 
     def _fit(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
-        y: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
+        y: utils.ArrayType,
         transforms: Optional[List[str]] = None,
     ):
         """Fit the model to training data.
@@ -276,14 +276,14 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
 
     def detect_anomalies(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
         *,
         anomaly_prob_threshold: float = 0.95,
     ) -> bpd.DataFrame:
         """Detect the anomaly data points of the input.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Series or a DataFrame to detect anomalies.
             anomaly_prob_threshold (float, default 0.95):
                 Identifies the custom threshold to use for anomaly detection. The value must be in the range [0, 1), with a default value of 0.95.
@@ -298,7 +298,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before detect_anomalies")
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.detect_anomalies(
             X, options={"anomaly_prob_threshold": anomaly_prob_threshold}
@@ -306,8 +306,8 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
 
     def score(
         self,
-        X: Union[bpd.DataFrame, bpd.Series],
-        y: Union[bpd.DataFrame, bpd.Series],
+        X: utils.ArrayType,
+        y: utils.ArrayType,
     ) -> bpd.DataFrame:
         """Calculate evaluation metrics of the model.
 
@@ -318,11 +318,11 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
             for the outputs relevant to this model type.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 A BigQuery DataFrame only contains 1 column as
                 evaluation timestamp. The timestamp must be within the horizon
                 of the model, which by default is 1000 data points.
-            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 A BigQuery DataFrame only contains 1 column as
                 evaluation numeric values.
 
@@ -331,7 +331,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         """
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
-        X, y = utils.convert_to_dataframe(X, y)
+        X, y = utils.convert_to_dataframe(X, y, session=self._bqml_model.session)
 
         input_data = X.join(y, how="outer")
         return self._bqml_model.evaluate(input_data)

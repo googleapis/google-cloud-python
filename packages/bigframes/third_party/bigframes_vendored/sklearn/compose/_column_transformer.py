@@ -37,7 +37,7 @@ class ColumnTransformer(_BaseComposition):
         """Fit all transformers using X.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The Series or DataFrame of shape (n_samples, n_features). Training vector,
                 where `n_samples` is the number of samples and `n_features` is
                 the number of features.
@@ -54,7 +54,7 @@ class ColumnTransformer(_BaseComposition):
         """Transform X separately by each transformer, concatenate results.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 The Series or DataFrame to be transformed by subset.
 
         Returns:
