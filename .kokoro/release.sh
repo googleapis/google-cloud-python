@@ -64,9 +64,9 @@ publish_script="${PROJECT_ROOT}/.kokoro/release-single.sh"
 for subdir in ${subdirs[@]}; do
     for d in `ls -d ${subdir}/*/`; do
         should_publish=false
-        echo "checking changes with 'git diff HEAD~.. ${d}/**/gapic_version.py'"
+        echo "checking changes with 'git diff HEAD~2 ${d}/**/gapic_version.py'"
         set +e
-        changed=$(git diff "HEAD~.." ${d}/**/gapic_version.py | wc -l)
+        changed=$(git diff "HEAD~2" ${d}/**/gapic_version.py | wc -l)
         set -e
         if [[ "${changed}" -eq 0 ]]; then
             echo "no change detected in ${d}, skipping"
