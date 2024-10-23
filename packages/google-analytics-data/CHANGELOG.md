@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.13](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.12...google-analytics-data-v0.18.13) (2024-10-23)
+
+
+### Features
+
+* add `sampling_level` to the `ReportDefinition` type ([d395233](https://github.com/googleapis/google-cloud-python/commit/d395233f8ffbee93df8db344a8628407fe1c1f15))
+* add `SamplingLevel` type to Data API v1alpha ([d395233](https://github.com/googleapis/google-cloud-python/commit/d395233f8ffbee93df8db344a8628407fe1c1f15))
+
 ## [0.18.12](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.11...google-analytics-data-v0.18.12) (2024-09-23)
 
 
