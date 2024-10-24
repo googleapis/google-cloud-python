@@ -22,11 +22,20 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
+from collections.abc import Iterable
 import json
 import math
 
-from google.api_core import api_core_version
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import api_core_version, client_options
+from google.api_core import exceptions as core_exceptions
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -35,25 +44,6 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
-
-try:
-    from google.auth.aio import credentials as ga_credentials_async
-
-    HAS_GOOGLE_AUTH_AIO = True
-except ImportError:  # pragma: NO COVER
-    HAS_GOOGLE_AUTH_AIO = False
-
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.generators import (
     GeneratorsAsyncClient,
@@ -66,22 +56,8 @@ from google.cloud.dialogflowcx_v3beta1.types import generator
 from google.cloud.dialogflowcx_v3beta1.types import generator as gcdc_generator
 
 
-async def mock_async_gen(data, chunk_size=1):
-    for i in range(0, len(data)):  # pragma: NO COVER
-        chunk = data[i : i + chunk_size]
-        yield chunk.encode("utf-8")
-
-
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
-
-
-# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
-# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
-def async_anonymous_credentials():
-    if HAS_GOOGLE_AUTH_AIO:
-        return ga_credentials_async.AnonymousCredentials()
-    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1143,6 +1119,25 @@ def test_list_generators(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
+def test_list_generators_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_generators), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_generators()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generator.ListGeneratorsRequest()
+
+
 def test_list_generators_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1211,6 +1206,29 @@ def test_list_generators_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
+async def test_list_generators_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_generators), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generator.ListGeneratorsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_generators()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generator.ListGeneratorsRequest()
+
+
+@pytest.mark.asyncio
 async def test_list_generators_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1218,7 +1236,7 @@ async def test_list_generators_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GeneratorsAsyncClient(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
@@ -1233,23 +1251,27 @@ async def test_list_generators_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_generators
-        ] = mock_rpc
+        ] = mock_object
 
         request = {}
         await client.list_generators(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         await client.list_generators(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1257,7 +1279,7 @@ async def test_list_generators_async(
     transport: str = "grpc_asyncio", request_type=generator.ListGeneratorsRequest
 ):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1323,7 +1345,7 @@ def test_list_generators_field_headers():
 @pytest.mark.asyncio
 async def test_list_generators_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1393,7 +1415,7 @@ def test_list_generators_flattened_error():
 @pytest.mark.asyncio
 async def test_list_generators_flattened_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1422,7 +1444,7 @@ async def test_list_generators_flattened_async():
 @pytest.mark.asyncio
 async def test_list_generators_flattened_error_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1472,16 +1494,12 @@ def test_list_generators_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_generators(request={}, retry=retry, timeout=timeout)
+        pager = client.list_generators(request={})
 
         assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -1532,7 +1550,7 @@ def test_list_generators_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_generators_async_pager():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1582,7 +1600,7 @@ async def test_list_generators_async_pager():
 @pytest.mark.asyncio
 async def test_list_generators_async_pages():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1666,6 +1684,25 @@ def test_get_generator(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
 
 
+def test_get_generator_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_generator), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generator.GetGeneratorRequest()
+
+
 def test_get_generator_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1732,6 +1769,30 @@ def test_get_generator_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
+async def test_get_generator_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_generator), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            generator.Generator(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generator.GetGeneratorRequest()
+
+
+@pytest.mark.asyncio
 async def test_get_generator_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1739,7 +1800,7 @@ async def test_get_generator_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GeneratorsAsyncClient(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
@@ -1754,23 +1815,27 @@ async def test_get_generator_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_generator
-        ] = mock_rpc
+        ] = mock_object
 
         request = {}
         await client.get_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         await client.get_generator(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1778,7 +1843,7 @@ async def test_get_generator_async(
     transport: str = "grpc_asyncio", request_type=generator.GetGeneratorRequest
 ):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1846,7 +1911,7 @@ def test_get_generator_field_headers():
 @pytest.mark.asyncio
 async def test_get_generator_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1914,7 +1979,7 @@ def test_get_generator_flattened_error():
 @pytest.mark.asyncio
 async def test_get_generator_flattened_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1941,7 +2006,7 @@ async def test_get_generator_flattened_async():
 @pytest.mark.asyncio
 async def test_get_generator_flattened_error_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1989,6 +2054,25 @@ def test_create_generator(request_type, transport: str = "grpc"):
     assert isinstance(response, gcdc_generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+
+
+def test_create_generator_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_generator.CreateGeneratorRequest()
 
 
 def test_create_generator_non_empty_request_with_auto_populated_field():
@@ -2059,6 +2143,30 @@ def test_create_generator_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
+async def test_create_generator_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_generator.Generator(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_generator.CreateGeneratorRequest()
+
+
+@pytest.mark.asyncio
 async def test_create_generator_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2066,7 +2174,7 @@ async def test_create_generator_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GeneratorsAsyncClient(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
@@ -2081,23 +2189,27 @@ async def test_create_generator_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_generator
-        ] = mock_rpc
+        ] = mock_object
 
         request = {}
         await client.create_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         await client.create_generator(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2105,7 +2217,7 @@ async def test_create_generator_async(
     transport: str = "grpc_asyncio", request_type=gcdc_generator.CreateGeneratorRequest
 ):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2173,7 +2285,7 @@ def test_create_generator_field_headers():
 @pytest.mark.asyncio
 async def test_create_generator_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2248,7 +2360,7 @@ def test_create_generator_flattened_error():
 @pytest.mark.asyncio
 async def test_create_generator_flattened_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2281,7 +2393,7 @@ async def test_create_generator_flattened_async():
 @pytest.mark.asyncio
 async def test_create_generator_flattened_error_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2330,6 +2442,25 @@ def test_update_generator(request_type, transport: str = "grpc"):
     assert isinstance(response, gcdc_generator.Generator)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+
+
+def test_update_generator_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_generator.UpdateGeneratorRequest()
 
 
 def test_update_generator_non_empty_request_with_auto_populated_field():
@@ -2398,6 +2529,30 @@ def test_update_generator_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
+async def test_update_generator_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_generator.Generator(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_generator.UpdateGeneratorRequest()
+
+
+@pytest.mark.asyncio
 async def test_update_generator_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2405,7 +2560,7 @@ async def test_update_generator_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GeneratorsAsyncClient(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
@@ -2420,23 +2575,27 @@ async def test_update_generator_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_generator
-        ] = mock_rpc
+        ] = mock_object
 
         request = {}
         await client.update_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         await client.update_generator(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2444,7 +2603,7 @@ async def test_update_generator_async(
     transport: str = "grpc_asyncio", request_type=gcdc_generator.UpdateGeneratorRequest
 ):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2512,7 +2671,7 @@ def test_update_generator_field_headers():
 @pytest.mark.asyncio
 async def test_update_generator_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2587,7 +2746,7 @@ def test_update_generator_flattened_error():
 @pytest.mark.asyncio
 async def test_update_generator_flattened_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2620,7 +2779,7 @@ async def test_update_generator_flattened_async():
 @pytest.mark.asyncio
 async def test_update_generator_flattened_error_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2664,6 +2823,25 @@ def test_delete_generator(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+def test_delete_generator_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_generator), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generator.DeleteGeneratorRequest()
 
 
 def test_delete_generator_non_empty_request_with_auto_populated_field():
@@ -2732,6 +2910,25 @@ def test_delete_generator_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
+async def test_delete_generator_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GeneratorsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_generator), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_generator()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == generator.DeleteGeneratorRequest()
+
+
+@pytest.mark.asyncio
 async def test_delete_generator_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2739,7 +2936,7 @@ async def test_delete_generator_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GeneratorsAsyncClient(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
@@ -2754,23 +2951,27 @@ async def test_delete_generator_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
+        class AwaitableMock(mock.AsyncMock):
+            def __await__(self):
+                self.await_count += 1
+                return iter([])
+
+        mock_object = AwaitableMock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_generator
-        ] = mock_rpc
+        ] = mock_object
 
         request = {}
         await client.delete_generator(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
+        assert mock_object.call_count == 1
 
         await client.delete_generator(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
+        assert mock_object.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2778,7 +2979,7 @@ async def test_delete_generator_async(
     transport: str = "grpc_asyncio", request_type=generator.DeleteGeneratorRequest
 ):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2839,7 +3040,7 @@ def test_delete_generator_field_headers():
 @pytest.mark.asyncio
 async def test_delete_generator_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2907,7 +3108,7 @@ def test_delete_generator_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_generator_flattened_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2934,7 +3135,7 @@ async def test_delete_generator_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_generator_flattened_error_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2944,6 +3145,46 @@ async def test_delete_generator_flattened_error_async():
             generator.DeleteGeneratorRequest(),
             name="name_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator.ListGeneratorsRequest,
+        dict,
+    ],
+)
+def test_list_generators_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = generator.ListGeneratorsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = generator.ListGeneratorsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_generators(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGeneratorsPager)
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_generators_rest_use_cached_wrapped_rpc():
@@ -3082,6 +3323,87 @@ def test_list_generators_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_generators_rest_interceptors(null_interceptor):
+    transport = transports.GeneratorsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GeneratorsRestInterceptor(),
+    )
+    client = GeneratorsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "post_list_generators"
+    ) as post, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "pre_list_generators"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = generator.ListGeneratorsRequest.pb(
+            generator.ListGeneratorsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = generator.ListGeneratorsResponse.to_json(
+            generator.ListGeneratorsResponse()
+        )
+
+        request = generator.ListGeneratorsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = generator.ListGeneratorsResponse()
+
+        client.list_generators(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_generators_rest_bad_request(
+    transport: str = "rest", request_type=generator.ListGeneratorsRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_generators(request)
+
+
 def test_list_generators_rest_flattened():
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3198,6 +3520,50 @@ def test_list_generators_rest_pager(transport: str = "rest"):
         pages = list(client.list_generators(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator.GetGeneratorRequest,
+        dict,
+    ],
+)
+def test_get_generator_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = generator.Generator(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = generator.Generator.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_generator(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, generator.Generator)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
 def test_get_generator_rest_use_cached_wrapped_rpc():
@@ -3319,6 +3685,85 @@ def test_get_generator_rest_unset_required_fields():
     assert set(unset_fields) == (set(("languageCode",)) & set(("name",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_generator_rest_interceptors(null_interceptor):
+    transport = transports.GeneratorsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GeneratorsRestInterceptor(),
+    )
+    client = GeneratorsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "post_get_generator"
+    ) as post, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "pre_get_generator"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = generator.GetGeneratorRequest.pb(generator.GetGeneratorRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = generator.Generator.to_json(generator.Generator())
+
+        request = generator.GetGeneratorRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = generator.Generator()
+
+        client.get_generator(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_generator_rest_bad_request(
+    transport: str = "rest", request_type=generator.GetGeneratorRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_generator(request)
+
+
 def test_get_generator_rest_flattened():
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3376,6 +3821,131 @@ def test_get_generator_rest_flattened_error(transport: str = "rest"):
             generator.GetGeneratorRequest(),
             name="name_value",
         )
+
+
+def test_get_generator_rest_error():
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_generator.CreateGeneratorRequest,
+        dict,
+    ],
+)
+def test_create_generator_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request_init["generator"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "prompt_text": {"text": "text_value"},
+        "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_generator.CreateGeneratorRequest.meta.fields["generator"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["generator"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["generator"][field])):
+                    del request_init["generator"][field][i][subfield]
+            else:
+                del request_init["generator"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcdc_generator.Generator(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcdc_generator.Generator.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_generator(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcdc_generator.Generator)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
 def test_create_generator_rest_use_cached_wrapped_rpc():
@@ -3510,6 +4080,87 @@ def test_create_generator_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_generator_rest_interceptors(null_interceptor):
+    transport = transports.GeneratorsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GeneratorsRestInterceptor(),
+    )
+    client = GeneratorsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "post_create_generator"
+    ) as post, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "pre_create_generator"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcdc_generator.CreateGeneratorRequest.pb(
+            gcdc_generator.CreateGeneratorRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcdc_generator.Generator.to_json(
+            gcdc_generator.Generator()
+        )
+
+        request = gcdc_generator.CreateGeneratorRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcdc_generator.Generator()
+
+        client.create_generator(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_generator_rest_bad_request(
+    transport: str = "rest", request_type=gcdc_generator.CreateGeneratorRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_generator(request)
+
+
 def test_create_generator_rest_flattened():
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3567,6 +4218,135 @@ def test_create_generator_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             generator=gcdc_generator.Generator(name="name_value"),
         )
+
+
+def test_create_generator_rest_error():
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_generator.UpdateGeneratorRequest,
+        dict,
+    ],
+)
+def test_update_generator_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "generator": {
+            "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
+        }
+    }
+    request_init["generator"] = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4",
+        "display_name": "display_name_value",
+        "prompt_text": {"text": "text_value"},
+        "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_generator.UpdateGeneratorRequest.meta.fields["generator"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["generator"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["generator"][field])):
+                    del request_init["generator"][field][i][subfield]
+            else:
+                del request_init["generator"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcdc_generator.Generator(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gcdc_generator.Generator.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_generator(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcdc_generator.Generator)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
 def test_update_generator_rest_use_cached_wrapped_rpc():
@@ -3701,6 +4481,91 @@ def test_update_generator_rest_unset_required_fields():
     )
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_generator_rest_interceptors(null_interceptor):
+    transport = transports.GeneratorsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GeneratorsRestInterceptor(),
+    )
+    client = GeneratorsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "post_update_generator"
+    ) as post, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "pre_update_generator"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcdc_generator.UpdateGeneratorRequest.pb(
+            gcdc_generator.UpdateGeneratorRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcdc_generator.Generator.to_json(
+            gcdc_generator.Generator()
+        )
+
+        request = gcdc_generator.UpdateGeneratorRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcdc_generator.Generator()
+
+        client.update_generator(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_generator_rest_bad_request(
+    transport: str = "rest", request_type=gcdc_generator.UpdateGeneratorRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "generator": {
+            "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_generator(request)
+
+
 def test_update_generator_rest_flattened():
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3762,6 +4627,49 @@ def test_update_generator_rest_flattened_error(transport: str = "rest"):
             generator=gcdc_generator.Generator(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
+
+
+def test_update_generator_rest_error():
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generator.DeleteGeneratorRequest,
+        dict,
+    ],
+)
+def test_delete_generator_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_generator(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
 
 
 def test_delete_generator_rest_use_cached_wrapped_rpc():
@@ -3884,6 +4792,81 @@ def test_delete_generator_rest_unset_required_fields():
     assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_generator_rest_interceptors(null_interceptor):
+    transport = transports.GeneratorsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GeneratorsRestInterceptor(),
+    )
+    client = GeneratorsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GeneratorsRestInterceptor, "pre_delete_generator"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = generator.DeleteGeneratorRequest.pb(
+            generator.DeleteGeneratorRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = generator.DeleteGeneratorRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_generator(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_generator_rest_bad_request(
+    transport: str = "rest", request_type=generator.DeleteGeneratorRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_generator(request)
+
+
 def test_delete_generator_rest_flattened():
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3939,6 +4922,12 @@ def test_delete_generator_rest_flattened_error(transport: str = "rest"):
             generator.DeleteGeneratorRequest(),
             name="name_value",
         )
+
+
+def test_delete_generator_rest_error():
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
 
 
 def test_credentials_transport_error():
@@ -4033,1433 +5022,18 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-def test_transport_kind_grpc():
-    transport = GeneratorsClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
-    assert transport.kind == "grpc"
-
-
-def test_initialize_client_w_grpc():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    assert client is not None
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_generators_empty_call_grpc():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_generators), "__call__") as call:
-        call.return_value = generator.ListGeneratorsResponse()
-        client.list_generators(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.ListGeneratorsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_generator_empty_call_grpc():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_generator), "__call__") as call:
-        call.return_value = generator.Generator()
-        client.get_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.GetGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_create_generator_empty_call_grpc():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
-        call.return_value = gcdc_generator.Generator()
-        client.create_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.CreateGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_update_generator_empty_call_grpc():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
-        call.return_value = gcdc_generator.Generator()
-        client.update_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.UpdateGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_delete_generator_empty_call_grpc():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_generator), "__call__") as call:
-        call.return_value = None
-        client.delete_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.DeleteGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-def test_transport_kind_grpc_asyncio():
-    transport = GeneratorsAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
-    assert transport.kind == "grpc_asyncio"
-
-
-def test_initialize_client_w_grpc_asyncio():
-    client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    assert client is not None
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_list_generators_empty_call_grpc_asyncio():
-    client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_generators), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generator.ListGeneratorsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        await client.list_generators(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.ListGeneratorsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_generator_empty_call_grpc_asyncio():
-    client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_generator), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            generator.Generator(
-                name="name_value",
-                display_name="display_name_value",
-            )
-        )
-        await client.get_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.GetGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_create_generator_empty_call_grpc_asyncio():
-    client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator(
-                name="name_value",
-                display_name="display_name_value",
-            )
-        )
-        await client.create_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.CreateGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_update_generator_empty_call_grpc_asyncio():
-    client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_generator.Generator(
-                name="name_value",
-                display_name="display_name_value",
-            )
-        )
-        await client.update_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.UpdateGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_delete_generator_empty_call_grpc_asyncio():
-    client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_generator), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.DeleteGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-def test_transport_kind_rest():
-    transport = GeneratorsClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
-    assert transport.kind == "rest"
-
-
-def test_list_generators_rest_bad_request(request_type=generator.ListGeneratorsRequest):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        client.list_generators(request)
-
-
 @pytest.mark.parametrize(
-    "request_type",
+    "transport_name",
     [
-        generator.ListGeneratorsRequest,
-        dict,
+        "grpc",
+        "rest",
     ],
 )
-def test_list_generators_rest_call_success(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generator.ListGeneratorsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = generator.ListGeneratorsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_generators(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListGeneratorsPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_generators_rest_interceptors(null_interceptor):
-    transport = transports.GeneratorsRestTransport(
+def test_transport_kind(transport_name):
+    transport = GeneratorsClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GeneratorsRestInterceptor(),
     )
-    client = GeneratorsClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "post_list_generators"
-    ) as post, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "pre_list_generators"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = generator.ListGeneratorsRequest.pb(
-            generator.ListGeneratorsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = generator.ListGeneratorsResponse.to_json(
-            generator.ListGeneratorsResponse()
-        )
-        req.return_value.content = return_value
-
-        request = generator.ListGeneratorsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = generator.ListGeneratorsResponse()
-
-        client.list_generators(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_generator_rest_bad_request(request_type=generator.GetGeneratorRequest):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        client.get_generator(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generator.GetGeneratorRequest,
-        dict,
-    ],
-)
-def test_get_generator_rest_call_success(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = generator.Generator(
-            name="name_value",
-            display_name="display_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = generator.Generator.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_generator(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, generator.Generator)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_generator_rest_interceptors(null_interceptor):
-    transport = transports.GeneratorsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GeneratorsRestInterceptor(),
-    )
-    client = GeneratorsClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "post_get_generator"
-    ) as post, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "pre_get_generator"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = generator.GetGeneratorRequest.pb(generator.GetGeneratorRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = generator.Generator.to_json(generator.Generator())
-        req.return_value.content = return_value
-
-        request = generator.GetGeneratorRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = generator.Generator()
-
-        client.get_generator(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_generator_rest_bad_request(
-    request_type=gcdc_generator.CreateGeneratorRequest,
-):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        client.create_generator(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcdc_generator.CreateGeneratorRequest,
-        dict,
-    ],
-)
-def test_create_generator_rest_call_success(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request_init["generator"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "prompt_text": {"text": "text_value"},
-        "placeholders": [{"id": "id_value", "name": "name_value"}],
-        "llm_model_settings": {
-            "model": "model_value",
-            "prompt_text": "prompt_text_value",
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_generator.CreateGeneratorRequest.meta.fields["generator"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["generator"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["generator"][field])):
-                    del request_init["generator"][field][i][subfield]
-            else:
-                del request_init["generator"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcdc_generator.Generator(
-            name="name_value",
-            display_name="display_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = gcdc_generator.Generator.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_generator(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_generator_rest_interceptors(null_interceptor):
-    transport = transports.GeneratorsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GeneratorsRestInterceptor(),
-    )
-    client = GeneratorsClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "post_create_generator"
-    ) as post, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "pre_create_generator"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcdc_generator.CreateGeneratorRequest.pb(
-            gcdc_generator.CreateGeneratorRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = gcdc_generator.Generator.to_json(gcdc_generator.Generator())
-        req.return_value.content = return_value
-
-        request = gcdc_generator.CreateGeneratorRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcdc_generator.Generator()
-
-        client.create_generator(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_generator_rest_bad_request(
-    request_type=gcdc_generator.UpdateGeneratorRequest,
-):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "generator": {
-            "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        client.update_generator(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcdc_generator.UpdateGeneratorRequest,
-        dict,
-    ],
-)
-def test_update_generator_rest_call_success(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "generator": {
-            "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
-        }
-    }
-    request_init["generator"] = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4",
-        "display_name": "display_name_value",
-        "prompt_text": {"text": "text_value"},
-        "placeholders": [{"id": "id_value", "name": "name_value"}],
-        "llm_model_settings": {
-            "model": "model_value",
-            "prompt_text": "prompt_text_value",
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_generator.UpdateGeneratorRequest.meta.fields["generator"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["generator"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["generator"][field])):
-                    del request_init["generator"][field][i][subfield]
-            else:
-                del request_init["generator"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcdc_generator.Generator(
-            name="name_value",
-            display_name="display_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = gcdc_generator.Generator.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_generator(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_generator.Generator)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_generator_rest_interceptors(null_interceptor):
-    transport = transports.GeneratorsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GeneratorsRestInterceptor(),
-    )
-    client = GeneratorsClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "post_update_generator"
-    ) as post, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "pre_update_generator"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcdc_generator.UpdateGeneratorRequest.pb(
-            gcdc_generator.UpdateGeneratorRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        return_value = gcdc_generator.Generator.to_json(gcdc_generator.Generator())
-        req.return_value.content = return_value
-
-        request = gcdc_generator.UpdateGeneratorRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcdc_generator.Generator()
-
-        client.update_generator(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_generator_rest_bad_request(
-    request_type=generator.DeleteGeneratorRequest,
-):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        client.delete_generator(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        generator.DeleteGeneratorRequest,
-        dict,
-    ],
-)
-def test_delete_generator_rest_call_success(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/generators/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = ""
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_generator(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_generator_rest_interceptors(null_interceptor):
-    transport = transports.GeneratorsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.GeneratorsRestInterceptor(),
-    )
-    client = GeneratorsClient(transport=transport)
-
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorsRestInterceptor, "pre_delete_generator"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = generator.DeleteGeneratorRequest.pb(
-            generator.DeleteGeneratorRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-
-        request = generator.DeleteGeneratorRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_generator(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    request_type=locations_pb2.ListLocationsRequest,
-):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    request_type=operations_pb2.CancelOperationRequest,
-):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = "{}"
-        response_value.content = json_return_value.encode("UTF-8")
-
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
-def test_initialize_client_w_rest():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    assert client is not None
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_list_generators_empty_call_rest():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_generators), "__call__") as call:
-        client.list_generators(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.ListGeneratorsRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_generator_empty_call_rest():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_generator), "__call__") as call:
-        client.get_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.GetGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_create_generator_empty_call_rest():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_generator), "__call__") as call:
-        client.create_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.CreateGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_update_generator_empty_call_rest():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_generator), "__call__") as call:
-        client.update_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = gcdc_generator.UpdateGeneratorRequest()
-
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_delete_generator_empty_call_rest():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_generator), "__call__") as call:
-        client.delete_generator(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = generator.DeleteGeneratorRequest()
-
-        assert args[0] == request_msg
+    assert transport.kind == transport_name
 
 
 def test_transport_grpc_default():
@@ -6062,6 +5636,306 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
+@pytest.mark.asyncio
+async def test_transport_close_async():
+    client = GeneratorsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = "{}"
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
+):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = GeneratorsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = GeneratorsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6089,7 +5963,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6142,7 +6016,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6187,7 +6061,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -6228,7 +6102,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6283,7 +6157,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6330,7 +6204,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -6373,7 +6247,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6428,7 +6302,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6475,7 +6349,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -6518,7 +6392,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6573,7 +6447,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6620,7 +6494,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -6663,7 +6537,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6715,7 +6589,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = GeneratorsAsyncClient(credentials=async_anonymous_credentials())
+    client = GeneratorsAsyncClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6761,7 +6635,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -6777,41 +6651,22 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close_grpc():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
-        with client:
-            close.assert_not_called()
-        close.assert_called_once()
+def test_transport_close():
+    transports = {
+        "rest": "_session",
+        "grpc": "_grpc_channel",
+    }
 
-
-@pytest.mark.asyncio
-async def test_transport_close_grpc_asyncio():
-    client = GeneratorsAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_transport_close_rest():
-    client = GeneratorsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
-        with client:
-            close.assert_not_called()
-        close.assert_called_once()
+    for transport, close_name in transports.items():
+        client = GeneratorsClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        with mock.patch.object(
+            type(getattr(client.transport, close_name)), "close"
+        ) as close:
+            with client:
+                close.assert_not_called()
+            close.assert_called_once()
 
 
 def test_client_ctx():

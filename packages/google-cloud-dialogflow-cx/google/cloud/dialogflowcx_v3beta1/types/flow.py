@@ -215,10 +215,6 @@ class Flow(proto.Message):
         multi_language_settings (google.cloud.dialogflowcx_v3beta1.types.Flow.MultiLanguageSettings):
             Optional. Multi-lingual agent settings for
             this flow.
-        locked (bool):
-            Indicates whether the flow is locked for
-            changes. If the flow is locked, modifications to
-            the flow will be rejected.
     """
 
     class MultiLanguageSettings(proto.Message):
@@ -295,10 +291,6 @@ class Flow(proto.Message):
         proto.MESSAGE,
         number=28,
         message=MultiLanguageSettings,
-    )
-    locked: bool = proto.Field(
-        proto.BOOL,
-        number=30,
     )
 
 

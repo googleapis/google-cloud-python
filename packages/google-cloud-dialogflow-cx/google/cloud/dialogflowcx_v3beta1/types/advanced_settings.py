@@ -171,14 +171,11 @@ class AdvancedSettings(proto.Message):
 
         Attributes:
             enable_stackdriver_logging (bool):
-                Enables Google Cloud Logging.
+                If true, StackDriver logging is currently
+                enabled.
             enable_interaction_logging (bool):
-                Enables DF Interaction logging.
-            enable_consent_based_redaction (bool):
-                Enables consent-based end-user input redaction, if true, a
-                pre-defined session parameter
-                ``$session.params.conversation-redaction`` will be used to
-                determine if the utterance should be redacted.
+                If true, DF Interaction logging is currently
+                enabled.
         """
 
         enable_stackdriver_logging: bool = proto.Field(
@@ -188,10 +185,6 @@ class AdvancedSettings(proto.Message):
         enable_interaction_logging: bool = proto.Field(
             proto.BOOL,
             number=3,
-        )
-        enable_consent_based_redaction: bool = proto.Field(
-            proto.BOOL,
-            number=4,
         )
 
     audio_export_gcs_destination: gcs.GcsDestination = proto.Field(
