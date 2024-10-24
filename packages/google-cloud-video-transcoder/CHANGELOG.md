@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.12.5...google-cloud-video-transcoder-v1.13.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [1.12.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.12.4...google-cloud-video-transcoder-v1.12.5) (2024-07-30)
 
 

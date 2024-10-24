@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.12...google-cloud-video-stitcher-v0.7.13) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [0.7.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.11...google-cloud-video-stitcher-v0.7.12) (2024-07-30)
 
 
