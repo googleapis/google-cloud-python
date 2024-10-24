@@ -16,31 +16,41 @@
 
 import dataclasses
 import json  # type: ignore
+import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+import grpc  # type: ignore
 from requests import __version__ as requests_version
-
-from google.cloud.dialogflowcx_v3beta1.types import test_case
-from google.cloud.dialogflowcx_v3beta1.types import test_case as gcdc_test_case
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .rest_base import _BaseTestCasesRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+
+from google.cloud.dialogflowcx_v3beta1.types import test_case
+from google.cloud.dialogflowcx_v3beta1.types import test_case as gcdc_test_case
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import TestCasesTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -542,8 +552,8 @@ class TestCasesRestStub:
     _interceptor: TestCasesRestInterceptor
 
 
-class TestCasesRestTransport(_BaseTestCasesRestTransport):
-    """REST backend synchronous transport for TestCases.
+class TestCasesRestTransport(TestCasesTransport):
+    """REST backend transport for TestCases.
 
     Service for managing [Test
     Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and [Test Case
@@ -554,6 +564,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
     """
 
     def __init__(
@@ -607,12 +618,21 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -682,34 +702,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchDeleteTestCases(
-        _BaseTestCasesRestTransport._BaseBatchDeleteTestCases, TestCasesRestStub
-    ):
+    class _BatchDeleteTestCases(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.BatchDeleteTestCases")
+            return hash("BatchDeleteTestCases")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -732,34 +737,47 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     sent along with the request as metadata.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*}/testCases:batchDelete",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_batch_delete_test_cases(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = test_case.BatchDeleteTestCasesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._BatchDeleteTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -767,34 +785,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchRunTestCases(
-        _BaseTestCasesRestTransport._BaseBatchRunTestCases, TestCasesRestStub
-    ):
+    class _BatchRunTestCases(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.BatchRunTestCases")
+            return hash("BatchRunTestCases")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -824,34 +827,47 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*}/testCases:batchRun",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_batch_run_test_cases(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = test_case.BatchRunTestCasesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._BatchRunTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -865,33 +881,21 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_batch_run_test_cases(resp)
             return resp
 
-    class _CalculateCoverage(
-        _BaseTestCasesRestTransport._BaseCalculateCoverage, TestCasesRestStub
-    ):
+    class _CalculateCoverage(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.CalculateCoverage")
+            return hash("CalculateCoverage")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "type": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -920,29 +924,40 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseCalculateCoverage._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{agent=projects/*/locations/*/agents/*}/testCases:calculateCoverage",
+                },
+            ]
             request, metadata = self._interceptor.pre_calculate_coverage(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseCalculateCoverage._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = test_case.CalculateCoverageRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseCalculateCoverage._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._CalculateCoverage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -958,34 +973,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_calculate_coverage(resp)
             return resp
 
-    class _CreateTestCase(
-        _BaseTestCasesRestTransport._BaseCreateTestCase, TestCasesRestStub
-    ):
+    class _CreateTestCase(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.CreateTestCase")
+            return hash("CreateTestCase")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1012,40 +1012,47 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     Represents a test case.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*}/testCases",
+                    "body": "test_case",
+                },
+            ]
             request, metadata = self._interceptor.pre_create_test_case(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = gcdc_test_case.CreateTestCaseRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_request_body_json(
-                    transcoded_request
-                )
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._CreateTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1061,34 +1068,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_create_test_case(resp)
             return resp
 
-    class _ExportTestCases(
-        _BaseTestCasesRestTransport._BaseExportTestCases, TestCasesRestStub
-    ):
+    class _ExportTestCases(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.ExportTestCases")
+            return hash("ExportTestCases")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1118,38 +1110,47 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseExportTestCases._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*}/testCases:export",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_export_test_cases(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseExportTestCases._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = test_case.ExportTestCasesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseExportTestCases._get_request_body_json(
-                    transcoded_request
-                )
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseExportTestCases._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._ExportTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1163,31 +1164,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_export_test_cases(resp)
             return resp
 
-    class _GetTestCase(_BaseTestCasesRestTransport._BaseGetTestCase, TestCasesRestStub):
+    class _GetTestCase(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.GetTestCase")
+            return hash("GetTestCase")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1214,31 +1203,38 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     Represents a test case.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetTestCase._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/testCases/*}",
+                },
+            ]
             request, metadata = self._interceptor.pre_get_test_case(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseGetTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = test_case.GetTestCaseRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseGetTestCase._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._GetTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1254,33 +1250,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_get_test_case(resp)
             return resp
 
-    class _GetTestCaseResult(
-        _BaseTestCasesRestTransport._BaseGetTestCaseResult, TestCasesRestStub
-    ):
+    class _GetTestCaseResult(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.GetTestCaseResult")
+            return hash("GetTestCaseResult")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1309,29 +1291,40 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/testCases/*/results/*}",
+                },
+            ]
             request, metadata = self._interceptor.pre_get_test_case_result(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = test_case.GetTestCaseResultRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._GetTestCaseResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1347,34 +1340,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_get_test_case_result(resp)
             return resp
 
-    class _ImportTestCases(
-        _BaseTestCasesRestTransport._BaseImportTestCases, TestCasesRestStub
-    ):
+    class _ImportTestCases(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.ImportTestCases")
+            return hash("ImportTestCases")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1404,38 +1382,47 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseImportTestCases._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*}/testCases:import",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_import_test_cases(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseImportTestCases._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = test_case.ImportTestCasesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseImportTestCases._get_request_body_json(
-                    transcoded_request
-                )
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseImportTestCases._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._ImportTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1449,33 +1436,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_import_test_cases(resp)
             return resp
 
-    class _ListTestCaseResults(
-        _BaseTestCasesRestTransport._BaseListTestCaseResults, TestCasesRestStub
-    ):
+    class _ListTestCaseResults(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.ListTestCaseResults")
+            return hash("ListTestCaseResults")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1504,29 +1477,40 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListTestCaseResults._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*/testCases/*}/results",
+                },
+            ]
             request, metadata = self._interceptor.pre_list_test_case_results(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseListTestCaseResults._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = test_case.ListTestCaseResultsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseListTestCaseResults._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._ListTestCaseResults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1542,33 +1526,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_list_test_case_results(resp)
             return resp
 
-    class _ListTestCases(
-        _BaseTestCasesRestTransport._BaseListTestCases, TestCasesRestStub
-    ):
+    class _ListTestCases(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.ListTestCases")
+            return hash("ListTestCases")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1597,31 +1567,38 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListTestCases._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*}/testCases",
+                },
+            ]
             request, metadata = self._interceptor.pre_list_test_cases(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseListTestCases._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = test_case.ListTestCasesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseListTestCases._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._ListTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1637,32 +1614,19 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_list_test_cases(resp)
             return resp
 
-    class _RunTestCase(_BaseTestCasesRestTransport._BaseRunTestCase, TestCasesRestStub):
+    class _RunTestCase(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.RunTestCase")
+            return hash("RunTestCase")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1692,36 +1656,45 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseRunTestCase._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/testCases/*}:run",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_run_test_case(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseRunTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = test_case.RunTestCaseRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseTestCasesRestTransport._BaseRunTestCase._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseRunTestCase._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._RunTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1735,34 +1708,21 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = self._interceptor.post_run_test_case(resp)
             return resp
 
-    class _UpdateTestCase(
-        _BaseTestCasesRestTransport._BaseUpdateTestCase, TestCasesRestStub
-    ):
+    class _UpdateTestCase(TestCasesRestStub):
         def __hash__(self):
-            return hash("TestCasesRestTransport.UpdateTestCase")
+            return hash("UpdateTestCase")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1789,40 +1749,47 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     Represents a test case.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v3beta1/{test_case.name=projects/*/locations/*/agents/*/testCases/*}",
+                    "body": "test_case",
+                },
+            ]
             request, metadata = self._interceptor.pre_update_test_case(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = gcdc_test_case.UpdateTestCaseRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_request_body_json(
-                    transcoded_request
-                )
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = TestCasesRestTransport._UpdateTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1942,32 +1909,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(_BaseTestCasesRestTransport._BaseGetLocation, TestCasesRestStub):
-        def __hash__(self):
-            return hash("TestCasesRestTransport.GetLocation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetLocation(TestCasesRestStub):
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -1991,31 +1933,32 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = TestCasesRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2023,9 +1966,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -2033,34 +1975,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseTestCasesRestTransport._BaseListLocations, TestCasesRestStub
-    ):
-        def __hash__(self):
-            return hash("TestCasesRestTransport.ListLocations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListLocations(TestCasesRestStub):
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -2084,31 +1999,32 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/locations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = TestCasesRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2116,9 +2032,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -2126,34 +2041,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseTestCasesRestTransport._BaseCancelOperation, TestCasesRestStub
-    ):
-        def __hash__(self):
-            return hash("TestCasesRestTransport.CancelOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _CancelOperation(TestCasesRestStub):
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -2174,31 +2062,38 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     sent along with the request as metadata.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}:cancel",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseTestCasesRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = TestCasesRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2212,34 +2107,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTestCasesRestTransport._BaseGetOperation, TestCasesRestStub
-    ):
-        def __hash__(self):
-            return hash("TestCasesRestTransport.GetOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetOperation(TestCasesRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -2263,31 +2131,36 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = TestCasesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2295,9 +2168,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -2305,34 +2177,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseTestCasesRestTransport._BaseListOperations, TestCasesRestStub
-    ):
-        def __hash__(self):
-            return hash("TestCasesRestTransport.ListOperations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListOperations(TestCasesRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -2356,31 +2201,36 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}/operations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = TestCasesRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2388,9 +2238,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

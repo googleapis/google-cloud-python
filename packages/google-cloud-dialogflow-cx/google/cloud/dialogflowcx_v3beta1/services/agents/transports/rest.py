@@ -16,19 +16,35 @@
 
 import dataclasses
 import json  # type: ignore
+import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.protobuf import json_format
+import grpc  # type: ignore
+from requests import __version__ as requests_version
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
@@ -37,14 +53,8 @@ from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 
+from .base import AgentsTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .rest_base import _BaseAgentsRestTransport
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -503,8 +513,8 @@ class AgentsRestStub:
     _interceptor: AgentsRestInterceptor
 
 
-class AgentsRestTransport(_BaseAgentsRestTransport):
-    """REST backend synchronous transport for Agents.
+class AgentsRestTransport(AgentsTransport):
+    """REST backend transport for Agents.
 
     Service for managing
     [Agents][google.cloud.dialogflow.cx.v3beta1.Agent].
@@ -514,6 +524,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
     """
 
     def __init__(
@@ -567,12 +578,21 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -642,32 +662,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAgent(_BaseAgentsRestTransport._BaseCreateAgent, AgentsRestStub):
+    class _CreateAgent(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.CreateAgent")
+            return hash("CreateAgent")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -709,34 +716,45 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = _BaseAgentsRestTransport._BaseCreateAgent._get_http_options()
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*}/agents",
+                    "body": "agent",
+                },
+            ]
             request, metadata = self._interceptor.pre_create_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseCreateAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = gcdc_agent.CreateAgentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseAgentsRestTransport._BaseCreateAgent._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseCreateAgent._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._CreateAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -752,31 +770,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_create_agent(resp)
             return resp
 
-    class _DeleteAgent(_BaseAgentsRestTransport._BaseDeleteAgent, AgentsRestStub):
+    class _DeleteAgent(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.DeleteAgent")
+            return hash("DeleteAgent")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -799,29 +805,38 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                     sent along with the request as metadata.
             """
 
-            http_options = _BaseAgentsRestTransport._BaseDeleteAgent._get_http_options()
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*}",
+                },
+            ]
             request, metadata = self._interceptor.pre_delete_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseDeleteAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = agent.DeleteAgentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseDeleteAgent._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._DeleteAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -829,32 +844,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ExportAgent(_BaseAgentsRestTransport._BaseExportAgent, AgentsRestStub):
+    class _ExportAgent(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.ExportAgent")
+            return hash("ExportAgent")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -884,34 +886,45 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = _BaseAgentsRestTransport._BaseExportAgent._get_http_options()
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*}:export",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_export_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseExportAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = agent.ExportAgentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseAgentsRestTransport._BaseExportAgent._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseExportAgent._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._ExportAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -925,31 +938,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_export_agent(resp)
             return resp
 
-    class _GetAgent(_BaseAgentsRestTransport._BaseGetAgent, AgentsRestStub):
+    class _GetAgent(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.GetAgent")
+            return hash("GetAgent")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -991,29 +992,38 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = _BaseAgentsRestTransport._BaseGetAgent._get_http_options()
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*}",
+                },
+            ]
             request, metadata = self._interceptor.pre_get_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseGetAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = agent.GetAgentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseGetAgent._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._GetAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1029,33 +1039,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_get_agent(resp)
             return resp
 
-    class _GetAgentValidationResult(
-        _BaseAgentsRestTransport._BaseGetAgentValidationResult, AgentsRestStub
-    ):
+    class _GetAgentValidationResult(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.GetAgentValidationResult")
+            return hash("GetAgentValidationResult")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1085,29 +1081,40 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseGetAgentValidationResult._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/validationResult}",
+                },
+            ]
             request, metadata = self._interceptor.pre_get_agent_validation_result(
                 request, metadata
             )
-            transcoded_request = _BaseAgentsRestTransport._BaseGetAgentValidationResult._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = agent.GetAgentValidationResultRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseAgentsRestTransport._BaseGetAgentValidationResult._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._GetAgentValidationResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1123,33 +1130,21 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_get_agent_validation_result(resp)
             return resp
 
-    class _GetGenerativeSettings(
-        _BaseAgentsRestTransport._BaseGetGenerativeSettings, AgentsRestStub
-    ):
+    class _GetGenerativeSettings(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.GetGenerativeSettings")
+            return hash("GetGenerativeSettings")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "languageCode": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1177,29 +1172,40 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                     Settings for Generative AI.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseGetGenerativeSettings._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/generativeSettings}",
+                },
+            ]
             request, metadata = self._interceptor.pre_get_generative_settings(
                 request, metadata
             )
-            transcoded_request = _BaseAgentsRestTransport._BaseGetGenerativeSettings._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = agent.GetGenerativeSettingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseAgentsRestTransport._BaseGetGenerativeSettings._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._GetGenerativeSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1215,31 +1221,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_get_generative_settings(resp)
             return resp
 
-    class _ListAgents(_BaseAgentsRestTransport._BaseListAgents, AgentsRestStub):
+    class _ListAgents(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.ListAgents")
+            return hash("ListAgents")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1268,29 +1262,38 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = _BaseAgentsRestTransport._BaseListAgents._get_http_options()
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*}/agents",
+                },
+            ]
             request, metadata = self._interceptor.pre_list_agents(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseListAgents._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = agent.ListAgentsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseListAgents._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._ListAgents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1306,32 +1309,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_list_agents(resp)
             return resp
 
-    class _RestoreAgent(_BaseAgentsRestTransport._BaseRestoreAgent, AgentsRestStub):
+    class _RestoreAgent(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.RestoreAgent")
+            return hash("RestoreAgent")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1361,36 +1351,45 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseRestoreAgent._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*}:restore",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_restore_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseRestoreAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = agent.RestoreAgentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseAgentsRestTransport._BaseRestoreAgent._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseRestoreAgent._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._RestoreAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1404,32 +1403,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_restore_agent(resp)
             return resp
 
-    class _UpdateAgent(_BaseAgentsRestTransport._BaseUpdateAgent, AgentsRestStub):
+    class _UpdateAgent(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.UpdateAgent")
+            return hash("UpdateAgent")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1471,34 +1457,45 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = _BaseAgentsRestTransport._BaseUpdateAgent._get_http_options()
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v3beta1/{agent.name=projects/*/locations/*/agents/*}",
+                    "body": "agent",
+                },
+            ]
             request, metadata = self._interceptor.pre_update_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseUpdateAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = gcdc_agent.UpdateAgentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseAgentsRestTransport._BaseUpdateAgent._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseUpdateAgent._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._UpdateAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1514,34 +1511,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_update_agent(resp)
             return resp
 
-    class _UpdateGenerativeSettings(
-        _BaseAgentsRestTransport._BaseUpdateGenerativeSettings, AgentsRestStub
-    ):
+    class _UpdateGenerativeSettings(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.UpdateGenerativeSettings")
+            return hash("UpdateGenerativeSettings")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1570,34 +1552,47 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                         Settings for Generative AI.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseUpdateGenerativeSettings._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v3beta1/{generative_settings.name=projects/*/locations/*/agents/*/generativeSettings}",
+                    "body": "generative_settings",
+                },
+            ]
             request, metadata = self._interceptor.pre_update_generative_settings(
                 request, metadata
             )
-            transcoded_request = _BaseAgentsRestTransport._BaseUpdateGenerativeSettings._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = agent.UpdateGenerativeSettingsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseAgentsRestTransport._BaseUpdateGenerativeSettings._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseAgentsRestTransport._BaseUpdateGenerativeSettings._get_query_params_json(
-                transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._UpdateGenerativeSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1613,32 +1608,19 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = self._interceptor.post_update_generative_settings(resp)
             return resp
 
-    class _ValidateAgent(_BaseAgentsRestTransport._BaseValidateAgent, AgentsRestStub):
+    class _ValidateAgent(AgentsRestStub):
         def __hash__(self):
-            return hash("AgentsRestTransport.ValidateAgent")
+            return hash("ValidateAgent")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1667,36 +1649,45 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseValidateAgent._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*}:validate",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_validate_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseValidateAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = agent.ValidateAgentRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseAgentsRestTransport._BaseValidateAgent._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseValidateAgent._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = AgentsRestTransport._ValidateAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1805,32 +1796,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(_BaseAgentsRestTransport._BaseGetLocation, AgentsRestStub):
-        def __hash__(self):
-            return hash("AgentsRestTransport.GetLocation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetLocation(AgentsRestStub):
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -1854,29 +1820,32 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = _BaseAgentsRestTransport._BaseGetLocation._get_http_options()
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = AgentsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1884,9 +1853,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -1894,32 +1862,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(_BaseAgentsRestTransport._BaseListLocations, AgentsRestStub):
-        def __hash__(self):
-            return hash("AgentsRestTransport.ListLocations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListLocations(AgentsRestStub):
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -1943,31 +1886,32 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/locations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = AgentsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1975,9 +1919,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -1985,34 +1928,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAgentsRestTransport._BaseCancelOperation, AgentsRestStub
-    ):
-        def __hash__(self):
-            return hash("AgentsRestTransport.CancelOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _CancelOperation(AgentsRestStub):
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -2033,33 +1949,38 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                     sent along with the request as metadata.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}:cancel",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = AgentsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2073,32 +1994,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(_BaseAgentsRestTransport._BaseGetOperation, AgentsRestStub):
-        def __hash__(self):
-            return hash("AgentsRestTransport.GetOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetOperation(AgentsRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -2122,31 +2018,36 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = AgentsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2154,9 +2055,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -2164,32 +2064,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(_BaseAgentsRestTransport._BaseListOperations, AgentsRestStub):
-        def __hash__(self):
-            return hash("AgentsRestTransport.ListOperations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListOperations(AgentsRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -2213,31 +2088,36 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}/operations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = AgentsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2245,9 +2125,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

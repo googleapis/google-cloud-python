@@ -16,31 +16,41 @@
 
 import dataclasses
 import json  # type: ignore
+import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+import grpc  # type: ignore
 from requests import __version__ as requests_version
-
-from google.cloud.dialogflowcx_v3beta1.types import version
-from google.cloud.dialogflowcx_v3beta1.types import version as gcdc_version
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .rest_base import _BaseVersionsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+
+from google.cloud.dialogflowcx_v3beta1.types import version
+from google.cloud.dialogflowcx_v3beta1.types import version as gcdc_version
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import VersionsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -383,8 +393,8 @@ class VersionsRestStub:
     _interceptor: VersionsRestInterceptor
 
 
-class VersionsRestTransport(_BaseVersionsRestTransport):
-    """REST backend synchronous transport for Versions.
+class VersionsRestTransport(VersionsTransport):
+    """REST backend transport for Versions.
 
     Service for managing
     [Versions][google.cloud.dialogflow.cx.v3beta1.Version].
@@ -394,6 +404,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
     """
 
     def __init__(
@@ -447,12 +458,21 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -522,34 +542,19 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CompareVersions(
-        _BaseVersionsRestTransport._BaseCompareVersions, VersionsRestStub
-    ):
+    class _CompareVersions(VersionsRestStub):
         def __hash__(self):
-            return hash("VersionsRestTransport.CompareVersions")
+            return hash("CompareVersions")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -578,40 +583,47 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseCompareVersions._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{base_version=projects/*/locations/*/agents/*/flows/*/versions/*}:compareVersions",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_compare_versions(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseCompareVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = version.CompareVersionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = (
-                _BaseVersionsRestTransport._BaseCompareVersions._get_request_body_json(
-                    transcoded_request
-                )
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseCompareVersions._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = VersionsRestTransport._CompareVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -627,34 +639,19 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = self._interceptor.post_compare_versions(resp)
             return resp
 
-    class _CreateVersion(
-        _BaseVersionsRestTransport._BaseCreateVersion, VersionsRestStub
-    ):
+    class _CreateVersion(VersionsRestStub):
         def __hash__(self):
-            return hash("VersionsRestTransport.CreateVersion")
+            return hash("CreateVersion")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -684,36 +681,45 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseCreateVersion._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*/flows/*}/versions",
+                    "body": "version",
+                },
+            ]
             request, metadata = self._interceptor.pre_create_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseCreateVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = gcdc_version.CreateVersionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseVersionsRestTransport._BaseCreateVersion._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseCreateVersion._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = VersionsRestTransport._CreateVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -727,33 +733,19 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = self._interceptor.post_create_version(resp)
             return resp
 
-    class _DeleteVersion(
-        _BaseVersionsRestTransport._BaseDeleteVersion, VersionsRestStub
-    ):
+    class _DeleteVersion(VersionsRestStub):
         def __hash__(self):
-            return hash("VersionsRestTransport.DeleteVersion")
+            return hash("DeleteVersion")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -776,31 +768,38 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     sent along with the request as metadata.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseDeleteVersion._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/flows/*/versions/*}",
+                },
+            ]
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseDeleteVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = version.DeleteVersionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseDeleteVersion._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = VersionsRestTransport._DeleteVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -808,31 +807,19 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetVersion(_BaseVersionsRestTransport._BaseGetVersion, VersionsRestStub):
+    class _GetVersion(VersionsRestStub):
         def __hash__(self):
-            return hash("VersionsRestTransport.GetVersion")
+            return hash("GetVersion")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -859,31 +846,38 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     Represents a version of a flow.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseGetVersion._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/flows/*/versions/*}",
+                },
+            ]
             request, metadata = self._interceptor.pre_get_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseGetVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = version.GetVersionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseGetVersion._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = VersionsRestTransport._GetVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -899,31 +893,19 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = self._interceptor.post_get_version(resp)
             return resp
 
-    class _ListVersions(_BaseVersionsRestTransport._BaseListVersions, VersionsRestStub):
+    class _ListVersions(VersionsRestStub):
         def __hash__(self):
-            return hash("VersionsRestTransport.ListVersions")
+            return hash("ListVersions")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -952,31 +934,38 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseListVersions._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*/flows/*}/versions",
+                },
+            ]
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseListVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = version.ListVersionsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseListVersions._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = VersionsRestTransport._ListVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -992,32 +981,19 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = self._interceptor.post_list_versions(resp)
             return resp
 
-    class _LoadVersion(_BaseVersionsRestTransport._BaseLoadVersion, VersionsRestStub):
+    class _LoadVersion(VersionsRestStub):
         def __hash__(self):
-            return hash("VersionsRestTransport.LoadVersion")
+            return hash("LoadVersion")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1047,36 +1023,45 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseLoadVersion._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/flows/*/versions/*}:load",
+                    "body": "*",
+                },
+            ]
             request, metadata = self._interceptor.pre_load_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseLoadVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = version.LoadVersionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseVersionsRestTransport._BaseLoadVersion._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseLoadVersion._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = VersionsRestTransport._LoadVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1090,34 +1075,21 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = self._interceptor.post_load_version(resp)
             return resp
 
-    class _UpdateVersion(
-        _BaseVersionsRestTransport._BaseUpdateVersion, VersionsRestStub
-    ):
+    class _UpdateVersion(VersionsRestStub):
         def __hash__(self):
-            return hash("VersionsRestTransport.UpdateVersion")
+            return hash("UpdateVersion")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -1144,36 +1116,45 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     Represents a version of a flow.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseUpdateVersion._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v3beta1/{version.name=projects/*/locations/*/agents/*/flows/*/versions/*}",
+                    "body": "version",
+                },
+            ]
             request, metadata = self._interceptor.pre_update_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseUpdateVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = gcdc_version.UpdateVersionRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            body = _BaseVersionsRestTransport._BaseUpdateVersion._get_request_body_json(
-                transcoded_request
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
             )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseUpdateVersion._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = VersionsRestTransport._UpdateVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1247,32 +1228,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(_BaseVersionsRestTransport._BaseGetLocation, VersionsRestStub):
-        def __hash__(self):
-            return hash("VersionsRestTransport.GetLocation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetLocation(VersionsRestStub):
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -1296,31 +1252,32 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = VersionsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1328,9 +1285,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -1338,34 +1294,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseVersionsRestTransport._BaseListLocations, VersionsRestStub
-    ):
-        def __hash__(self):
-            return hash("VersionsRestTransport.ListLocations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListLocations(VersionsRestStub):
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -1389,31 +1318,32 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/locations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = VersionsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1421,9 +1351,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -1431,34 +1360,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseVersionsRestTransport._BaseCancelOperation, VersionsRestStub
-    ):
-        def __hash__(self):
-            return hash("VersionsRestTransport.CancelOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _CancelOperation(VersionsRestStub):
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1479,33 +1381,38 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     sent along with the request as metadata.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}:cancel",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = VersionsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1519,32 +1426,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(_BaseVersionsRestTransport._BaseGetOperation, VersionsRestStub):
-        def __hash__(self):
-            return hash("VersionsRestTransport.GetOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetOperation(VersionsRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1568,31 +1450,36 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = VersionsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1600,9 +1487,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -1610,34 +1496,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseVersionsRestTransport._BaseListOperations, VersionsRestStub
-    ):
-        def __hash__(self):
-            return hash("VersionsRestTransport.ListOperations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListOperations(VersionsRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1661,31 +1520,36 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}/operations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = VersionsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1693,9 +1557,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

@@ -122,11 +122,6 @@ class DataStoreConnectionSignals(proto.Message):
                 Prompt as sent to the model.
             model_output (str):
                 Output of the generative model.
-            model (str):
-                Name of the generative model. For example,
-                "gemini-ultra", "gemini-pro", "gemini-1.5-flash"
-                etc. Defaults to "Other" if the model is
-                unknown.
         """
 
         rendered_prompt: str = proto.Field(
@@ -136,10 +131,6 @@ class DataStoreConnectionSignals(proto.Message):
         model_output: str = proto.Field(
             proto.STRING,
             number=2,
-        )
-        model: str = proto.Field(
-            proto.STRING,
-            number=3,
         )
 
     class SearchSnippet(proto.Message):
@@ -176,11 +167,6 @@ class DataStoreConnectionSignals(proto.Message):
                 Prompt as sent to the model.
             model_output (str):
                 Output of the generative model.
-            model (str):
-                Name of the generative model. For example,
-                "gemini-ultra", "gemini-pro", "gemini-1.5-flash"
-                etc. Defaults to "Other" if the model is
-                unknown.
         """
 
         rendered_prompt: str = proto.Field(
@@ -190,10 +176,6 @@ class DataStoreConnectionSignals(proto.Message):
         model_output: str = proto.Field(
             proto.STRING,
             number=2,
-        )
-        model: str = proto.Field(
-            proto.STRING,
-            number=3,
         )
 
     class AnswerPart(proto.Message):

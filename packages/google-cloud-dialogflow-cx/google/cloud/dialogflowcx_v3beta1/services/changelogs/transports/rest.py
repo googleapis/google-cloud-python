@@ -16,29 +16,33 @@
 
 import dataclasses
 import json  # type: ignore
+import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
+import grpc  # type: ignore
 from requests import __version__ as requests_version
-
-from google.cloud.dialogflowcx_v3beta1.types import changelog
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .rest_base import _BaseChangelogsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+
+from google.longrunning import operations_pb2  # type: ignore
+
+from google.cloud.dialogflowcx_v3beta1.types import changelog
+
+from .base import ChangelogsTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -249,8 +253,8 @@ class ChangelogsRestStub:
     _interceptor: ChangelogsRestInterceptor
 
 
-class ChangelogsRestTransport(_BaseChangelogsRestTransport):
-    """REST backend synchronous transport for Changelogs.
+class ChangelogsRestTransport(ChangelogsTransport):
+    """REST backend transport for Changelogs.
 
     Service for managing
     [Changelogs][google.cloud.dialogflow.cx.v3beta1.Changelog].
@@ -260,6 +264,7 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
+
     """
 
     def __init__(
@@ -313,12 +318,21 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -329,33 +343,19 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
         self._interceptor = interceptor or ChangelogsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetChangelog(
-        _BaseChangelogsRestTransport._BaseGetChangelog, ChangelogsRestStub
-    ):
+    class _GetChangelog(ChangelogsRestStub):
         def __hash__(self):
-            return hash("ChangelogsRestTransport.GetChangelog")
+            return hash("GetChangelog")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -384,31 +384,38 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
 
             """
 
-            http_options = (
-                _BaseChangelogsRestTransport._BaseGetChangelog._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/changelogs/*}",
+                },
+            ]
             request, metadata = self._interceptor.pre_get_changelog(request, metadata)
-            transcoded_request = (
-                _BaseChangelogsRestTransport._BaseGetChangelog._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            pb_request = changelog.GetChangelogRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseChangelogsRestTransport._BaseGetChangelog._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = ChangelogsRestTransport._GetChangelog._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -424,33 +431,19 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             resp = self._interceptor.post_get_changelog(resp)
             return resp
 
-    class _ListChangelogs(
-        _BaseChangelogsRestTransport._BaseListChangelogs, ChangelogsRestStub
-    ):
+    class _ListChangelogs(ChangelogsRestStub):
         def __hash__(self):
-            return hash("ChangelogsRestTransport.ListChangelogs")
+            return hash("ListChangelogs")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
         def __call__(
             self,
@@ -479,29 +472,38 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
 
             """
 
-            http_options = (
-                _BaseChangelogsRestTransport._BaseListChangelogs._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*}/changelogs",
+                },
+            ]
             request, metadata = self._interceptor.pre_list_changelogs(request, metadata)
-            transcoded_request = _BaseChangelogsRestTransport._BaseListChangelogs._get_transcoded_request(
-                http_options, request
-            )
+            pb_request = changelog.ListChangelogsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseChangelogsRestTransport._BaseListChangelogs._get_query_params_json(
-                    transcoded_request
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
                 )
             )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            response = ChangelogsRestTransport._ListChangelogs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -537,34 +539,7 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseChangelogsRestTransport._BaseGetLocation, ChangelogsRestStub
-    ):
-        def __hash__(self):
-            return hash("ChangelogsRestTransport.GetLocation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetLocation(ChangelogsRestStub):
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -588,31 +563,32 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseChangelogsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseChangelogsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseChangelogsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = ChangelogsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -620,9 +596,8 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -630,34 +605,7 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseChangelogsRestTransport._BaseListLocations, ChangelogsRestStub
-    ):
-        def __hash__(self):
-            return hash("ChangelogsRestTransport.ListLocations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListLocations(ChangelogsRestStub):
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -681,31 +629,32 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseChangelogsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/locations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseChangelogsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseChangelogsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = ChangelogsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -713,9 +662,8 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -723,34 +671,7 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseChangelogsRestTransport._BaseCancelOperation, ChangelogsRestStub
-    ):
-        def __hash__(self):
-            return hash("ChangelogsRestTransport.CancelOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _CancelOperation(ChangelogsRestStub):
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -771,29 +692,38 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
                     sent along with the request as metadata.
             """
 
-            http_options = (
-                _BaseChangelogsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}:cancel",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseChangelogsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = _BaseChangelogsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = ChangelogsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -807,34 +737,7 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseChangelogsRestTransport._BaseGetOperation, ChangelogsRestStub
-    ):
-        def __hash__(self):
-            return hash("ChangelogsRestTransport.GetOperation")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _GetOperation(ChangelogsRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -858,31 +761,36 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseChangelogsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseChangelogsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseChangelogsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = ChangelogsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -890,9 +798,8 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -900,34 +807,7 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseChangelogsRestTransport._BaseListOperations, ChangelogsRestStub
-    ):
-        def __hash__(self):
-            return hash("ChangelogsRestTransport.ListOperations")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
+    class _ListOperations(ChangelogsRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -951,29 +831,36 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseChangelogsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3beta1/{name=projects/*/locations/*}/operations",
+                },
+            ]
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseChangelogsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = (
-                _BaseChangelogsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
 
             # Send the request
-            response = ChangelogsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -981,9 +868,8 @@ class ChangelogsRestTransport(_BaseChangelogsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

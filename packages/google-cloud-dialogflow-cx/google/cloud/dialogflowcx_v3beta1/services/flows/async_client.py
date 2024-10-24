@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import functools
 import re
 from typing import (
     Callable,
@@ -86,8 +87,6 @@ class FlowsAsyncClient:
     parse_intent_path = staticmethod(FlowsClient.parse_intent_path)
     page_path = staticmethod(FlowsClient.page_path)
     parse_page_path = staticmethod(FlowsClient.parse_page_path)
-    playbook_path = staticmethod(FlowsClient.playbook_path)
-    parse_playbook_path = staticmethod(FlowsClient.parse_playbook_path)
     tool_path = staticmethod(FlowsClient.tool_path)
     parse_tool_path = staticmethod(FlowsClient.parse_tool_path)
     transition_route_group_path = staticmethod(FlowsClient.transition_route_group_path)
@@ -208,7 +207,9 @@ class FlowsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = FlowsClient.get_transport_class
+    get_transport_class = functools.partial(
+        type(FlowsClient).get_transport_class, type(FlowsClient)
+    )
 
     def __init__(
         self,
@@ -626,8 +627,6 @@ class FlowsAsyncClient:
             method=rpc,
             request=request,
             response=response,
-            retry=retry,
-            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1497,7 +1496,11 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1550,7 +1553,11 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1606,7 +1613,11 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1656,7 +1667,11 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1709,7 +1724,11 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
