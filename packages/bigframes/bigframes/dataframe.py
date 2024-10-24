@@ -379,7 +379,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 whether to include index columns.
 
         Returns:
-            a tuple of (sql_string, index_column_id_list, index_column_label_list).
+            Tuple[sql_string, index_column_id_list, index_column_label_list]:
                 If include_index is set to False, index_column_id_list and index_column_label_list
                 return empty lists.
         """
@@ -387,7 +387,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @property
     def sql(self) -> str:
-        """Compiles this DataFrame's expression tree to SQL."""
+        """Compiles this DataFrame's expression tree to SQL.
+
+        Returns:
+            str:
+                string representing the compiled SQL.
+        """
         include_index = self._has_index and (
             self.index.name is not None or len(self.index.names) > 1
         )
@@ -399,8 +404,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         """BigQuery job metadata for the most recent query.
 
         Returns:
-            The most recent `QueryJob
-            <https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob>`_.
+            None or google.cloud.bigquery.QueryJob:
+                The most recent `QueryJob
+                <https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob>`_.
         """
         if self._query_job is None:
             self._set_internal_query_job(self._compute_dry_run())
@@ -3763,7 +3769,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         Useful if the dataframe will be used multiple times, as this will avoid recomputating the shared intermediate value.
 
         Returns:
-            DataFrame: Self
+            bigframes.pandas.DataFrame: DataFrame
         """
         return self._cached(force=True)
 
