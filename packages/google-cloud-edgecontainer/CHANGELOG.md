@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.11...google-cloud-edgecontainer-v0.5.12) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13203](https://github.com/googleapis/google-cloud-python/issues/13203)) ([d9fcbb9](https://github.com/googleapis/google-cloud-python/commit/d9fcbb9fce625bb772ae4b3cb8c4a4ab2eaaa836))
+
 ## [0.5.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.10...google-cloud-edgecontainer-v0.5.11) (2024-07-30)
 
 

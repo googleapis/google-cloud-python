@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.34.0...google-cloud-documentai-v2.35.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13205](https://github.com/googleapis/google-cloud-python/issues/13205)) ([4f4fdcf](https://github.com/googleapis/google-cloud-python/commit/4f4fdcf845621cea69facb568b7fe17d4f38d467))
+
 ## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.33.0...google-cloud-documentai-v2.34.0) (2024-10-23)
 
 

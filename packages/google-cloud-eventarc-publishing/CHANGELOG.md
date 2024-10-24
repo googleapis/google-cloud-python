@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.11...google-cloud-eventarc-publishing-v0.6.12) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13206](https://github.com/googleapis/google-cloud-python/issues/13206)) ([eb980d5](https://github.com/googleapis/google-cloud-python/commit/eb980d55b2d01d776fa94c3ce408a11f6d366c8a))
+
 ## [0.6.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.10...google-cloud-eventarc-publishing-v0.6.11) (2024-07-30)
 
 

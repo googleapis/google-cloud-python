@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.7.6...google-cloud-essential-contacts-v1.8.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13206](https://github.com/googleapis/google-cloud-python/issues/13206)) ([eb980d5](https://github.com/googleapis/google-cloud-python/commit/eb980d55b2d01d776fa94c3ce408a11f6d366c8a))
+
 ## [1.7.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.7.5...google-cloud-essential-contacts-v1.7.6) (2024-10-23)
 
 

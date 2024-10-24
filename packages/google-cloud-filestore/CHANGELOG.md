@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.9.5...google-cloud-filestore-v1.10.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13206](https://github.com/googleapis/google-cloud-python/issues/13206)) ([eb980d5](https://github.com/googleapis/google-cloud-python/commit/eb980d55b2d01d776fa94c3ce408a11f6d366c8a))
+
 ## [1.9.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.9.4...google-cloud-filestore-v1.9.5) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.9.0...google-cloud-gke-connect-gateway-v0.9.1) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13206](https://github.com/googleapis/google-cloud-python/issues/13206)) ([eb980d5](https://github.com/googleapis/google-cloud-python/commit/eb980d55b2d01d776fa94c3ce408a11f6d366c8a))
+
 ## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.8.11...google-cloud-gke-connect-gateway-v0.9.0) (2024-08-22)
 
 
