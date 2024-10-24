@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.11...google-cloud-dataform-v0.5.12) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [0.5.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.10...google-cloud-dataform-v0.5.11) (2024-07-30)
 
 

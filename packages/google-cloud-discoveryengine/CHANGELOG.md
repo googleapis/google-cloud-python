@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.0...google-cloud-discoveryengine-v0.13.1) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13202](https://github.com/googleapis/google-cloud-python/issues/13202)) ([5b1f2f3](https://github.com/googleapis/google-cloud-python/commit/5b1f2f3a81ed171b643812e67a7ed179b9b703ea))
+* Add support for Python 3.13 ([#13206](https://github.com/googleapis/google-cloud-python/issues/13206)) ([eb980d5](https://github.com/googleapis/google-cloud-python/commit/eb980d55b2d01d776fa94c3ce408a11f6d366c8a))
+
 ## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.12.3...google-cloud-discoveryengine-v0.13.0) (2024-10-13)
 
 
