@@ -1,0 +1,2 @@
+recursive-include google/cloud/securitycenter *.py
+recursive-include google/cloud/securitycenter_v1p1beta1 *.py
