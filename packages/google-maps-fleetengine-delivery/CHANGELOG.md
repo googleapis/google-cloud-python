@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.4...google-maps-fleetengine-delivery-v0.2.5) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13211](https://github.com/googleapis/google-cloud-python/issues/13211)) ([f712162](https://github.com/googleapis/google-cloud-python/commit/f712162c01f065da29fffbbed1e856a1f3876b1b))
+
 ## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.3...google-maps-fleetengine-delivery-v0.2.4) (2024-09-06)
 
 
