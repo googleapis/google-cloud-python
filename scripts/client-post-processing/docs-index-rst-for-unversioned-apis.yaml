@@ -62,8 +62,8 @@ replacements:
       .. toctree::
           :maxdepth: 2
 
-          type/services
-          type/types
+          type/services_
+          type/types_
     after: |
       .. include:: README.rst
 
@@ -73,6 +73,7 @@ replacements:
       -------------
       .. toctree::
           :maxdepth: 2
+
 
           type/services_
           type/types_
@@ -96,8 +97,8 @@ replacements:
       .. toctree::
           :maxdepth: 2
 
-          type/services
-          type/types
+          type/services_
+          type/types_
     after: |
       .. include:: README.rst
 
@@ -107,6 +108,7 @@ replacements:
       -------------
       .. toctree::
           :maxdepth: 2
+
 
           calendar/services_
           calendar/types_
@@ -143,8 +145,8 @@ replacements:
       .. toctree::
           :maxdepth: 2
 
-          type/services
-          type/types
+          type/services_
+          type/types_
     after: |
       .. include:: README.rst
 
@@ -154,6 +156,7 @@ replacements:
       -------------
       .. toctree::
           :maxdepth: 2
+
 
           type/services_
           type/types_
