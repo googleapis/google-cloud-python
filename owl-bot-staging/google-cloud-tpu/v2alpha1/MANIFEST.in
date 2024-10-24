@@ -1,2 +1,0 @@
-recursive-include google/cloud/tpu *.py
-recursive-include google/cloud/tpu_v2alpha1 *.py

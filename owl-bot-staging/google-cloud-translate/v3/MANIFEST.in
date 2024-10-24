@@ -1,2 +1,0 @@
-recursive-include google/cloud/translate *.py
-recursive-include google/cloud/translate_v3 *.py
