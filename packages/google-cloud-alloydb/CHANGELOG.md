@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.13...google-cloud-alloydb-v0.3.14) (2024-10-23)
+
+
+### Features
+
+* add more observability options on the Instance level ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* add new API to execute SQL statements ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* add new API to list the databases in a project and location ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* add new API to perform a promotion or switchover on secondary instances ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* add new PSC instance configuration setting and output the PSC DNS name ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* add optional field to keep extra roles on a user if it already exists ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* add support for Free Trials ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* add support to schedule maintenance ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* additional field to set tags on a backup or cluster ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+* support for obtaining the public ip addresses of an instance and enabling either inbound or outbound public ip ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+
+
+### Documentation
+
+* various typo fixes, correcting the formatting, and clarifications on the request_id and validate_only fields in API requests and on the page_size when listing the database ([e729f1e](https://github.com/googleapis/google-cloud-python/commit/e729f1e7718a0a99dfa29df1fc707b9766637961))
+
 ## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.12...google-cloud-alloydb-v0.3.13) (2024-09-03)
 
 

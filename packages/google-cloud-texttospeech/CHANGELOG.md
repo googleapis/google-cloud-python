@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.18.0...google-cloud-texttospeech-v2.19.0) (2024-10-23)
+
+
+### Features
+
+* [google-cloud-texttospeech] Add brand voice lite ([#13178](https://github.com/googleapis/google-cloud-python/issues/13178)) ([3b97314](https://github.com/googleapis/google-cloud-python/commit/3b97314028f30b627f8891cea1368df20a564414))
+* [google-cloud-texttospeech] add brand voice lite, which lets you clone a voice with just 10 seconds of audio ([#13192](https://github.com/googleapis/google-cloud-python/issues/13192)) ([6d622a3](https://github.com/googleapis/google-cloud-python/commit/6d622a39d3e578e52f4591667ed14c13948c4a50))
+
 ## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.17.2...google-cloud-texttospeech-v2.18.0) (2024-10-10)
 
 

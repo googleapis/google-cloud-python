@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.23.0...google-cloud-dlp-v3.24.0) (2024-10-23)
+
+
+### Features
+
+* [google-cloud-dlp] discovery of BigQuery snapshots ([#13172](https://github.com/googleapis/google-cloud-python/issues/13172)) ([76e529c](https://github.com/googleapis/google-cloud-python/commit/76e529c958e3fb39679baf50e76b331df7474d0d))
+
+
+### Documentation
+
+* documentation revisions for data profiles ([76e529c](https://github.com/googleapis/google-cloud-python/commit/76e529c958e3fb39679baf50e76b331df7474d0d))
+
 ## [3.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.22.0...google-cloud-dlp-v3.23.0) (2024-09-23)
 
 

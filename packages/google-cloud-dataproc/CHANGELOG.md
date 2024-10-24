@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.13.0...google-cloud-dataproc-v5.14.0) (2024-10-23)
+
+
+### Features
+
+* [google-cloud-dataproc] Add `ProvisioningModelMix` to support mixing of spot and standard instances for secondary workers ([#13169](https://github.com/googleapis/google-cloud-python/issues/13169)) ([3fe76c8](https://github.com/googleapis/google-cloud-python/commit/3fe76c85be9923c7f154c50f2eb55621310bf86f))
+* Add support for configuration of bootdisk IOPS and throughput when ([3fe76c8](https://github.com/googleapis/google-cloud-python/commit/3fe76c85be9923c7f154c50f2eb55621310bf86f))
+
 ## [5.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.12.0...google-cloud-dataproc-v5.13.0) (2024-09-30)
 
 
