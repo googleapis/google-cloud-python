@@ -397,7 +397,7 @@ def test_get_universe_domain_success():
 
     request.assert_called_once_with(
         method="GET",
-        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
     )
     assert universe_domain == "fake_universe_domain"
@@ -410,7 +410,7 @@ def test_get_universe_domain_success_empty_response():
 
     request.assert_called_once_with(
         method="GET",
-        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
     )
     assert universe_domain == "googleapis.com"
@@ -425,7 +425,7 @@ def test_get_universe_domain_not_found():
 
     request.assert_called_once_with(
         method="GET",
-        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
     )
     assert universe_domain == "googleapis.com"
@@ -445,7 +445,7 @@ def test_get_universe_domain_retryable_error_failure():
 
     request.assert_called_with(
         method="GET",
-        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
     )
     assert request.call_count == 5
@@ -487,12 +487,12 @@ def test_get_universe_domain_retryable_error_success():
 
     request_error.assert_called_once_with(
         method="GET",
-        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
     )
     request_ok.assert_called_once_with(
         method="GET",
-        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
     )
 
@@ -511,7 +511,7 @@ def test_get_universe_domain_other_error():
 
     request.assert_called_once_with(
         method="GET",
-        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        url=_metadata._METADATA_ROOT + "universe/universe-domain",
         headers=_metadata._METADATA_HEADERS,
     )
 

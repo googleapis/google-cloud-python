@@ -491,7 +491,7 @@ class TestIDTokenCredentials(object):
         responses.add(
             responses.GET,
             "http://metadata.google.internal/computeMetadata/v1/universe/"
-            "universe_domain",
+            "universe-domain",
             status=200,
             content_type="application/json",
             json={},
@@ -673,7 +673,7 @@ class TestIDTokenCredentials(object):
         responses.add(
             responses.GET,
             "http://metadata.google.internal/computeMetadata/v1/universe/"
-            "universe_domain",
+            "universe-domain",
             status=200,
             content_type="application/json",
             json={},

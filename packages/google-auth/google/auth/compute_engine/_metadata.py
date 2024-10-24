@@ -294,7 +294,7 @@ def get_universe_domain(request):
             404 occurs while retrieving metadata.
     """
     universe_domain = get(
-        request, "universe/universe_domain", return_none_for_not_found_error=True
+        request, "universe/universe-domain", return_none_for_not_found_error=True
     )
     if not universe_domain:
         return "googleapis.com"
