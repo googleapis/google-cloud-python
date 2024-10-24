@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.2.0...google-ads-admanager-v0.2.1) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.1.2...google-ads-admanager-v0.2.0) (2024-10-08)
 
 

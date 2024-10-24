@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.13.5...google-cloud-access-approval-v1.14.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [1.13.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.13.4...google-cloud-access-approval-v1.13.5) (2024-07-30)
 
 

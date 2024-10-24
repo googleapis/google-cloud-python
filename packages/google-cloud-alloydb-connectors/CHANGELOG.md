@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-connectors-v0.1.6...google-cloud-alloydb-connectors-v0.1.7) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-connectors-v0.1.5...google-cloud-alloydb-connectors-v0.1.6) (2024-07-30)
 
 
