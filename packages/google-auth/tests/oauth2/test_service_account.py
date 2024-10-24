@@ -798,7 +798,6 @@ class TestIDTokenCredentials(object):
         assert target_audience == "https://example.com"
         decoded_access_token = jwt.decode(access_token, verify=False)
         assert decoded_access_token["scope"] == "https://www.googleapis.com/auth/iam"
-        assert universe_domain == "googleapis.com"
 
     @mock.patch(
         "google.oauth2._client.call_iam_generate_id_token_endpoint", autospec=True
@@ -818,13 +817,12 @@ class TestIDTokenCredentials(object):
         assert req == request
         assert (
             iam_endpoint
-            == "https://iamcredentials.{}/v1/projects/-/serviceAccounts/{}:generateIdToken"
+            == "https://iamcredentials.fake-universe/v1/projects/-/serviceAccounts/{}:generateIdToken"
         )
         assert signer_email == "service-account@example.com"
         assert target_audience == "https://example.com"
         decoded_access_token = jwt.decode(access_token, verify=False)
         assert decoded_access_token["scope"] == "https://www.googleapis.com/auth/iam"
-        assert universe_domain == "fake-universe"
 
     @mock.patch("google.oauth2._client.id_token_jwt_grant", autospec=True)
     def test_before_request_refreshes(self, id_token_jwt_grant):

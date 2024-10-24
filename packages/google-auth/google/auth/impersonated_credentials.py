@@ -67,9 +67,9 @@ def _make_iam_token_request(
             `iamcredentials.googleapis.com` is not enabled or the
             `Service Account Token Creator` is not assigned
     """
-    iam_endpoint = iam_endpoint_override or iam._IAM_ENDPOINT.format(
-        universe_domain, principal
-    )
+    iam_endpoint = iam_endpoint_override or iam._IAM_ENDPOINT.replace(
+        credentials.DEFAULT_UNIVERSE_DOMAIN, universe_domain
+    ).format(principal)
 
     body = json.dumps(body).encode("utf-8")
 
@@ -282,9 +282,9 @@ class Credentials(
     def sign_bytes(self, message):
         from google.auth.transport.requests import AuthorizedSession
 
-        iam_sign_endpoint = iam._IAM_SIGN_ENDPOINT.format(
-            self.universe_domain, self._target_principal
-        )
+        iam_sign_endpoint = iam._IAM_SIGN_ENDPOINT.replace(
+            credentials.DEFAULT_UNIVERSE_DOMAIN, self.universe_domain
+        ).format(self._target_principal)
 
         body = {
             "payload": base64.b64encode(message).decode("utf-8"),
@@ -434,10 +434,10 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
     def refresh(self, request):
         from google.auth.transport.requests import AuthorizedSession
 
-        iam_sign_endpoint = iam._IAM_IDTOKEN_ENDPOINT.format(
+        iam_sign_endpoint = iam._IAM_IDTOKEN_ENDPOINT.replace(
+            credentials.DEFAULT_UNIVERSE_DOMAIN,
             self._target_credentials.universe_domain,
-            self._target_credentials.signer_email,
-        )
+        ).format(self._target_credentials.signer_email)
 
         body = {
             "audience": self._target_audience,

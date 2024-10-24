@@ -25,6 +25,7 @@ import json
 
 from google.auth import _exponential_backoff
 from google.auth import _helpers
+from google.auth import credentials
 from google.auth import crypt
 from google.auth import exceptions
 
@@ -38,16 +39,18 @@ IAM_RETRY_CODES = {
 _IAM_SCOPE = ["https://www.googleapis.com/auth/iam"]
 
 _IAM_ENDPOINT = (
-    "https://iamcredentials.{}/v1/projects/-"
+    "https://iamcredentials.googleapis.com/v1/projects/-"
     + "/serviceAccounts/{}:generateAccessToken"
 )
 
 _IAM_SIGN_ENDPOINT = (
-    "https://iamcredentials.{}/v1/projects/-" + "/serviceAccounts/{}:signBlob"
+    "https://iamcredentials.googleapis.com/v1/projects/-"
+    + "/serviceAccounts/{}:signBlob"
 )
 
 _IAM_IDTOKEN_ENDPOINT = (
-    "https://iamcredentials.{}/v1/" + "projects/-/serviceAccounts/{}:generateIdToken"
+    "https://iamcredentials.googleapis.com/v1/"
+    + "projects/-/serviceAccounts/{}:generateIdToken"
 )
 
 
@@ -87,9 +90,9 @@ class Signer(crypt.Signer):
         message = _helpers.to_bytes(message)
 
         method = "POST"
-        url = _IAM_SIGN_ENDPOINT.format(
-            self._credentials.universe_domain, self._service_account_email
-        )
+        url = _IAM_SIGN_ENDPOINT.replace(
+            credentials.DEFAULT_UNIVERSE_DOMAIN, self._credentials.universe_domain
+        ).format(self._service_account_email)
         headers = {"Content-Type": "application/json"}
         body = json.dumps(
             {"payload": base64.b64encode(message).decode("utf-8")}
