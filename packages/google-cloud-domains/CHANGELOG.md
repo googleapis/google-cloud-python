@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.7.5...google-cloud-domains-v1.8.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13204](https://github.com/googleapis/google-cloud-python/issues/13204)) ([2605ae0](https://github.com/googleapis/google-cloud-python/commit/2605ae0c5f9558657b67c94d80ddcc3e45b93b5d))
+
 ## [1.7.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.7.4...google-cloud-domains-v1.7.5) (2024-07-30)
 
 

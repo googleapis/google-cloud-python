@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-optimization-v1.8.5...google-cloud-optimization-v1.9.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13208](https://github.com/googleapis/google-cloud-python/issues/13208)) ([a019409](https://github.com/googleapis/google-cloud-python/commit/a019409a5b5a983402301f1ac175d8b7e45c3818))
+
 ## [1.8.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-optimization-v1.8.4...google-cloud-optimization-v1.8.5) (2024-07-30)
 
 

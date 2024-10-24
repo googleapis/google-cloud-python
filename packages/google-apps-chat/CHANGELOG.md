@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.12...google-apps-chat-v0.1.13) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.11...google-apps-chat-v0.1.12) (2024-10-08)
 
 

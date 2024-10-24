@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.12...google-cloud-public-ca-v0.3.13) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13208](https://github.com/googleapis/google-cloud-python/issues/13208)) ([a019409](https://github.com/googleapis/google-cloud-python/commit/a019409a5b5a983402301f1ac175d8b7e45c3818))
+
 ## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.11...google-cloud-public-ca-v0.3.12) (2024-07-30)
 
 

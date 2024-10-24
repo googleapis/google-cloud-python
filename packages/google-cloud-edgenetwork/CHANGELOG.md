@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.11...google-cloud-edgenetwork-v0.1.12) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13206](https://github.com/googleapis/google-cloud-python/issues/13206)) ([eb980d5](https://github.com/googleapis/google-cloud-python/commit/eb980d55b2d01d776fa94c3ce408a11f6d366c8a))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.10...google-cloud-edgenetwork-v0.1.11) (2024-09-03)
 
 

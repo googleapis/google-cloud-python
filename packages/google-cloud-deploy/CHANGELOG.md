@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.1.0...google-cloud-deploy-v2.2.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13202](https://github.com/googleapis/google-cloud-python/issues/13202)) ([5b1f2f3](https://github.com/googleapis/google-cloud-python/commit/5b1f2f3a81ed171b643812e67a7ed179b9b703ea))
+
 ## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.0.1...google-cloud-deploy-v2.1.0) (2024-10-08)
 
 

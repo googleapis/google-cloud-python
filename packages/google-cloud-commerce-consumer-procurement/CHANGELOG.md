@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerce-consumer-procurement-v0.1.8...google-cloud-commerce-consumer-procurement-v0.1.9) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerce-consumer-procurement-v0.1.7...google-cloud-commerce-consumer-procurement-v0.1.8) (2024-10-08)
 
 

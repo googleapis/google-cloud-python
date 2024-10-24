@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.13.5...google-cloud-bigquery-reservation-v1.14.0) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [1.13.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.13.4...google-cloud-bigquery-reservation-v1.13.5) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.0...google-analytics-admin-v0.23.1) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [0.23.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.9...google-analytics-admin-v0.23.0) (2024-08-08)
 
 

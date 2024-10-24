@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.9...google-cloud-migrationcenter-v0.1.10) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13207](https://github.com/googleapis/google-cloud-python/issues/13207)) ([ceb9be8](https://github.com/googleapis/google-cloud-python/commit/ceb9be8f89ac7355d842bac1d77b2926eb0b649c))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.8...google-cloud-migrationcenter-v0.1.9) (2024-07-30)
 
 

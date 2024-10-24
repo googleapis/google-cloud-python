@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.9.5...google-cloud-apigee-connect-v1.10.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [1.9.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.9.4...google-cloud-apigee-connect-v1.9.5) (2024-07-30)
 
 

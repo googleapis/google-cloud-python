@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.22.1...google-cloud-recaptcha-enterprise-v1.23.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13209](https://github.com/googleapis/google-cloud-python/issues/13209)) ([5f2e30d](https://github.com/googleapis/google-cloud-python/commit/5f2e30d62eea6080f5707ee18755f2bb812ad00b))
+
 ## [1.22.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.22.0...google-cloud-recaptcha-enterprise-v1.22.1) (2024-09-03)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.2...google-apps-events-subscriptions-v0.1.3) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.1...google-apps-events-subscriptions-v0.1.2) (2024-07-30)
 
 

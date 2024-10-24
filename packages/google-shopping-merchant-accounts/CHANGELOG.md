@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.2.0...google-shopping-merchant-accounts-v0.2.1) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13211](https://github.com/googleapis/google-cloud-python/issues/13211)) ([f712162](https://github.com/googleapis/google-cloud-python/commit/f712162c01f065da29fffbbed1e856a1f3876b1b))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.1.3...google-shopping-merchant-accounts-v0.2.0) (2024-10-08)
 
 

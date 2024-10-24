@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.11...google-cloud-confidentialcomputing-v0.4.12) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [0.4.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.10...google-cloud-confidentialcomputing-v0.4.11) (2024-07-30)
 
 

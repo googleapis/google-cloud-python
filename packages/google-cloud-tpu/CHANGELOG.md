@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.18.5...google-cloud-tpu-v1.19.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [1.18.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.18.4...google-cloud-tpu-v1.18.5) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apphub-v0.1.2...google-cloud-apphub-v0.1.3) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13200](https://github.com/googleapis/google-cloud-python/issues/13200)) ([19dc048](https://github.com/googleapis/google-cloud-python/commit/19dc0485852406b90743297bcf257020e6012593))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apphub-v0.1.1...google-cloud-apphub-v0.1.2) (2024-07-30)
 
 

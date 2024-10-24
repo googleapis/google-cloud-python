@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.11...google-cloud-apigee-registry-v0.6.12) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [0.6.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.10...google-cloud-apigee-registry-v0.6.11) (2024-07-30)
 
 

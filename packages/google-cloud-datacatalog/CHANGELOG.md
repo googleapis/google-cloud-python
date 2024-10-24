@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.20.1...google-cloud-datacatalog-v3.21.0) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [3.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.20.0...google-cloud-datacatalog-v3.20.1) (2024-07-31)
 
 

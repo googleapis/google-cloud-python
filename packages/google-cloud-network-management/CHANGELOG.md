@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.19.0...google-cloud-network-management-v1.20.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13208](https://github.com/googleapis/google-cloud-python/issues/13208)) ([a019409](https://github.com/googleapis/google-cloud-python/commit/a019409a5b5a983402301f1ac175d8b7e45c3818))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.18.0...google-cloud-network-management-v1.19.0) (2024-10-23)
 
 

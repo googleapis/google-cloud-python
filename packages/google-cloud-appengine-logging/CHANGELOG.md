@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-logging-v1.4.5...google-cloud-appengine-logging-v1.5.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13200](https://github.com/googleapis/google-cloud-python/issues/13200)) ([19dc048](https://github.com/googleapis/google-cloud-python/commit/19dc0485852406b90743297bcf257020e6012593))
+
 ## [1.4.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-logging-v1.4.4...google-cloud-appengine-logging-v1.4.5) (2024-07-30)
 
 

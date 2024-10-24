@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.7.2...google-cloud-certificate-manager-v1.8.0) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.7.1...google-cloud-certificate-manager-v1.7.2) (2024-07-30)
 
 

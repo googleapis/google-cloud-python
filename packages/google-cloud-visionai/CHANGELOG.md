@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.3...google-cloud-visionai-v0.1.4) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.2...google-cloud-visionai-v0.1.3) (2024-09-03)
 
 

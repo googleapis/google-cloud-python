@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.16.5...google-cloud-tasks-v2.17.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [2.16.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.16.4...google-cloud-tasks-v2.16.5) (2024-07-30)
 
 

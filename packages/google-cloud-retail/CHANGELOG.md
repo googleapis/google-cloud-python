@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.22.0...google-cloud-retail-v1.23.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13209](https://github.com/googleapis/google-cloud-python/issues/13209)) ([5f2e30d](https://github.com/googleapis/google-cloud-python/commit/5f2e30d62eea6080f5707ee18755f2bb812ad00b))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.21.2...google-cloud-retail-v1.22.0) (2024-10-09)
 
 
