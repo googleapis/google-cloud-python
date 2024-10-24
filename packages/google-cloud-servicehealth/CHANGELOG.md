@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.6...google-cloud-servicehealth-v0.1.7) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13209](https://github.com/googleapis/google-cloud-python/issues/13209)) ([5f2e30d](https://github.com/googleapis/google-cloud-python/commit/5f2e30d62eea6080f5707ee18755f2bb812ad00b))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.5...google-cloud-servicehealth-v0.1.6) (2024-07-30)
 
 
