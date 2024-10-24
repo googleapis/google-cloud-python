@@ -1080,7 +1080,7 @@ class Claude3TextGenerator(base.BaseEstimator):
 
     .. note::
 
-        The models only availabe in specific regions. Check https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#regions for details.
+        The models only available in specific regions. Check https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#regions for details.
 
     Args:
         model_name (str, Default to "claude-3-sonnet"):

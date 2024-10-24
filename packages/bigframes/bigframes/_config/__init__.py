@@ -107,7 +107,7 @@ class Options:
 
         The data can be downloaded into memory explicitly
         (e.g., to_pandas, to_numpy, values) or implicitly (e.g.,
-        matplotlib plotting). This option can be overriden by
+        matplotlib plotting). This option can be overridden by
         parameters in specific functions.
 
         Returns:

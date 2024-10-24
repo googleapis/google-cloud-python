@@ -65,7 +65,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
             The data frequency of the input time series.
             Possible values are "auto_frequency", "per_minute", "hourly", "daily", "weekly", "monthly", "quarterly", "yearly"
 
-        include_drift (bool, defalut False):
+        include_drift (bool, default False):
             Determines whether the model should include a linear drift term or not. The drift term is applicable when non-seasonal d is 1.
 
         holiday_region (str or None, default None):
