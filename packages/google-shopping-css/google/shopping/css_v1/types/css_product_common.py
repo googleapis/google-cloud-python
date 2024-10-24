@@ -24,14 +24,36 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.shopping.css.v1",
     manifest={
+        "SubscriptionPeriod",
         "Attributes",
         "Certification",
         "ProductDetail",
         "ProductDimension",
         "ProductWeight",
         "CssProductStatus",
+        "HeadlineOfferSubscriptionCost",
+        "HeadlineOfferInstallment",
     },
 )
+
+
+class SubscriptionPeriod(proto.Enum):
+    r"""The subscription period of the product.
+
+    Values:
+        SUBSCRIPTION_PERIOD_UNSPECIFIED (0):
+            Indicates that the subscription period is
+            unspecified.
+        MONTH (1):
+            Indicates that the subscription period is
+            month.
+        YEAR (2):
+            Indicates that the subscription period is
+            year.
+    """
+    SUBSCRIPTION_PERIOD_UNSPECIFIED = 0
+    MONTH = 1
+    YEAR = 2
 
 
 class Attributes(proto.Message):
@@ -255,6 +277,13 @@ class Attributes(proto.Message):
             in a Shopping campaign.
 
             This field is a member of `oneof`_ ``_custom_label_4``.
+        headline_offer_installment (google.shopping.css_v1.types.HeadlineOfferInstallment):
+            Number and amount of installments to pay for
+            an item.
+        headline_offer_subscription_cost (google.shopping.css_v1.types.HeadlineOfferSubscriptionCost):
+            Number of periods (months or years) and
+            amount of payment per period for an item with an
+            associated subscription contract.
     """
 
     cpp_link: str = proto.Field(
@@ -490,6 +519,16 @@ class Attributes(proto.Message):
         proto.STRING,
         number=50,
         optional=True,
+    )
+    headline_offer_installment: "HeadlineOfferInstallment" = proto.Field(
+        proto.MESSAGE,
+        number=51,
+        message="HeadlineOfferInstallment",
+    )
+    headline_offer_subscription_cost: "HeadlineOfferSubscriptionCost" = proto.Field(
+        proto.MESSAGE,
+        number=52,
+        message="HeadlineOfferSubscriptionCost",
     )
 
 
@@ -755,6 +794,69 @@ class CssProductStatus(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class HeadlineOfferSubscriptionCost(proto.Message):
+    r"""The SubscriptionCost of the product.
+
+    Attributes:
+        period (google.shopping.css_v1.types.SubscriptionPeriod):
+            The type of subscription period. Supported values are:
+
+            -  "``month``"
+            -  "``year``".
+        period_length (int):
+            The number of subscription periods the buyer
+            has to pay.
+        amount (google.shopping.type.types.Price):
+            The amount the buyer has to pay per
+            subscription period.
+    """
+
+    period: "SubscriptionPeriod" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="SubscriptionPeriod",
+    )
+    period_length: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    amount: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=types.Price,
+    )
+
+
+class HeadlineOfferInstallment(proto.Message):
+    r"""A message that represents installment.
+
+    Attributes:
+        months (int):
+            The number of installments the buyer has to
+            pay.
+        amount (google.shopping.type.types.Price):
+            The amount the buyer has to pay per month.
+        downpayment (google.shopping.type.types.Price):
+            The up-front down payment amount the buyer
+            has to pay.
+    """
+
+    months: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    amount: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=types.Price,
+    )
+    downpayment: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=types.Price,
     )
 
 
