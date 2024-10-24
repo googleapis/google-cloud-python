@@ -16,7 +16,7 @@
 
 # This script requires the following environment variables to be set:
 # `TEST_TYPE` should be one of ["lint", "lint_setup_py", "docs", "docfx", "prerelease"]
-# `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+# `PY_VERSION` should be one of ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 # This script is called by the `ci/run_conditional_tests.sh` script.
 # A specific `nox` session will be run, depending on the value of 
@@ -69,7 +69,7 @@ case ${TEST_TYPE} in
         rm -rf docs/_build
         ;;
     prerelease)
-        nox -s prerelease_deps-3.12
+        nox -s prerelease_deps-3.13
         retval=$?
         ;;
     unit)
@@ -96,6 +96,10 @@ case ${TEST_TYPE} in
             ;;
         "3.12")
             nox -s unit-3.12
+            retval=$?
+            ;;
+        "3.13")
+            nox -s unit-3.13
             retval=$?
             ;;
         *)
