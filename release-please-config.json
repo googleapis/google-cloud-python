@@ -1339,7 +1339,6 @@
             "extra-files": [
                 "google/cloud/documentai/gapic_version.py",
                 "google/cloud/documentai_v1/gapic_version.py",
-                "google/cloud/documentai_v1beta2/gapic_version.py",
                 "google/cloud/documentai_v1beta3/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
