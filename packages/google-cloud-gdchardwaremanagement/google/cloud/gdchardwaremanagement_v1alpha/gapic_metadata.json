@@ -55,6 +55,11 @@
                 "delete_order"
               ]
             },
+            "DeleteSite": {
+              "methods": [
+                "delete_site"
+              ]
+            },
             "DeleteZone": {
               "methods": [
                 "delete_zone"
@@ -230,6 +235,11 @@
                 "delete_order"
               ]
             },
+            "DeleteSite": {
+              "methods": [
+                "delete_site"
+              ]
+            },
             "DeleteZone": {
               "methods": [
                 "delete_zone"
@@ -403,6 +413,11 @@
             "DeleteOrder": {
               "methods": [
                 "delete_order"
+              ]
+            },
+            "DeleteSite": {
+              "methods": [
+                "delete_site"
               ]
             },
             "DeleteZone": {

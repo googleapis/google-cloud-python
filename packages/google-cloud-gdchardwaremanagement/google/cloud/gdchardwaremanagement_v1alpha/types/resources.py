@@ -316,7 +316,7 @@ class Site(proto.Message):
         organization_contact (google.cloud.gdchardwaremanagement_v1alpha.types.OrganizationContact):
             Required. Contact information for this site.
         google_maps_pin_uri (str):
-            Required. A URL to the Google Maps address location of the
+            Optional. A URL to the Google Maps address location of the
             site. An example value is ``https://goo.gl/maps/xxxxxxxxx``.
         access_times (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.TimePeriod]):
             Optional. The time periods when the site is
@@ -579,14 +579,16 @@ class Hardware(proto.Message):
             Format:
             ``projects/{project}/locations/{location}/zones/{zone}``
         requested_installation_date (google.type.date_pb2.Date):
-            Optional. Requested installation date for
-            this hardware. This is auto-populated when the
-            order is accepted, if the hardware's
-            HardwareGroup specifies this. It can also be
-            filled in by the customer.
+            Optional. Requested installation date for this hardware. If
+            not specified, this is auto-populated from the order's
+            fulfillment_time upon submission or from the HardwareGroup's
+            requested_installation_date upon order acceptance.
         actual_installation_date (google.type.date_pb2.Date):
             Output only. Actual installation date for
             this hardware. Filled in by Google.
+        machine_infos (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.Hardware.MachineInfo]):
+            Output only. Per machine asset information
+            needed for turnup.
     """
 
     class State(proto.Enum):
@@ -619,6 +621,123 @@ class Hardware(proto.Message):
         INSTALLING = 4
         INSTALLED = 5
         FAILED = 6
+
+    class MacAddress(proto.Message):
+        r"""Message to describe the MAC address of a machine.
+
+        Attributes:
+            address (str):
+                Output only. Address string.
+            type_ (google.cloud.gdchardwaremanagement_v1alpha.types.Hardware.MacAddress.AddressType):
+                Output only. Address type for this MAC
+                address.
+        """
+
+        class AddressType(proto.Enum):
+            r"""Enum for the different types of MAC address.
+
+            Values:
+                ADDRESS_TYPE_UNSPECIFIED (0):
+                    Unspecified address type.
+                NIC (1):
+                    Address of a network interface card.
+                BMC (2):
+                    Address of a baseboard management controller.
+                VIRTUAL (3):
+                    Address of a virtual interface.
+            """
+            ADDRESS_TYPE_UNSPECIFIED = 0
+            NIC = 1
+            BMC = 2
+            VIRTUAL = 3
+
+        address: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: "Hardware.MacAddress.AddressType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Hardware.MacAddress.AddressType",
+        )
+
+    class DiskInfo(proto.Message):
+        r"""Information about individual disks on a machine.
+
+        Attributes:
+            manufacturer (str):
+                Output only. Disk manufacturer.
+            slot (int):
+                Output only. Disk slot number.
+            serial_number (str):
+                Output only. Disk serial number.
+            psid (str):
+                Output only. Disk PSID.
+            part_number (str):
+                Output only. Disk part number.
+            model_number (str):
+                Output only. Disk model number.
+        """
+
+        manufacturer: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        slot: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        serial_number: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        psid: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        part_number: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        model_number: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+
+    class MachineInfo(proto.Message):
+        r"""Information about individual machines vendors will provide
+        during turnup.
+
+        Attributes:
+            service_tag (str):
+                Output only. Machine service tag.
+            mac_addresses (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.Hardware.MacAddress]):
+                Output only. Each associated MAC address.
+            name (str):
+                Output only. Machine name.
+            disk_infos (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.Hardware.DiskInfo]):
+                Output only. Information for each disk
+                installed.
+        """
+
+        service_tag: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        mac_addresses: MutableSequence["Hardware.MacAddress"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Hardware.MacAddress",
+        )
+        name: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        disk_infos: MutableSequence["Hardware.DiskInfo"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="Hardware.DiskInfo",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -697,6 +816,11 @@ class Hardware(proto.Message):
         proto.MESSAGE,
         number=17,
         message=date_pb2.Date,
+    )
+    machine_infos: MutableSequence[MachineInfo] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=20,
+        message=MachineInfo,
     )
 
 
@@ -1324,7 +1448,7 @@ class HardwareInstallationInfo(proto.Message):
 
     Attributes:
         rack_location (str):
-            Optional. Location of the rack in the site
+            Required. Location of the rack in the site
             e.g. Floor 2, Room 201, Row 7, Rack 3.
         power_distance_meters (int):
             Required. Distance from the power outlet in

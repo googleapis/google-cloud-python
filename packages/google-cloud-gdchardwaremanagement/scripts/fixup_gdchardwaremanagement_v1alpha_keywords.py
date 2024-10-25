@@ -48,6 +48,7 @@ class gdchardwaremanagementCallTransformer(cst.CSTTransformer):
         'delete_hardware': ('name', 'request_id', ),
         'delete_hardware_group': ('name', 'request_id', ),
         'delete_order': ('name', 'request_id', 'force', ),
+        'delete_site': ('name', 'request_id', ),
         'delete_zone': ('name', 'request_id', ),
         'get_change_log_entry': ('name', ),
         'get_comment': ('name', ),

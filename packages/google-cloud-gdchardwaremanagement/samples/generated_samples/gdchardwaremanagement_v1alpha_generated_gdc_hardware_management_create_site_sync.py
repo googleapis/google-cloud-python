@@ -43,7 +43,6 @@ def sample_create_site():
     site.organization_contact.contacts.given_name = "given_name_value"
     site.organization_contact.contacts.email = "email_value"
     site.organization_contact.contacts.phone = "phone_value"
-    site.google_maps_pin_uri = "google_maps_pin_uri_value"
 
     request = gdchardwaremanagement_v1alpha.CreateSiteRequest(
         parent="parent_value",
