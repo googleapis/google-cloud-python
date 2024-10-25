@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.19.0...google-cloud-texttospeech-v2.20.0) (2024-10-24)
+
+
+### Features
+
+* Add multi-speaker markup, which allows generating dialogue between multiple speakers ([7cb80ba](https://github.com/googleapis/google-cloud-python/commit/7cb80ba74f21476cea746a998d7ec218168f62cd))
+* Add support for Python 3.13 ([7cb80ba](https://github.com/googleapis/google-cloud-python/commit/7cb80ba74f21476cea746a998d7ec218168f62cd))
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.18.0...google-cloud-texttospeech-v2.19.0) (2024-10-23)
 
 

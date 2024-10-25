@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.8...google-cloud-workstations-v0.5.9) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13211](https://github.com/googleapis/google-cloud-python/issues/13211)) ([f712162](https://github.com/googleapis/google-cloud-python/commit/f712162c01f065da29fffbbed1e856a1f3876b1b))
+
 ## [0.5.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.7...google-cloud-workstations-v0.5.8) (2024-07-30)
 
 

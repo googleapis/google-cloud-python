@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.12](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.11...google-area120-tables-v0.11.12) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13199](https://github.com/googleapis/google-cloud-python/issues/13199)) ([2fc3726](https://github.com/googleapis/google-cloud-python/commit/2fc372685731141ca1ed2a917dd18bacd79db88e))
+
 ## [0.11.11](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.10...google-area120-tables-v0.11.11) (2024-07-30)
 
 

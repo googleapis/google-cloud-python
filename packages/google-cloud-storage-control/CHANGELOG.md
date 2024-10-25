@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.0.3...google-cloud-storage-control-v1.1.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13209](https://github.com/googleapis/google-cloud-python/issues/13209)) ([5f2e30d](https://github.com/googleapis/google-cloud-python/commit/5f2e30d62eea6080f5707ee18755f2bb812ad00b))
+
 ## [1.0.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.0.2...google-cloud-storage-control-v1.0.3) (2024-07-30)
 
 

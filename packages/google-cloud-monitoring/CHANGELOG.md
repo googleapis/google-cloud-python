@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.22.2...google-cloud-monitoring-v2.23.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13207](https://github.com/googleapis/google-cloud-python/issues/13207)) ([ceb9be8](https://github.com/googleapis/google-cloud-python/commit/ceb9be8f89ac7355d842bac1d77b2926eb0b649c))
+
 ## [2.22.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.22.1...google-cloud-monitoring-v2.22.2) (2024-07-30)
 
 

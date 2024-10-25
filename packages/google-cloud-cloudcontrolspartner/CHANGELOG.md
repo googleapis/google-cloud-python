@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.0...google-cloud-cloudcontrolspartner-v0.2.1) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.1.3...google-cloud-cloudcontrolspartner-v0.2.0) (2024-09-16)
 
 

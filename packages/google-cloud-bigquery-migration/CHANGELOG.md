@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.9...google-cloud-bigquery-migration-v0.11.10) (2024-10-24)
+
+
+### Features
+
+* Add support for  Python 3.13 ([6252476](https://github.com/googleapis/google-cloud-python/commit/6252476e5938352fb2417d098a1edcc08558fe10))
+
 ## [0.11.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.8...google-cloud-bigquery-migration-v0.11.9) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.2...google-cloud-developerconnect-v0.1.3) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13202](https://github.com/googleapis/google-cloud-python/issues/13202)) ([5b1f2f3](https://github.com/googleapis/google-cloud-python/commit/5b1f2f3a81ed171b643812e67a7ed179b9b703ea))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.1...google-cloud-developerconnect-v0.1.2) (2024-07-30)
 
 

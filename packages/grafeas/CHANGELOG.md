@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.11.0...grafeas-v1.12.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13212](https://github.com/googleapis/google-cloud-python/issues/13212)) ([94d00a1](https://github.com/googleapis/google-cloud-python/commit/94d00a126aa436513d23b25993b7fdc106809441))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.10.1...grafeas-v1.11.0) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnections-v0.4.11...google-cloud-beyondcorp-appconnections-v0.4.12) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13200](https://github.com/googleapis/google-cloud-python/issues/13200)) ([19dc048](https://github.com/googleapis/google-cloud-python/commit/19dc0485852406b90743297bcf257020e6012593))
+
 ## [0.4.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnections-v0.4.10...google-cloud-beyondcorp-appconnections-v0.4.11) (2024-07-30)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.5...google-cloud-telcoautomation-v0.2.6) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.4...google-cloud-telcoautomation-v0.2.5) (2024-07-30)
 
 

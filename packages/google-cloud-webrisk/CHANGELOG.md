@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.14.5...google-cloud-webrisk-v1.15.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [1.14.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.14.4...google-cloud-webrisk-v1.14.5) (2024-07-30)
 
 

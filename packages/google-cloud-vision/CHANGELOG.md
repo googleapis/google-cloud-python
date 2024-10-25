@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.7.4...google-cloud-vision-v3.8.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13210](https://github.com/googleapis/google-cloud-python/issues/13210)) ([0b62ac6](https://github.com/googleapis/google-cloud-python/commit/0b62ac6aa99bd3259a088097630f2bd1f06825e6))
+
 ## [3.7.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.7.3...google-cloud-vision-v3.7.4) (2024-07-30)
 
 

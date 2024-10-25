@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.11...google-cloud-media-translation-v0.11.12) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13207](https://github.com/googleapis/google-cloud-python/issues/13207)) ([ceb9be8](https://github.com/googleapis/google-cloud-python/commit/ceb9be8f89ac7355d842bac1d77b2926eb0b649c))
+
 ## [0.11.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.10...google-cloud-media-translation-v0.11.11) (2024-07-30)
 
 

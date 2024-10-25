@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.8...google-shopping-css-v0.1.9) (2024-10-24)
+
+
+### Features
+
+* [google-shopping-css] A new field `headline_offer_installment` is added to message `.google.shopping.css.v1.Attributes` ([a58483b](https://github.com/googleapis/google-cloud-python/commit/a58483bb35af03727b6c7dec0dbb27dba4b62c1d))
+* A new enum `SubscriptionPeriod` is added ([a58483b](https://github.com/googleapis/google-cloud-python/commit/a58483bb35af03727b6c7dec0dbb27dba4b62c1d))
+* A new field `headline_offer_subscription_cost` is added to message `.google.shopping.css.v1.Attributes` ([a58483b](https://github.com/googleapis/google-cloud-python/commit/a58483bb35af03727b6c7dec0dbb27dba4b62c1d))
+* A new message `HeadlineOfferInstallment` is added ([a58483b](https://github.com/googleapis/google-cloud-python/commit/a58483bb35af03727b6c7dec0dbb27dba4b62c1d))
+* A new message `HeadlineOfferSubscriptionCost` is added ([a58483b](https://github.com/googleapis/google-cloud-python/commit/a58483bb35af03727b6c7dec0dbb27dba4b62c1d))
+* Add support for Python 3.13 ([a58483b](https://github.com/googleapis/google-cloud-python/commit/a58483bb35af03727b6c7dec0dbb27dba4b62c1d))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.7...google-shopping-css-v0.1.8) (2024-08-22)
 
 

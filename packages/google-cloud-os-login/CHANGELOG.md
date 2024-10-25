@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.6...google-cloud-os-login-v2.15.0) (2024-10-24)
+
+
+### Features
+
+* Add support for Python 3.13 ([#13208](https://github.com/googleapis/google-cloud-python/issues/13208)) ([a019409](https://github.com/googleapis/google-cloud-python/commit/a019409a5b5a983402301f1ac175d8b7e45c3818))
+
 ## [2.14.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.5...google-cloud-os-login-v2.14.6) (2024-07-30)
 
 
