@@ -1003,6 +1003,11 @@
               "methods": [
                 "search"
               ]
+            },
+            "SearchLite": {
+              "methods": [
+                "search_lite"
+              ]
             }
           }
         },
@@ -1013,6 +1018,11 @@
               "methods": [
                 "search"
               ]
+            },
+            "SearchLite": {
+              "methods": [
+                "search_lite"
+              ]
             }
           }
         },
@@ -1022,6 +1032,11 @@
             "Search": {
               "methods": [
                 "search"
+              ]
+            },
+            "SearchLite": {
+              "methods": [
+                "search_lite"
               ]
             }
           }
