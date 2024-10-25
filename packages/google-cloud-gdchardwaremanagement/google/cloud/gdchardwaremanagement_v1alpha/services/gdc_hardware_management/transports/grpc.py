@@ -508,6 +508,32 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["update_site"]
 
     @property
+    def delete_site(
+        self,
+    ) -> Callable[[service.DeleteSiteRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete site method over gRPC.
+
+        Deletes a site.
+
+        Returns:
+            Callable[[~.DeleteSiteRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_site" not in self._stubs:
+            self._stubs["delete_site"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/DeleteSite",
+                request_serializer=service.DeleteSiteRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_site"]
+
+    @property
     def list_hardware_groups(
         self,
     ) -> Callable[

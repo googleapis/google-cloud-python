@@ -252,6 +252,20 @@ class GDCHardwareManagementTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.delete_site: gapic_v1.method.wrap_method(
+                self.delete_site,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_hardware_groups: gapic_v1.method.wrap_method(
                 self.list_hardware_groups,
                 default_retry=retries.Retry(
@@ -664,6 +678,15 @@ class GDCHardwareManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.UpdateSiteRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_site(
+        self,
+    ) -> Callable[
+        [service.DeleteSiteRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

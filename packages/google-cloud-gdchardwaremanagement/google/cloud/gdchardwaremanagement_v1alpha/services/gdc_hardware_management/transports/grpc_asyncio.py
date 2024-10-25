@@ -520,6 +520,32 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
         return self._stubs["update_site"]
 
     @property
+    def delete_site(
+        self,
+    ) -> Callable[[service.DeleteSiteRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the delete site method over gRPC.
+
+        Deletes a site.
+
+        Returns:
+            Callable[[~.DeleteSiteRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_site" not in self._stubs:
+            self._stubs["delete_site"] = self.grpc_channel.unary_unary(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/DeleteSite",
+                request_serializer=service.DeleteSiteRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_site"]
+
+    @property
     def list_hardware_groups(
         self,
     ) -> Callable[
@@ -1279,6 +1305,20 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
             ),
             self.update_site: self._wrap_method(
                 self.update_site,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_site: self._wrap_method(
+                self.delete_site,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,

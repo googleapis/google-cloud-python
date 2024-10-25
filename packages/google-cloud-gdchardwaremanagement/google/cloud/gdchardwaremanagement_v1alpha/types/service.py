@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
         "GetSiteRequest",
         "CreateSiteRequest",
         "UpdateSiteRequest",
+        "DeleteSiteRequest",
         "ListHardwareGroupsRequest",
         "ListHardwareGroupsResponse",
         "GetHardwareGroupRequest",
@@ -80,6 +81,10 @@ class ListOrdersRequest(proto.Message):
         parent (str):
             Required. The project and location to list orders in.
             Format: ``projects/{project}/locations/{location}``
+
+            To list orders across all locations, substitute ``-`` (the
+            hyphen or dash character) for the location and check the
+            unreachable field in the response message.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -127,7 +132,9 @@ class ListOrdersResponse(proto.Message):
             A token identifying a page of results the
             server should return.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached.
+            Locations that could not be reached. Only used for queries
+            to the wildcard location ``-``. If non-empty, it indicates
+            that the results are incomplete.
     """
 
     @property
@@ -341,6 +348,10 @@ class ListSitesRequest(proto.Message):
         parent (str):
             Required. The project and location to list sites in. Format:
             ``projects/{project}/locations/{location}``
+
+            To list sites across all locations, substitute ``-`` (the
+            hyphen or dash character) for the location and check the
+            unreachable field in the response message.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -388,7 +399,9 @@ class ListSitesResponse(proto.Message):
             A token identifying a page of results the
             server should return.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached.
+            Locations that could not be reached. Only used for queries
+            to the wildcard location ``-``. If non-empty, it indicates
+            that the results are incomplete.
     """
 
     @property
@@ -497,6 +510,28 @@ class UpdateSiteRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class DeleteSiteRequest(proto.Message):
+    r"""A request to delete a site.
+
+    Attributes:
+        name (str):
+            Required. The name of the site. Format:
+            ``projects/{project}/locations/{location}/sites/{site}``
+        request_id (str):
+            Optional. An optional unique identifier for this request.
+            See `AIP-155 <https://google.aip.dev/155>`__.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -697,6 +732,10 @@ class ListHardwareRequest(proto.Message):
         parent (str):
             Required. The project and location to list hardware in.
             Format: ``projects/{project}/locations/{location}``
+
+            To list hardware across all locations, substitute ``-`` (the
+            hyphen or dash character) for the location and check the
+            unreachable field in the response message.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -744,7 +783,9 @@ class ListHardwareResponse(proto.Message):
             A token identifying a page of results the
             server should return.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached.
+            Locations that could not be reached. Only used for queries
+            to the wildcard location ``-``. If non-empty, it indicates
+            that the results are incomplete.
     """
 
     @property
@@ -1141,6 +1182,10 @@ class ListSkusRequest(proto.Message):
         parent (str):
             Required. The project and location to list SKUs in. Format:
             ``projects/{project}/locations/{location}``
+
+            To list SKUs across all locations, substitute ``-`` (the
+            hyphen or dash character) for the location and check the
+            unreachable field in the response message.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -1188,7 +1233,9 @@ class ListSkusResponse(proto.Message):
             A token identifying a page of results the
             server should return.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached.
+            Locations that could not be reached. Only used for queries
+            to the wildcard location ``-``. If non-empty, it indicates
+            that the results are incomplete.
     """
 
     @property
@@ -1232,6 +1279,10 @@ class ListZonesRequest(proto.Message):
         parent (str):
             Required. The project and location to list zones in. Format:
             ``projects/{project}/locations/{location}``
+
+            To list zones across all locations, substitute ``-`` (the
+            hyphen or dash character) for the location and check the
+            unreachable field in the response message.
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -1279,7 +1330,9 @@ class ListZonesResponse(proto.Message):
             A token identifying a page of results the
             server should return.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached.
+            Locations that could not be reached. Only used for queries
+            to the wildcard location ``-``. If non-empty, it indicates
+            that the results are incomplete.
     """
 
     @property

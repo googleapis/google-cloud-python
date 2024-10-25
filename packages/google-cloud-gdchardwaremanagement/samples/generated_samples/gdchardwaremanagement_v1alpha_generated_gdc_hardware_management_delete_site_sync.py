@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateSite
+# Snippet for DeleteSite
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-gdchardwaremanagement
 
 
-# [START gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_CreateSite_async]
+# [START gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_DeleteSite_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,29 +34,23 @@
 from google.cloud import gdchardwaremanagement_v1alpha
 
 
-async def sample_create_site():
+def sample_delete_site():
     # Create a client
-    client = gdchardwaremanagement_v1alpha.GDCHardwareManagementAsyncClient()
+    client = gdchardwaremanagement_v1alpha.GDCHardwareManagementClient()
 
     # Initialize request argument(s)
-    site = gdchardwaremanagement_v1alpha.Site()
-    site.organization_contact.contacts.given_name = "given_name_value"
-    site.organization_contact.contacts.email = "email_value"
-    site.organization_contact.contacts.phone = "phone_value"
-
-    request = gdchardwaremanagement_v1alpha.CreateSiteRequest(
-        parent="parent_value",
-        site=site,
+    request = gdchardwaremanagement_v1alpha.DeleteSiteRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.create_site(request=request)
+    operation = client.delete_site(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_CreateSite_async]
+# [END gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_DeleteSite_sync]
