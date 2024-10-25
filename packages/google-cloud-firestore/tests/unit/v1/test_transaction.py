@@ -33,6 +33,8 @@ def test_transaction_constructor_defaults():
     assert transaction._max_attempts == MAX_ATTEMPTS
     assert not transaction._read_only
     assert transaction._id is None
+    assert transaction.write_results is None
+    assert transaction.commit_time is None
 
 
 def test_transaction_constructor_explicit():
@@ -209,12 +211,19 @@ def test_transaction__rollback_failure(database):
 def test_transaction__commit(database):
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.types import firestore, write
+    from google.protobuf.timestamp_pb2 import Timestamp
+    import datetime
 
     # Create a minimal fake GAPIC with a dummy result.
     firestore_api = mock.create_autospec(
         firestore_client.FirestoreClient, instance=True
     )
-    commit_response = firestore.CommitResponse(write_results=[write.WriteResult()])
+    commit_time = Timestamp()
+    commit_time.FromDatetime(datetime.datetime.now())
+    results = [write.WriteResult(update_time=commit_time)]
+    commit_response = firestore.CommitResponse(
+        write_results=results, commit_time=commit_time
+    )
     firestore_api.commit.return_value = commit_response
 
     # Attach the fake GAPIC to a real client.
@@ -234,6 +243,9 @@ def test_transaction__commit(database):
     # Make sure transaction has no more "changes".
     assert transaction._id is None
     assert transaction._write_pbs == []
+    # ensure write_results and commit_time were set
+    assert transaction.write_results == results
+    assert transaction.commit_time.timestamp_pb() == commit_time
 
     # Verify the mocks.
     firestore_api.commit.assert_called_once_with(

@@ -145,7 +145,9 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         )
 
         self._clean_up()
-        return list(commit_response.write_results)
+        self.write_results = list(commit_response.write_results)
+        self.commit_time = commit_response.commit_time
+        return self.write_results
 
     def get_all(
         self,
