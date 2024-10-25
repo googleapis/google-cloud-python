@@ -4490,6 +4490,7 @@ def test_create_control_rest_call_success(request_type):
                 "active_time_range": [
                     {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
                 ],
+                "query_regex": "query_regex_value",
             }
         ],
     }
@@ -4830,6 +4831,7 @@ def test_update_control_rest_call_success(request_type):
                 "active_time_range": [
                     {"start_time": {"seconds": 751, "nanos": 543}, "end_time": {}}
                 ],
+                "query_regex": "query_regex_value",
             }
         ],
     }

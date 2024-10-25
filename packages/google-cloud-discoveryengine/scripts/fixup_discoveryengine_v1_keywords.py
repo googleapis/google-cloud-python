@@ -99,6 +99,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'recommend': ('serving_config', 'user_event', 'page_size', 'filter', 'validate_only', 'params', 'user_labels', ),
         'recrawl_uris': ('site_search_engine', 'uris', 'site_credential', ),
         'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'one_box_page_size', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', 'search_as_you_type_spec', 'session', 'session_spec', ),
+        'search_lite': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'one_box_page_size', 'data_store_specs', 'filter', 'canonical_filter', 'order_by', 'user_info', 'language_code', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', 'search_as_you_type_spec', 'session', 'session_spec', ),
         'stream_generate_grounded_content': ('location', 'system_instruction', 'contents', 'generation_spec', 'grounding_spec', 'user_labels', ),
         'train_custom_model': ('data_store', 'gcs_training_input', 'model_type', 'error_config', 'model_id', ),
         'update_control': ('control', 'update_mask', ),

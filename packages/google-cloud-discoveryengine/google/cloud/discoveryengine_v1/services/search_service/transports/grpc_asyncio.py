@@ -272,11 +272,58 @@ class SearchServiceGrpcAsyncIOTransport(SearchServiceTransport):
             )
         return self._stubs["search"]
 
+    @property
+    def search_lite(
+        self,
+    ) -> Callable[
+        [search_service.SearchRequest], Awaitable[search_service.SearchResponse]
+    ]:
+        r"""Return a callable for the search lite method over gRPC.
+
+        Performs a search. Similar to the
+        [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+        method, but a lite version that allows API key for
+        authentication, where OAuth and IAM checks are not required.
+
+        Only public website search is supported by this method. If data
+        stores and engines not associated with public website search are
+        specified, a ``FAILED_PRECONDITION`` error is returned.
+
+        This method can be used for easy onboarding without having to
+        implement an authentication backend. However, it is strongly
+        recommended to use
+        [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+        instead with required OAuth and IAM checks to provide better
+        data security.
+
+        Returns:
+            Callable[[~.SearchRequest],
+                    Awaitable[~.SearchResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_lite" not in self._stubs:
+            self._stubs["search_lite"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.SearchService/SearchLite",
+                request_serializer=search_service.SearchRequest.serialize,
+                response_deserializer=search_service.SearchResponse.deserialize,
+            )
+        return self._stubs["search_lite"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.search: self._wrap_method(
                 self.search,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.search_lite: self._wrap_method(
+                self.search_lite,
                 default_timeout=None,
                 client_info=client_info,
             ),

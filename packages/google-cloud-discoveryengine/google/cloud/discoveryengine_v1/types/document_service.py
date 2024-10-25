@@ -440,7 +440,7 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
 
                     This field is a member of `oneof`_ ``matcher_value``.
                 fhir_resource (str):
-                    Required. Format:
+                    Format:
                     projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}
 
                     This field is a member of `oneof`_ ``matcher_value``.

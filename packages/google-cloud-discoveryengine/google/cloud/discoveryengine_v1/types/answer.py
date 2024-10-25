@@ -125,6 +125,11 @@ class Answer(proto.Message):
 
                 Google skips the answer if the query doesn't
                 have clear intent.
+            LOW_GROUNDED_ANSWER (9):
+                The low-grounded answer case.
+
+                Google skips the answer if a well grounded
+                answer was unable to be generated.
         """
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
@@ -135,6 +140,7 @@ class Answer(proto.Message):
         JAIL_BREAKING_QUERY_IGNORED = 6
         CUSTOMER_POLICY_VIOLATION = 7
         NON_ANSWER_SEEKING_QUERY_IGNORED_V2 = 8
+        LOW_GROUNDED_ANSWER = 9
 
     class Citation(proto.Message):
         r"""Citation info for a segment.
