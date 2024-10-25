@@ -14,22 +14,11 @@
 # limitations under the License.
 
 
-from google.cloud.bigtable.data import (
-    BigtableDataClientAsync,
-    DeleteRangeFromColumn,
-    DeleteAllFromFamily,
-    DeleteAllFromRow,
-    RowMutationEntry,
-    row_filters,
-    ReadRowsQuery,
-)
-
-
-# Write your code here.
-
-
 # [START bigtable_delete_from_column_asyncio]
 async def delete_from_column(project_id, instance_id, table_id):
+    from google.cloud.bigtable.data import BigtableDataClientAsync
+    from google.cloud.bigtable.data import DeleteRangeFromColumn
+
     client = BigtableDataClientAsync(project=project_id)
     table = client.get_table(instance_id, table_id)
 
@@ -46,6 +35,9 @@ async def delete_from_column(project_id, instance_id, table_id):
 
 # [START bigtable_delete_from_column_family_asyncio]
 async def delete_from_column_family(project_id, instance_id, table_id):
+    from google.cloud.bigtable.data import BigtableDataClientAsync
+    from google.cloud.bigtable.data import DeleteAllFromFamily
+
     client = BigtableDataClientAsync(project=project_id)
     table = client.get_table(instance_id, table_id)
 
@@ -60,6 +52,9 @@ async def delete_from_column_family(project_id, instance_id, table_id):
 
 # [START bigtable_delete_from_row_asyncio]
 async def delete_from_row(project_id, instance_id, table_id):
+    from google.cloud.bigtable.data import BigtableDataClientAsync
+    from google.cloud.bigtable.data import DeleteAllFromRow
+
     client = BigtableDataClientAsync(project=project_id)
     table = client.get_table(instance_id, table_id)
 
@@ -73,6 +68,11 @@ async def delete_from_row(project_id, instance_id, table_id):
 
 # [START bigtable_streaming_and_batching_asyncio]
 async def streaming_and_batching(project_id, instance_id, table_id):
+    from google.cloud.bigtable.data import BigtableDataClientAsync
+    from google.cloud.bigtable.data import DeleteRangeFromColumn
+    from google.cloud.bigtable.data import RowMutationEntry
+    from google.cloud.bigtable.data import ReadRowsQuery
+
     client = BigtableDataClientAsync(project=project_id)
     table = client.get_table(instance_id, table_id)
 
@@ -95,12 +95,16 @@ async def streaming_and_batching(project_id, instance_id, table_id):
 
 # [START bigtable_check_and_mutate_asyncio]
 async def check_and_mutate(project_id, instance_id, table_id):
+    from google.cloud.bigtable.data import BigtableDataClientAsync
+    from google.cloud.bigtable.data import DeleteRangeFromColumn
+    from google.cloud.bigtable.data.row_filters import LiteralValueFilter
+
     client = BigtableDataClientAsync(project=project_id)
     table = client.get_table(instance_id, table_id)
 
     await table.check_and_mutate_row(
         "phone#4c410523#20190501",
-        predicate=row_filters.LiteralValueFilter("PQ2A.190405.003"),
+        predicate=LiteralValueFilter("PQ2A.190405.003"),
         true_case_mutations=DeleteRangeFromColumn(
             family="cell_plan", qualifier=b"data_plan_01gb"
         ),

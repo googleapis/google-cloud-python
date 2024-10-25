@@ -13,17 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START bigtable_reads_print]
-from google.cloud import bigtable
-import google.cloud.bigtable.row_filters as row_filters
-from google.cloud.bigtable.row_set import RowSet
-
-# Write your code here.
-# [START_EXCLUDE]
-
-
 # [START bigtable_reads_row]
 def read_row(project_id, instance_id, table_id):
+    from google.cloud import bigtable
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
@@ -38,6 +31,9 @@ def read_row(project_id, instance_id, table_id):
 
 # [START bigtable_reads_row_partial]
 def read_row_partial(project_id, instance_id, table_id):
+    from google.cloud import bigtable
+    from google.cloud.bigtable import row_filters
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
@@ -52,6 +48,9 @@ def read_row_partial(project_id, instance_id, table_id):
 # [END bigtable_reads_row_partial]
 # [START bigtable_reads_rows]
 def read_rows(project_id, instance_id, table_id):
+    from google.cloud import bigtable
+    from google.cloud.bigtable.row_set import RowSet
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
@@ -68,6 +67,9 @@ def read_rows(project_id, instance_id, table_id):
 # [END bigtable_reads_rows]
 # [START bigtable_reads_row_range]
 def read_row_range(project_id, instance_id, table_id):
+    from google.cloud import bigtable
+    from google.cloud.bigtable.row_set import RowSet
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
@@ -85,6 +87,9 @@ def read_row_range(project_id, instance_id, table_id):
 # [END bigtable_reads_row_range]
 # [START bigtable_reads_row_ranges]
 def read_row_ranges(project_id, instance_id, table_id):
+    from google.cloud import bigtable
+    from google.cloud.bigtable.row_set import RowSet
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
@@ -105,6 +110,9 @@ def read_row_ranges(project_id, instance_id, table_id):
 # [END bigtable_reads_row_ranges]
 # [START bigtable_reads_prefix]
 def read_prefix(project_id, instance_id, table_id):
+    from google.cloud import bigtable
+    from google.cloud.bigtable.row_set import RowSet
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
@@ -122,6 +130,9 @@ def read_prefix(project_id, instance_id, table_id):
 # [END bigtable_reads_prefix]
 # [START bigtable_reads_filter]
 def read_filter(project_id, instance_id, table_id):
+    from google.cloud import bigtable
+    from google.cloud.bigtable import row_filters
+
     client = bigtable.Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
@@ -132,9 +143,8 @@ def read_filter(project_id, instance_id, table_id):
 
 
 # [END bigtable_reads_filter]
-# [END_EXCLUDE]
 
-
+# [START bigtable_reads_print]
 def print_row(row):
     print("Reading data for {}:".format(row.row_key.decode("utf-8")))
     for cf, cols in sorted(row.cells.items()):

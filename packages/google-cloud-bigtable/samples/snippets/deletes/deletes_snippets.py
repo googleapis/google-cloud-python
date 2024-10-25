@@ -14,14 +14,11 @@
 # limitations under the License.
 
 
-from google.cloud import bigtable
-
-# Write your code here.
-
-
 # [START bigtable_delete_from_column]
 def delete_from_column(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     row = table.row("phone#4c410523#20190501")
@@ -33,7 +30,9 @@ def delete_from_column(project_id, instance_id, table_id):
 
 # [START bigtable_delete_from_column_family]
 def delete_from_column_family(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     row = table.row("phone#4c410523#20190501")
@@ -46,7 +45,9 @@ def delete_from_column_family(project_id, instance_id, table_id):
 
 # [START bigtable_delete_from_row]
 def delete_from_row(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     row = table.row("phone#4c410523#20190501")
@@ -58,7 +59,9 @@ def delete_from_row(project_id, instance_id, table_id):
 
 # [START bigtable_streaming_and_batching]
 def streaming_and_batching(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     batcher = table.mutations_batcher(flush_count=2)
@@ -74,7 +77,9 @@ def streaming_and_batching(project_id, instance_id, table_id):
 
 # [START bigtable_check_and_mutate]
 def check_and_mutate(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     row = table.row("phone#4c410523#20190501")
@@ -88,7 +93,9 @@ def check_and_mutate(project_id, instance_id, table_id):
 
 # [START bigtable_drop_row_range]
 def drop_row_range(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     row_key_prefix = "phone#4c410523"
@@ -99,7 +106,9 @@ def drop_row_range(project_id, instance_id, table_id):
 
 # [START bigtable_delete_column_family]
 def delete_column_family(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     column_family_id = "stats_summary"
@@ -111,7 +120,9 @@ def delete_column_family(project_id, instance_id, table_id):
 
 # [START bigtable_delete_table]
 def delete_table(project_id, instance_id, table_id):
-    client = bigtable.Client(project=project_id, admin=True)
+    from google.cloud.bigtable import Client
+
+    client = Client(project=project_id, admin=True)
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     table.delete()
