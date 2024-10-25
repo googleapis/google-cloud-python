@@ -55,7 +55,7 @@ class BaseBatch(metaclass=abc.ABCMeta):
         This method intended to be over-ridden by subclasses.
 
         Args:
-            write_pbs (List[google.cloud.proto.firestore.v1.\
+            write_pbs (List[google.cloud.firestore_v1.\
                 write_pb2.Write]): A list of write protobufs to be added.
         """
         self._write_pbs.extend(write_pbs)

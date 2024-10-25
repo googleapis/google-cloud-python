@@ -537,7 +537,7 @@ def _parse_batch_get(
     """Parse a `BatchGetDocumentsResponse` protobuf.
 
     Args:
-        get_doc_response (~google.cloud.proto.firestore.v1.\
+        get_doc_response (~google.cloud.firestore_v1.\
             firestore.BatchGetDocumentsResponse): A single response (from
             a stream) containing the "get" response for a document.
         reference_map (Dict[str, .DocumentReference]): A mapping (produced

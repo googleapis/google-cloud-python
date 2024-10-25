@@ -61,7 +61,7 @@ class BulkWriteBatch(BaseBatch):
                 system-specified value.
 
         Returns:
-            :class:`google.cloud.proto.firestore.v1.write.BatchWriteResponse`:
+            :class:`google.cloud.firestore_v1.write.BatchWriteResponse`:
             Container holding the write results corresponding to the changes
             committed, returned in the same order as the changes were applied to
             this batch. An individual write result contains an ``update_time``

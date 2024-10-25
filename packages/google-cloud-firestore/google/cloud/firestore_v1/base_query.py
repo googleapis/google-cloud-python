@@ -236,13 +236,13 @@ class BaseQuery(object):
     Args:
         parent (:class:`~google.cloud.firestore_v1.collection.CollectionReference`):
             The collection that this query applies to.
-        projection (Optional[:class:`google.cloud.proto.firestore.v1.\
+        projection (Optional[:class:`google.cloud.firestore_v1.\
             query.StructuredQuery.Projection`]):
             A projection of document fields to limit the query results to.
-        field_filters (Optional[Tuple[:class:`google.cloud.proto.firestore.v1.\
+        field_filters (Optional[Tuple[:class:`google.cloud.firestore_v1.\
             query.StructuredQuery.FieldFilter`, ...]]):
             The filters to be applied in the query.
-        orders (Optional[Tuple[:class:`google.cloud.proto.firestore.v1.\
+        orders (Optional[Tuple[:class:`google.cloud.firestore_v1.\
             query.StructuredQuery.Order`, ...]]):
             The "order by" entries to use in the query.
         limit (Optional[int]):
@@ -1225,9 +1225,9 @@ def _filter_pb(field_or_unary) -> StructuredQuery.Filter:
     """Convert a specific protobuf filter to the generic filter type.
 
     Args:
-        field_or_unary (Union[google.cloud.proto.firestore.v1.\
-            query.StructuredQuery.FieldFilter, google.cloud.proto.\
-            firestore.v1.query.StructuredQuery.FieldFilter]): A
+        field_or_unary (Union[google.cloud.firestore_v1.\
+            query.StructuredQuery.FieldFilter, google.cloud.\
+            firestore_v1.query.StructuredQuery.FieldFilter]): A
             field or unary filter to convert to a generic filter.
 
     Returns:
@@ -1272,7 +1272,7 @@ def _query_response_to_snapshot(
     """Parse a query response protobuf to a document snapshot.
 
     Args:
-        response_pb (google.cloud.proto.firestore.v1.\
+        response_pb (google.cloud.firestore_v1.\
             firestore.RunQueryResponse): A
         collection (:class:`~google.cloud.firestore_v1.collection.CollectionReference`):
             A reference to the collection that initiated the query.
@@ -1308,7 +1308,7 @@ def _collection_group_query_response_to_snapshot(
     """Parse a query response protobuf to a document snapshot.
 
     Args:
-        response_pb (google.cloud.proto.firestore.v1.\
+        response_pb (google.cloud.firestore_v1.\
             firestore.RunQueryResponse): A
         collection (:class:`~google.cloud.firestore_v1.collection.CollectionReference`):
             A reference to the collection that initiated the query.

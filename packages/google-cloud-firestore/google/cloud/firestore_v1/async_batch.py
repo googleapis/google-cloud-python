@@ -50,7 +50,7 @@ class AsyncWriteBatch(BaseWriteBatch):
                 system-specified value.
 
         Returns:
-            List[:class:`google.cloud.proto.firestore.v1.write.WriteResult`, ...]:
+            List[:class:`google.cloud.firestore_v1.write.WriteResult`, ...]:
             The write results corresponding to the changes committed, returned
             in the same order as the changes were applied to this batch. A
             write result contains an ``update_time`` field.

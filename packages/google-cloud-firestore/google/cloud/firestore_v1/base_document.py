@@ -548,7 +548,7 @@ def _consume_single_get(response_iterator) -> firestore.BatchGetDocumentsRespons
             request.
 
     Returns:
-        ~google.cloud.proto.firestore.v1.\
+        ~google.cloud.firestore_v1.\
             firestore.BatchGetDocumentsResponse: The single "get"
         response in the batch.
 
@@ -575,7 +575,7 @@ def _first_write_result(write_results: list) -> write.WriteResult:
     at the same time).
 
     Args:
-        write_results (List[google.cloud.proto.firestore.v1.\
+        write_results (List[google.cloud.firestore_v1.\
             write.WriteResult, ...]: The write results from a
             ``CommitResponse``.
 

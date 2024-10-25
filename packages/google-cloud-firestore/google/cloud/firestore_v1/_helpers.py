@@ -414,7 +414,7 @@ def get_doc_id(document_pb, expected_prefix) -> str:
     """Parse a document ID from a document protobuf.
 
     Args:
-        document_pb (google.cloud.proto.firestore.v1.\
+        document_pb (google.cloud.firestore_v1.\
             document.Document): A protobuf for a document that
             was created in a ``CreateDocument`` RPC.
         expected_prefix (str): The expected collection prefix for the

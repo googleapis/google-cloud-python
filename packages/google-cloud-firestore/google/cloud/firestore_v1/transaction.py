@@ -63,7 +63,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         """Add `Write`` protobufs to this transaction.
 
         Args:
-            write_pbs (List[google.cloud.proto.firestore.v1.\
+            write_pbs (List[google.cloud.firestore_v1.\
                 write.Write]): A list of write protobufs to be added.
 
         Raises:
@@ -124,7 +124,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         """Transactionally commit the changes accumulated.
 
         Returns:
-            List[:class:`google.cloud.proto.firestore.v1.write.WriteResult`, ...]:
+            List[:class:`google.cloud.firestore_v1.write.WriteResult`, ...]:
             The write results corresponding to the changes committed, returned
             in the same order as the changes were applied to this transaction.
             A write result contains an ``update_time`` field.

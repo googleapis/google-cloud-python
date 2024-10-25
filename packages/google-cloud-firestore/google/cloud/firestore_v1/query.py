@@ -59,13 +59,13 @@ class Query(BaseQuery):
     Args:
         parent (:class:`~google.cloud.firestore_v1.collection.CollectionReference`):
             The collection that this query applies to.
-        projection (Optional[:class:`google.cloud.proto.firestore.v1.\
+        projection (Optional[:class:`google.cloud.firestore_v1.\
             query.StructuredQuery.Projection`]):
             A projection of document fields to limit the query results to.
-        field_filters (Optional[Tuple[:class:`google.cloud.proto.firestore.v1.\
+        field_filters (Optional[Tuple[:class:`google.cloud.firestore_v1.\
             query.StructuredQuery.FieldFilter`, ...]]):
             The filters to be applied in the query.
-        orders (Optional[Tuple[:class:`google.cloud.proto.firestore.v1.\
+        orders (Optional[Tuple[:class:`google.cloud.firestore_v1.\
             query.StructuredQuery.Order`, ...]]):
             The "order by" entries to use in the query.
         limit (Optional[int]):
