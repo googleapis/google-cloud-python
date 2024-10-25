@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import typing
 from typing import Tuple, Union
+import warnings
 
 import bigframes_vendored.constants as constants
 import ibis
@@ -27,6 +28,8 @@ import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar
 import bigframes.dataframe
+import bigframes.dtypes
+import bigframes.exceptions
 import bigframes.operations as ops
 import bigframes.series
 
@@ -370,6 +373,7 @@ def _perform_loc_list_join(
     # right join based on the old index so that the matching rows from the user's
     # original dataframe will be duplicated and reordered appropriately
     if isinstance(series_or_dataframe, bigframes.series.Series):
+        _struct_accessor_check_and_warn(series_or_dataframe, keys_index)
         original_name = series_or_dataframe.name
         name = series_or_dataframe.name if series_or_dataframe.name is not None else "0"
         result = typing.cast(
@@ -389,6 +393,25 @@ def _perform_loc_list_join(
         ]
         result = result.droplevel(levels_to_drop)
     return result
+
+
+def _struct_accessor_check_and_warn(
+    series: bigframes.series.Series, index: indexes.Index
+):
+    if not bigframes.dtypes.is_struct_like(series.dtype):
+        # No need to check series that do not have struct values
+        return
+
+    if not bigframes.dtypes.is_string_like(index.dtype):
+        # No need to check indexing with non-string values.
+        return
+
+    if not bigframes.dtypes.is_string_like(series.index.dtype):
+        warnings.warn(
+            "Are you trying to access struct fields? If so, please use Series.struct.field(...) method instead.",
+            category=bigframes.exceptions.BadIndexerKeyWarning,
+            stacklevel=7,  # Stack depth from series.__getitem__ to here
+        )
 
 
 @typing.overload

@@ -73,3 +73,7 @@ class UnknownDataTypeWarning(Warning):
 
 class ApiDeprecationWarning(FutureWarning):
     """The API has been deprecated."""
+
+
+class BadIndexerKeyWarning(Warning):
+    """The indexer key is not used correctly."""
