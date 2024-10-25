@@ -32,14 +32,23 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.artifactregistry_v1.types import apt_artifact, artifact, file, package
 from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_config
+from google.cloud.artifactregistry_v1.types import apt_artifact, artifact
+from google.cloud.artifactregistry_v1.types import attachment
+from google.cloud.artifactregistry_v1.types import attachment as gda_attachment
+from google.cloud.artifactregistry_v1.types import file
+from google.cloud.artifactregistry_v1.types import file as gda_file
+from google.cloud.artifactregistry_v1.types import package
+from google.cloud.artifactregistry_v1.types import package as gda_package
 from google.cloud.artifactregistry_v1.types import repository
 from google.cloud.artifactregistry_v1.types import repository as gda_repository
+from google.cloud.artifactregistry_v1.types import rule
+from google.cloud.artifactregistry_v1.types import rule as gda_rule
 from google.cloud.artifactregistry_v1.types import settings
 from google.cloud.artifactregistry_v1.types import tag
 from google.cloud.artifactregistry_v1.types import tag as gda_tag
 from google.cloud.artifactregistry_v1.types import version
+from google.cloud.artifactregistry_v1.types import version as gda_version
 from google.cloud.artifactregistry_v1.types import vpcsc_config
 from google.cloud.artifactregistry_v1.types import yum_artifact
 
@@ -82,6 +91,14 @@ class ArtifactRegistryRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_attachment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_attachment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_repository(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -90,11 +107,35 @@ class ArtifactRegistryRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_create_tag(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_attachment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_attachment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_file(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_file(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -114,6 +155,10 @@ class ArtifactRegistryRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -123,6 +168,14 @@ class ArtifactRegistryRestInterceptor:
                 return request, metadata
 
             def post_delete_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_attachment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_attachment(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -198,6 +251,14 @@ class ArtifactRegistryRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -235,6 +296,14 @@ class ArtifactRegistryRestInterceptor:
                 return request, metadata
 
             def post_import_yum_artifacts(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_attachments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_attachments(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -294,6 +363,14 @@ class ArtifactRegistryRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_rules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_rules(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_tags(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -326,6 +403,22 @@ class ArtifactRegistryRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_file(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_file(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_package(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_package(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_project_settings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -342,11 +435,27 @@ class ArtifactRegistryRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_tag(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_tag(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_version(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_version(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -387,6 +496,29 @@ class ArtifactRegistryRestInterceptor:
         """
         return response
 
+    def pre_create_attachment(
+        self,
+        request: gda_attachment.CreateAttachmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gda_attachment.CreateAttachmentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_attachment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_create_attachment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_attachment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_repository(
         self,
         request: gda_repository.CreateRepositoryRequest,
@@ -410,6 +542,25 @@ class ArtifactRegistryRestInterceptor:
         """
         return response
 
+    def pre_create_rule(
+        self, request: gda_rule.CreateRuleRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[gda_rule.CreateRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_create_rule(self, response: gda_rule.Rule) -> gda_rule.Rule:
+        """Post-rpc interceptor for create_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_tag(
         self, request: gda_tag.CreateTagRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[gda_tag.CreateTagRequest, Sequence[Tuple[str, str]]]:
@@ -422,6 +573,50 @@ class ArtifactRegistryRestInterceptor:
 
     def post_create_tag(self, response: gda_tag.Tag) -> gda_tag.Tag:
         """Post-rpc interceptor for create_tag
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_attachment(
+        self,
+        request: attachment.DeleteAttachmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[attachment.DeleteAttachmentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_attachment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_delete_attachment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_attachment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_file(
+        self, request: file.DeleteFileRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[file.DeleteFileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_file
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_delete_file(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_file
 
         Override in a subclass to manipulate the response
         after it is returned by the ArtifactRegistry server but before
@@ -473,6 +668,16 @@ class ArtifactRegistryRestInterceptor:
         """
         return response
 
+    def pre_delete_rule(
+        self, request: rule.DeleteRuleRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[rule.DeleteRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
     def pre_delete_tag(
         self, request: tag.DeleteTagRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[tag.DeleteTagRequest, Sequence[Tuple[str, str]]]:
@@ -497,6 +702,29 @@ class ArtifactRegistryRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_version
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_attachment(
+        self,
+        request: attachment.GetAttachmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[attachment.GetAttachmentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_attachment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_get_attachment(
+        self, response: attachment.Attachment
+    ) -> attachment.Attachment:
+        """Post-rpc interceptor for get_attachment
 
         Override in a subclass to manipulate the response
         after it is returned by the ArtifactRegistry server but before
@@ -701,6 +929,25 @@ class ArtifactRegistryRestInterceptor:
         """
         return response
 
+    def pre_get_rule(
+        self, request: rule.GetRuleRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[rule.GetRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_get_rule(self, response: rule.Rule) -> rule.Rule:
+        """Post-rpc interceptor for get_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_tag(
         self, request: tag.GetTagRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[tag.GetTagRequest, Sequence[Tuple[str, str]]]:
@@ -801,6 +1048,29 @@ class ArtifactRegistryRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_yum_artifacts
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_attachments(
+        self,
+        request: attachment.ListAttachmentsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[attachment.ListAttachmentsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_attachments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_list_attachments(
+        self, response: attachment.ListAttachmentsResponse
+    ) -> attachment.ListAttachmentsResponse:
+        """Post-rpc interceptor for list_attachments
 
         Override in a subclass to manipulate the response
         after it is returned by the ArtifactRegistry server but before
@@ -965,6 +1235,27 @@ class ArtifactRegistryRestInterceptor:
         """
         return response
 
+    def pre_list_rules(
+        self, request: rule.ListRulesRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[rule.ListRulesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_rules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_list_rules(
+        self, response: rule.ListRulesResponse
+    ) -> rule.ListRulesResponse:
+        """Post-rpc interceptor for list_rules
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_tags(
         self, request: tag.ListTagsRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[tag.ListTagsRequest, Sequence[Tuple[str, str]]]:
@@ -1049,6 +1340,46 @@ class ArtifactRegistryRestInterceptor:
         """
         return response
 
+    def pre_update_file(
+        self, request: gda_file.UpdateFileRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[gda_file.UpdateFileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_file
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_update_file(self, response: gda_file.File) -> gda_file.File:
+        """Post-rpc interceptor for update_file
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_package(
+        self,
+        request: gda_package.UpdatePackageRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gda_package.UpdatePackageRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_package
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_update_package(self, response: gda_package.Package) -> gda_package.Package:
+        """Post-rpc interceptor for update_package
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_project_settings(
         self,
         request: settings.UpdateProjectSettingsRequest,
@@ -1095,6 +1426,25 @@ class ArtifactRegistryRestInterceptor:
         """
         return response
 
+    def pre_update_rule(
+        self, request: gda_rule.UpdateRuleRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[gda_rule.UpdateRuleRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_update_rule(self, response: gda_rule.Rule) -> gda_rule.Rule:
+        """Post-rpc interceptor for update_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_tag(
         self, request: gda_tag.UpdateTagRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[gda_tag.UpdateTagRequest, Sequence[Tuple[str, str]]]:
@@ -1107,6 +1457,27 @@ class ArtifactRegistryRestInterceptor:
 
     def post_update_tag(self, response: gda_tag.Tag) -> gda_tag.Tag:
         """Post-rpc interceptor for update_tag
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_version(
+        self,
+        request: gda_version.UpdateVersionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gda_version.UpdateVersionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_version
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_update_version(self, response: gda_version.Version) -> gda_version.Version:
+        """Post-rpc interceptor for update_version
 
         Override in a subclass to manipulate the response
         after it is returned by the ArtifactRegistry server but before
@@ -1439,6 +1810,105 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = self._interceptor.post_batch_delete_versions(resp)
             return resp
 
+    class _CreateAttachment(
+        _BaseArtifactRegistryRestTransport._BaseCreateAttachment,
+        ArtifactRegistryRestStub,
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.CreateAttachment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gda_attachment.CreateAttachmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create attachment method over HTTP.
+
+            Args:
+                request (~.gda_attachment.CreateAttachmentRequest):
+                    The request object. The request to create a new
+                attachment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseCreateAttachment._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_attachment(
+                request, metadata
+            )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseCreateAttachment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseCreateAttachment._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseCreateAttachment._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._CreateAttachment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_attachment(resp)
+            return resp
+
     class _CreateRepository(
         _BaseArtifactRegistryRestTransport._BaseCreateRepository,
         ArtifactRegistryRestStub,
@@ -1538,6 +2008,106 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = self._interceptor.post_create_repository(resp)
             return resp
 
+    class _CreateRule(
+        _BaseArtifactRegistryRestTransport._BaseCreateRule, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.CreateRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gda_rule.CreateRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gda_rule.Rule:
+            r"""Call the create rule method over HTTP.
+
+            Args:
+                request (~.gda_rule.CreateRuleRequest):
+                    The request object. The request to create a new rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gda_rule.Rule:
+                    A rule defines the deny or allow
+                action of the operation it applies to
+                and the conditions required for the rule
+                to apply. You can set one rule for an
+                entire repository and one rule for each
+                package within.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseCreateRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_rule(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseCreateRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseCreateRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseCreateRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._CreateRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gda_rule.Rule()
+            pb_resp = gda_rule.Rule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_rule(resp)
+            return resp
+
     class _CreateTag(
         _BaseArtifactRegistryRestTransport._BaseCreateTag, ArtifactRegistryRestStub
     ):
@@ -1633,6 +2203,187 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_tag(resp)
+            return resp
+
+    class _DeleteAttachment(
+        _BaseArtifactRegistryRestTransport._BaseDeleteAttachment,
+        ArtifactRegistryRestStub,
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.DeleteAttachment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: attachment.DeleteAttachmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete attachment method over HTTP.
+
+            Args:
+                request (~.attachment.DeleteAttachmentRequest):
+                    The request object. The request to delete an attachment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseDeleteAttachment._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_attachment(
+                request, metadata
+            )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeleteAttachment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseDeleteAttachment._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._DeleteAttachment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_attachment(resp)
+            return resp
+
+    class _DeleteFile(
+        _BaseArtifactRegistryRestTransport._BaseDeleteFile, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.DeleteFile")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: file.DeleteFileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete file method over HTTP.
+
+            Args:
+                request (~.file.DeleteFileRequest):
+                    The request object. The request to delete a file.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseDeleteFile._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_file(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeleteFile._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseDeleteFile._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._DeleteFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_file(resp)
             return resp
 
     class _DeletePackage(
@@ -1816,6 +2567,82 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = self._interceptor.post_delete_repository(resp)
             return resp
 
+    class _DeleteRule(
+        _BaseArtifactRegistryRestTransport._BaseDeleteRule, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.DeleteRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: rule.DeleteRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete rule method over HTTP.
+
+            Args:
+                request (~.rule.DeleteRuleRequest):
+                    The request object. The request to delete a rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseDeleteRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_rule(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeleteRule._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseDeleteRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._DeleteRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteTag(
         _BaseArtifactRegistryRestTransport._BaseDeleteTag, ArtifactRegistryRestStub
     ):
@@ -1979,6 +2806,100 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_version(resp)
+            return resp
+
+    class _GetAttachment(
+        _BaseArtifactRegistryRestTransport._BaseGetAttachment, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.GetAttachment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: attachment.GetAttachmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> attachment.Attachment:
+            r"""Call the get attachment method over HTTP.
+
+            Args:
+                request (~.attachment.GetAttachmentRequest):
+                    The request object. The request to retrieve an
+                attachment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.attachment.Attachment:
+                    An Attachment refers to additional
+                metadata that can be attached to
+                artifacts in Artifact Registry. An
+                attachment consists of one or more
+                files.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetAttachment._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_attachment(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetAttachment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseGetAttachment._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._GetAttachment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = attachment.Attachment()
+            pb_resp = attachment.Attachment.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_attachment(resp)
             return resp
 
     class _GetDockerImage(
@@ -2887,6 +3808,104 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = self._interceptor.post_get_repository(resp)
             return resp
 
+    class _GetRule(
+        _BaseArtifactRegistryRestTransport._BaseGetRule, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.GetRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: rule.GetRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> rule.Rule:
+            r"""Call the get rule method over HTTP.
+
+            Args:
+                request (~.rule.GetRuleRequest):
+                    The request object. The request to retrieve a rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.rule.Rule:
+                    A rule defines the deny or allow
+                action of the operation it applies to
+                and the conditions required for the rule
+                to apply. You can set one rule for an
+                entire repository and one rule for each
+                package within.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseGetRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_rule(request, metadata)
+            transcoded_request = (
+                _BaseArtifactRegistryRestTransport._BaseGetRule._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseArtifactRegistryRestTransport._BaseGetRule._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._GetRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rule.Rule()
+            pb_resp = rule.Rule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_rule(resp)
+            return resp
+
     class _GetTag(
         _BaseArtifactRegistryRestTransport._BaseGetTag, ArtifactRegistryRestStub
     ):
@@ -3363,6 +4382,99 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_import_yum_artifacts(resp)
+            return resp
+
+    class _ListAttachments(
+        _BaseArtifactRegistryRestTransport._BaseListAttachments,
+        ArtifactRegistryRestStub,
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.ListAttachments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: attachment.ListAttachmentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> attachment.ListAttachmentsResponse:
+            r"""Call the list attachments method over HTTP.
+
+            Args:
+                request (~.attachment.ListAttachmentsRequest):
+                    The request object. The request to list attachments.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.attachment.ListAttachmentsResponse:
+                    The response from listing
+                attachments.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListAttachments._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_attachments(
+                request, metadata
+            )
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListAttachments._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseListAttachments._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._ListAttachments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = attachment.ListAttachmentsResponse()
+            pb_resp = attachment.ListAttachmentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_attachments(resp)
             return resp
 
     class _ListDockerImages(
@@ -4006,6 +5118,94 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = self._interceptor.post_list_repositories(resp)
             return resp
 
+    class _ListRules(
+        _BaseArtifactRegistryRestTransport._BaseListRules, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.ListRules")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: rule.ListRulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> rule.ListRulesResponse:
+            r"""Call the list rules method over HTTP.
+
+            Args:
+                request (~.rule.ListRulesRequest):
+                    The request object. The request to list rules.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.rule.ListRulesResponse:
+                    The response from listing rules.
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseListRules._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_rules(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseListRules._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseListRules._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._ListRules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rule.ListRulesResponse()
+            pb_resp = rule.ListRulesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_rules(resp)
+            return resp
+
     class _ListTags(
         _BaseArtifactRegistryRestTransport._BaseListTags, ArtifactRegistryRestStub
     ):
@@ -4450,6 +5650,199 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
+    class _UpdateFile(
+        _BaseArtifactRegistryRestTransport._BaseUpdateFile, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.UpdateFile")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gda_file.UpdateFileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gda_file.File:
+            r"""Call the update file method over HTTP.
+
+            Args:
+                request (~.gda_file.UpdateFileRequest):
+                    The request object. The request to update a file.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gda_file.File:
+                    Files store content that is
+                potentially associated with Packages or
+                Versions.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseUpdateFile._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_file(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdateFile._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseUpdateFile._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseUpdateFile._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._UpdateFile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gda_file.File()
+            pb_resp = gda_file.File.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_file(resp)
+            return resp
+
+    class _UpdatePackage(
+        _BaseArtifactRegistryRestTransport._BaseUpdatePackage, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.UpdatePackage")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gda_package.UpdatePackageRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gda_package.Package:
+            r"""Call the update package method over HTTP.
+
+            Args:
+                request (~.gda_package.UpdatePackageRequest):
+                    The request object. The request to update a package.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gda_package.Package:
+                    Packages are named collections of
+                versions.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseUpdatePackage._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_package(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdatePackage._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseUpdatePackage._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseUpdatePackage._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._UpdatePackage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gda_package.Package()
+            pb_resp = gda_package.Package.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_package(resp)
+            return resp
+
     class _UpdateProjectSettings(
         _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings,
         ArtifactRegistryRestStub,
@@ -4650,6 +6043,106 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             resp = self._interceptor.post_update_repository(resp)
             return resp
 
+    class _UpdateRule(
+        _BaseArtifactRegistryRestTransport._BaseUpdateRule, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.UpdateRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gda_rule.UpdateRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gda_rule.Rule:
+            r"""Call the update rule method over HTTP.
+
+            Args:
+                request (~.gda_rule.UpdateRuleRequest):
+                    The request object. The request to update a rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gda_rule.Rule:
+                    A rule defines the deny or allow
+                action of the operation it applies to
+                and the conditions required for the rule
+                to apply. You can set one rule for an
+                entire repository and one rule for each
+                package within.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseUpdateRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_rule(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdateRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseUpdateRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseUpdateRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._UpdateRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gda_rule.Rule()
+            pb_resp = gda_rule.Rule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_rule(resp)
+            return resp
+
     class _UpdateTag(
         _BaseArtifactRegistryRestTransport._BaseUpdateTag, ArtifactRegistryRestStub
     ):
@@ -4746,6 +6239,105 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_tag(resp)
+            return resp
+
+    class _UpdateVersion(
+        _BaseArtifactRegistryRestTransport._BaseUpdateVersion, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.UpdateVersion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gda_version.UpdateVersionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gda_version.Version:
+            r"""Call the update version method over HTTP.
+
+            Args:
+                request (~.gda_version.UpdateVersionRequest):
+                    The request object. The request to update a version.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gda_version.Version:
+                    The body of a version resource. A
+                version resource represents a collection
+                of components, such as files and other
+                data. This may correspond to a version
+                in many package management schemes.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseUpdateVersion._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_version(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdateVersion._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseUpdateVersion._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseUpdateVersion._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._UpdateVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gda_version.Version()
+            pb_resp = gda_version.Version.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_version(resp)
             return resp
 
     class _UpdateVPCSCConfig(
@@ -4856,6 +6448,14 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         return self._BatchDeleteVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_attachment(
+        self,
+    ) -> Callable[[gda_attachment.CreateAttachmentRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAttachment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_repository(
         self,
     ) -> Callable[[gda_repository.CreateRepositoryRequest], operations_pb2.Operation]:
@@ -4864,10 +6464,32 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         return self._CreateRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_rule(self) -> Callable[[gda_rule.CreateRuleRequest], gda_rule.Rule]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_tag(self) -> Callable[[gda_tag.CreateTagRequest], gda_tag.Tag]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTag(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_attachment(
+        self,
+    ) -> Callable[[attachment.DeleteAttachmentRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAttachment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_file(
+        self,
+    ) -> Callable[[file.DeleteFileRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_package(
@@ -4886,6 +6508,12 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_rule(self) -> Callable[[rule.DeleteRuleRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_tag(self) -> Callable[[tag.DeleteTagRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4898,6 +6526,14 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVersion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_attachment(
+        self,
+    ) -> Callable[[attachment.GetAttachmentRequest], attachment.Attachment]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_docker_image(
@@ -4968,6 +6604,12 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         return self._GetRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_rule(self) -> Callable[[rule.GetRuleRequest], rule.Rule]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_tag(self) -> Callable[[tag.GetTagRequest], tag.Tag]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5002,6 +6644,16 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportYumArtifacts(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_attachments(
+        self,
+    ) -> Callable[
+        [attachment.ListAttachmentsRequest], attachment.ListAttachmentsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAttachments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_docker_images(
@@ -5066,6 +6718,12 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         return self._ListRepositories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_rules(self) -> Callable[[rule.ListRulesRequest], rule.ListRulesResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListRules(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_tags(self) -> Callable[[tag.ListTagsRequest], tag.ListTagsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5099,6 +6757,20 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_file(self) -> Callable[[gda_file.UpdateFileRequest], gda_file.File]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateFile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_package(
+        self,
+    ) -> Callable[[gda_package.UpdatePackageRequest], gda_package.Package]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePackage(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_project_settings(
         self,
     ) -> Callable[[settings.UpdateProjectSettingsRequest], settings.ProjectSettings]:
@@ -5115,10 +6787,24 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         return self._UpdateRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_rule(self) -> Callable[[gda_rule.UpdateRuleRequest], gda_rule.Rule]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_tag(self) -> Callable[[gda_tag.UpdateTagRequest], gda_tag.Tag]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTag(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_version(
+        self,
+    ) -> Callable[[gda_version.UpdateVersionRequest], gda_version.Version]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_vpcsc_config(

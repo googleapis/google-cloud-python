@@ -17,20 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.devtools.artifactregistry.v1',
+    package="google.devtools.artifactregistry.v1",
     manifest={
-        'Attachment',
-        'ListAttachmentsRequest',
-        'ListAttachmentsResponse',
-        'GetAttachmentRequest',
-        'CreateAttachmentRequest',
-        'DeleteAttachmentRequest',
+        "Attachment",
+        "ListAttachmentsRequest",
+        "ListAttachmentsResponse",
+        "GetAttachmentRequest",
+        "CreateAttachmentRequest",
+        "DeleteAttachmentRequest",
     },
 )
 
@@ -175,10 +173,10 @@ class ListAttachmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    attachments: MutableSequence['Attachment'] = proto.RepeatedField(
+    attachments: MutableSequence["Attachment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Attachment',
+        message="Attachment",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -223,10 +221,10 @@ class CreateAttachmentRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    attachment: 'Attachment' = proto.Field(
+    attachment: "Attachment" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='Attachment',
+        message="Attachment",
     )
 
 

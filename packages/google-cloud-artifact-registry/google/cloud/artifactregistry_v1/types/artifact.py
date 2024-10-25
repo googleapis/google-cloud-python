@@ -143,6 +143,7 @@ class ListDockerImagesRequest(proto.Message):
             whose docker images will be listed.
         page_size (int):
             The maximum number of artifacts to return.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
@@ -282,6 +283,7 @@ class ListMavenArtifactsRequest(proto.Message):
             whose maven artifacts will be listed.
         page_size (int):
             The maximum number of artifacts to return.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
@@ -402,6 +404,7 @@ class ListNpmPackagesRequest(proto.Message):
             whose npm packages will be listed.
         page_size (int):
             The maximum number of artifacts to return.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
@@ -526,6 +529,7 @@ class ListPythonPackagesRequest(proto.Message):
             whose python packages will be listed.
         page_size (int):
             The maximum number of artifacts to return.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.

@@ -15,14 +15,34 @@
                 "batch_delete_versions"
               ]
             },
+            "CreateAttachment": {
+              "methods": [
+                "create_attachment"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
               ]
             },
+            "CreateRule": {
+              "methods": [
+                "create_rule"
+              ]
+            },
             "CreateTag": {
               "methods": [
                 "create_tag"
+              ]
+            },
+            "DeleteAttachment": {
+              "methods": [
+                "delete_attachment"
+              ]
+            },
+            "DeleteFile": {
+              "methods": [
+                "delete_file"
               ]
             },
             "DeletePackage": {
@@ -35,6 +55,11 @@
                 "delete_repository"
               ]
             },
+            "DeleteRule": {
+              "methods": [
+                "delete_rule"
+              ]
+            },
             "DeleteTag": {
               "methods": [
                 "delete_tag"
@@ -43,6 +68,11 @@
             "DeleteVersion": {
               "methods": [
                 "delete_version"
+              ]
+            },
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
               ]
             },
             "GetDockerImage": {
@@ -90,6 +120,11 @@
                 "get_repository"
               ]
             },
+            "GetRule": {
+              "methods": [
+                "get_rule"
+              ]
+            },
             "GetTag": {
               "methods": [
                 "get_tag"
@@ -113,6 +148,11 @@
             "ImportYumArtifacts": {
               "methods": [
                 "import_yum_artifacts"
+              ]
+            },
+            "ListAttachments": {
+              "methods": [
+                "list_attachments"
               ]
             },
             "ListDockerImages": {
@@ -150,6 +190,11 @@
                 "list_repositories"
               ]
             },
+            "ListRules": {
+              "methods": [
+                "list_rules"
+              ]
+            },
             "ListTags": {
               "methods": [
                 "list_tags"
@@ -170,6 +215,16 @@
                 "test_iam_permissions"
               ]
             },
+            "UpdateFile": {
+              "methods": [
+                "update_file"
+              ]
+            },
+            "UpdatePackage": {
+              "methods": [
+                "update_package"
+              ]
+            },
             "UpdateProjectSettings": {
               "methods": [
                 "update_project_settings"
@@ -180,6 +235,11 @@
                 "update_repository"
               ]
             },
+            "UpdateRule": {
+              "methods": [
+                "update_rule"
+              ]
+            },
             "UpdateTag": {
               "methods": [
                 "update_tag"
@@ -188,6 +248,11 @@
             "UpdateVPCSCConfig": {
               "methods": [
                 "update_vpcsc_config"
+              ]
+            },
+            "UpdateVersion": {
+              "methods": [
+                "update_version"
               ]
             }
           }
@@ -200,14 +265,34 @@
                 "batch_delete_versions"
               ]
             },
+            "CreateAttachment": {
+              "methods": [
+                "create_attachment"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
               ]
             },
+            "CreateRule": {
+              "methods": [
+                "create_rule"
+              ]
+            },
             "CreateTag": {
               "methods": [
                 "create_tag"
+              ]
+            },
+            "DeleteAttachment": {
+              "methods": [
+                "delete_attachment"
+              ]
+            },
+            "DeleteFile": {
+              "methods": [
+                "delete_file"
               ]
             },
             "DeletePackage": {
@@ -220,6 +305,11 @@
                 "delete_repository"
               ]
             },
+            "DeleteRule": {
+              "methods": [
+                "delete_rule"
+              ]
+            },
             "DeleteTag": {
               "methods": [
                 "delete_tag"
@@ -228,6 +318,11 @@
             "DeleteVersion": {
               "methods": [
                 "delete_version"
+              ]
+            },
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
               ]
             },
             "GetDockerImage": {
@@ -275,6 +370,11 @@
                 "get_repository"
               ]
             },
+            "GetRule": {
+              "methods": [
+                "get_rule"
+              ]
+            },
             "GetTag": {
               "methods": [
                 "get_tag"
@@ -298,6 +398,11 @@
             "ImportYumArtifacts": {
               "methods": [
                 "import_yum_artifacts"
+              ]
+            },
+            "ListAttachments": {
+              "methods": [
+                "list_attachments"
               ]
             },
             "ListDockerImages": {
@@ -335,6 +440,11 @@
                 "list_repositories"
               ]
             },
+            "ListRules": {
+              "methods": [
+                "list_rules"
+              ]
+            },
             "ListTags": {
               "methods": [
                 "list_tags"
@@ -355,6 +465,16 @@
                 "test_iam_permissions"
               ]
             },
+            "UpdateFile": {
+              "methods": [
+                "update_file"
+              ]
+            },
+            "UpdatePackage": {
+              "methods": [
+                "update_package"
+              ]
+            },
             "UpdateProjectSettings": {
               "methods": [
                 "update_project_settings"
@@ -365,6 +485,11 @@
                 "update_repository"
               ]
             },
+            "UpdateRule": {
+              "methods": [
+                "update_rule"
+              ]
+            },
             "UpdateTag": {
               "methods": [
                 "update_tag"
@@ -373,6 +498,11 @@
             "UpdateVPCSCConfig": {
               "methods": [
                 "update_vpcsc_config"
+              ]
+            },
+            "UpdateVersion": {
+              "methods": [
+                "update_version"
               ]
             }
           }
@@ -385,14 +515,34 @@
                 "batch_delete_versions"
               ]
             },
+            "CreateAttachment": {
+              "methods": [
+                "create_attachment"
+              ]
+            },
             "CreateRepository": {
               "methods": [
                 "create_repository"
               ]
             },
+            "CreateRule": {
+              "methods": [
+                "create_rule"
+              ]
+            },
             "CreateTag": {
               "methods": [
                 "create_tag"
+              ]
+            },
+            "DeleteAttachment": {
+              "methods": [
+                "delete_attachment"
+              ]
+            },
+            "DeleteFile": {
+              "methods": [
+                "delete_file"
               ]
             },
             "DeletePackage": {
@@ -405,6 +555,11 @@
                 "delete_repository"
               ]
             },
+            "DeleteRule": {
+              "methods": [
+                "delete_rule"
+              ]
+            },
             "DeleteTag": {
               "methods": [
                 "delete_tag"
@@ -413,6 +568,11 @@
             "DeleteVersion": {
               "methods": [
                 "delete_version"
+              ]
+            },
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
               ]
             },
             "GetDockerImage": {
@@ -460,6 +620,11 @@
                 "get_repository"
               ]
             },
+            "GetRule": {
+              "methods": [
+                "get_rule"
+              ]
+            },
             "GetTag": {
               "methods": [
                 "get_tag"
@@ -483,6 +648,11 @@
             "ImportYumArtifacts": {
               "methods": [
                 "import_yum_artifacts"
+              ]
+            },
+            "ListAttachments": {
+              "methods": [
+                "list_attachments"
               ]
             },
             "ListDockerImages": {
@@ -520,6 +690,11 @@
                 "list_repositories"
               ]
             },
+            "ListRules": {
+              "methods": [
+                "list_rules"
+              ]
+            },
             "ListTags": {
               "methods": [
                 "list_tags"
@@ -540,6 +715,16 @@
                 "test_iam_permissions"
               ]
             },
+            "UpdateFile": {
+              "methods": [
+                "update_file"
+              ]
+            },
+            "UpdatePackage": {
+              "methods": [
+                "update_package"
+              ]
+            },
             "UpdateProjectSettings": {
               "methods": [
                 "update_project_settings"
@@ -550,6 +735,11 @@
                 "update_repository"
               ]
             },
+            "UpdateRule": {
+              "methods": [
+                "update_rule"
+              ]
+            },
             "UpdateTag": {
               "methods": [
                 "update_tag"
@@ -558,6 +748,11 @@
             "UpdateVPCSCConfig": {
               "methods": [
                 "update_vpcsc_config"
+              ]
+            },
+            "UpdateVersion": {
+              "methods": [
+                "update_version"
               ]
             }
           }

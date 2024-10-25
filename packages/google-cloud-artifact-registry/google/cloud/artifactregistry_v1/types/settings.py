@@ -46,6 +46,9 @@ class ProjectSettings(proto.Message):
         legacy_redirection_state (google.cloud.artifactregistry_v1.types.ProjectSettings.RedirectionState):
             The redirection state of the legacy
             repositories in this project.
+        pull_percent (int):
+            The percentage of pull traffic to redirect
+            from GCR to AR when using partial redirection.
     """
 
     class RedirectionState(proto.Enum):
@@ -61,11 +64,19 @@ class ProjectSettings(proto.Message):
             REDIRECTION_FROM_GCR_IO_FINALIZED (3):
                 Redirection is enabled, and has been
                 finalized so cannot be reverted.
+            REDIRECTION_FROM_GCR_IO_ENABLED_AND_COPYING (5):
+                Redirection is enabled and missing images are
+                copied from GCR
+            REDIRECTION_FROM_GCR_IO_PARTIAL_AND_COPYING (6):
+                Redirection is partially enabled and missing
+                images are copied from GCR
         """
         REDIRECTION_STATE_UNSPECIFIED = 0
         REDIRECTION_FROM_GCR_IO_DISABLED = 1
         REDIRECTION_FROM_GCR_IO_ENABLED = 2
         REDIRECTION_FROM_GCR_IO_FINALIZED = 3
+        REDIRECTION_FROM_GCR_IO_ENABLED_AND_COPYING = 5
+        REDIRECTION_FROM_GCR_IO_PARTIAL_AND_COPYING = 6
 
     name: str = proto.Field(
         proto.STRING,
@@ -75,6 +86,10 @@ class ProjectSettings(proto.Message):
         proto.ENUM,
         number=2,
         enum=RedirectionState,
+    )
+    pull_percent: int = proto.Field(
+        proto.INT32,
+        number=3,
     )
 
 

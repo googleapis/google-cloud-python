@@ -40,9 +40,11 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.artifactregistry_v1.types import (
     artifact,
+    attachment,
     file,
     package,
     repository,
+    rule,
     tag,
     version,
 )
@@ -1408,6 +1410,310 @@ class ListTagsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.tags:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRulesPager:
+    """A pager for iterating through ``list_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListRulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``rules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListRules`` requests and continue to iterate
+    through the ``rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., rule.ListRulesResponse],
+        request: rule.ListRulesRequest,
+        response: rule.ListRulesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListRulesRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = rule.ListRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[rule.ListRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[rule.Rule]:
+        for page in self.pages:
+            yield from page.rules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRulesAsyncPager:
+    """A pager for iterating through ``list_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListRulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``rules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListRules`` requests and continue to iterate
+    through the ``rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[rule.ListRulesResponse]],
+        request: rule.ListRulesRequest,
+        response: rule.ListRulesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListRulesRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = rule.ListRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[rule.ListRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[rule.Rule]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.rules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAttachmentsPager:
+    """A pager for iterating through ``list_attachments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListAttachmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``attachments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAttachments`` requests and continue to iterate
+    through the ``attachments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListAttachmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., attachment.ListAttachmentsResponse],
+        request: attachment.ListAttachmentsRequest,
+        response: attachment.ListAttachmentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListAttachmentsRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListAttachmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = attachment.ListAttachmentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[attachment.ListAttachmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[attachment.Attachment]:
+        for page in self.pages:
+            yield from page.attachments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAttachmentsAsyncPager:
+    """A pager for iterating through ``list_attachments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.artifactregistry_v1.types.ListAttachmentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``attachments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAttachments`` requests and continue to iterate
+    through the ``attachments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.artifactregistry_v1.types.ListAttachmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[attachment.ListAttachmentsResponse]],
+        request: attachment.ListAttachmentsRequest,
+        response: attachment.ListAttachmentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.artifactregistry_v1.types.ListAttachmentsRequest):
+                The initial request object.
+            response (google.cloud.artifactregistry_v1.types.ListAttachmentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = attachment.ListAttachmentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[attachment.ListAttachmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[attachment.Attachment]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.attachments:
                     yield response
 
         return async_generator()

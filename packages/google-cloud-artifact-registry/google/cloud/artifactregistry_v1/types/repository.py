@@ -305,11 +305,21 @@ class RemoteRepositoryConfig(proto.Message):
             repository.
 
             This field is a member of `oneof`_ ``remote_source``.
+        common_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.CommonRemoteRepository):
+            Common remote repository settings.
+            Used as the remote repository upstream URL.
+
+            This field is a member of `oneof`_ ``remote_source``.
         description (str):
             The description of the remote source.
         upstream_credentials (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.UpstreamCredentials):
             Optional. The credentials used to access the
             remote repository.
+        disable_upstream_validation (bool):
+            Input only. A create/update remote repo
+            option to avoid making a HEAD/GET request to
+            validate a remote repo and any supplied upstream
+            credentials.
     """
 
     class UpstreamCredentials(proto.Message):
@@ -356,12 +366,21 @@ class RemoteRepositoryConfig(proto.Message):
     class DockerRepository(proto.Message):
         r"""Configuration for a Docker remote repository.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             public_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.DockerRepository.PublicRepository):
                 One of the publicly available Docker
                 repositories supported by Artifact Registry.
+
+                This field is a member of `oneof`_ ``upstream``.
+            custom_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.DockerRepository.CustomRepository):
+                Customer-specified remote repository.
 
                 This field is a member of `oneof`_ ``upstream``.
         """
@@ -379,15 +398,41 @@ class RemoteRepositoryConfig(proto.Message):
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             DOCKER_HUB = 1
 
+        class CustomRepository(proto.Message):
+            r"""Customer-specified publicly available remote repository.
+
+            Attributes:
+                uri (str):
+                    An http/https uri reference to the custom
+                    remote repository, for ex:
+                    "https://registry-1.docker.io".
+            """
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         public_repository: "RemoteRepositoryConfig.DockerRepository.PublicRepository" = proto.Field(
             proto.ENUM,
             number=1,
             oneof="upstream",
             enum="RemoteRepositoryConfig.DockerRepository.PublicRepository",
         )
+        custom_repository: "RemoteRepositoryConfig.DockerRepository.CustomRepository" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.DockerRepository.CustomRepository",
+        )
 
     class MavenRepository(proto.Message):
         r"""Configuration for a Maven remote repository.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -395,6 +440,10 @@ class RemoteRepositoryConfig(proto.Message):
             public_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.MavenRepository.PublicRepository):
                 One of the publicly available Maven
                 repositories supported by Artifact Registry.
+
+                This field is a member of `oneof`_ ``upstream``.
+            custom_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.MavenRepository.CustomRepository):
+                Customer-specified remote repository.
 
                 This field is a member of `oneof`_ ``upstream``.
         """
@@ -412,6 +461,21 @@ class RemoteRepositoryConfig(proto.Message):
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             MAVEN_CENTRAL = 1
 
+        class CustomRepository(proto.Message):
+            r"""Customer-specified publicly available remote repository.
+
+            Attributes:
+                uri (str):
+                    An http/https uri reference to the upstream
+                    remote repository, for ex:
+                    "https://my.maven.registry/".
+            """
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         public_repository: "RemoteRepositoryConfig.MavenRepository.PublicRepository" = (
             proto.Field(
                 proto.ENUM,
@@ -420,9 +484,22 @@ class RemoteRepositoryConfig(proto.Message):
                 enum="RemoteRepositoryConfig.MavenRepository.PublicRepository",
             )
         )
+        custom_repository: "RemoteRepositoryConfig.MavenRepository.CustomRepository" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="upstream",
+                message="RemoteRepositoryConfig.MavenRepository.CustomRepository",
+            )
+        )
 
     class NpmRepository(proto.Message):
         r"""Configuration for a Npm remote repository.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -430,6 +507,10 @@ class RemoteRepositoryConfig(proto.Message):
             public_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.NpmRepository.PublicRepository):
                 One of the publicly available Npm
                 repositories supported by Artifact Registry.
+
+                This field is a member of `oneof`_ ``upstream``.
+            custom_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.NpmRepository.CustomRepository):
+                Customer-specified remote repository.
 
                 This field is a member of `oneof`_ ``upstream``.
         """
@@ -447,6 +528,21 @@ class RemoteRepositoryConfig(proto.Message):
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             NPMJS = 1
 
+        class CustomRepository(proto.Message):
+            r"""Customer-specified publicly available remote repository.
+
+            Attributes:
+                uri (str):
+                    An http/https uri reference to the upstream
+                    remote repository, for ex:
+                    "https://my.npm.registry/".
+            """
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         public_repository: "RemoteRepositoryConfig.NpmRepository.PublicRepository" = (
             proto.Field(
                 proto.ENUM,
@@ -455,9 +551,22 @@ class RemoteRepositoryConfig(proto.Message):
                 enum="RemoteRepositoryConfig.NpmRepository.PublicRepository",
             )
         )
+        custom_repository: "RemoteRepositoryConfig.NpmRepository.CustomRepository" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="upstream",
+                message="RemoteRepositoryConfig.NpmRepository.CustomRepository",
+            )
+        )
 
     class PythonRepository(proto.Message):
         r"""Configuration for a Python remote repository.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -465,6 +574,10 @@ class RemoteRepositoryConfig(proto.Message):
             public_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.PythonRepository.PublicRepository):
                 One of the publicly available Python
                 repositories supported by Artifact Registry.
+
+                This field is a member of `oneof`_ ``upstream``.
+            custom_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.PythonRepository.CustomRepository):
+                Customer-specified remote repository.
 
                 This field is a member of `oneof`_ ``upstream``.
         """
@@ -482,15 +595,41 @@ class RemoteRepositoryConfig(proto.Message):
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             PYPI = 1
 
+        class CustomRepository(proto.Message):
+            r"""Customer-specified publicly available remote repository.
+
+            Attributes:
+                uri (str):
+                    An http/https uri reference to the upstream
+                    remote repository, for ex:
+                    "https://my.python.registry/".
+            """
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         public_repository: "RemoteRepositoryConfig.PythonRepository.PublicRepository" = proto.Field(
             proto.ENUM,
             number=1,
             oneof="upstream",
             enum="RemoteRepositoryConfig.PythonRepository.PublicRepository",
         )
+        custom_repository: "RemoteRepositoryConfig.PythonRepository.CustomRepository" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="upstream",
+            message="RemoteRepositoryConfig.PythonRepository.CustomRepository",
+        )
 
     class AptRepository(proto.Message):
         r"""Configuration for an Apt remote repository.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -498,6 +637,10 @@ class RemoteRepositoryConfig(proto.Message):
             public_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.AptRepository.PublicRepository):
                 One of the publicly available Apt
                 repositories supported by Artifact Registry.
+
+                This field is a member of `oneof`_ ``upstream``.
+            custom_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.AptRepository.CustomRepository):
+                Customer-specified remote repository.
 
                 This field is a member of `oneof`_ ``upstream``.
         """
@@ -525,10 +668,13 @@ class RemoteRepositoryConfig(proto.Message):
                         Debian.
                     UBUNTU (2):
                         Ubuntu LTS/Pro.
+                    DEBIAN_SNAPSHOT (3):
+                        Archived Debian.
                 """
                 REPOSITORY_BASE_UNSPECIFIED = 0
                 DEBIAN = 1
                 UBUNTU = 2
+                DEBIAN_SNAPSHOT = 3
 
             repository_base: "RemoteRepositoryConfig.AptRepository.PublicRepository.RepositoryBase" = proto.Field(
                 proto.ENUM,
@@ -540,6 +686,21 @@ class RemoteRepositoryConfig(proto.Message):
                 number=2,
             )
 
+        class CustomRepository(proto.Message):
+            r"""Customer-specified publicly available remote repository.
+
+            Attributes:
+                uri (str):
+                    An http/https uri reference to the upstream
+                    remote repository, for ex:
+                    "https://my.apt.registry/".
+            """
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         public_repository: "RemoteRepositoryConfig.AptRepository.PublicRepository" = (
             proto.Field(
                 proto.MESSAGE,
@@ -548,9 +709,22 @@ class RemoteRepositoryConfig(proto.Message):
                 message="RemoteRepositoryConfig.AptRepository.PublicRepository",
             )
         )
+        custom_repository: "RemoteRepositoryConfig.AptRepository.CustomRepository" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="upstream",
+                message="RemoteRepositoryConfig.AptRepository.CustomRepository",
+            )
+        )
 
     class YumRepository(proto.Message):
         r"""Configuration for a Yum remote repository.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -558,6 +732,10 @@ class RemoteRepositoryConfig(proto.Message):
             public_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.YumRepository.PublicRepository):
                 One of the publicly available Yum
                 repositories supported by Artifact Registry.
+
+                This field is a member of `oneof`_ ``upstream``.
+            custom_repository (google.cloud.artifactregistry_v1.types.RemoteRepositoryConfig.YumRepository.CustomRepository):
+                Customer-specified remote repository.
 
                 This field is a member of `oneof`_ ``upstream``.
         """
@@ -613,6 +791,21 @@ class RemoteRepositoryConfig(proto.Message):
                 number=2,
             )
 
+        class CustomRepository(proto.Message):
+            r"""Customer-specified publicly available remote repository.
+
+            Attributes:
+                uri (str):
+                    An http/https uri reference to the upstream
+                    remote repository, for ex:
+                    "https://my.yum.registry/".
+            """
+
+            uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         public_repository: "RemoteRepositoryConfig.YumRepository.PublicRepository" = (
             proto.Field(
                 proto.MESSAGE,
@@ -620,6 +813,28 @@ class RemoteRepositoryConfig(proto.Message):
                 oneof="upstream",
                 message="RemoteRepositoryConfig.YumRepository.PublicRepository",
             )
+        )
+        custom_repository: "RemoteRepositoryConfig.YumRepository.CustomRepository" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="upstream",
+                message="RemoteRepositoryConfig.YumRepository.CustomRepository",
+            )
+        )
+
+    class CommonRemoteRepository(proto.Message):
+        r"""Common remote repository settings type.
+
+        Attributes:
+            uri (str):
+                Required. A common public repository base for
+                remote repository.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
         )
 
     docker_repository: DockerRepository = proto.Field(
@@ -658,6 +873,12 @@ class RemoteRepositoryConfig(proto.Message):
         oneof="remote_source",
         message=YumRepository,
     )
+    common_repository: CommonRemoteRepository = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="remote_source",
+        message=CommonRemoteRepository,
+    )
     description: str = proto.Field(
         proto.STRING,
         number=1,
@@ -666,6 +887,10 @@ class RemoteRepositoryConfig(proto.Message):
         proto.MESSAGE,
         number=9,
         message=UpstreamCredentials,
+    )
+    disable_upstream_validation: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
 
 
@@ -705,6 +930,8 @@ class Repository(proto.Message):
         name (str):
             The name of the repository, for example:
             ``projects/p1/locations/us-central1/repositories/repo1``.
+            For each location in a project, repository names must be
+            unique.
         format_ (google.cloud.artifactregistry_v1.types.Repository.Format):
             Optional. The format of packages that are
             stored in the repository.
@@ -755,6 +982,16 @@ class Repository(proto.Message):
             Optional. If true, the cleanup pipeline is
             prevented from deleting versions in this
             repository.
+        vulnerability_scanning_config (google.cloud.artifactregistry_v1.types.Repository.VulnerabilityScanningConfig):
+            Optional. Config and state for vulnerability
+            scanning of resources within this Repository.
+        disallow_unspecified_mode (bool):
+            Optional. If this is true, an unspecified
+            repo type will be treated as error rather than
+            defaulting to standard.
+        satisfies_pzi (bool):
+            Output only. If set, the repository satisfies
+            physical zone isolation.
     """
 
     class Format(proto.Enum):
@@ -779,6 +1016,8 @@ class Repository(proto.Message):
                 Kubeflow Pipelines package format.
             GO (10):
                 Go package format.
+            GENERIC (11):
+                Generic package format.
         """
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
@@ -789,6 +1028,7 @@ class Repository(proto.Message):
         PYTHON = 8
         KFP = 9
         GO = 10
+        GENERIC = 11
 
     class Mode(proto.Enum):
         r"""The mode configures the repository to serve artifacts from
@@ -872,6 +1112,91 @@ class Repository(proto.Message):
             number=1,
         )
 
+    class VulnerabilityScanningConfig(proto.Message):
+        r"""Config on whether to perform vulnerability scanning for
+        resources in this repository, as well as output fields
+        describing current state.
+
+        Attributes:
+            enablement_config (google.cloud.artifactregistry_v1.types.Repository.VulnerabilityScanningConfig.EnablementConfig):
+                Optional. Config for whether this repository
+                has vulnerability scanning disabled.
+            last_enable_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The last time this repository
+                config was enabled.
+            enablement_state (google.cloud.artifactregistry_v1.types.Repository.VulnerabilityScanningConfig.EnablementState):
+                Output only. State of feature enablement,
+                combining repository enablement config and API
+                enablement state.
+            enablement_state_reason (str):
+                Output only. Reason for the repository state.
+        """
+
+        class EnablementConfig(proto.Enum):
+            r"""Config for vulnerability scanning of resources in this
+            repository.
+
+            Values:
+                ENABLEMENT_CONFIG_UNSPECIFIED (0):
+                    Not set. This will be treated as INHERITED.
+                INHERITED (1):
+                    Scanning is Enabled, but dependent on API
+                    enablement.
+                DISABLED (2):
+                    No automatic vulnerability scanning will be
+                    performed for this repository.
+            """
+            ENABLEMENT_CONFIG_UNSPECIFIED = 0
+            INHERITED = 1
+            DISABLED = 2
+
+        class EnablementState(proto.Enum):
+            r"""Describes the state of vulnerability scanning in this
+            repository, including both repository enablement and API
+            enablement.
+
+            Values:
+                ENABLEMENT_STATE_UNSPECIFIED (0):
+                    Enablement state is unclear.
+                SCANNING_UNSUPPORTED (1):
+                    Repository does not support vulnerability
+                    scanning.
+                SCANNING_DISABLED (2):
+                    Vulnerability scanning is disabled for this
+                    repository.
+                SCANNING_ACTIVE (3):
+                    Vulnerability scanning is active for this
+                    repository.
+            """
+            ENABLEMENT_STATE_UNSPECIFIED = 0
+            SCANNING_UNSUPPORTED = 1
+            SCANNING_DISABLED = 2
+            SCANNING_ACTIVE = 3
+
+        enablement_config: "Repository.VulnerabilityScanningConfig.EnablementConfig" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Repository.VulnerabilityScanningConfig.EnablementConfig",
+            )
+        )
+        last_enable_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+        enablement_state: "Repository.VulnerabilityScanningConfig.EnablementState" = (
+            proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="Repository.VulnerabilityScanningConfig.EnablementState",
+            )
+        )
+        enablement_state_reason: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
     maven_config: MavenRepositoryConfig = proto.Field(
         proto.MESSAGE,
         number=9,
@@ -951,6 +1276,19 @@ class Repository(proto.Message):
         proto.BOOL,
         number=18,
     )
+    vulnerability_scanning_config: VulnerabilityScanningConfig = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=VulnerabilityScanningConfig,
+    )
+    disallow_unspecified_mode: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=22,
+    )
 
 
 class ListRepositoriesRequest(proto.Message):
@@ -966,6 +1304,30 @@ class ListRepositoriesRequest(proto.Message):
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
+        filter (str):
+            Optional. An expression for filtering the results of the
+            request. Filter rules are case insensitive. The fields
+            eligible for filtering are:
+
+            -  ``name``
+
+            Examples of using a filter:
+
+            To filter the results of your request to repositories with
+            the name ``my-repo`` in project ``my-project`` in the
+            ``us-central`` region, append the following filter
+            expression to your request:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo"``
+
+            You can also use wildcards to match any number of characters
+            before or after the value:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-*"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/*repo"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/*repo*"``
+        order_by (str):
+            Optional. The field to order the results by.
     """
 
     parent: str = proto.Field(
@@ -979,6 +1341,14 @@ class ListRepositoriesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

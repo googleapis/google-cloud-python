@@ -39,13 +39,31 @@ from .artifact import (
     NpmPackage,
     PythonPackage,
 )
-from .file import File, GetFileRequest, Hash, ListFilesRequest, ListFilesResponse
+from .attachment import (
+    Attachment,
+    CreateAttachmentRequest,
+    DeleteAttachmentRequest,
+    GetAttachmentRequest,
+    ListAttachmentsRequest,
+    ListAttachmentsResponse,
+)
+from .file import (
+    DeleteFileRequest,
+    File,
+    GetFileRequest,
+    Hash,
+    ListFilesRequest,
+    ListFilesResponse,
+    UpdateFileRequest,
+)
+from .generic import GenericArtifact
 from .package import (
     DeletePackageRequest,
     GetPackageRequest,
     ListPackagesRequest,
     ListPackagesResponse,
     Package,
+    UpdatePackageRequest,
 )
 from .repository import (
     CleanupPolicy,
@@ -61,6 +79,15 @@ from .repository import (
     UpdateRepositoryRequest,
     UpstreamPolicy,
     VirtualRepositoryConfig,
+)
+from .rule import (
+    CreateRuleRequest,
+    DeleteRuleRequest,
+    GetRuleRequest,
+    ListRulesRequest,
+    ListRulesResponse,
+    Rule,
+    UpdateRuleRequest,
 )
 from .service import OperationMetadata
 from .settings import (
@@ -84,6 +111,7 @@ from .version import (
     GetVersionRequest,
     ListVersionsRequest,
     ListVersionsResponse,
+    UpdateVersionRequest,
     Version,
     VersionView,
 )
@@ -120,16 +148,26 @@ __all__ = (
     "MavenArtifact",
     "NpmPackage",
     "PythonPackage",
+    "Attachment",
+    "CreateAttachmentRequest",
+    "DeleteAttachmentRequest",
+    "GetAttachmentRequest",
+    "ListAttachmentsRequest",
+    "ListAttachmentsResponse",
+    "DeleteFileRequest",
     "File",
     "GetFileRequest",
     "Hash",
     "ListFilesRequest",
     "ListFilesResponse",
+    "UpdateFileRequest",
+    "GenericArtifact",
     "DeletePackageRequest",
     "GetPackageRequest",
     "ListPackagesRequest",
     "ListPackagesResponse",
     "Package",
+    "UpdatePackageRequest",
     "CleanupPolicy",
     "CleanupPolicyCondition",
     "CleanupPolicyMostRecentVersions",
@@ -143,6 +181,13 @@ __all__ = (
     "UpdateRepositoryRequest",
     "UpstreamPolicy",
     "VirtualRepositoryConfig",
+    "CreateRuleRequest",
+    "DeleteRuleRequest",
+    "GetRuleRequest",
+    "ListRulesRequest",
+    "ListRulesResponse",
+    "Rule",
+    "UpdateRuleRequest",
     "OperationMetadata",
     "GetProjectSettingsRequest",
     "ProjectSettings",
@@ -160,6 +205,7 @@ __all__ = (
     "GetVersionRequest",
     "ListVersionsRequest",
     "ListVersionsResponse",
+    "UpdateVersionRequest",
     "Version",
     "VersionView",
     "GetVPCSCConfigRequest",

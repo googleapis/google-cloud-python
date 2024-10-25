@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.devtools.artifactregistry.v1',
+    package="google.devtools.artifactregistry.v1",
     manifest={
-        'Rule',
-        'ListRulesRequest',
-        'ListRulesResponse',
-        'GetRuleRequest',
-        'CreateRuleRequest',
-        'UpdateRuleRequest',
-        'DeleteRuleRequest',
+        "Rule",
+        "ListRulesRequest",
+        "ListRulesResponse",
+        "GetRuleRequest",
+        "CreateRuleRequest",
+        "UpdateRuleRequest",
+        "DeleteRuleRequest",
     },
 )
 
@@ -60,6 +58,7 @@ class Rule(proto.Message):
             If empty, this rule applies to all packages
             inside the repository.
     """
+
     class Action(proto.Enum):
         r"""Defines the action of the rule.
 
@@ -157,10 +156,10 @@ class ListRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rules: MutableSequence['Rule'] = proto.RepeatedField(
+    rules: MutableSequence["Rule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Rule',
+        message="Rule",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -203,10 +202,10 @@ class CreateRuleRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    rule: 'Rule' = proto.Field(
+    rule: "Rule" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='Rule',
+        message="Rule",
     )
 
 
@@ -223,10 +222,10 @@ class UpdateRuleRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    rule: 'Rule' = proto.Field(
+    rule: "Rule" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='Rule',
+        message="Rule",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
