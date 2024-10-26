@@ -91,6 +91,10 @@ class CloudBuildAsyncClient:
     )
     network_path = staticmethod(CloudBuildClient.network_path)
     parse_network_path = staticmethod(CloudBuildClient.parse_network_path)
+    network_attachment_path = staticmethod(CloudBuildClient.network_attachment_path)
+    parse_network_attachment_path = staticmethod(
+        CloudBuildClient.parse_network_attachment_path
+    )
     repository_path = staticmethod(CloudBuildClient.repository_path)
     parse_repository_path = staticmethod(CloudBuildClient.parse_repository_path)
     secret_version_path = staticmethod(CloudBuildClient.secret_version_path)

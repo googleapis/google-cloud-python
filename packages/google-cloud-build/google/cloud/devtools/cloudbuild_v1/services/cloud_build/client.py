@@ -293,6 +293,28 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def network_attachment_path(
+        project: str,
+        region: str,
+        networkattachment: str,
+    ) -> str:
+        """Returns a fully-qualified network_attachment string."""
+        return "projects/{project}/regions/{region}/networkAttachments/{networkattachment}".format(
+            project=project,
+            region=region,
+            networkattachment=networkattachment,
+        )
+
+    @staticmethod
+    def parse_network_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a network_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/networkAttachments/(?P<networkattachment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def repository_path(
         project: str,
         location: str,
