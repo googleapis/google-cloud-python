@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.1...google-cloud-discoveryengine-v0.13.2) (2024-10-28)
+
+
+### Features
+
+* add lite search API to allow public website search with API key ([365d55d](https://github.com/googleapis/google-cloud-python/commit/365d55d8d610ac811a01bdb5d016c6fcc130ac98))
+* add LOW_GROUNDED_ANSWER in answer skip reasons ([365d55d](https://github.com/googleapis/google-cloud-python/commit/365d55d8d610ac811a01bdb5d016c6fcc130ac98))
+* support query regex in control match rules ([365d55d](https://github.com/googleapis/google-cloud-python/commit/365d55d8d610ac811a01bdb5d016c6fcc130ac98))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([365d55d](https://github.com/googleapis/google-cloud-python/commit/365d55d8d610ac811a01bdb5d016c6fcc130ac98))
+
 ## [0.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.0...google-cloud-discoveryengine-v0.13.1) (2024-10-24)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.26.0...google-cloud-build-v3.27.0) (2024-10-28)
+
+
+### Features
+
+* [google-cloud-build] Add PrivateServiceConnect option to WorkerPool ([#13221](https://github.com/googleapis/google-cloud-python/issues/13221)) ([629b927](https://github.com/googleapis/google-cloud-python/commit/629b927a0ec0c3342a0d22a344b15afb41cf5e37))
+
 ## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.25.0...google-cloud-build-v3.26.0) (2024-10-24)
 
 

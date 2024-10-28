@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.35.0...google-cloud-documentai-v3.0.0) (2024-10-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove google.cloud.documentai_v1beta2 ([#13218](https://github.com/googleapis/google-cloud-python/issues/13218))
+
+### Bug Fixes
+
+* Remove google.cloud.documentai_v1beta2 ([#13218](https://github.com/googleapis/google-cloud-python/issues/13218)) ([a98df65](https://github.com/googleapis/google-cloud-python/commit/a98df654c18a6ea37119e7d55bdedb1b0135c475))
+
 ## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.34.0...google-cloud-documentai-v2.35.0) (2024-10-24)
 
 
