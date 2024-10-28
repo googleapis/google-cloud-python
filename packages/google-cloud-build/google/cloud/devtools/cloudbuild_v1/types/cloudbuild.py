@@ -3702,6 +3702,9 @@ class PrivatePoolV1Config(proto.Message):
             pool.
         network_config (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config.NetworkConfig):
             Network configuration for the pool.
+        private_service_connect (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config.PrivateServiceConnect):
+            Immutable. Private Service Connect(PSC)
+            Network configuration for the pool.
     """
 
     class WorkerConfig(proto.Message):
@@ -3791,6 +3794,55 @@ class PrivatePoolV1Config(proto.Message):
             number=3,
         )
 
+    class PrivateServiceConnect(proto.Message):
+        r"""Defines the Private Service Connect network configuration for
+        the pool.
+
+        Attributes:
+            network_attachment (str):
+                Required. Immutable. The network attachment that the worker
+                network interface is peered to. Must be in the format
+                ``projects/{project}/regions/{region}/networkAttachments/{networkAttachment}``.
+                The region of network attachment must be the same as the
+                worker pool. See `Network
+                Attachments <https://cloud.google.com/vpc/docs/about-network-attachments>`__
+            public_ip_address_disabled (bool):
+                Required. Immutable. Disable public IP on the primary
+                network interface.
+
+                If true, workers are created without any public address,
+                which prevents network egress to public IPs unless a network
+                proxy is configured. If false, workers are created with a
+                public address which allows for public internet egress. The
+                public address only applies to traffic through the primary
+                network interface. If ``route_all_traffic`` is set to true,
+                all traffic will go through the non-primary network
+                interface, this boolean has no effect.
+            route_all_traffic (bool):
+                Immutable. Route all traffic through PSC
+                interface. Enable this if you want full control
+                of traffic in the private pool. Configure Cloud
+                NAT for the subnet of network attachment if you
+                need to access public Internet.
+
+                If false, Only route private IPs, e.g.
+                10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16
+                through PSC interface.
+        """
+
+        network_attachment: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        public_ip_address_disabled: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        route_all_traffic: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
     worker_config: WorkerConfig = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -3800,6 +3852,11 @@ class PrivatePoolV1Config(proto.Message):
         proto.MESSAGE,
         number=2,
         message=NetworkConfig,
+    )
+    private_service_connect: PrivateServiceConnect = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=PrivateServiceConnect,
     )
 
 
