@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.5...google-cloud-gdchardwaremanagement-v0.1.6) (2024-10-28)
+
+
+### Features
+
+* add a DeleteSite method ([0846c97](https://github.com/googleapis/google-cloud-python/commit/0846c97aff11d282ea754f87d2f01870247b3ae3))
+* add MAC address and disk info to the Hardware resource ([0846c97](https://github.com/googleapis/google-cloud-python/commit/0846c97aff11d282ea754f87d2f01870247b3ae3))
+
+
+### Documentation
+
+* annotate rack_location field as required; this was always enforced ([0846c97](https://github.com/googleapis/google-cloud-python/commit/0846c97aff11d282ea754f87d2f01870247b3ae3))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.4...google-cloud-gdchardwaremanagement-v0.1.5) (2024-10-24)
 
 

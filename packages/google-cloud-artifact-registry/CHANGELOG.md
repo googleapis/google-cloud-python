@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.12.0...google-cloud-artifact-registry-v1.13.0) (2024-10-28)
+
+
+### Features
+
+* Add Artifact Registry attachment API ([c2d1df7](https://github.com/googleapis/google-cloud-python/commit/c2d1df74b7284f96ab60be091ae8d8139dd777c6))
+* Add Artifact Registry custom remote support ([c2d1df7](https://github.com/googleapis/google-cloud-python/commit/c2d1df74b7284f96ab60be091ae8d8139dd777c6))
+* Add Artifact Registry generic repository support ([c2d1df7](https://github.com/googleapis/google-cloud-python/commit/c2d1df74b7284f96ab60be091ae8d8139dd777c6))
+* Add Artifact Registry rule APIs ([c2d1df7](https://github.com/googleapis/google-cloud-python/commit/c2d1df74b7284f96ab60be091ae8d8139dd777c6))
+* Add Artifact Registry server side resource filtering and sorting ([c2d1df7](https://github.com/googleapis/google-cloud-python/commit/c2d1df74b7284f96ab60be091ae8d8139dd777c6))
+* Add Artifact Registry UpdateFile and DeleteFile APIs ([c2d1df7](https://github.com/googleapis/google-cloud-python/commit/c2d1df74b7284f96ab60be091ae8d8139dd777c6))
+
+
+### Documentation
+
+* Include max page size for all Artifact Registry APIs ([c2d1df7](https://github.com/googleapis/google-cloud-python/commit/c2d1df74b7284f96ab60be091ae8d8139dd777c6))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.11.5...google-cloud-artifact-registry-v1.12.0) (2024-10-24)
 
 
