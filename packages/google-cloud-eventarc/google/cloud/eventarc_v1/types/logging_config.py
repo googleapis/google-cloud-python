@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
+    package="google.cloud.eventarc.v1",
     manifest={
-        'LoggingConfig',
+        "LoggingConfig",
     },
 )
 
@@ -39,6 +38,7 @@ class LoggingConfig(proto.Message):
             Logs at severitiy ≥ this value will be sent,
             unless it is NONE.
     """
+
     class LogSeverity(proto.Enum):
         r"""The different severities for logging supported by Eventarc
         Advanced resources.

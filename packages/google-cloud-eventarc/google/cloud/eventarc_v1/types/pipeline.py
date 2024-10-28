@@ -17,17 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import logging_config as gce_logging_config
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
+    package="google.cloud.eventarc.v1",
     manifest={
-        'Pipeline',
+        "Pipeline",
     },
 )
 
@@ -135,8 +134,7 @@ class Pipeline(proto.Message):
         """
 
         class JsonFormat(proto.Message):
-            r"""The format of a JSON message payload.
-            """
+            r"""The format of a JSON message payload."""
 
         class ProtobufFormat(proto.Message):
             r"""The format of a Protobuf message payload.
@@ -166,23 +164,23 @@ class Pipeline(proto.Message):
                 number=1,
             )
 
-        protobuf: 'Pipeline.MessagePayloadFormat.ProtobufFormat' = proto.Field(
+        protobuf: "Pipeline.MessagePayloadFormat.ProtobufFormat" = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof='kind',
-            message='Pipeline.MessagePayloadFormat.ProtobufFormat',
+            oneof="kind",
+            message="Pipeline.MessagePayloadFormat.ProtobufFormat",
         )
-        avro: 'Pipeline.MessagePayloadFormat.AvroFormat' = proto.Field(
+        avro: "Pipeline.MessagePayloadFormat.AvroFormat" = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof='kind',
-            message='Pipeline.MessagePayloadFormat.AvroFormat',
+            oneof="kind",
+            message="Pipeline.MessagePayloadFormat.AvroFormat",
         )
-        json: 'Pipeline.MessagePayloadFormat.JsonFormat' = proto.Field(
+        json: "Pipeline.MessagePayloadFormat.JsonFormat" = proto.Field(
             proto.MESSAGE,
             number=3,
-            oneof='kind',
-            message='Pipeline.MessagePayloadFormat.JsonFormat',
+            oneof="kind",
+            message="Pipeline.MessagePayloadFormat.JsonFormat",
         )
 
     class Destination(proto.Message):
@@ -564,54 +562,60 @@ class Pipeline(proto.Message):
                     number=2,
                 )
 
-            google_oidc: 'Pipeline.Destination.AuthenticationConfig.OidcToken' = proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof='authentication_method_descriptor',
-                message='Pipeline.Destination.AuthenticationConfig.OidcToken',
+            google_oidc: "Pipeline.Destination.AuthenticationConfig.OidcToken" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    oneof="authentication_method_descriptor",
+                    message="Pipeline.Destination.AuthenticationConfig.OidcToken",
+                )
             )
-            oauth_token: 'Pipeline.Destination.AuthenticationConfig.OAuthToken' = proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof='authentication_method_descriptor',
-                message='Pipeline.Destination.AuthenticationConfig.OAuthToken',
+            oauth_token: "Pipeline.Destination.AuthenticationConfig.OAuthToken" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    oneof="authentication_method_descriptor",
+                    message="Pipeline.Destination.AuthenticationConfig.OAuthToken",
+                )
             )
 
-        network_config: 'Pipeline.Destination.NetworkConfig' = proto.Field(
+        network_config: "Pipeline.Destination.NetworkConfig" = proto.Field(
             proto.MESSAGE,
             number=1,
-            message='Pipeline.Destination.NetworkConfig',
+            message="Pipeline.Destination.NetworkConfig",
         )
-        http_endpoint: 'Pipeline.Destination.HttpEndpoint' = proto.Field(
+        http_endpoint: "Pipeline.Destination.HttpEndpoint" = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof='destination_descriptor',
-            message='Pipeline.Destination.HttpEndpoint',
+            oneof="destination_descriptor",
+            message="Pipeline.Destination.HttpEndpoint",
         )
         workflow: str = proto.Field(
             proto.STRING,
             number=3,
-            oneof='destination_descriptor',
+            oneof="destination_descriptor",
         )
         message_bus: str = proto.Field(
             proto.STRING,
             number=4,
-            oneof='destination_descriptor',
+            oneof="destination_descriptor",
         )
         topic: str = proto.Field(
             proto.STRING,
             number=8,
-            oneof='destination_descriptor',
+            oneof="destination_descriptor",
         )
-        authentication_config: 'Pipeline.Destination.AuthenticationConfig' = proto.Field(
-            proto.MESSAGE,
-            number=5,
-            message='Pipeline.Destination.AuthenticationConfig',
+        authentication_config: "Pipeline.Destination.AuthenticationConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="Pipeline.Destination.AuthenticationConfig",
+            )
         )
-        output_payload_format: 'Pipeline.MessagePayloadFormat' = proto.Field(
+        output_payload_format: "Pipeline.MessagePayloadFormat" = proto.Field(
             proto.MESSAGE,
             number=6,
-            message='Pipeline.MessagePayloadFormat',
+            message="Pipeline.MessagePayloadFormat",
         )
 
     class Mediation(proto.Message):
@@ -718,11 +722,11 @@ class Pipeline(proto.Message):
                 number=1,
             )
 
-        transformation: 'Pipeline.Mediation.Transformation' = proto.Field(
+        transformation: "Pipeline.Mediation.Transformation" = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof='mediation_descriptor',
-            message='Pipeline.Mediation.Transformation',
+            oneof="mediation_descriptor",
+            message="Pipeline.Mediation.Transformation",
         )
 
     class RetryPolicy(proto.Message):

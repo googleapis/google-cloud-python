@@ -47,7 +47,6 @@ def sample_create_channel():
         parent="parent_value",
         channel=channel,
         channel_id="channel_id_value",
-        validate_only=True,
     )
 
     # Make the request
