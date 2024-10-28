@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "SynthesizeSpeechRequest",
         "CustomPronunciationParams",
         "CustomPronunciations",
+        "MultiSpeakerMarkup",
         "SynthesisInput",
         "VoiceSelectionParams",
         "AudioConfig",
@@ -328,6 +329,42 @@ class CustomPronunciations(proto.Message):
     )
 
 
+class MultiSpeakerMarkup(proto.Message):
+    r"""A collection of turns for multi-speaker synthesis.
+
+    Attributes:
+        turns (MutableSequence[google.cloud.texttospeech_v1.types.MultiSpeakerMarkup.Turn]):
+            Required. Speaker turns.
+    """
+
+    class Turn(proto.Message):
+        r"""A Multi-speaker turn.
+
+        Attributes:
+            speaker (str):
+                Required. The speaker of the turn, for
+                example, 'O' or 'Q'. Please refer to
+                documentation for available speakers.
+            text (str):
+                Required. The text to speak.
+        """
+
+        speaker: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        text: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    turns: MutableSequence[Turn] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Turn,
+    )
+
+
 class SynthesisInput(proto.Message):
     r"""Contains text input to be synthesized. Either ``text`` or ``ssml``
     must be supplied. Supplying both or neither returns
@@ -353,6 +390,11 @@ class SynthesisInput(proto.Message):
             [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
             For more information, see
             `SSML <https://cloud.google.com/text-to-speech/docs/ssml>`__.
+
+            This field is a member of `oneof`_ ``input_source``.
+        multi_speaker_markup (google.cloud.texttospeech_v1.types.MultiSpeakerMarkup):
+            The multi-speaker input to be synthesized.
+            Only applicable for multi-speaker synthesis.
 
             This field is a member of `oneof`_ ``input_source``.
         custom_pronunciations (google.cloud.texttospeech_v1.types.CustomPronunciations):
@@ -382,6 +424,12 @@ class SynthesisInput(proto.Message):
         proto.STRING,
         number=2,
         oneof="input_source",
+    )
+    multi_speaker_markup: "MultiSpeakerMarkup" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="input_source",
+        message="MultiSpeakerMarkup",
     )
     custom_pronunciations: "CustomPronunciations" = proto.Field(
         proto.MESSAGE,
