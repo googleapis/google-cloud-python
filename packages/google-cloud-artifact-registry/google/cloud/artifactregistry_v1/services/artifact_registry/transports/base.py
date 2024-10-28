@@ -30,14 +30,23 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.artifactregistry_v1 import gapic_version as package_version
-from google.cloud.artifactregistry_v1.types import apt_artifact, artifact, file, package
 from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_config
+from google.cloud.artifactregistry_v1.types import apt_artifact, artifact
+from google.cloud.artifactregistry_v1.types import attachment
+from google.cloud.artifactregistry_v1.types import attachment as gda_attachment
+from google.cloud.artifactregistry_v1.types import file
+from google.cloud.artifactregistry_v1.types import file as gda_file
+from google.cloud.artifactregistry_v1.types import package
+from google.cloud.artifactregistry_v1.types import package as gda_package
 from google.cloud.artifactregistry_v1.types import repository
 from google.cloud.artifactregistry_v1.types import repository as gda_repository
+from google.cloud.artifactregistry_v1.types import rule
+from google.cloud.artifactregistry_v1.types import rule as gda_rule
 from google.cloud.artifactregistry_v1.types import settings
 from google.cloud.artifactregistry_v1.types import tag
 from google.cloud.artifactregistry_v1.types import tag as gda_tag
 from google.cloud.artifactregistry_v1.types import version
+from google.cloud.artifactregistry_v1.types import version as gda_version
 from google.cloud.artifactregistry_v1.types import vpcsc_config
 from google.cloud.artifactregistry_v1.types import yum_artifact
 
@@ -255,6 +264,11 @@ class ArtifactRegistryTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_version: gapic_v1.method.wrap_method(
+                self.update_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_files: gapic_v1.method.wrap_method(
                 self.list_files,
                 default_timeout=None,
@@ -262,6 +276,16 @@ class ArtifactRegistryTransport(abc.ABC):
             ),
             self.get_file: gapic_v1.method.wrap_method(
                 self.get_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_file: gapic_v1.method.wrap_method(
+                self.delete_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_file: gapic_v1.method.wrap_method(
+                self.update_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -287,6 +311,31 @@ class ArtifactRegistryTransport(abc.ABC):
             ),
             self.delete_tag: gapic_v1.method.wrap_method(
                 self.delete_tag,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_rule: gapic_v1.method.wrap_method(
+                self.create_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_rules: gapic_v1.method.wrap_method(
+                self.list_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_rule: gapic_v1.method.wrap_method(
+                self.get_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_rule: gapic_v1.method.wrap_method(
+                self.update_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_rule: gapic_v1.method.wrap_method(
+                self.delete_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -322,6 +371,31 @@ class ArtifactRegistryTransport(abc.ABC):
             ),
             self.update_vpcsc_config: gapic_v1.method.wrap_method(
                 self.update_vpcsc_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_package: gapic_v1.method.wrap_method(
+                self.update_package,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_attachments: gapic_v1.method.wrap_method(
+                self.list_attachments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_attachment: gapic_v1.method.wrap_method(
+                self.get_attachment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_attachment: gapic_v1.method.wrap_method(
+                self.create_attachment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_attachment: gapic_v1.method.wrap_method(
+                self.delete_attachment,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -568,6 +642,15 @@ class ArtifactRegistryTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def update_version(
+        self,
+    ) -> Callable[
+        [gda_version.UpdateVersionRequest],
+        Union[gda_version.Version, Awaitable[gda_version.Version]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_files(
         self,
     ) -> Callable[
@@ -580,6 +663,23 @@ class ArtifactRegistryTransport(abc.ABC):
     def get_file(
         self,
     ) -> Callable[[file.GetFileRequest], Union[file.File, Awaitable[file.File]]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_file(
+        self,
+    ) -> Callable[
+        [file.DeleteFileRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_file(
+        self,
+    ) -> Callable[
+        [gda_file.UpdateFileRequest], Union[gda_file.File, Awaitable[gda_file.File]]
+    ]:
         raise NotImplementedError()
 
     @property
@@ -618,6 +718,45 @@ class ArtifactRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [tag.DeleteTagRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_rule(
+        self,
+    ) -> Callable[
+        [gda_rule.CreateRuleRequest], Union[gda_rule.Rule, Awaitable[gda_rule.Rule]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_rules(
+        self,
+    ) -> Callable[
+        [rule.ListRulesRequest],
+        Union[rule.ListRulesResponse, Awaitable[rule.ListRulesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_rule(
+        self,
+    ) -> Callable[[rule.GetRuleRequest], Union[rule.Rule, Awaitable[rule.Rule]]]:
+        raise NotImplementedError()
+
+    @property
+    def update_rule(
+        self,
+    ) -> Callable[
+        [gda_rule.UpdateRuleRequest], Union[gda_rule.Rule, Awaitable[gda_rule.Rule]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_rule(
+        self,
+    ) -> Callable[
+        [rule.DeleteRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
     ]:
         raise NotImplementedError()
 
@@ -684,6 +823,54 @@ class ArtifactRegistryTransport(abc.ABC):
     ) -> Callable[
         [gda_vpcsc_config.UpdateVPCSCConfigRequest],
         Union[gda_vpcsc_config.VPCSCConfig, Awaitable[gda_vpcsc_config.VPCSCConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_package(
+        self,
+    ) -> Callable[
+        [gda_package.UpdatePackageRequest],
+        Union[gda_package.Package, Awaitable[gda_package.Package]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_attachments(
+        self,
+    ) -> Callable[
+        [attachment.ListAttachmentsRequest],
+        Union[
+            attachment.ListAttachmentsResponse,
+            Awaitable[attachment.ListAttachmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_attachment(
+        self,
+    ) -> Callable[
+        [attachment.GetAttachmentRequest],
+        Union[attachment.Attachment, Awaitable[attachment.Attachment]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_attachment(
+        self,
+    ) -> Callable[
+        [gda_attachment.CreateAttachmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_attachment(
+        self,
+    ) -> Callable[
+        [attachment.DeleteAttachmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

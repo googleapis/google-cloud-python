@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -28,6 +29,7 @@ __protobuf__ = proto.module(
         "ListPackagesResponse",
         "GetPackageRequest",
         "DeletePackageRequest",
+        "UpdatePackageRequest",
     },
 )
 
@@ -49,6 +51,8 @@ class Package(proto.Message):
             The time when the package was last updated.
             This includes publishing a new version of the
             package.
+        annotations (MutableMapping[str, str]):
+            Optional. Client specified annotations.
     """
 
     name: str = proto.Field(
@@ -69,6 +73,11 @@ class Package(proto.Message):
         number=6,
         message=timestamp_pb2.Timestamp,
     )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
 
 
 class ListPackagesRequest(proto.Message):
@@ -84,6 +93,58 @@ class ListPackagesRequest(proto.Message):
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
+        filter (str):
+            Optional. An expression for filtering the results of the
+            request. Filter rules are case insensitive. The fields
+            eligible for filtering are:
+
+            -  ``name``
+            -  ``annotations``
+
+            Examples of using a filter:
+
+            To filter the results of your request to packages with the
+            name ``my-package`` in project ``my-project`` in the
+            ``us-central`` region, in repository ``my-repo``, append the
+            following filter expression to your request:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package"``
+
+            You can also use wildcards to match any number of characters
+            before or after the value:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-*"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/*package"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/*pack*"``
+
+            To filter the results of your request to packages with the
+            annotation key-value pair [``external_link``:
+            ``external_link_value``], append the following filter
+            expression to your request":
+
+            -  ``"annotations.external_link:external_link_value"``
+
+            To filter the results just for a specific annotation key
+            ``external_link``, append the following filter expression to
+            your request:
+
+            -  ``"annotations.external_link"``
+
+            If the annotation key or value contains special characters,
+            you can escape them by surrounding the value with backticks.
+            For example, to filter the results of your request to
+            packages with the annotation key-value pair
+            [``external.link``:``https://example.com/my-package``],
+            append the following filter expression to your request:
+
+            -  :literal:`"annotations.`external.link`:`https://example.com/my-package`"`
+
+            You can also filter with annotations with a wildcard to
+            match any number of characters before or after the value:
+
+            -  :literal:`"annotations.*_link:`*example.com*`"`
+        order_by (str):
+            Optional. The field to order the results by.
     """
 
     parent: str = proto.Field(
@@ -97,6 +158,14 @@ class ListPackagesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -153,6 +222,31 @@ class DeletePackageRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class UpdatePackageRequest(proto.Message):
+    r"""The request to update a package.
+
+    Attributes:
+        package (google.cloud.artifactregistry_v1.types.Package):
+            The package that replaces the resource on the
+            server.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The update mask applies to the resource. For the
+            ``FieldMask`` definition, see
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    """
+
+    package: "Package" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Package",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

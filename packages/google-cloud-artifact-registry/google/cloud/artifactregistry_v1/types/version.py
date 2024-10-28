@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -34,6 +35,7 @@ __protobuf__ = proto.module(
         "DeleteVersionRequest",
         "BatchDeleteVersionsRequest",
         "BatchDeleteVersionsMetadata",
+        "UpdateVersionRequest",
     },
 )
 
@@ -65,10 +67,9 @@ class Version(proto.Message):
     Attributes:
         name (str):
             The name of the version, for example:
-
-            "projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/art1".
-            If the package or version ID parts contain
-            slashes, the slashes are escaped.
+            ``projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/art1``.
+            If the package or version ID parts contain slashes, the
+            slashes are escaped.
         description (str):
             Optional. Description of the version, as
             specified in its metadata.
@@ -87,6 +88,8 @@ class Version(proto.Message):
             resources could be:
             [DockerImage][google.devtools.artifactregistry.v1.DockerImage]
             [MavenArtifact][google.devtools.artifactregistry.v1.MavenArtifact]
+        annotations (MutableMapping[str, str]):
+            Optional. Client specified annotations.
     """
 
     name: str = proto.Field(
@@ -117,6 +120,11 @@ class Version(proto.Message):
         number=8,
         message=struct_pb2.Struct,
     )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
+    )
 
 
 class ListVersionsRequest(proto.Message):
@@ -137,6 +145,56 @@ class ListVersionsRequest(proto.Message):
             response.
         order_by (str):
             Optional. The field to order the results by.
+        filter (str):
+            Optional. An expression for filtering the results of the
+            request. Filter rules are case insensitive. The fields
+            eligible for filtering are:
+
+            -  ``name``
+            -  ``annotations``
+
+            Examples of using a filter:
+
+            To filter the results of your request to versions with the
+            name ``my-version`` in project ``my-project`` in the
+            ``us-central`` region, in repository ``my-repo``, append the
+            following filter expression to your request:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my-version"``
+
+            You can also use wildcards to match any number of characters
+            before or after the value:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/my*"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/*version*"``
+
+            To filter the results of your request to versions with the
+            annotation key-value pair [``external_link``:
+            ``external_link_value``], append the following filter
+            expression to your request:
+
+            -  ``"annotations.external_link:external_link_value"``
+
+            To filter just for a specific annotation key
+            ``external_link``, append the following filter expression to
+            your request:
+
+            -  ``"annotations.external_link"``
+
+            If the annotation key or value contains special characters,
+            you can escape them by surrounding the value with backticks.
+            For example, to filter the results of your request to
+            versions with the annotation key-value pair
+            [``external.link``:``https://example.com/my-version``],
+            append the following filter expression to your request:
+
+            -  :literal:`"annotations.`external.link`:`https://example.com/my-version`"`
+
+            You can also filter with annotations with a wildcard to
+            match any number of characters before or after the value:
+
+            -  :literal:`"annotations.*_link:`*example.com*`"`
     """
 
     parent: str = proto.Field(
@@ -159,6 +217,10 @@ class ListVersionsRequest(proto.Message):
     order_by: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -274,6 +336,31 @@ class BatchDeleteVersionsMetadata(proto.Message):
     failed_versions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+
+
+class UpdateVersionRequest(proto.Message):
+    r"""The request to update a version.
+
+    Attributes:
+        version (google.cloud.artifactregistry_v1.types.Version):
+            Required. The Version that replaces the
+            resource on the server.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The update mask applies to the resource. For the
+            ``FieldMask`` definition, see
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    """
+
+    version: "Version" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Version",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

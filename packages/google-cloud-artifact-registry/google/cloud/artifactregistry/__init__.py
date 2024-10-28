@@ -50,19 +50,31 @@ from google.cloud.artifactregistry_v1.types.artifact import (
     NpmPackage,
     PythonPackage,
 )
+from google.cloud.artifactregistry_v1.types.attachment import (
+    Attachment,
+    CreateAttachmentRequest,
+    DeleteAttachmentRequest,
+    GetAttachmentRequest,
+    ListAttachmentsRequest,
+    ListAttachmentsResponse,
+)
 from google.cloud.artifactregistry_v1.types.file import (
+    DeleteFileRequest,
     File,
     GetFileRequest,
     Hash,
     ListFilesRequest,
     ListFilesResponse,
+    UpdateFileRequest,
 )
+from google.cloud.artifactregistry_v1.types.generic import GenericArtifact
 from google.cloud.artifactregistry_v1.types.package import (
     DeletePackageRequest,
     GetPackageRequest,
     ListPackagesRequest,
     ListPackagesResponse,
     Package,
+    UpdatePackageRequest,
 )
 from google.cloud.artifactregistry_v1.types.repository import (
     CleanupPolicy,
@@ -78,6 +90,15 @@ from google.cloud.artifactregistry_v1.types.repository import (
     UpdateRepositoryRequest,
     UpstreamPolicy,
     VirtualRepositoryConfig,
+)
+from google.cloud.artifactregistry_v1.types.rule import (
+    CreateRuleRequest,
+    DeleteRuleRequest,
+    GetRuleRequest,
+    ListRulesRequest,
+    ListRulesResponse,
+    Rule,
+    UpdateRuleRequest,
 )
 from google.cloud.artifactregistry_v1.types.service import OperationMetadata
 from google.cloud.artifactregistry_v1.types.settings import (
@@ -101,6 +122,7 @@ from google.cloud.artifactregistry_v1.types.version import (
     GetVersionRequest,
     ListVersionsRequest,
     ListVersionsResponse,
+    UpdateVersionRequest,
     Version,
     VersionView,
 )
@@ -143,16 +165,26 @@ __all__ = (
     "MavenArtifact",
     "NpmPackage",
     "PythonPackage",
+    "Attachment",
+    "CreateAttachmentRequest",
+    "DeleteAttachmentRequest",
+    "GetAttachmentRequest",
+    "ListAttachmentsRequest",
+    "ListAttachmentsResponse",
+    "DeleteFileRequest",
     "File",
     "GetFileRequest",
     "Hash",
     "ListFilesRequest",
     "ListFilesResponse",
+    "UpdateFileRequest",
+    "GenericArtifact",
     "DeletePackageRequest",
     "GetPackageRequest",
     "ListPackagesRequest",
     "ListPackagesResponse",
     "Package",
+    "UpdatePackageRequest",
     "CleanupPolicy",
     "CleanupPolicyCondition",
     "CleanupPolicyMostRecentVersions",
@@ -166,6 +198,13 @@ __all__ = (
     "UpdateRepositoryRequest",
     "UpstreamPolicy",
     "VirtualRepositoryConfig",
+    "CreateRuleRequest",
+    "DeleteRuleRequest",
+    "GetRuleRequest",
+    "ListRulesRequest",
+    "ListRulesResponse",
+    "Rule",
+    "UpdateRuleRequest",
     "OperationMetadata",
     "GetProjectSettingsRequest",
     "ProjectSettings",
@@ -183,6 +222,7 @@ __all__ = (
     "GetVersionRequest",
     "ListVersionsRequest",
     "ListVersionsResponse",
+    "UpdateVersionRequest",
     "Version",
     "VersionView",
     "GetVPCSCConfigRequest",

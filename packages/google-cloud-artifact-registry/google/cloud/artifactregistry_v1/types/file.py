@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -28,6 +29,8 @@ __protobuf__ = proto.module(
         "ListFilesRequest",
         "ListFilesResponse",
         "GetFileRequest",
+        "DeleteFileRequest",
+        "UpdateFileRequest",
     },
 )
 
@@ -75,10 +78,8 @@ class File(proto.Message):
     Attributes:
         name (str):
             The name of the file, for example:
-
-            "projects/p1/locations/us-central1/repositories/repo1/files/a%2Fb%2Fc.txt".
-            If the file ID part contains slashes, they are
-            escaped.
+            ``projects/p1/locations/us-central1/repositories/repo1/files/a%2Fb%2Fc.txt``.
+            If the file ID part contains slashes, they are escaped.
         size_bytes (int):
             The size of the File in bytes.
         hashes (MutableSequence[google.cloud.artifactregistry_v1.types.Hash]):
@@ -96,6 +97,8 @@ class File(proto.Message):
             Output only. The time when the last attempt
             to refresh the file's data was made. Only set
             when the repository is remote.
+        annotations (MutableMapping[str, str]):
+            Optional. Client specified annotations.
     """
 
     name: str = proto.Field(
@@ -130,6 +133,11 @@ class File(proto.Message):
         number=8,
         message=timestamp_pb2.Timestamp,
     )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
+    )
 
 
 class ListFilesRequest(proto.Message):
@@ -147,16 +155,59 @@ class ListFilesRequest(proto.Message):
 
             -  ``name``
             -  ``owner``
+            -  ``annotations``
 
-            An example of using a filter:
+            Examples of using a filter:
 
-            -  ``name="projects/p1/locations/us-central1/repositories/repo1/files/a/b/*"``
-               --> Files with an ID starting with "a/b/".
-            -  ``owner="projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/1.0"``
-               --> Files owned by the version ``1.0`` in package
-               ``pkg1``.
+            To filter the results of your request to files with the name
+            ``my_file.txt`` in project ``my-project`` in the
+            ``us-central`` region, in repository ``my-repo``, append the
+            following filter expression to your request:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/my-file.txt"``
+
+            You can also use wildcards to match any number of characters
+            before or after the value:
+
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/my-*"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/*file.txt"``
+            -  ``name="projects/my-project/locations/us-central1/repositories/my-repo/files/*file*"``
+
+            To filter the results of your request to files owned by the
+            version ``1.0`` in package ``pkg1``, append the following
+            filter expression to your request:
+
+            -  ``owner="projects/my-project/locations/us-central1/repositories/my-repo/packages/my-package/versions/1.0"``
+
+            To filter the results of your request to files with the
+            annotation key-value pair [``external_link``:
+            ``external_link_value``], append the following filter
+            expression to your request:
+
+            -  ``"annotations.external_link:external_link_value"``
+
+            To filter just for a specific annotation key
+            ``external_link``, append the following filter expression to
+            your request:
+
+            -  ``"annotations.external_link"``
+
+            If the annotation key or value contains special characters,
+            you can escape them by surrounding the value with backticks.
+            For example, to filter the results of your request to files
+            with the annotation key-value pair
+            [``external.link``:``https://example.com/my-file``], append
+            the following filter expression to your request:
+
+            -  :literal:`"annotations.`external.link`:`https://example.com/my-file`"`
+
+            You can also filter with annotations with a wildcard to
+            match any number of characters before or after the value:
+
+            -  :literal:`"annotations.*_link:`*example.com*`"`
         page_size (int):
             The maximum number of files to return.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
@@ -223,6 +274,45 @@ class GetFileRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class DeleteFileRequest(proto.Message):
+    r"""The request to delete a file.
+
+    Attributes:
+        name (str):
+            Required. The name of the file to delete.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateFileRequest(proto.Message):
+    r"""The request to update a file.
+
+    Attributes:
+        file (google.cloud.artifactregistry_v1.types.File):
+            Required. The File that replaces the resource
+            on the server.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The update mask applies to the resource. For the
+            ``FieldMask`` definition, see
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    """
+
+    file: "File" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="File",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
