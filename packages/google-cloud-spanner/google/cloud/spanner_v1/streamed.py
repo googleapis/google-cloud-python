@@ -345,6 +345,8 @@ _MERGE_BY_TYPE = {
     TypeCode.TIMESTAMP: _merge_string,
     TypeCode.NUMERIC: _merge_string,
     TypeCode.JSON: _merge_string,
+    TypeCode.PROTO: _merge_string,
+    TypeCode.ENUM: _merge_string,
 }
 
 

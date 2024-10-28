@@ -272,6 +272,46 @@ class TestStreamedResultSet(unittest.TestCase):
         )
         self.assertIsNone(streamed._pending_chunk)
 
+    def test__merge_chunk_proto(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        FIELDS = [self._make_scalar_field("proto", TypeCode.PROTO)]
+        streamed._metadata = self._make_result_set_metadata(FIELDS)
+        streamed._pending_chunk = self._make_value(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA"
+            "6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\n"
+        )
+        chunk = self._make_value(
+            "B3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExF"
+            "MG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n"
+        )
+
+        merged = streamed._merge_chunk(chunk)
+
+        self.assertEqual(
+            merged.string_value,
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAAL"
+            "EwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0"
+            "FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n",
+        )
+        self.assertIsNone(streamed._pending_chunk)
+
+    def test__merge_chunk_enum(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        FIELDS = [self._make_scalar_field("age", TypeCode.ENUM)]
+        streamed._metadata = self._make_result_set_metadata(FIELDS)
+        streamed._pending_chunk = self._make_value(42)
+        chunk = self._make_value(13)
+
+        merged = streamed._merge_chunk(chunk)
+        self.assertEqual(merged.string_value, "4213")
+        self.assertIsNone(streamed._pending_chunk)
+
     def test__merge_chunk_array_of_bool(self):
         from google.cloud.spanner_v1 import TypeCode
 
