@@ -19,8 +19,8 @@ For more information, see the README.rst under /spanner.
 """
 
 import argparse
-import time
 from datetime import datetime, timedelta
+import time
 
 from google.api_core import protobuf_helpers
 from google.cloud import spanner
@@ -31,8 +31,7 @@ from google.cloud.exceptions import NotFound
 def create_backup(instance_id, database_id, backup_id, version_time):
     """Creates a backup for a database."""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -76,10 +75,8 @@ def create_backup_with_encryption_key(
 ):
     """Creates a backup for a database using a Customer Managed Encryption Key (CMEK)."""
 
-    from google.cloud.spanner_admin_database_v1 import \
-        CreateBackupEncryptionConfig
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -118,6 +115,53 @@ def create_backup_with_encryption_key(
 
 
 # [END spanner_create_backup_with_encryption_key]
+
+# [START spanner_create_backup_with_MR_CMEK]
+def create_backup_with_multiple_kms_keys(
+    instance_id, database_id, backup_id, kms_key_names
+):
+    """Creates a backup for a database using multiple KMS keys(CMEK)."""
+
+    from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
+
+    spanner_client = spanner.Client()
+    database_admin_api = spanner_client.database_admin_api
+
+    # Create a backup
+    expire_time = datetime.utcnow() + timedelta(days=14)
+    encryption_config = {
+        "encryption_type": CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        "kms_key_names": kms_key_names,
+    }
+    request = backup_pb.CreateBackupRequest(
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        backup_id=backup_id,
+        backup=backup_pb.Backup(
+            database=database_admin_api.database_path(
+                spanner_client.project, instance_id, database_id
+            ),
+            expire_time=expire_time,
+        ),
+        encryption_config=encryption_config,
+    )
+    operation = database_admin_api.create_backup(request)
+
+    # Wait for backup operation to complete.
+    backup = operation.result(2100)
+
+    # Verify that the backup is ready.
+    assert backup.state == backup_pb.Backup.State.READY
+
+    # Get the name, create time, backup size and encryption key.
+    print(
+        "Backup {} of size {} bytes was created at {} using encryption key {}".format(
+            backup.name, backup.size_bytes, backup.create_time, kms_key_names
+        )
+    )
+
+
+# [END spanner_create_backup_with_MR_CMEK]
 
 
 # [START spanner_restore_backup]
@@ -162,7 +206,9 @@ def restore_database_with_encryption_key(
 ):
     """Restores a database from a backup using a Customer Managed Encryption Key (CMEK)."""
     from google.cloud.spanner_admin_database_v1 import (
-        RestoreDatabaseEncryptionConfig, RestoreDatabaseRequest)
+        RestoreDatabaseEncryptionConfig,
+        RestoreDatabaseRequest,
+    )
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -200,11 +246,56 @@ def restore_database_with_encryption_key(
 
 # [END spanner_restore_backup_with_encryption_key]
 
+# [START spanner_restore_backup_with_MR_CMEK]
+def restore_database_with_multiple_kms_keys(
+    instance_id, new_database_id, backup_id, kms_key_names
+):
+    """Restores a database from a backup using a Customer Managed Encryption Key (CMEK)."""
+    from google.cloud.spanner_admin_database_v1 import (
+        RestoreDatabaseEncryptionConfig,
+        RestoreDatabaseRequest,
+    )
+
+    spanner_client = spanner.Client()
+    database_admin_api = spanner_client.database_admin_api
+
+    # Start restoring an existing backup to a new database.
+    encryption_config = {
+        "encryption_type": RestoreDatabaseEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        "kms_key_names": kms_key_names,
+    }
+
+    request = RestoreDatabaseRequest(
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        database_id=new_database_id,
+        backup=database_admin_api.backup_path(
+            spanner_client.project, instance_id, backup_id
+        ),
+        encryption_config=encryption_config,
+    )
+    operation = database_admin_api.restore_database(request)
+
+    # Wait for restore operation to complete.
+    db = operation.result(1600)
+
+    # Newly created database has restore information.
+    restore_info = db.restore_info
+    print(
+        "Database {} restored to {} from backup {} with using encryption key {}.".format(
+            restore_info.backup_info.source_database,
+            new_database_id,
+            restore_info.backup_info.backup,
+            db.encryption_config.kms_key_names,
+        )
+    )
+
+
+# [END spanner_restore_backup_with_MR_CMEK]
+
 
 # [START spanner_cancel_backup_create]
 def cancel_backup(instance_id, database_id, backup_id):
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -259,8 +350,7 @@ def cancel_backup(instance_id, database_id, backup_id):
 
 # [START spanner_list_backup_operations]
 def list_backup_operations(instance_id, database_id, backup_id):
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -314,8 +404,7 @@ def list_backup_operations(instance_id, database_id, backup_id):
 
 # [START spanner_list_database_operations]
 def list_database_operations(instance_id):
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -346,8 +435,7 @@ def list_database_operations(instance_id):
 
 # [START spanner_list_backups]
 def list_backups(instance_id, database_id, backup_id):
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -444,8 +532,7 @@ def list_backups(instance_id, database_id, backup_id):
 
 # [START spanner_delete_backup]
 def delete_backup(instance_id, backup_id):
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -486,8 +573,7 @@ def delete_backup(instance_id, backup_id):
 
 # [START spanner_update_backup]
 def update_backup(instance_id, backup_id):
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -526,8 +612,7 @@ def create_database_with_version_retention_period(
 ):
     """Creates a database with a version retention period."""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        spanner_database_admin
+    from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -578,8 +663,7 @@ def create_database_with_version_retention_period(
 def copy_backup(instance_id, backup_id, source_backup_path):
     """Copies a backup."""
 
-    from google.cloud.spanner_admin_database_v1.types import \
-        backup as backup_pb
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
 
     spanner_client = spanner.Client()
     database_admin_api = spanner_client.database_admin_api
@@ -612,6 +696,54 @@ def copy_backup(instance_id, backup_id, source_backup_path):
 
 
 # [END spanner_copy_backup]
+
+# [START spanner_copy_backup_with_MR_CMEK]
+def copy_backup_with_multiple_kms_keys(
+    instance_id, backup_id, source_backup_path, kms_key_names
+):
+    """Copies a backup."""
+
+    from google.cloud.spanner_admin_database_v1.types import backup as backup_pb
+    from google.cloud.spanner_admin_database_v1 import CopyBackupEncryptionConfig
+
+    spanner_client = spanner.Client()
+    database_admin_api = spanner_client.database_admin_api
+
+    encryption_config = {
+        "encryption_type": CopyBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        "kms_key_names": kms_key_names,
+    }
+
+    # Create a backup object and wait for copy backup operation to complete.
+    expire_time = datetime.utcnow() + timedelta(days=14)
+    request = backup_pb.CopyBackupRequest(
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        backup_id=backup_id,
+        source_backup=source_backup_path,
+        expire_time=expire_time,
+        encryption_config=encryption_config,
+    )
+
+    operation = database_admin_api.copy_backup(request)
+
+    # Wait for backup operation to complete.
+    copy_backup = operation.result(2100)
+
+    # Verify that the copy backup is ready.
+    assert copy_backup.state == backup_pb.Backup.State.READY
+
+    print(
+        "Backup {} of size {} bytes was created at {} with version time {} using encryption keys {}".format(
+            copy_backup.name,
+            copy_backup.size_bytes,
+            copy_backup.create_time,
+            copy_backup.version_time,
+            copy_backup.encryption_information,
+        )
+    )
+
+
+# [END spanner_copy_backup_with_MR_CMEK]
 
 
 if __name__ == "__main__":  # noqa: C901

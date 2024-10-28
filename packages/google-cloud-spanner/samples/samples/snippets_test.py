@@ -233,6 +233,25 @@ def test_create_database_with_encryption_config(
     assert kms_key_name in out
 
 
+@pytest.mark.skip(reason="skipped since the KMS keys are not added on test "
+                         "project")
+def test_create_database_with_multiple_kms_keys(
+    capsys,
+    multi_region_instance,
+    multi_region_instance_id,
+    cmek_database_id,
+    kms_key_names,
+):
+    snippets.create_database_with_multiple_kms_keys(
+        multi_region_instance_id, cmek_database_id, kms_key_names
+    )
+    out, _ = capsys.readouterr()
+    assert cmek_database_id in out
+    assert kms_key_names[0] in out
+    assert kms_key_names[1] in out
+    assert kms_key_names[2] in out
+
+
 def test_get_instance_config(capsys):
     instance_config = "nam6"
     snippets.get_instance_config(instance_config)

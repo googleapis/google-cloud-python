@@ -13,8 +13,8 @@
 # limitations under the License.
 import uuid
 
-import pytest
 from google.api_core.exceptions import DeadlineExceeded
+import pytest
 from test_utils.retry import RetryErrors
 
 import backup_sample
@@ -93,6 +93,49 @@ def test_create_backup_with_encryption_key(
     assert kms_key_name in out
 
 
+@pytest.mark.skip(reason="skipped since the KMS keys are not added on test "
+                         "project")
+@pytest.mark.dependency(name="create_backup_with_multiple_kms_keys")
+def test_create_backup_with_multiple_kms_keys(
+    capsys,
+    multi_region_instance,
+    multi_region_instance_id,
+    sample_multi_region_database,
+    kms_key_names,
+):
+    backup_sample.create_backup_with_multiple_kms_keys(
+        multi_region_instance_id,
+        sample_multi_region_database.database_id,
+        CMEK_BACKUP_ID,
+        kms_key_names,
+    )
+    out, _ = capsys.readouterr()
+    assert CMEK_BACKUP_ID in out
+    assert kms_key_names[0] in out
+    assert kms_key_names[1] in out
+    assert kms_key_names[2] in out
+
+
+@pytest.mark.skip(reason="skipped since the KMS keys are not added on test "
+                         "project")
+@pytest.mark.dependency(depends=["create_backup_with_multiple_kms_keys"])
+def test_copy_backup_with_multiple_kms_keys(
+    capsys, multi_region_instance_id, spanner_client, kms_key_names
+):
+    source_backup_path = (
+        spanner_client.project_name
+        + "/instances/"
+        + multi_region_instance_id
+        + "/backups/"
+        + CMEK_BACKUP_ID
+    )
+    backup_sample.copy_backup_with_multiple_kms_keys(
+        multi_region_instance_id, COPY_BACKUP_ID, source_backup_path, kms_key_names
+    )
+    out, _ = capsys.readouterr()
+    assert COPY_BACKUP_ID in out
+
+
 @pytest.mark.dependency(depends=["create_backup"])
 @RetryErrors(exception=DeadlineExceeded, max_tries=2)
 def test_restore_database(capsys, instance_id, sample_database):
@@ -119,6 +162,28 @@ def test_restore_database_with_encryption_key(
     assert (CMEK_RESTORE_DB_ID + " from backup ") in out
     assert CMEK_BACKUP_ID in out
     assert kms_key_name in out
+
+
+@pytest.mark.skip(reason="skipped since the KMS keys are not added on test "
+                         "project")
+@pytest.mark.dependency(depends=["create_backup_with_multiple_kms_keys"])
+@RetryErrors(exception=DeadlineExceeded, max_tries=2)
+def test_restore_database_with_multiple_kms_keys(
+    capsys,
+    multi_region_instance_id,
+    sample_multi_region_database,
+    kms_key_names,
+):
+    backup_sample.restore_database_with_multiple_kms_keys(
+        multi_region_instance_id, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_names
+    )
+    out, _ = capsys.readouterr()
+    assert (sample_multi_region_database.database_id + " restored to ") in out
+    assert (CMEK_RESTORE_DB_ID + " from backup ") in out
+    assert CMEK_BACKUP_ID in out
+    assert kms_key_names[0] in out
+    assert kms_key_names[1] in out
+    assert kms_key_names[2] in out
 
 
 @pytest.mark.dependency(depends=["create_backup", "copy_backup"])

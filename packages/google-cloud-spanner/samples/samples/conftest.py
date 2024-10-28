@@ -16,11 +16,11 @@
 import time
 import uuid
 
-import pytest
 from google.api_core import exceptions
 from google.cloud import spanner_admin_database_v1
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
 from google.cloud.spanner_v1 import backup, client, database, instance
+import pytest
 from test_utils import retry
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 
@@ -248,8 +248,7 @@ def database_ddl():
     return []
 
 
-@pytest.fixture(scope="module")
-def sample_database(
+def create_sample_database(
     spanner_client, sample_instance, database_id, database_ddl, database_dialect
 ):
     if database_dialect == DatabaseDialect.POSTGRESQL:
@@ -287,6 +286,28 @@ def sample_database(
     yield sample_database
 
     sample_database.drop()
+
+
+@pytest.fixture(scope="module")
+def sample_database(
+    spanner_client, sample_instance, database_id, database_ddl, database_dialect
+):
+    yield from create_sample_database(
+        spanner_client, sample_instance, database_id, database_ddl, database_dialect
+    )
+
+
+@pytest.fixture(scope="module")
+def sample_multi_region_database(
+    spanner_client, multi_region_instance, database_id, database_ddl, database_dialect
+):
+    yield from create_sample_database(
+        spanner_client,
+        multi_region_instance,
+        database_id,
+        database_ddl,
+        database_dialect,
+    )
 
 
 @pytest.fixture(scope="module")
@@ -329,3 +350,19 @@ def kms_key_name(spanner_client):
         "spanner-test-keyring",
         "spanner-test-cmek",
     )
+
+
+@pytest.fixture(scope="module")
+def kms_key_names(spanner_client):
+    kms_key_names_list = []
+    # this list of cloud-regions correspond to `nam3`
+    for cloud_region in ["us-east1", "us-east4", "us-central1"]:
+        kms_key_names_list.append(
+            "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
+                spanner_client.project,
+                cloud_region,
+                "spanner-test-keyring",
+                "spanner-test-cmek",
+            )
+        )
+    return kms_key_names_list
