@@ -20,7 +20,7 @@ jobs:
         python-version: '3.8'
 
     - name: Setup GCloud SDK
-      uses: google-github-actions/setup-gcloud@v2.1.0
+      uses: google-github-actions/setup-gcloud@v2.1.1
 
     - name: Install / run Nox
       run: |
