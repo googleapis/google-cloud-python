@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.20.1](https://github.com/googleapis/gapic-generator-python/compare/v1.20.0...v1.20.1) (2024-10-25)
+
+
+### Bug Fixes
+
+* Allow google-cloud-documentai 3.x ([#2237](https://github.com/googleapis/gapic-generator-python/issues/2237)) ([946adf1](https://github.com/googleapis/gapic-generator-python/commit/946adf16d8a1cf83019eaa9b6a9e8b1baf95159d))
+
 ## [1.20.0](https://github.com/googleapis/gapic-generator-python/compare/v1.19.1...v1.20.0) (2024-10-23)
 
 
