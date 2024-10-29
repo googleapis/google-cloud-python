@@ -28,8 +28,6 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     var1 = date(1993, 10, 1)
     var2 = date(1994, 1, 1)
 
-    q_final = customer.merge
-
     q_final = (
         customer.merge(orders, left_on="C_CUSTKEY", right_on="O_CUSTKEY")
         .merge(lineitem, left_on="O_ORDERKEY", right_on="L_ORDERKEY")
@@ -61,15 +59,21 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         as_index=False,
     ).agg(REVENUE=bpd.NamedAgg(column="INTERMEDIATE_REVENUE", aggfunc="sum"))
 
-    q_final[
-        [
-            "C_CUSTKEY",
-            "C_NAME",
-            "REVENUE",
-            "C_ACCTBAL",
-            "N_NAME",
-            "C_ADDRESS",
-            "C_PHONE",
-            "C_COMMENT",
+    q_final = (
+        q_final[
+            [
+                "C_CUSTKEY",
+                "C_NAME",
+                "REVENUE",
+                "C_ACCTBAL",
+                "N_NAME",
+                "C_ADDRESS",
+                "C_PHONE",
+                "C_COMMENT",
+            ]
         ]
-    ].sort_values(by="REVENUE", ascending=False).head(20).to_gbq()
+        .sort_values(by="REVENUE", ascending=False)
+        .head(20)
+    )
+
+    q_final.to_gbq()

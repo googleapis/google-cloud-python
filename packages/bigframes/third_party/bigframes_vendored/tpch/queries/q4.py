@@ -26,10 +26,7 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     jn = jn[(jn["O_ORDERDATE"] >= var1) & (jn["O_ORDERDATE"] < var2)]
     jn = jn[jn["L_COMMITDATE"] < jn["L_RECEIPTDATE"]]
 
-    if not session._strictly_ordered:
-        jn = jn.sort_values(by=["O_ORDERPRIORITY", "L_ORDERKEY"])
-
-    jn = jn.drop_duplicates(subset=["O_ORDERPRIORITY", "L_ORDERKEY"])
+    jn = jn.groupby(["O_ORDERPRIORITY", "L_ORDERKEY"], as_index=False).agg("size")
 
     gb = jn.groupby("O_ORDERPRIORITY", as_index=False)
     agg = gb.agg(ORDER_COUNT=bpd.NamedAgg(column="L_ORDERKEY", aggfunc="count"))

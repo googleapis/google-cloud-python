@@ -30,10 +30,16 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     grouped["VALUE"] = grouped["VALUE"].round(2)
 
-    total_value = (filtered_df["PS_SUPPLYCOST"] * filtered_df["PS_AVAILQTY"]).sum()
-    threshold = total_value * 0.0001
+    total_value = (
+        (filtered_df["PS_SUPPLYCOST"] * filtered_df["PS_AVAILQTY"]).to_frame().sum()
+    )
+    threshold = (total_value * 0.0001).rename("THRESHOLD")
 
-    result_df = grouped[grouped["VALUE"] > threshold]
+    grouped = grouped.merge(threshold, how="cross")
+
+    result_df = grouped[grouped["VALUE"] > grouped["THRESHOLD"]].drop(
+        columns="THRESHOLD"
+    )
 
     result_df = result_df.sort_values(by="VALUE", ascending=False)
 

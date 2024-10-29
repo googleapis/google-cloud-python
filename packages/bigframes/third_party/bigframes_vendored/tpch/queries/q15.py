@@ -36,8 +36,13 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         supplier, grouped_revenue, left_on="S_SUPPKEY", right_on="SUPPLIER_NO"
     )
 
-    max_revenue = joined_data["TOTAL_REVENUE"].max()
-    max_revenue_suppliers = joined_data[joined_data["TOTAL_REVENUE"] == max_revenue]
+    max_revenue = joined_data[["TOTAL_REVENUE"]].max().rename("MAX_REVENUE")
+
+    joined_data = joined_data.merge(max_revenue, how="cross")
+
+    max_revenue_suppliers = joined_data[
+        joined_data["TOTAL_REVENUE"] == joined_data["MAX_REVENUE"]
+    ]
 
     max_revenue_suppliers["TOTAL_REVENUE"] = max_revenue_suppliers[
         "TOTAL_REVENUE"
