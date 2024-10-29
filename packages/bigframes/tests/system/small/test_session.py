@@ -399,7 +399,7 @@ def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
 )
 def test_read_gbq_on_linked_dataset_warns(session, source_table):
     with warnings.catch_warnings(record=True) as warned:
-        session.read_gbq(source_table)
+        session.read_gbq(source_table, use_cache=False)
         assert len(warned) == 1
         assert warned[0].category == bigframes.exceptions.TimeTravelDisabledWarning
 
