@@ -913,6 +913,7 @@ class GeminiTextGenerator(base.BaseEstimator):
         max_output_tokens: int = 8192,
         top_k: int = 40,
         top_p: float = 1.0,
+        ground_with_google_search: bool = False,
     ) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
 
@@ -936,11 +937,20 @@ class GeminiTextGenerator(base.BaseEstimator):
                 Specify a lower value for less random responses and a higher value for more random responses.
                 Default 40. Possible values [1, 40].
 
-            top_p (float, default 0.95)::
+            top_p (float, default 0.95):
                 Top-P changes how the model selects tokens for output. Tokens are selected from the most (see top-K) to least probable until the sum of their probabilities equals the top-P value. For example, if tokens A, B, and C have a probability of 0.3, 0.2, and 0.1 and the top-P value is 0.5, then the model will select either A or B as the next token by using temperature and excludes C as a candidate.
                 Specify a lower value for less random responses and a higher value for more random responses.
                 Default 1.0. Possible values [0.0, 1.0].
 
+            ground_with_google_search (bool, default False):
+                Enables Grounding with Google Search for the Vertex AI model. When set
+                to True, the model incorporates relevant information from Google Search
+                results into its responses, enhancing their accuracy and factualness.
+                This feature provides an additional column, `ml_generate_text_grounding_result`,
+                in the response output, detailing the sources used for grounding.
+                Note: Using this feature may impact billing costs. Refer to the pricing
+                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
+                The default is `False`.
 
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
@@ -974,6 +984,7 @@ class GeminiTextGenerator(base.BaseEstimator):
             "top_k": top_k,
             "top_p": top_p,
             "flatten_json_output": True,
+            "ground_with_google_search": ground_with_google_search,
         }
 
         df = self._bqml_model.generate_text(X, options)

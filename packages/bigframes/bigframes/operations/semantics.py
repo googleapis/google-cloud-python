@@ -16,6 +16,7 @@
 import re
 import typing
 from typing import List, Optional
+import warnings
 
 import numpy as np
 
@@ -39,6 +40,7 @@ class Semantics:
         model,
         cluster_column: typing.Optional[str] = None,
         max_agg_rows: int = 10,
+        ground_with_google_search: bool = False,
     ):
         """
         Performs an aggregation over all rows of the table.
@@ -90,6 +92,14 @@ class Semantics:
             max_agg_rows (int, default 10):
                 The maxinum number of rows to be aggregated at a time.
 
+            ground_with_google_search (bool, default False):
+                Enables Grounding with Google Search for the GeminiTextGenerator model.
+                When set to True, the model incorporates relevant information from Google
+                Search results into its responses, enhancing their accuracy and factualness.
+                Note: Using this feature may impact billing costs. Refer to the pricing
+                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
+                The default is `False`.
+
         Returns:
             bigframes.dataframe.DataFrame: A new DataFrame with the aggregated answers.
 
@@ -118,6 +128,12 @@ class Semantics:
                 "Semantic aggregations are limited to a single column."
             )
         column = columns[0]
+
+        if ground_with_google_search:
+            warnings.warn(
+                "Enables Grounding with Google Search may impact billing cost. See pricing "
+                "details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models"
+            )
 
         if max_agg_rows <= 1:
             raise ValueError(
@@ -191,7 +207,12 @@ class Semantics:
 
             # Run model
             predict_df = typing.cast(
-                bigframes.dataframe.DataFrame, model.predict(prompt_s, temperature=0.0)
+                bigframes.dataframe.DataFrame,
+                model.predict(
+                    prompt_s,
+                    temperature=0.0,
+                    ground_with_google_search=ground_with_google_search,
+                ),
             )
             agg_df[column] = predict_df["ml_generate_text_llm_result"].combine_first(
                 single_row_df
@@ -284,7 +305,7 @@ class Semantics:
         df[output_column] = clustered_result["CENTROID_ID"]
         return df
 
-    def filter(self, instruction: str, model):
+    def filter(self, instruction: str, model, ground_with_google_search: bool = False):
         """
         Filters the DataFrame with the semantics of the user instruction.
 
@@ -305,18 +326,26 @@ class Semantics:
             [1 rows x 2 columns]
 
         Args:
-            instruction:
+            instruction (str):
                 An instruction on how to filter the data. This value must contain
                 column references by name, which should be wrapped in a pair of braces.
                 For example, if you have a column "food", you can refer to this column
                 in the instructions like:
                 "The {food} is healthy."
 
-            model:
+            model (bigframes.ml.llm.GeminiTextGenerator):
                 A GeminiTextGenerator provided by Bigframes ML package.
 
+            ground_with_google_search (bool, default False):
+                Enables Grounding with Google Search for the GeminiTextGenerator model.
+                When set to True, the model incorporates relevant information from Google
+                Search results into its responses, enhancing their accuracy and factualness.
+                Note: Using this feature may impact billing costs. Refer to the pricing
+                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
+                The default is `False`.
+
         Returns:
-            DataFrame filtered by the instruction.
+            bigframes.pandas.DataFrame: DataFrame filtered by the instruction.
 
         Raises:
             NotImplementedError: when the semantic operator experiment is off.
@@ -332,6 +361,12 @@ class Semantics:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
 
+        if ground_with_google_search:
+            warnings.warn(
+                "Enables Grounding with Google Search may impact billing cost. See pricing "
+                "details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models"
+            )
+
         df: bigframes.dataframe.DataFrame = self._df[columns].copy()
         for column in columns:
             if df[column].dtype != dtypes.STRING_DTYPE:
@@ -345,6 +380,7 @@ class Semantics:
             model.predict(
                 self._make_prompt(df, columns, user_instruction, output_instruction),
                 temperature=0.0,
+                ground_with_google_search=ground_with_google_search,
             ),
         )
 
@@ -352,7 +388,13 @@ class Semantics:
             results["ml_generate_text_llm_result"].str.lower().str.contains("true")
         ]
 
-    def map(self, instruction: str, output_column: str, model):
+    def map(
+        self,
+        instruction: str,
+        output_column: str,
+        model,
+        ground_with_google_search: bool = False,
+    ):
         """
         Maps the DataFrame with the semantics of the user instruction.
 
@@ -376,21 +418,29 @@ class Semantics:
             [2 rows x 3 columns]
 
         Args:
-            instruction:
+            instruction (str):
                 An instruction on how to map the data. This value must contain
                 column references by name, which should be wrapped in a pair of braces.
                 For example, if you have a column "food", you can refer to this column
                 in the instructions like:
                 "Get the ingredients of {food}."
 
-            output_column:
+            output_column (str):
                 The column name of the mapping result.
 
-            model:
+            model (bigframes.ml.llm.GeminiTextGenerator):
                 A GeminiTextGenerator provided by Bigframes ML package.
 
+            ground_with_google_search (bool, default False):
+                Enables Grounding with Google Search for the GeminiTextGenerator model.
+                When set to True, the model incorporates relevant information from Google
+                Search results into its responses, enhancing their accuracy and factualness.
+                Note: Using this feature may impact billing costs. Refer to the pricing
+                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
+                The default is `False`.
+
         Returns:
-            DataFrame with attached mapping results.
+            bigframes.pandas.DataFrame: DataFrame with attached mapping results.
 
         Raises:
             NotImplementedError: when the semantic operator experiment is off.
@@ -405,6 +455,12 @@ class Semantics:
         for column in columns:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
+
+        if ground_with_google_search:
+            warnings.warn(
+                "Enables Grounding with Google Search may impact billing cost. See pricing "
+                "details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models"
+            )
 
         df: bigframes.dataframe.DataFrame = self._df[columns].copy()
         for column in columns:
@@ -421,6 +477,7 @@ class Semantics:
             model.predict(
                 self._make_prompt(df, columns, user_instruction, output_instruction),
                 temperature=0.0,
+                ground_with_google_search=ground_with_google_search,
             )["ml_generate_text_llm_result"],
         )
 
@@ -428,7 +485,14 @@ class Semantics:
 
         return concat([self._df, results.rename(output_column)], axis=1)
 
-    def join(self, other, instruction: str, model, max_rows: int = 1000):
+    def join(
+        self,
+        other,
+        instruction: str,
+        model,
+        max_rows: int = 1000,
+        ground_with_google_search: bool = False,
+    ):
         """
         Joines two dataframes by applying the instruction over each pair of rows from
         the left and right table.
@@ -455,10 +519,10 @@ class Semantics:
             [4 rows x 2 columns]
 
         Args:
-            other:
+            other (bigframes.pandas.DataFrame):
                 The other dataframe.
 
-            instruction:
+            instruction (str):
                 An instruction on how left and right rows can be joined. This value must contain
                 column references by name. which should be wrapped in a pair of braces.
                 For example: "The {city} belongs to the {country}".
@@ -467,21 +531,35 @@ class Semantics:
                 self joins. For example: "The {left.employee_name} reports to {right.employee_name}"
                 For unique column names, this prefix is optional.
 
-            model:
+            model (bigframes.ml.llm.GeminiTextGenerator):
                 A GeminiTextGenerator provided by Bigframes ML package.
 
-            max_rows:
+            max_rows (int, default 1000):
                 The maximum number of rows allowed to be sent to the model per call. If the result is too large, the method
                 call will end early with an error.
 
+            ground_with_google_search (bool, default False):
+                Enables Grounding with Google Search for the GeminiTextGenerator model.
+                When set to True, the model incorporates relevant information from Google
+                Search results into its responses, enhancing their accuracy and factualness.
+                Note: Using this feature may impact billing costs. Refer to the pricing
+                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
+                The default is `False`.
+
         Returns:
-            The joined dataframe.
+            bigframes.pandas.DataFrame: The joined dataframe.
 
         Raises:
             ValueError if the amount of data that will be sent for LLM processing is larger than max_rows.
         """
         self._validate_model(model)
         columns = self._parse_columns(instruction)
+
+        if ground_with_google_search:
+            warnings.warn(
+                "Enables Grounding with Google Search may impact billing cost. See pricing "
+                "details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models"
+            )
 
         joined_table_rows = len(self._df) * len(other)
 
@@ -545,7 +623,9 @@ class Semantics:
 
         joined_df = self._df.merge(other, how="cross", suffixes=("_left", "_right"))
 
-        return joined_df.semantics.filter(instruction, model).reset_index(drop=True)
+        return joined_df.semantics.filter(
+            instruction, model, ground_with_google_search=ground_with_google_search
+        ).reset_index(drop=True)
 
     def search(
         self,
@@ -644,7 +724,13 @@ class Semantics:
 
         return typing.cast(bigframes.dataframe.DataFrame, search_result)
 
-    def top_k(self, instruction: str, model, k=10):
+    def top_k(
+        self,
+        instruction: str,
+        model,
+        k: int = 10,
+        ground_with_google_search: bool = False,
+    ):
         """
         Ranks each tuple and returns the k best according to the instruction.
 
@@ -682,6 +768,14 @@ class Semantics:
             k (int, default 10):
                 The number of rows to return.
 
+            ground_with_google_search (bool, default False):
+                Enables Grounding with Google Search for the GeminiTextGenerator model.
+                When set to True, the model incorporates relevant information from Google
+                Search results into its responses, enhancing their accuracy and factualness.
+                Note: Using this feature may impact billing costs. Refer to the pricing
+                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
+                The default is `False`.
+
         Returns:
             bigframes.dataframe.DataFrame: A new DataFrame with the top k rows.
 
@@ -701,6 +795,12 @@ class Semantics:
         if len(columns) > 1:
             raise NotImplementedError(
                 "Semantic aggregations are limited to a single column."
+            )
+
+        if ground_with_google_search:
+            warnings.warn(
+                "Enables Grounding with Google Search may impact billing cost. See pricing "
+                "details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models"
             )
 
         df: bigframes.dataframe.DataFrame = self._df[columns].copy()
@@ -743,6 +843,7 @@ class Semantics:
                 user_instruction,
                 model,
                 k - num_selected,
+                ground_with_google_search,
             )
             num_selected += num_new_selected
 
@@ -757,7 +858,13 @@ class Semantics:
 
     @staticmethod
     def _topk_partition(
-        df, column: str, status_column: str, user_instruction: str, model, k
+        df,
+        column: str,
+        status_column: str,
+        user_instruction: str,
+        model,
+        k: int,
+        ground_with_google_search: bool,
     ):
         output_instruction = (
             "Given a question and two documents, choose the document that best answers "
@@ -784,7 +891,12 @@ class Semantics:
         import bigframes.dataframe
 
         predict_df = typing.cast(
-            bigframes.dataframe.DataFrame, model.predict(prompt_s, temperature=0.0)
+            bigframes.dataframe.DataFrame,
+            model.predict(
+                prompt_s,
+                temperature=0.0,
+                ground_with_google_search=ground_with_google_search,
+            ),
         )
 
         marks = predict_df["ml_generate_text_llm_result"].str.contains("2")
