@@ -147,8 +147,8 @@ class Compiler:
         ).name("labels")
         labels = (
             typing.cast(ibis.expr.types.ArrayValue, labels_array_table)
-            .unnest()
             .as_table()
+            .unnest(["labels"])
         )
         if ordered:
             return compiled.OrderedIR(
