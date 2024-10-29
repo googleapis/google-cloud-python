@@ -72,19 +72,18 @@ RUN tar -xvf Python-3.10.14.tgz
 RUN ./Python-3.10.14/configure --enable-optimizations
 RUN make altinstall
 
-RUN python3.10 -m venv /venv
-ENV PATH /venv/bin:$PATH
+ENV PATH /usr/local/bin/python3.10:$PATH
 
 ###################### Install pip
 RUN wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
-  && python3 /tmp/get-pip.py \
+  && python3.10 /tmp/get-pip.py \
   && rm /tmp/get-pip.py
 
 # Test pip
-RUN python3 -m pip
+RUN python3.10 -m pip
 
 # Install build requirements
 COPY requirements.txt /requirements.txt
-RUN python3 -m pip install --require-hashes -r requirements.txt
+RUN python3.10 -m pip install --require-hashes -r requirements.txt
 
 CMD ["python3.10"]
