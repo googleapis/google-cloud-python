@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import io
 import re
 import os
@@ -215,3 +216,46 @@ def test_client_universe_domain(
             stored_contents = file_obj.read()
 
     assert stored_contents == payload
+
+
+def test_restore_bucket(
+    storage_client,
+    buckets_to_delete,
+):
+    from google.cloud.storage.bucket import SoftDeletePolicy
+
+    # Create a bucket with soft delete policy.
+    duration_secs = 7 * 86400
+    bucket = storage_client.bucket(_helpers.unique_name("w-soft-delete"))
+    bucket.soft_delete_policy.retention_duration_seconds = duration_secs
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket)
+    buckets_to_delete.append(bucket)
+
+    policy = bucket.soft_delete_policy
+    assert isinstance(policy, SoftDeletePolicy)
+    assert policy.retention_duration_seconds == duration_secs
+    assert isinstance(policy.effective_time, datetime.datetime)
+
+    # Record the bucket's name and generation
+    name = bucket.name
+    generation = bucket.generation
+    assert generation is not None
+
+    # Delete the bucket, then use the generation to get a reference to it again.
+    _helpers.retry_429_503(bucket.delete)()
+    soft_deleted_bucket = _helpers.retry_429_503(storage_client.get_bucket)(
+        name, generation=generation, soft_deleted=True
+    )
+    assert soft_deleted_bucket.name == name
+    assert soft_deleted_bucket.generation == generation
+    assert soft_deleted_bucket.soft_delete_time is not None
+    assert soft_deleted_bucket.hard_delete_time is not None
+
+    # Restore the bucket.
+    restored_bucket = _helpers.retry_429_503(storage_client.restore_bucket)(
+        name, generation=generation
+    )
+    assert restored_bucket.name == name
+    assert restored_bucket.generation == generation
+    assert restored_bucket.soft_delete_time is None
+    assert restored_bucket.hard_delete_time is None

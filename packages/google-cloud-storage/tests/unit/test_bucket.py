@@ -603,16 +603,24 @@ class Test_Bucket(unittest.TestCase):
         kw["api_endpoint"] = kw.get("api_endpoint") or _get_default_storage_base_url()
         return mock.create_autospec(Client, instance=True, **kw)
 
-    def _make_one(self, client=None, name=None, properties=None, user_project=None):
+    def _make_one(
+        self,
+        client=None,
+        name=None,
+        properties=None,
+        user_project=None,
+        generation=None,
+    ):
         if client is None:
             client = self._make_client()
         if user_project is None:
-            bucket = self._get_target_class()(client, name=name)
+            bucket = self._get_target_class()(client, name=name, generation=generation)
         else:
             bucket = self._get_target_class()(
-                client, name=name, user_project=user_project
+                client, name=name, user_project=user_project, generation=generation
             )
-        bucket._properties = properties or {}
+        if properties:
+            bucket._properties = {**bucket._properties, **properties}
         return bucket
 
     def test_ctor_w_invalid_name(self):
@@ -633,6 +641,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(bucket._default_object_acl.bucket, bucket)
         self.assertEqual(list(bucket._label_removals), [])
         self.assertIsNone(bucket.user_project)
+        self.assertEqual(bucket.generation, None)
+        self.assertEqual(bucket.soft_delete_time, None)
+        self.assertEqual(bucket.hard_delete_time, None)
 
     def test_ctor_w_user_project(self):
         NAME = "name"
@@ -648,6 +659,31 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(bucket._default_object_acl.bucket, bucket)
         self.assertEqual(list(bucket._label_removals), [])
         self.assertEqual(bucket.user_project, USER_PROJECT)
+
+    def test_ctor_w_generation_and_soft_delete_info(self):
+        from google.cloud._helpers import _RFC3339_MICROS
+
+        NAME = "name"
+        generation = 12345
+
+        soft_timestamp = datetime.datetime(2024, 1, 5, 20, 34, 37, tzinfo=_UTC)
+        soft_delete = soft_timestamp.strftime(_RFC3339_MICROS)
+        hard_timestamp = datetime.datetime(2024, 1, 15, 20, 34, 37, tzinfo=_UTC)
+        hard_delete = hard_timestamp.strftime(_RFC3339_MICROS)
+        properties = {"softDeleteTime": soft_delete, "hardDeleteTime": hard_delete}
+
+        bucket = self._make_one(name=NAME, generation=generation, properties=properties)
+        self.assertEqual(bucket.name, NAME)
+        self.assertEqual(list(bucket._changes), [])
+        self.assertFalse(bucket._acl.loaded)
+        self.assertIs(bucket._acl.bucket, bucket)
+        self.assertFalse(bucket._default_object_acl.loaded)
+        self.assertIs(bucket._default_object_acl.bucket, bucket)
+        self.assertEqual(list(bucket._label_removals), [])
+        self.assertIsNone(bucket.user_project)
+        self.assertEqual(bucket.generation, generation)
+        self.assertEqual(bucket.soft_delete_time, soft_timestamp)
+        self.assertEqual(bucket.hard_delete_time, hard_timestamp)
 
     def test_blob_wo_keys(self):
         from google.cloud.storage.blob import Blob
@@ -1993,6 +2029,31 @@ class Test_Bucket(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             bucket.reload(if_generation_match=6)
+
+    def test_reload_w_soft_deleted(self):
+        name = "name"
+        api_response = {"name": name}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = api_response
+        bucket = self._make_one(client, name=name, generation=12345)
+
+        bucket.reload(soft_deleted=True)
+
+        expected_path = f"/b/{name}"
+        expected_query_params = {
+            "projection": "noAcl",
+            "softDeleted": True,
+            "generation": 12345,
+        }
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
+        )
 
     def test_update_w_metageneration_match(self):
         name = "name"

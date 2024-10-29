@@ -30,6 +30,7 @@ from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 
+from google.cloud.storage._helpers import _add_generation_match_parameters
 from google.cloud.storage._helpers import _bucket_bound_hostname_url
 from google.cloud.storage._helpers import _get_api_endpoint_override
 from google.cloud.storage._helpers import _get_environ_project
@@ -367,7 +368,7 @@ class Client(ClientWithProject):
         api_response = self._get_resource(path, timeout=timeout, retry=retry)
         return api_response["email_address"]
 
-    def bucket(self, bucket_name, user_project=None):
+    def bucket(self, bucket_name, user_project=None, generation=None):
         """Factory constructor for bucket object.
 
         .. note::
@@ -381,10 +382,19 @@ class Client(ClientWithProject):
         :param user_project: (Optional) The project ID to be billed for API
                              requests made via the bucket.
 
+        :type generation: int
+        :param generation: (Optional) If present, selects a specific revision of
+                           this bucket.
+
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket object created.
         """
-        return Bucket(client=self, name=bucket_name, user_project=user_project)
+        return Bucket(
+            client=self,
+            name=bucket_name,
+            user_project=user_project,
+            generation=generation,
+        )
 
     def batch(self, raise_exception=True):
         """Factory constructor for batch object.
@@ -789,7 +799,7 @@ class Client(ClientWithProject):
             _target_object=_target_object,
         )
 
-    def _bucket_arg_to_bucket(self, bucket_or_name):
+    def _bucket_arg_to_bucket(self, bucket_or_name, generation=None):
         """Helper to return given bucket or create new by name.
 
         Args:
@@ -798,17 +808,27 @@ class Client(ClientWithProject):
                  str, \
             ]):
                 The bucket resource to pass or name to create.
+            generation (Optional[int]):
+                The bucket generation. If generation is specified,
+                bucket_or_name must be a name (str).
 
         Returns:
             google.cloud.storage.bucket.Bucket
                 The newly created bucket or the given one.
         """
         if isinstance(bucket_or_name, Bucket):
+            if generation:
+                raise ValueError(
+                    "The generation can only be specified if a "
+                    "name is used to specify a bucket, not a Bucket object. "
+                    "Create a new Bucket object with the correct generation "
+                    "instead."
+                )
             bucket = bucket_or_name
             if bucket.client is None:
                 bucket._client = self
         else:
-            bucket = Bucket(self, name=bucket_or_name)
+            bucket = Bucket(self, name=bucket_or_name, generation=generation)
         return bucket
 
     @create_trace_span(name="Storage.Client.getBucket")
@@ -819,6 +839,9 @@ class Client(ClientWithProject):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         retry=DEFAULT_RETRY,
+        *,
+        generation=None,
+        soft_deleted=None,
     ):
         """Retrieve a bucket via a GET request.
 
@@ -837,12 +860,12 @@ class Client(ClientWithProject):
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
 
-            if_metageneration_match (Optional[long]):
+            if_metageneration_match (Optional[int]):
                 Make the operation conditional on whether the
-                blob's current metageneration matches the given value.
+                bucket's current metageneration matches the given value.
 
-            if_metageneration_not_match (Optional[long]):
-                Make the operation conditional on whether the blob's
+            if_metageneration_not_match (Optional[int]):
+                Make the operation conditional on whether the bucket's
                 current metageneration does not match the given value.
 
             retry (Optional[Union[google.api_core.retry.Retry, google.cloud.storage.retry.ConditionalRetryPolicy]]):
@@ -859,6 +882,19 @@ class Client(ClientWithProject):
                 See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
                 information on retry types and how to configure them.
 
+            generation (Optional[int]):
+                The generation of the bucket. The generation can be used to
+                specify a specific soft-deleted version of the bucket, in
+                conjunction with the ``soft_deleted`` argument below. If
+                ``soft_deleted`` is not True, the generation is unused.
+
+            soft_deleted (Optional[bool]):
+                If True, looks for a soft-deleted bucket. Will only return
+                the bucket metadata if the bucket exists and is in a
+                soft-deleted state. The bucket ``generation`` is required if
+                ``soft_deleted`` is set to True.
+                See: https://cloud.google.com/storage/docs/soft-delete
+
         Returns:
             google.cloud.storage.bucket.Bucket
                 The bucket matching the name provided.
@@ -867,13 +903,14 @@ class Client(ClientWithProject):
             google.cloud.exceptions.NotFound
                 If the bucket is not found.
         """
-        bucket = self._bucket_arg_to_bucket(bucket_or_name)
+        bucket = self._bucket_arg_to_bucket(bucket_or_name, generation=generation)
         bucket.reload(
             client=self,
             timeout=timeout,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
             retry=retry,
+            soft_deleted=soft_deleted,
         )
         return bucket
 
@@ -1386,6 +1423,8 @@ class Client(ClientWithProject):
         page_size=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
+        *,
+        soft_deleted=None,
     ):
         """Get all buckets in the project associated to the client.
 
@@ -1438,6 +1477,12 @@ class Client(ClientWithProject):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
+        :type soft_deleted: bool
+        :param soft_deleted:
+            (Optional) If true, only soft-deleted buckets will be listed as distinct results in order of increasing
+            generation number. This parameter can only be used successfully if the bucket has a soft delete policy.
+            See: https://cloud.google.com/storage/docs/soft-delete
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :raises ValueError: if both ``project`` is ``None`` and the client's
                             project is also ``None``.
@@ -1469,6 +1514,9 @@ class Client(ClientWithProject):
         if fields is not None:
             extra_params["fields"] = fields
 
+        if soft_deleted is not None:
+            extra_params["softDeleted"] = soft_deleted
+
         return self._list_resource(
             "/b",
             _item_to_bucket,
@@ -1479,6 +1527,71 @@ class Client(ClientWithProject):
             timeout=timeout,
             retry=retry,
         )
+
+    def restore_bucket(
+        self,
+        bucket_name,
+        generation,
+        projection="noAcl",
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
+    ):
+        """Restores a soft-deleted bucket.
+
+        :type bucket_name: str
+        :param bucket_name: The name of the bucket to be restored.
+
+        :type generation: int
+        :param generation: Selects the specific revision of the bucket.
+
+        :type projection: str
+        :param projection:
+            (Optional) Specifies the set of properties to return. If used, must
+            be 'full' or 'noAcl'. Defaults to 'noAcl'.
+
+        if_metageneration_match (Optional[int]):
+            Make the operation conditional on whether the
+            blob's current metageneration matches the given value.
+
+        if_metageneration_not_match (Optional[int]):
+            Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
+
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry:
+            (Optional) How to retry the RPC.
+
+            Users can configure non-default retry behavior. A ``None`` value will
+            disable retries. See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
+
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
+        :returns: The restored Bucket.
+        """
+        query_params = {"generation": generation, "projection": projection}
+
+        _add_generation_match_parameters(
+            query_params,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
+
+        bucket = self.bucket(bucket_name)
+        api_response = self._post_resource(
+            f"{bucket.path}/restore",
+            None,
+            query_params=query_params,
+            timeout=timeout,
+            retry=retry,
+        )
+        bucket._set_properties(api_response)
+        return bucket
 
     @create_trace_span(name="Storage.Client.createHmacKey")
     def create_hmac_key(

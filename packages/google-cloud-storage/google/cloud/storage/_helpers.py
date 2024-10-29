@@ -293,6 +293,9 @@ class _PropertyMixin(object):
         )
         if soft_deleted is not None:
             query_params["softDeleted"] = soft_deleted
+            # Soft delete reload requires a generation, even for targets
+            # that don't include them in default query params (buckets).
+            query_params["generation"] = self.generation
         headers = self._encryption_headers()
         _add_etag_match_headers(
             headers, if_etag_match=if_etag_match, if_etag_not_match=if_etag_not_match
