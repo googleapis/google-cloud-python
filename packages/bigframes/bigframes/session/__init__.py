@@ -275,7 +275,23 @@ class Session(
         )
 
     def __del__(self):
-        """Automatic cleanup of internal resources"""
+        """Automatic cleanup of internal resources."""
+        self.close()
+
+    def __enter__(self):
+        """Enter the runtime context of the Session object.
+
+        See [With Statement Context Managers](https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers)
+        for more details.
+        """
+        return self
+
+    def __exit__(self, *_):
+        """Exit the runtime context of the Session object.
+
+        See [With Statement Context Managers](https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers)
+        for more details.
+        """
         self.close()
 
     @property

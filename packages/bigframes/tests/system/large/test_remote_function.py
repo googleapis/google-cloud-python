@@ -2245,3 +2245,155 @@ def test_remote_function_ingress_settings_unsupported(session):
         @session.remote_function(reuse=False, cloud_function_ingress_settings="unknown")
         def square(x: int) -> int:
             return x * x
+
+
+@pytest.mark.parametrize(
+    ("session_creator"),
+    [
+        pytest.param(bigframes.Session, id="session-constructor"),
+        pytest.param(bigframes.connect, id="connect-method"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_w_context_manager_unnamed(
+    scalars_dfs, dataset_id, bq_cf_connection, session_creator
+):
+    def add_one(x: int) -> int:
+        return x + 1
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    pd_result = scalars_pandas_df["int64_too"].apply(add_one)
+
+    temporary_bigquery_remote_function = None
+    temporary_cloud_run_function = None
+
+    try:
+        with session_creator() as session:
+            # create a temporary remote function
+            add_one_remote_temp = session.remote_function(
+                dataset=dataset_id,
+                bigquery_connection=bq_cf_connection,
+                reuse=False,
+            )(add_one)
+
+            temporary_bigquery_remote_function = (
+                add_one_remote_temp.bigframes_remote_function
+            )
+            assert temporary_bigquery_remote_function is not None
+            assert (
+                session.bqclient.get_routine(temporary_bigquery_remote_function)
+                is not None
+            )
+
+            temporary_cloud_run_function = add_one_remote_temp.bigframes_cloud_function
+            assert temporary_cloud_run_function is not None
+            assert (
+                session.cloudfunctionsclient.get_function(
+                    name=temporary_cloud_run_function
+                )
+                is not None
+            )
+
+            bf_result = scalars_df["int64_too"].apply(add_one_remote_temp).to_pandas()
+            pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+        # outside the with statement context manager the temporary BQ remote
+        # function and the underlying cloud run function should have been
+        # cleaned up
+        assert temporary_bigquery_remote_function is not None
+        with pytest.raises(google.api_core.exceptions.NotFound):
+            session.bqclient.get_routine(temporary_bigquery_remote_function)
+        # the deletion of cloud function happens in a non-blocking way, ensure that
+        # it either exists in a being-deleted state, or is already deleted
+        assert temporary_cloud_run_function is not None
+        try:
+            gcf = session.cloudfunctionsclient.get_function(
+                name=temporary_cloud_run_function
+            )
+            assert gcf.state is functions_v2.Function.State.DELETING
+        except google.cloud.exceptions.NotFound:
+            pass
+    finally:
+        # clean up the gcp assets created for the temporary remote function,
+        # just in case it was not explicitly cleaned up in the try clause due
+        # to assertion failure or exception earlier than that
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, add_one_remote_temp
+        )
+
+
+@pytest.mark.parametrize(
+    ("session_creator"),
+    [
+        pytest.param(bigframes.Session, id="session-constructor"),
+        pytest.param(bigframes.connect, id="connect-method"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_w_context_manager_named(
+    scalars_dfs, dataset_id, bq_cf_connection, session_creator
+):
+    def add_one(x: int) -> int:
+        return x + 1
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    pd_result = scalars_pandas_df["int64_too"].apply(add_one)
+
+    persistent_bigquery_remote_function = None
+    persistent_cloud_run_function = None
+
+    try:
+        with session_creator() as session:
+            # create a persistent remote function
+            name = test_utils.prefixer.Prefixer("bigframes", "").create_prefix()
+            add_one_remote_persist = session.remote_function(
+                dataset=dataset_id,
+                bigquery_connection=bq_cf_connection,
+                reuse=False,
+                name=name,
+            )(add_one)
+
+            persistent_bigquery_remote_function = (
+                add_one_remote_persist.bigframes_remote_function
+            )
+            assert persistent_bigquery_remote_function is not None
+            assert (
+                session.bqclient.get_routine(persistent_bigquery_remote_function)
+                is not None
+            )
+
+            persistent_cloud_run_function = (
+                add_one_remote_persist.bigframes_cloud_function
+            )
+            assert persistent_cloud_run_function is not None
+            assert (
+                session.cloudfunctionsclient.get_function(
+                    name=persistent_cloud_run_function
+                )
+                is not None
+            )
+
+            bf_result = (
+                scalars_df["int64_too"].apply(add_one_remote_persist).to_pandas()
+            )
+            pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+        # outside the with statement context manager the persistent BQ remote
+        # function and the underlying cloud run function should still exist
+        assert persistent_bigquery_remote_function is not None
+        assert (
+            session.bqclient.get_routine(persistent_bigquery_remote_function)
+            is not None
+        )
+        assert persistent_cloud_run_function is not None
+        assert (
+            session.cloudfunctionsclient.get_function(
+                name=persistent_cloud_run_function
+            )
+            is not None
+        )
+    finally:
+        # clean up the gcp assets created for the persistent remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, add_one_remote_persist
+        )

@@ -133,3 +133,38 @@ def test_clean_up_by_session_id():
     assert not any(
         [(session.session_id in table.full_table_id) for table in tables_after]
     )
+
+
+@pytest.mark.parametrize(
+    ("session_creator"),
+    [
+        pytest.param(bigframes.Session, id="session-constructor"),
+        pytest.param(bigframes.connect, id="connect-method"),
+    ],
+)
+def test_clean_up_via_context_manager(session_creator):
+    # we will create two tables and confirm that they are deleted
+    # when the session is closed
+    with session_creator() as session:
+        bqclient = session.bqclient
+
+        expiration = (
+            datetime.datetime.now(datetime.timezone.utc)
+            + bigframes.constants.DEFAULT_EXPIRATION
+        )
+        full_id_1 = bigframes.session._io.bigquery.create_temp_table(
+            session.bqclient, session._temp_storage_manager._random_table(), expiration
+        )
+        full_id_2 = bigframes.session._io.bigquery.create_temp_table(
+            session.bqclient, session._temp_storage_manager._random_table(), expiration
+        )
+
+        # check that the tables were actually created
+        assert bqclient.get_table(full_id_1).created is not None
+        assert bqclient.get_table(full_id_2).created is not None
+
+    # check that the tables are already deleted
+    with pytest.raises(google.cloud.exceptions.NotFound):
+        bqclient.delete_table(full_id_1)
+    with pytest.raises(google.cloud.exceptions.NotFound):
+        bqclient.delete_table(full_id_2)

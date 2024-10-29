@@ -98,7 +98,7 @@ def test_setter_if_session_started_but_setting_the_same_value(attribute):
 )
 def test_location_set_to_valid_no_warning(valid_location):
     # test setting location through constructor
-    def set_location_in_ctor():
+    def set_location_in_constructor():
         bigquery_options.BigQueryOptions(location=valid_location)
 
     # test setting location property
@@ -106,7 +106,7 @@ def test_location_set_to_valid_no_warning(valid_location):
         options = bigquery_options.BigQueryOptions()
         options.location = valid_location
 
-    for op in [set_location_in_ctor, set_location_property]:
+    for op in [set_location_in_constructor, set_location_property]:
         # Ensure that no warnings are emitted.
         # https://docs.pytest.org/en/7.0.x/how-to/capture-warnings.html#additional-use-cases-of-warnings-in-tests
         with warnings.catch_warnings():
@@ -136,7 +136,7 @@ def test_location_set_to_valid_no_warning(valid_location):
 )
 def test_location_set_to_invalid_warning(invalid_location, possibility):
     # test setting location through constructor
-    def set_location_in_ctor():
+    def set_location_in_constructor():
         bigquery_options.BigQueryOptions(location=invalid_location)
 
     # test setting location property
@@ -144,7 +144,7 @@ def test_location_set_to_invalid_warning(invalid_location, possibility):
         options = bigquery_options.BigQueryOptions()
         options.location = invalid_location
 
-    for op in [set_location_in_ctor, set_location_property]:
+    for op in [set_location_in_constructor, set_location_property]:
         with pytest.warns(
             bigframes.exceptions.UnknownLocationWarning,
             match=re.escape(
