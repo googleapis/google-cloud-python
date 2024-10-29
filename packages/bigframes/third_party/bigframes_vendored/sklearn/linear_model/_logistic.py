@@ -79,6 +79,14 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
             y (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 DataFrame of shape (n_samples,). Target vector relative to X.
 
+            X_eval (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                Series or DataFrame of shape (n_samples, n_features). Evaluation vector,
+                where `n_samples` is the number of samples and `n_features` is
+                the number of features.
+
+            y_eval (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                DataFrame of shape (n_samples,). Target vector relative to X_eval.
+
 
         Returns:
             LogisticRegression: Fitted estimator.

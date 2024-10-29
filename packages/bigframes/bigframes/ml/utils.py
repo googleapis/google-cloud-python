@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import typing
-from typing import Any, Generator, Literal, Mapping, Optional, Union
+from typing import Any, Generator, Literal, Mapping, Optional, Tuple, Union
 
 import bigframes_vendored.constants as constants
 from google.cloud import bigquery
 import pandas as pd
 
-from bigframes.core import blocks
+from bigframes.core import blocks, guid
 import bigframes.pandas as bpd
 from bigframes.session import Session
 
@@ -155,3 +155,37 @@ def retrieve_params_from_bq_model(
             kwargs[bf_param] = bf_param_type(last_fitting[bqml_param])
 
     return kwargs
+
+
+def combine_training_and_evaluation_data(
+    X_train: bpd.DataFrame,
+    y_train: bpd.DataFrame,
+    X_eval: bpd.DataFrame,
+    y_eval: bpd.DataFrame,
+    bqml_options: dict,
+) -> Tuple[bpd.DataFrame, bpd.DataFrame, dict]:
+    """
+    Combine training data and labels with evlauation data and labels, and keep
+    them differentiated through a split column in the combined data and labels.
+    """
+
+    assert X_train.columns.equals(X_eval.columns)
+    assert y_train.columns.equals(y_eval.columns)
+
+    # create a custom split column for BQML and supply the evaluation
+    # data along with the training data in a combined single table
+    # https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create-dnn-models#data_split_col.
+    split_col = guid.generate_guid()
+    assert split_col not in X_train.columns
+
+    X_train[split_col] = False
+    X_eval[split_col] = True
+    X = bpd.concat([X_train, X_eval])
+    y = bpd.concat([y_train, y_eval])
+
+    # create options copy to not mutate the incoming one
+    bqml_options = bqml_options.copy()
+    bqml_options["data_split_method"] = "CUSTOM"
+    bqml_options["data_split_col"] = split_col
+
+    return X, y, bqml_options

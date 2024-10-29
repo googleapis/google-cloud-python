@@ -52,7 +52,7 @@ _BQML_PARAMS_MAPPING = {
 
 @log_adapter.class_logger
 class XGBRegressor(
-    base.SupervisedTrainablePredictor,
+    base.SupervisedTrainableWithEvaluationPredictor,
     bigframes_vendored.xgboost.sklearn.XGBRegressor,
 ):
     __doc__ = bigframes_vendored.xgboost.sklearn.XGBRegressor.__doc__
@@ -145,14 +145,24 @@ class XGBRegressor(
         X: utils.ArrayType,
         y: utils.ArrayType,
         transforms: Optional[List[str]] = None,
+        X_eval: Optional[utils.ArrayType] = None,
+        y_eval: Optional[utils.ArrayType] = None,
     ) -> XGBRegressor:
         X, y = utils.convert_to_dataframe(X, y)
+
+        bqml_options = self._bqml_options
+
+        if X_eval is not None and y_eval is not None:
+            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X, y, bqml_options = utils.combine_training_and_evaluation_data(
+                X, y, X_eval, y_eval, bqml_options
+            )
 
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
-            options=self._bqml_options,
+            options=bqml_options,
         )
         return self
 
@@ -200,7 +210,7 @@ class XGBRegressor(
 
 @log_adapter.class_logger
 class XGBClassifier(
-    base.SupervisedTrainablePredictor,
+    base.SupervisedTrainableWithEvaluationPredictor,
     bigframes_vendored.xgboost.sklearn.XGBClassifier,
 ):
 
@@ -294,14 +304,24 @@ class XGBClassifier(
         X: utils.ArrayType,
         y: utils.ArrayType,
         transforms: Optional[List[str]] = None,
+        X_eval: Optional[utils.ArrayType] = None,
+        y_eval: Optional[utils.ArrayType] = None,
     ) -> XGBClassifier:
         X, y = utils.convert_to_dataframe(X, y)
+
+        bqml_options = self._bqml_options
+
+        if X_eval is not None and y_eval is not None:
+            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X, y, bqml_options = utils.combine_training_and_evaluation_data(
+                X, y, X_eval, y_eval, bqml_options
+            )
 
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
-            options=self._bqml_options,
+            options=bqml_options,
         )
         return self
 
@@ -347,7 +367,7 @@ class XGBClassifier(
 
 @log_adapter.class_logger
 class RandomForestRegressor(
-    base.SupervisedTrainablePredictor,
+    base.SupervisedTrainableWithEvaluationPredictor,
     bigframes_vendored.sklearn.ensemble._forest.RandomForestRegressor,
 ):
 
@@ -430,14 +450,24 @@ class RandomForestRegressor(
         X: utils.ArrayType,
         y: utils.ArrayType,
         transforms: Optional[List[str]] = None,
+        X_eval: Optional[utils.ArrayType] = None,
+        y_eval: Optional[utils.ArrayType] = None,
     ) -> RandomForestRegressor:
         X, y = utils.convert_to_dataframe(X, y)
+
+        bqml_options = self._bqml_options
+
+        if X_eval is not None and y_eval is not None:
+            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X, y, bqml_options = utils.combine_training_and_evaluation_data(
+                X, y, X_eval, y_eval, bqml_options
+            )
 
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
-            options=self._bqml_options,
+            options=bqml_options,
         )
         return self
 
@@ -503,7 +533,7 @@ class RandomForestRegressor(
 
 @log_adapter.class_logger
 class RandomForestClassifier(
-    base.SupervisedTrainablePredictor,
+    base.SupervisedTrainableWithEvaluationPredictor,
     bigframes_vendored.sklearn.ensemble._forest.RandomForestClassifier,
 ):
 
@@ -586,14 +616,24 @@ class RandomForestClassifier(
         X: utils.ArrayType,
         y: utils.ArrayType,
         transforms: Optional[List[str]] = None,
+        X_eval: Optional[utils.ArrayType] = None,
+        y_eval: Optional[utils.ArrayType] = None,
     ) -> RandomForestClassifier:
         X, y = utils.convert_to_dataframe(X, y)
+
+        bqml_options = self._bqml_options
+
+        if X_eval is not None and y_eval is not None:
+            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X, y, bqml_options = utils.combine_training_and_evaluation_data(
+                X, y, X_eval, y_eval, bqml_options
+            )
 
         self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
-            options=self._bqml_options,
+            options=bqml_options,
         )
         return self
 

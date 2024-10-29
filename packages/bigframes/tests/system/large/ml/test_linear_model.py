@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
+
+from bigframes.ml import model_selection
 import bigframes.ml.linear_model
 from tests.system import utils
 
@@ -56,6 +59,85 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
     assert reloaded_model.ls_init_learning_rate is None
     assert reloaded_model.max_iterations == 20
     assert reloaded_model.tol == 0.01
+
+
+def test_linear_regression_configure_fit_with_eval_score(
+    penguins_df_default_index, dataset_id
+):
+    model = bigframes.ml.linear_model.LinearRegression()
+
+    df = penguins_df_default_index.dropna()
+    X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "sex",
+        ]
+    ]
+    y = df[["body_mass_g"]]
+
+    X_train, X_eval, y_train, y_eval = model_selection.train_test_split(X, y)
+
+    model.fit(X_train, y_train, X_eval=X_eval, y_eval=y_eval)
+
+    # Check score to ensure the model was fitted
+    result = model.score(X_eval, y_eval).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        result, columns=utils.ML_REGRESSION_METRICS, index=1
+    )
+
+    # save, load, check parameters to ensure configuration was kept
+    bq_model_name = f"{dataset_id}.temp_configured_model"
+    reloaded_model = model.to_gbq(bq_model_name, replace=True)
+    assert reloaded_model._bqml_model is not None
+    assert (
+        f"{dataset_id}.temp_configured_model" in reloaded_model._bqml_model.model_name
+    )
+    assert reloaded_model.optimize_strategy == "NORMAL_EQUATION"
+    assert reloaded_model.fit_intercept is True
+    assert reloaded_model.calculate_p_values is False
+    assert reloaded_model.enable_global_explain is False
+    assert reloaded_model.l1_reg is None
+    assert reloaded_model.l2_reg == 0.0
+    assert reloaded_model.learning_rate is None
+    assert reloaded_model.learning_rate_strategy == "line_search"
+    assert reloaded_model.ls_init_learning_rate is None
+    assert reloaded_model.max_iterations == 20
+    assert reloaded_model.tol == 0.01
+
+    # make sure the bqml model was internally created with custom split
+    bq_model = penguins_df_default_index._session.bqclient.get_model(bq_model_name)
+    last_fitting = bq_model.training_runs[-1]["trainingOptions"]
+    assert last_fitting["dataSplitMethod"] == "CUSTOM"
+    assert "dataSplitColumn" in last_fitting
+
+    # make sure the bqml model has the same  evaluation metrics attached as
+    # returned by model.score()
+    bq_model_expected_eval_metrics = result[utils.ML_REGRESSION_METRICS[:5]]
+    bq_model_eval_metrics = bq_model.training_runs[-1]["evaluationMetrics"][
+        "regressionMetrics"
+    ]
+    bq_model_eval_metrics = pd.DataFrame(
+        [
+            [
+                bq_model_eval_metrics["meanAbsoluteError"],
+                bq_model_eval_metrics["meanSquaredError"],
+                bq_model_eval_metrics["meanSquaredLogError"],
+                bq_model_eval_metrics["medianAbsoluteError"],
+                bq_model_eval_metrics["rSquared"],
+            ]
+        ],
+        columns=utils.ML_REGRESSION_METRICS[:5],
+    )
+    pd.testing.assert_frame_equal(
+        bq_model_expected_eval_metrics,
+        bq_model_eval_metrics,
+        check_dtype=False,
+        check_index_type=False,
+    )
 
 
 def test_linear_regression_customized_params_fit_score(
@@ -214,6 +296,80 @@ def test_logistic_regression_configure_fit_score(penguins_df_default_index, data
     )
     assert reloaded_model.fit_intercept is True
     assert reloaded_model.class_weight is None
+
+
+def test_logistic_regression_configure_fit_with_eval_score(
+    penguins_df_default_index, dataset_id
+):
+    model = bigframes.ml.linear_model.LogisticRegression()
+
+    df = penguins_df_default_index.dropna()
+    df = df[df["sex"].isin(["MALE", "FEMALE"])]
+
+    X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "body_mass_g",
+        ]
+    ]
+    y = df[["sex"]]
+
+    X_train, X_eval, y_train, y_eval = model_selection.train_test_split(X, y)
+
+    model.fit(X_train, y_train, X_eval=X_eval, y_eval=y_eval)
+
+    # Check score to ensure the model was fitted
+    result = model.score(X_eval, y_eval).to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        result, columns=utils.ML_CLASSFICATION_METRICS, index=1
+    )
+
+    # save, load, check parameters to ensure configuration was kept
+    bq_model_name = f"{dataset_id}.temp_configured_logistic_reg_model"
+    reloaded_model = model.to_gbq(bq_model_name, replace=True)
+    assert reloaded_model._bqml_model is not None
+    assert (
+        f"{dataset_id}.temp_configured_logistic_reg_model"
+        in reloaded_model._bqml_model.model_name
+    )
+    assert reloaded_model.fit_intercept is True
+    assert reloaded_model.class_weight is None
+
+    # make sure the bqml model was internally created with custom split
+    bq_model = penguins_df_default_index._session.bqclient.get_model(bq_model_name)
+    last_fitting = bq_model.training_runs[-1]["trainingOptions"]
+    assert last_fitting["dataSplitMethod"] == "CUSTOM"
+    assert "dataSplitColumn" in last_fitting
+
+    # make sure the bqml model has the same  evaluation metrics attached as
+    # returned by model.score()
+    bq_model_expected_eval_metrics = result
+    bq_model_eval_metrics = bq_model.training_runs[-1]["evaluationMetrics"][
+        "binaryClassificationMetrics"
+    ]["aggregateClassificationMetrics"]
+    bq_model_eval_metrics = pd.DataFrame(
+        [
+            [
+                bq_model_eval_metrics["precision"],
+                bq_model_eval_metrics["recall"],
+                bq_model_eval_metrics["accuracy"],
+                bq_model_eval_metrics["f1Score"],
+                bq_model_eval_metrics["logLoss"],
+                bq_model_eval_metrics["rocAuc"],
+            ]
+        ],
+        columns=utils.ML_CLASSFICATION_METRICS,
+    )
+    pd.testing.assert_frame_equal(
+        bq_model_expected_eval_metrics,
+        bq_model_eval_metrics,
+        check_dtype=False,
+        check_index_type=False,
+    )
 
 
 def test_logistic_regression_customized_params_fit_score(

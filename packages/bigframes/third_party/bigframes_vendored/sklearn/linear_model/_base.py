@@ -108,6 +108,13 @@ class LinearRegression(RegressorMixin, LinearModel):
                 Series or DataFrame of shape (n_samples,) or (n_samples, n_targets).
                 Target values. Will be cast to X's dtype if necessary.
 
+            X_eval (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                Series or DataFrame of shape (n_samples, n_features). Evaluation data.
+
+            y_eval (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                Series or DataFrame of shape (n_samples,) or (n_samples, n_targets).
+                Evaluation target values. Will be cast to X_eval's dtype if necessary.
+
         Returns:
             LinearRegression: Fitted estimator.
         """
