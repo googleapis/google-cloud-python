@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.20.2](https://github.com/googleapis/gapic-generator-python/compare/v1.20.1...v1.20.2) (2024-10-30)
+
+
+### Bug Fixes
+
+* Disable universe-domain validation ([#2236](https://github.com/googleapis/gapic-generator-python/issues/2236)) ([ecaa41e](https://github.com/googleapis/gapic-generator-python/commit/ecaa41e7984a8aa2244138cce99cb91a87872c54))
+
 ## [1.20.1](https://github.com/googleapis/gapic-generator-python/compare/v1.20.0...v1.20.1) (2024-10-25)
 
 
