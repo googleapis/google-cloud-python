@@ -249,10 +249,11 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         analytics custom modules method over gRPC.
 
         Returns a list of all
-        EffectiveSecurityHealthAnalyticsCustomModules for the
-        given parent. This includes resident modules defined at
-        the scope of the parent, and inherited modules,
-        inherited from CRM ancestors (no descendants).
+        [EffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule]
+        resources for the given parent. This includes resident modules
+        defined at the scope of the parent, and inherited modules,
+        inherited from ancestor organizations, folders, and projects (no
+        descendants).
 
         Returns:
             Callable[[~.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest],
@@ -287,7 +288,7 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         analytics custom module method over gRPC.
 
         Gets details of a single
-        EffectiveSecurityHealthAnalyticsCustomModule.
+        [EffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule].
 
         Returns:
             Callable[[~.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
@@ -320,10 +321,11 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         custom modules method over gRPC.
 
         Returns a list of all
-        SecurityHealthAnalyticsCustomModules for the given
-        parent. This includes resident modules defined at the
-        scope of the parent, and inherited modules, inherited
-        from CRM ancestors (no descendants).
+        [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        resources for the given parent. This includes resident modules
+        defined at the scope of the parent, and inherited modules,
+        inherited from ancestor organizations, folders, and projects (no
+        descendants).
 
         Returns:
             Callable[[~.ListSecurityHealthAnalyticsCustomModulesRequest],
@@ -358,8 +360,9 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         health analytics custom modules method over gRPC.
 
         Returns a list of all resident
-        SecurityHealthAnalyticsCustomModules under the given CRM
-        parent and all of the parent's CRM descendants.
+        [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        resources under the given organization, folder, or project and
+        all of its descendants.
 
         Returns:
             Callable[[~.ListDescendantSecurityHealthAnalyticsCustomModulesRequest],
@@ -394,7 +397,8 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         r"""Return a callable for the get security health analytics
         custom module method over gRPC.
 
-        Retrieves a SecurityHealthAnalyticsCustomModule.
+        Retrieves a
+        [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule].
 
         Returns:
             Callable[[~.GetSecurityHealthAnalyticsCustomModuleRequest],
@@ -427,11 +431,11 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         analytics custom module method over gRPC.
 
         Creates a resident
-        SecurityHealthAnalyticsCustomModule at the scope of the
-        given CRM parent, and also creates inherited
-        SecurityHealthAnalyticsCustomModules for all CRM
-        descendants of the given parent. These modules are
-        enabled by default.
+        [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        at the scope of the given organization, folder, or project, and
+        also creates inherited ``SecurityHealthAnalyticsCustomModule``
+        resources for all folders and projects that are descendants of
+        the given parent. These modules are enabled by default.
 
         Returns:
             Callable[[~.CreateSecurityHealthAnalyticsCustomModuleRequest],
@@ -463,13 +467,13 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         r"""Return a callable for the update security health
         analytics custom module method over gRPC.
 
-        Updates the SecurityHealthAnalyticsCustomModule under
-        the given name based on the given update mask. Updating
-        the enablement state is supported on both resident and
-        inherited modules (though resident modules cannot have
-        an enablement state of "inherited"). Updating the
-        display name and custom config of a module is supported
-        on resident modules only.
+        Updates the
+        [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        under the given name based on the given update mask. Updating
+        the enablement state is supported on both resident and inherited
+        modules (though resident modules cannot have an enablement state
+        of "inherited"). Updating the display name and custom
+        configuration of a module is supported on resident modules only.
 
         Returns:
             Callable[[~.UpdateSecurityHealthAnalyticsCustomModuleRequest],
@@ -502,9 +506,9 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         analytics custom module method over gRPC.
 
         Deletes the specified
-        SecurityHealthAnalyticsCustomModule and all of its
-        descendants in the CRM hierarchy. This method is only
-        supported for resident custom modules.
+        [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        and all of its descendants in the resource hierarchy. This
+        method is only supported for resident custom modules.
 
         Returns:
             Callable[[~.DeleteSecurityHealthAnalyticsCustomModuleRequest],
@@ -536,8 +540,9 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         r"""Return a callable for the simulate security health
         analytics custom module method over gRPC.
 
-        Simulates a given SecurityHealthAnalyticsCustomModule
-        and Resource.
+        Simulates the result of using a
+        [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        to check a resource.
 
         Returns:
             Callable[[~.SimulateSecurityHealthAnalyticsCustomModuleRequest],
@@ -608,14 +613,20 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         r"""Return a callable for the get effective event threat
         detection custom module method over gRPC.
 
-        Gets an effective ETD custom module. Retrieves the effective
-        module at the given level. The difference between an
-        EffectiveCustomModule and a CustomModule is that the fields for
-        an EffectiveCustomModule are computed from ancestors if needed.
-        For example, the enablement_state for a CustomModule can be
-        either ENABLED, DISABLED, or INHERITED. Where as the
-        enablement_state for an EffectiveCustomModule is always computed
-        to ENABLED or DISABLED (the effective enablement_state).
+        Gets the effective Event Threat Detection custom module at the
+        given level.
+
+        The difference between an
+        [EffectiveEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EffectiveEventThreatDetectionCustomModule]
+        and an
+        [EventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule]
+        is that the fields for an
+        ``EffectiveEventThreatDetectionCustomModule`` are computed from
+        ancestors if needed. For example, the enablement state for an
+        ``EventThreatDetectionCustomModule`` can be ``ENABLED``,
+        ``DISABLED``, or ``INHERITED``. In contrast, the enablement
+        state for an ``EffectiveEventThreatDetectionCustomModule`` is
+        always computed as ``ENABLED`` or ``DISABLED``.
 
         Returns:
             Callable[[~.GetEffectiveEventThreatDetectionCustomModuleRequest],
@@ -648,9 +659,9 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         custom modules method over gRPC.
 
         Lists all Event Threat Detection custom modules for
-        the given Resource Manager parent. This includes
-        resident modules defined at the scope of the parent
-        along with modules inherited from ancestors.
+        the given organization, folder, or project. This
+        includes resident modules defined at the scope of the
+        parent along with modules inherited from ancestors.
 
         Returns:
             Callable[[~.ListEventThreatDetectionCustomModulesRequest],
@@ -685,8 +696,8 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         detection custom modules method over gRPC.
 
         Lists all resident Event Threat Detection custom
-        modules under the given Resource Manager parent and its
-        descendants.
+        modules for the given organization, folder, or project
+        and its descendants.
 
         Returns:
             Callable[[~.ListDescendantEventThreatDetectionCustomModulesRequest],
@@ -751,9 +762,9 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         custom module method over gRPC.
 
         Creates a resident Event Threat Detection custom
-        module at the scope of the given Resource Manager
-        parent, and also creates inherited custom modules for
-        all descendants of the given parent. These modules are
+        module at the scope of the given organization, folder,
+        or project, and creates inherited custom modules for all
+        descendants of the given parent. These modules are
         enabled by default.
 
         Returns:
@@ -826,9 +837,9 @@ class SecurityCenterManagementGrpcTransport(SecurityCenterManagementTransport):
         custom module method over gRPC.
 
         Deletes the specified Event Threat Detection custom
-        module and all of its descendants in the Resource
-        Manager hierarchy. This method is only supported for
-        resident custom modules.
+        module and all of its descendants in the resource
+        hierarchy. This method is only supported for resident
+        custom modules.
 
         Returns:
             Callable[[~.DeleteEventThreatDetectionCustomModuleRequest],
