@@ -84,9 +84,11 @@ def test_universe_domain_validation_fail(parametrized_echo, channel_creator, tra
             assert parametrized_echo.api_endpoint == "localhost:7469"
         else:
             assert parametrized_echo.api_endpoint == transport_endpoint
-        with pytest.raises(ValueError) as err:
-            parametrized_echo.echo({
-                'content': 'Universe validation failed!'
-                })
-        assert str(
-            err.value) == f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credential_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        # with pytest.raises(ValueError) as err:
+        #     parametrized_echo.echo({
+        #         'content': 'Universe validation failed!'
+        #         })
+        # assert str(
+        #     err.value) == f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credential_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
