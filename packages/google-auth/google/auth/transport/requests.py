@@ -38,7 +38,6 @@ from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
 import google.auth.transport._mtls_helper
-from google.auth.transport._requests_base import _BaseAuthorizedSession
 from google.oauth2 import service_account
 
 _LOGGER = logging.getLogger(__name__)
@@ -293,7 +292,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
         return super(_MutualTlsOffloadAdapter, self).proxy_manager_for(*args, **kwargs)
 
 
-class AuthorizedSession(requests.Session, _BaseAuthorizedSession):
+class AuthorizedSession(requests.Session):
     """A Requests Session class with credentials.
 
     This class is used to perform requests to API endpoints that require
@@ -390,7 +389,7 @@ class AuthorizedSession(requests.Session, _BaseAuthorizedSession):
         default_host=None,
     ):
         super(AuthorizedSession, self).__init__()
-        _BaseAuthorizedSession.__init__(self, credentials)
+        self.credentials = credentials
         self._refresh_status_codes = refresh_status_codes
         self._max_refresh_attempts = max_refresh_attempts
         self._refresh_timeout = refresh_timeout

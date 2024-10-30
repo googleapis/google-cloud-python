@@ -13,7 +13,8 @@
 # limitations under the License.
 
 """Transport adapter for Base Requests."""
-
+# NOTE: The coverage for this file is temporarily disabled in `.coveragerc`
+# since it is currently unused.
 
 import abc
 
