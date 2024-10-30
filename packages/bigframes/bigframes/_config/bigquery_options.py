@@ -235,8 +235,10 @@ class BigQueryOptions:
 
         .. note::
             Use of regional endpoints is a feature in Preview and available only
-            in regions "europe-west3", "europe-west9", "europe-west8",
-            "me-central2", "us-east4" and "us-west1".
+            in regions "europe-west3", "europe-west8", "europe-west9",
+            "me-central2", "us-central1", "us-central2", "us-east1", "us-east4",
+            "us-east5", "us-east7", "us-south1", "us-west1", "us-west2", "us-west3"
+            and "us-west4".
 
         .. deprecated:: 0.13.0
             Use of locational endpoints is available only in selected projects.
