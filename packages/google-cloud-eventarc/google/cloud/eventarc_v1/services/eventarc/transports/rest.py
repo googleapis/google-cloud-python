@@ -35,13 +35,15 @@ from google.cloud.eventarc_v1.types import (
     channel,
     channel_connection,
     discovery,
+    enrollment,
     eventarc,
+    google_api_source,
 )
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
 from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import trigger
+from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseEventarcRestTransport
@@ -90,6 +92,38 @@ class EventarcRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_enrollment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_enrollment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_google_api_source(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_google_api_source(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_message_bus(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_message_bus(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_pipeline(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_pipeline(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_trigger(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -111,6 +145,38 @@ class EventarcRestInterceptor:
                 return request, metadata
 
             def post_delete_channel_connection(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_enrollment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_enrollment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_google_api_source(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_google_api_source(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_message_bus(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_message_bus(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_pipeline(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_pipeline(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -138,11 +204,43 @@ class EventarcRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_enrollment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_enrollment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_google_api_source(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_google_api_source(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_google_channel_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_google_channel_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_message_bus(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_message_bus(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_pipeline(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_pipeline(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -178,6 +276,46 @@ class EventarcRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_enrollments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_enrollments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_google_api_sources(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_google_api_sources(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_message_bus_enrollments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_message_bus_enrollments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_message_buses(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_message_buses(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_pipelines(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_pipelines(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_providers(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -202,11 +340,43 @@ class EventarcRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_enrollment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_enrollment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_google_api_source(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_google_api_source(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_google_channel_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_google_channel_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_message_bus(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_message_bus(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_pipeline(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_pipeline(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -263,6 +433,98 @@ class EventarcRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel_connection
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_enrollment(
+        self,
+        request: eventarc.CreateEnrollmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.CreateEnrollmentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_enrollment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_create_enrollment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_enrollment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_google_api_source(
+        self,
+        request: eventarc.CreateGoogleApiSourceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.CreateGoogleApiSourceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_google_api_source
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_create_google_api_source(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_google_api_source
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_message_bus(
+        self,
+        request: eventarc.CreateMessageBusRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.CreateMessageBusRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_message_bus
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_create_message_bus(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_message_bus
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_pipeline(
+        self,
+        request: eventarc.CreatePipelineRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.CreatePipelineRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_pipeline
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_create_pipeline(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_pipeline
 
         Override in a subclass to manipulate the response
         after it is returned by the Eventarc server but before
@@ -339,6 +601,98 @@ class EventarcRestInterceptor:
         """
         return response
 
+    def pre_delete_enrollment(
+        self,
+        request: eventarc.DeleteEnrollmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.DeleteEnrollmentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_enrollment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_delete_enrollment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_enrollment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_google_api_source(
+        self,
+        request: eventarc.DeleteGoogleApiSourceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.DeleteGoogleApiSourceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_google_api_source
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_delete_google_api_source(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_google_api_source
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_message_bus(
+        self,
+        request: eventarc.DeleteMessageBusRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.DeleteMessageBusRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_message_bus
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_delete_message_bus(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_message_bus
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_pipeline(
+        self,
+        request: eventarc.DeletePipelineRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.DeletePipelineRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_pipeline
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_delete_pipeline(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_pipeline
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_trigger(
         self,
         request: eventarc.DeleteTriggerRequest,
@@ -404,6 +758,52 @@ class EventarcRestInterceptor:
         """
         return response
 
+    def pre_get_enrollment(
+        self,
+        request: eventarc.GetEnrollmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.GetEnrollmentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_enrollment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_get_enrollment(
+        self, response: enrollment.Enrollment
+    ) -> enrollment.Enrollment:
+        """Post-rpc interceptor for get_enrollment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_google_api_source(
+        self,
+        request: eventarc.GetGoogleApiSourceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.GetGoogleApiSourceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_google_api_source
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_get_google_api_source(
+        self, response: google_api_source.GoogleApiSource
+    ) -> google_api_source.GoogleApiSource:
+        """Post-rpc interceptor for get_google_api_source
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_google_channel_config(
         self,
         request: eventarc.GetGoogleChannelConfigRequest,
@@ -420,6 +820,48 @@ class EventarcRestInterceptor:
         self, response: google_channel_config.GoogleChannelConfig
     ) -> google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for get_google_channel_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_message_bus(
+        self,
+        request: eventarc.GetMessageBusRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.GetMessageBusRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_message_bus
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_get_message_bus(
+        self, response: message_bus.MessageBus
+    ) -> message_bus.MessageBus:
+        """Post-rpc interceptor for get_message_bus
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_pipeline(
+        self, request: eventarc.GetPipelineRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[eventarc.GetPipelineRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_pipeline
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_get_pipeline(self, response: pipeline.Pipeline) -> pipeline.Pipeline:
+        """Post-rpc interceptor for get_pipeline
 
         Override in a subclass to manipulate the response
         after it is returned by the Eventarc server but before
@@ -509,6 +951,121 @@ class EventarcRestInterceptor:
         """
         return response
 
+    def pre_list_enrollments(
+        self,
+        request: eventarc.ListEnrollmentsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.ListEnrollmentsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_enrollments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_list_enrollments(
+        self, response: eventarc.ListEnrollmentsResponse
+    ) -> eventarc.ListEnrollmentsResponse:
+        """Post-rpc interceptor for list_enrollments
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_google_api_sources(
+        self,
+        request: eventarc.ListGoogleApiSourcesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.ListGoogleApiSourcesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_google_api_sources
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_list_google_api_sources(
+        self, response: eventarc.ListGoogleApiSourcesResponse
+    ) -> eventarc.ListGoogleApiSourcesResponse:
+        """Post-rpc interceptor for list_google_api_sources
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_message_bus_enrollments(
+        self,
+        request: eventarc.ListMessageBusEnrollmentsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.ListMessageBusEnrollmentsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_message_bus_enrollments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_list_message_bus_enrollments(
+        self, response: eventarc.ListMessageBusEnrollmentsResponse
+    ) -> eventarc.ListMessageBusEnrollmentsResponse:
+        """Post-rpc interceptor for list_message_bus_enrollments
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_message_buses(
+        self,
+        request: eventarc.ListMessageBusesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.ListMessageBusesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_message_buses
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_list_message_buses(
+        self, response: eventarc.ListMessageBusesResponse
+    ) -> eventarc.ListMessageBusesResponse:
+        """Post-rpc interceptor for list_message_buses
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_pipelines(
+        self,
+        request: eventarc.ListPipelinesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.ListPipelinesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_pipelines
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_list_pipelines(
+        self, response: eventarc.ListPipelinesResponse
+    ) -> eventarc.ListPipelinesResponse:
+        """Post-rpc interceptor for list_pipelines
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_providers(
         self,
         request: eventarc.ListProvidersRequest,
@@ -576,6 +1133,52 @@ class EventarcRestInterceptor:
         """
         return response
 
+    def pre_update_enrollment(
+        self,
+        request: eventarc.UpdateEnrollmentRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.UpdateEnrollmentRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_enrollment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_update_enrollment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_enrollment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_google_api_source(
+        self,
+        request: eventarc.UpdateGoogleApiSourceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.UpdateGoogleApiSourceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_google_api_source
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_update_google_api_source(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_google_api_source
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_google_channel_config(
         self,
         request: eventarc.UpdateGoogleChannelConfigRequest,
@@ -592,6 +1195,52 @@ class EventarcRestInterceptor:
         self, response: gce_google_channel_config.GoogleChannelConfig
     ) -> gce_google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for update_google_channel_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_message_bus(
+        self,
+        request: eventarc.UpdateMessageBusRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.UpdateMessageBusRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_message_bus
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_update_message_bus(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_message_bus
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Eventarc server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_pipeline(
+        self,
+        request: eventarc.UpdatePipelineRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[eventarc.UpdatePipelineRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_pipeline
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Eventarc server.
+        """
+        return request, metadata
+
+    def post_update_pipeline(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_pipeline
 
         Override in a subclass to manipulate the response
         after it is returned by the Eventarc server but before
@@ -1162,6 +1811,410 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_create_channel_connection(resp)
             return resp
 
+    class _CreateEnrollment(
+        _BaseEventarcRestTransport._BaseCreateEnrollment, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.CreateEnrollment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.CreateEnrollmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create enrollment method over HTTP.
+
+            Args:
+                request (~.eventarc.CreateEnrollmentRequest):
+                    The request object. The request message for the
+                CreateEnrollment method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseCreateEnrollment._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_enrollment(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateEnrollment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseEventarcRestTransport._BaseCreateEnrollment._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseCreateEnrollment._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._CreateEnrollment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_enrollment(resp)
+            return resp
+
+    class _CreateGoogleApiSource(
+        _BaseEventarcRestTransport._BaseCreateGoogleApiSource, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.CreateGoogleApiSource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.CreateGoogleApiSourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create google api source method over HTTP.
+
+            Args:
+                request (~.eventarc.CreateGoogleApiSourceRequest):
+                    The request object. The request message for the
+                CreateGoogleApiSource method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_google_api_source(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = EventarcRestTransport._CreateGoogleApiSource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_google_api_source(resp)
+            return resp
+
+    class _CreateMessageBus(
+        _BaseEventarcRestTransport._BaseCreateMessageBus, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.CreateMessageBus")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.CreateMessageBusRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create message bus method over HTTP.
+
+            Args:
+                request (~.eventarc.CreateMessageBusRequest):
+                    The request object. The request message for the
+                CreateMessageBus method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseCreateMessageBus._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_message_bus(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateMessageBus._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseEventarcRestTransport._BaseCreateMessageBus._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseCreateMessageBus._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._CreateMessageBus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_message_bus(resp)
+            return resp
+
+    class _CreatePipeline(
+        _BaseEventarcRestTransport._BaseCreatePipeline, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.CreatePipeline")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.CreatePipelineRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create pipeline method over HTTP.
+
+            Args:
+                request (~.eventarc.CreatePipelineRequest):
+                    The request object. The request message for the
+                CreatePipeline method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseCreatePipeline._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_pipeline(request, metadata)
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseCreatePipeline._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseEventarcRestTransport._BaseCreatePipeline._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseCreatePipeline._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._CreatePipeline._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_pipeline(resp)
+            return resp
+
     class _CreateTrigger(
         _BaseEventarcRestTransport._BaseCreateTrigger, EventarcRestStub
     ):
@@ -1446,6 +2499,380 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_channel_connection(resp)
+            return resp
+
+    class _DeleteEnrollment(
+        _BaseEventarcRestTransport._BaseDeleteEnrollment, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.DeleteEnrollment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.DeleteEnrollmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete enrollment method over HTTP.
+
+            Args:
+                request (~.eventarc.DeleteEnrollmentRequest):
+                    The request object. The request message for the
+                DeleteEnrollment method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseDeleteEnrollment._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_enrollment(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseDeleteEnrollment._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._DeleteEnrollment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_enrollment(resp)
+            return resp
+
+    class _DeleteGoogleApiSource(
+        _BaseEventarcRestTransport._BaseDeleteGoogleApiSource, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.DeleteGoogleApiSource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.DeleteGoogleApiSourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete google api source method over HTTP.
+
+            Args:
+                request (~.eventarc.DeleteGoogleApiSourceRequest):
+                    The request object. The request message for the
+                DeleteGoogleApiSource method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_google_api_source(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = EventarcRestTransport._DeleteGoogleApiSource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_google_api_source(resp)
+            return resp
+
+    class _DeleteMessageBus(
+        _BaseEventarcRestTransport._BaseDeleteMessageBus, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.DeleteMessageBus")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.DeleteMessageBusRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete message bus method over HTTP.
+
+            Args:
+                request (~.eventarc.DeleteMessageBusRequest):
+                    The request object. The request message for the
+                DeleteMessageBus method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseDeleteMessageBus._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_message_bus(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseDeleteMessageBus._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._DeleteMessageBus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_message_bus(resp)
+            return resp
+
+    class _DeletePipeline(
+        _BaseEventarcRestTransport._BaseDeletePipeline, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.DeletePipeline")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.DeletePipelineRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete pipeline method over HTTP.
+
+            Args:
+                request (~.eventarc.DeletePipelineRequest):
+                    The request object. The request message for the
+                DeletePipeline method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseDeletePipeline._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_pipeline(request, metadata)
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseDeletePipeline._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseDeletePipeline._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._DeletePipeline._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_pipeline(resp)
             return resp
 
     class _DeleteTrigger(
@@ -1739,6 +3166,199 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_channel_connection(resp)
             return resp
 
+    class _GetEnrollment(
+        _BaseEventarcRestTransport._BaseGetEnrollment, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetEnrollment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.GetEnrollmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> enrollment.Enrollment:
+            r"""Call the get enrollment method over HTTP.
+
+            Args:
+                request (~.eventarc.GetEnrollmentRequest):
+                    The request object. The request message for the
+                GetEnrollment method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.enrollment.Enrollment:
+                    An enrollment represents a
+                subscription for messages on a
+                particular message bus. It defines a
+                matching criteria for messages on the
+                bus and the subscriber endpoint where
+                matched messages should be delivered.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseGetEnrollment._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_enrollment(request, metadata)
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseGetEnrollment._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseGetEnrollment._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._GetEnrollment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = enrollment.Enrollment()
+            pb_resp = enrollment.Enrollment.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_enrollment(resp)
+            return resp
+
+    class _GetGoogleApiSource(
+        _BaseEventarcRestTransport._BaseGetGoogleApiSource, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetGoogleApiSource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.GetGoogleApiSourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> google_api_source.GoogleApiSource:
+            r"""Call the get google api source method over HTTP.
+
+            Args:
+                request (~.eventarc.GetGoogleApiSourceRequest):
+                    The request object. The request message for the
+                GetGoogleApiSource method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.google_api_source.GoogleApiSource:
+                    A GoogleApiSource represents a
+                subscription of 1P events from a
+                MessageBus.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_google_api_source(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = EventarcRestTransport._GetGoogleApiSource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = google_api_source.GoogleApiSource()
+            pb_resp = google_api_source.GoogleApiSource.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_google_api_source(resp)
+            return resp
+
     class _GetGoogleChannelConfig(
         _BaseEventarcRestTransport._BaseGetGoogleChannelConfig, EventarcRestStub
     ):
@@ -1836,6 +3456,200 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_google_channel_config(resp)
+            return resp
+
+    class _GetMessageBus(
+        _BaseEventarcRestTransport._BaseGetMessageBus, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetMessageBus")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.GetMessageBusRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> message_bus.MessageBus:
+            r"""Call the get message bus method over HTTP.
+
+            Args:
+                request (~.eventarc.GetMessageBusRequest):
+                    The request object. The request message for the
+                GetMessageBus method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.message_bus.MessageBus:
+                    MessageBus for the messages flowing
+                through the system. The admin has
+                visibility and control over the messages
+                being published and consumed and can
+                restrict publishers and subscribers to
+                only a subset of data available in the
+                system by defining authorization
+                policies.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseGetMessageBus._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_message_bus(request, metadata)
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseGetMessageBus._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseGetMessageBus._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._GetMessageBus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = message_bus.MessageBus()
+            pb_resp = message_bus.MessageBus.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_message_bus(resp)
+            return resp
+
+    class _GetPipeline(_BaseEventarcRestTransport._BaseGetPipeline, EventarcRestStub):
+        def __hash__(self):
+            return hash("EventarcRestTransport.GetPipeline")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.GetPipelineRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> pipeline.Pipeline:
+            r"""Call the get pipeline method over HTTP.
+
+            Args:
+                request (~.eventarc.GetPipelineRequest):
+                    The request object. The request message for the
+                GetPipeline method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.pipeline.Pipeline:
+                    A representation of the Pipeline
+                resource.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseGetPipeline._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_pipeline(request, metadata)
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseGetPipeline._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseGetPipeline._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._GetPipeline._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = pipeline.Pipeline()
+            pb_resp = pipeline.Pipeline.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_pipeline(resp)
             return resp
 
     class _GetProvider(_BaseEventarcRestTransport._BaseGetProvider, EventarcRestStub):
@@ -2208,6 +4022,478 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_channels(resp)
             return resp
 
+    class _ListEnrollments(
+        _BaseEventarcRestTransport._BaseListEnrollments, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListEnrollments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.ListEnrollmentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> eventarc.ListEnrollmentsResponse:
+            r"""Call the list enrollments method over HTTP.
+
+            Args:
+                request (~.eventarc.ListEnrollmentsRequest):
+                    The request object. The request message for the
+                ListEnrollments method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.eventarc.ListEnrollmentsResponse:
+                    The response message for the ``ListEnrollments`` method.
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseListEnrollments._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_enrollments(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseListEnrollments._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseListEnrollments._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._ListEnrollments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = eventarc.ListEnrollmentsResponse()
+            pb_resp = eventarc.ListEnrollmentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_enrollments(resp)
+            return resp
+
+    class _ListGoogleApiSources(
+        _BaseEventarcRestTransport._BaseListGoogleApiSources, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListGoogleApiSources")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.ListGoogleApiSourcesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> eventarc.ListGoogleApiSourcesResponse:
+            r"""Call the list google api sources method over HTTP.
+
+            Args:
+                request (~.eventarc.ListGoogleApiSourcesRequest):
+                    The request object. The request message for the
+                ListGoogleApiSources method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.eventarc.ListGoogleApiSourcesResponse:
+                    The response message for the ``ListGoogleApiSources``
+                method.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseListGoogleApiSources._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_google_api_sources(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = EventarcRestTransport._ListGoogleApiSources._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = eventarc.ListGoogleApiSourcesResponse()
+            pb_resp = eventarc.ListGoogleApiSourcesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_google_api_sources(resp)
+            return resp
+
+    class _ListMessageBusEnrollments(
+        _BaseEventarcRestTransport._BaseListMessageBusEnrollments, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListMessageBusEnrollments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.ListMessageBusEnrollmentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> eventarc.ListMessageBusEnrollmentsResponse:
+            r"""Call the list message bus
+            enrollments method over HTTP.
+
+                Args:
+                    request (~.eventarc.ListMessageBusEnrollmentsRequest):
+                        The request object. The request message for the
+                    ``ListMessageBusEnrollments`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.eventarc.ListMessageBusEnrollmentsResponse:
+                        The response message for the
+                    ``ListMessageBusEnrollments`` method.\`
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_message_bus_enrollments(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = EventarcRestTransport._ListMessageBusEnrollments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = eventarc.ListMessageBusEnrollmentsResponse()
+            pb_resp = eventarc.ListMessageBusEnrollmentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_message_bus_enrollments(resp)
+            return resp
+
+    class _ListMessageBuses(
+        _BaseEventarcRestTransport._BaseListMessageBuses, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListMessageBuses")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.ListMessageBusesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> eventarc.ListMessageBusesResponse:
+            r"""Call the list message buses method over HTTP.
+
+            Args:
+                request (~.eventarc.ListMessageBusesRequest):
+                    The request object. The request message for the
+                ListMessageBuses method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.eventarc.ListMessageBusesResponse:
+                    The response message for the ``ListMessageBuses``
+                method.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseListMessageBuses._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_message_buses(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBuses._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseListMessageBuses._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._ListMessageBuses._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = eventarc.ListMessageBusesResponse()
+            pb_resp = eventarc.ListMessageBusesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_message_buses(resp)
+            return resp
+
+    class _ListPipelines(
+        _BaseEventarcRestTransport._BaseListPipelines, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.ListPipelines")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.ListPipelinesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> eventarc.ListPipelinesResponse:
+            r"""Call the list pipelines method over HTTP.
+
+            Args:
+                request (~.eventarc.ListPipelinesRequest):
+                    The request object. The request message for the
+                ListPipelines method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.eventarc.ListPipelinesResponse:
+                    The response message for the
+                ListPipelines method.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseListPipelines._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_pipelines(request, metadata)
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseListPipelines._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseListPipelines._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._ListPipelines._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = eventarc.ListPipelinesResponse()
+            pb_resp = eventarc.ListPipelinesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_pipelines(resp)
+            return resp
+
     class _ListProviders(
         _BaseEventarcRestTransport._BaseListProviders, EventarcRestStub
     ):
@@ -2492,6 +4778,206 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_update_channel(resp)
             return resp
 
+    class _UpdateEnrollment(
+        _BaseEventarcRestTransport._BaseUpdateEnrollment, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.UpdateEnrollment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.UpdateEnrollmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update enrollment method over HTTP.
+
+            Args:
+                request (~.eventarc.UpdateEnrollmentRequest):
+                    The request object. The request message for the
+                UpdateEnrollment method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseUpdateEnrollment._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_enrollment(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseEventarcRestTransport._BaseUpdateEnrollment._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseUpdateEnrollment._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._UpdateEnrollment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_enrollment(resp)
+            return resp
+
+    class _UpdateGoogleApiSource(
+        _BaseEventarcRestTransport._BaseUpdateGoogleApiSource, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.UpdateGoogleApiSource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.UpdateGoogleApiSourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update google api source method over HTTP.
+
+            Args:
+                request (~.eventarc.UpdateGoogleApiSourceRequest):
+                    The request object. The request message for the
+                UpdateGoogleApiSource method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_google_api_source(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = EventarcRestTransport._UpdateGoogleApiSource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_google_api_source(resp)
+            return resp
+
     class _UpdateGoogleChannelConfig(
         _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig, EventarcRestStub
     ):
@@ -2596,6 +5082,210 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_google_channel_config(resp)
+            return resp
+
+    class _UpdateMessageBus(
+        _BaseEventarcRestTransport._BaseUpdateMessageBus, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.UpdateMessageBus")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.UpdateMessageBusRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update message bus method over HTTP.
+
+            Args:
+                request (~.eventarc.UpdateMessageBusRequest):
+                    The request object. The request message for the
+                UpdateMessageBus method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseUpdateMessageBus._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_message_bus(
+                request, metadata
+            )
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseEventarcRestTransport._BaseUpdateMessageBus._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseUpdateMessageBus._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._UpdateMessageBus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_message_bus(resp)
+            return resp
+
+    class _UpdatePipeline(
+        _BaseEventarcRestTransport._BaseUpdatePipeline, EventarcRestStub
+    ):
+        def __hash__(self):
+            return hash("EventarcRestTransport.UpdatePipeline")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: eventarc.UpdatePipelineRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update pipeline method over HTTP.
+
+            Args:
+                request (~.eventarc.UpdatePipelineRequest):
+                    The request object. The request message for the
+                UpdatePipeline method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseEventarcRestTransport._BaseUpdatePipeline._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_pipeline(request, metadata)
+            transcoded_request = (
+                _BaseEventarcRestTransport._BaseUpdatePipeline._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseEventarcRestTransport._BaseUpdatePipeline._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseEventarcRestTransport._BaseUpdatePipeline._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = EventarcRestTransport._UpdatePipeline._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_pipeline(resp)
             return resp
 
     class _UpdateTrigger(
@@ -2715,6 +5405,38 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._CreateChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_enrollment(
+        self,
+    ) -> Callable[[eventarc.CreateEnrollmentRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateEnrollment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_google_api_source(
+        self,
+    ) -> Callable[[eventarc.CreateGoogleApiSourceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_message_bus(
+        self,
+    ) -> Callable[[eventarc.CreateMessageBusRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateMessageBus(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_pipeline(
+        self,
+    ) -> Callable[[eventarc.CreatePipelineRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreatePipeline(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_trigger(
         self,
     ) -> Callable[[eventarc.CreateTriggerRequest], operations_pb2.Operation]:
@@ -2737,6 +5459,38 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_enrollment(
+        self,
+    ) -> Callable[[eventarc.DeleteEnrollmentRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteEnrollment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_google_api_source(
+        self,
+    ) -> Callable[[eventarc.DeleteGoogleApiSourceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_message_bus(
+        self,
+    ) -> Callable[[eventarc.DeleteMessageBusRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteMessageBus(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_pipeline(
+        self,
+    ) -> Callable[[eventarc.DeletePipelineRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeletePipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_trigger(
@@ -2763,6 +5517,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_enrollment(
+        self,
+    ) -> Callable[[eventarc.GetEnrollmentRequest], enrollment.Enrollment]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetEnrollment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.GetGoogleApiSourceRequest], google_api_source.GoogleApiSource
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_google_channel_config(
         self,
     ) -> Callable[
@@ -2772,6 +5544,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_message_bus(
+        self,
+    ) -> Callable[[eventarc.GetMessageBusRequest], message_bus.MessageBus]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetMessageBus(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_pipeline(
+        self,
+    ) -> Callable[[eventarc.GetPipelineRequest], pipeline.Pipeline]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_provider(
@@ -2807,6 +5595,53 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._ListChannels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_enrollments(
+        self,
+    ) -> Callable[[eventarc.ListEnrollmentsRequest], eventarc.ListEnrollmentsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListEnrollments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_google_api_sources(
+        self,
+    ) -> Callable[
+        [eventarc.ListGoogleApiSourcesRequest], eventarc.ListGoogleApiSourcesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListGoogleApiSources(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_message_bus_enrollments(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusEnrollmentsRequest],
+        eventarc.ListMessageBusEnrollmentsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListMessageBusEnrollments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_message_buses(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusesRequest], eventarc.ListMessageBusesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListMessageBuses(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_pipelines(
+        self,
+    ) -> Callable[[eventarc.ListPipelinesRequest], eventarc.ListPipelinesResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPipelines(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_providers(
         self,
     ) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
@@ -2831,6 +5666,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._UpdateChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def update_enrollment(
+        self,
+    ) -> Callable[[eventarc.UpdateEnrollmentRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateEnrollment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_google_api_source(
+        self,
+    ) -> Callable[[eventarc.UpdateGoogleApiSourceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_google_channel_config(
         self,
     ) -> Callable[
@@ -2840,6 +5691,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_message_bus(
+        self,
+    ) -> Callable[[eventarc.UpdateMessageBusRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateMessageBus(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_pipeline(
+        self,
+    ) -> Callable[[eventarc.UpdatePipelineRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_trigger(
