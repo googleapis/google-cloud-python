@@ -56,6 +56,7 @@ class UserEvent(proto.Message):
             -  ``view-home-page``: View of the home page.
             -  ``view-category-page``: View of a category page, e.g.
                Home > Men > Jeans
+            -  ``add-feedback``: Add a user feedback.
 
             Retail-related values:
 
@@ -275,6 +276,9 @@ class UserEvent(proto.Message):
             other ways.
         media_info (google.cloud.discoveryengine_v1beta.types.MediaInfo):
             Media-specific info.
+        panels (MutableSequence[google.cloud.discoveryengine_v1beta.types.PanelInfo]):
+            Optional. List of panels associated with this
+            event. Used for page-level impression data.
     """
 
     event_type: str = proto.Field(
@@ -367,6 +371,11 @@ class UserEvent(proto.Message):
         proto.MESSAGE,
         number=18,
         message="MediaInfo",
+    )
+    panels: MutableSequence["PanelInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=22,
+        message="PanelInfo",
     )
 
 
@@ -648,7 +657,7 @@ class DocumentInfo(proto.Message):
         name (str):
             The [Document][google.cloud.discoveryengine.v1beta.Document]
             resource full name, of the form:
-            ``projects/{project_id}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/branches/{branch_id}/documents/{document_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/branches/{branch_id}/documents/{document_id}``
 
             This field is a member of `oneof`_ ``document_descriptor``.
         uri (str):
@@ -732,6 +741,9 @@ class PanelInfo(proto.Message):
             is set.
 
             This field is a member of `oneof`_ ``_total_panels``.
+        documents (MutableSequence[google.cloud.discoveryengine_v1beta.types.DocumentInfo]):
+            Optional. The document IDs associated with
+            this panel.
     """
 
     panel_id: str = proto.Field(
@@ -751,6 +763,11 @@ class PanelInfo(proto.Message):
         proto.INT32,
         number=5,
         optional=True,
+    )
+    documents: MutableSequence["DocumentInfo"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="DocumentInfo",
     )
 
 

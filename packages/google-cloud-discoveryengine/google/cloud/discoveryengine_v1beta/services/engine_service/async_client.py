@@ -982,7 +982,7 @@ class EngineServiceAsyncClient:
                 engine.
             name (:class:`str`):
                 Required. The name of the engine to pause. Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+                ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1091,7 +1091,7 @@ class EngineServiceAsyncClient:
                 engine.
             name (:class:`str`):
                 Required. The name of the engine to resume. Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+                ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1207,7 +1207,7 @@ class EngineServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the engine to tune.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+                ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -22,10 +22,26 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
+        "GroundingConfig",
         "GroundingFact",
         "FactChunk",
     },
 )
+
+
+class GroundingConfig(proto.Message):
+    r"""Grounding configuration.
+
+    Attributes:
+        name (str):
+            Required. Name of the GroundingConfig, of the form
+            ``projects/{project}/locations/{location}/groundingConfigs/{grounding_config}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GroundingFact(proto.Message):

@@ -50,7 +50,7 @@ class PurgeUserEventsRequest(proto.Message):
         parent (str):
             Required. The resource name of the catalog under which the
             events are created. The format is
-            ``projects/${projectId}/locations/global/collections/{$collectionId}/dataStores/${dataStoreId}``
+            ``projects/{project}/locations/global/collections/{collection}/dataStores/{dataStore}``.
         filter (str):
             Required. The filter string to specify the events to be
             deleted with a length limit of 5,000 characters. The
