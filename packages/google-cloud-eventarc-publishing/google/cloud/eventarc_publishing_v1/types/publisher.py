@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import any_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.eventarc_publishing_v1.types import cloud_event
+
 __protobuf__ = proto.module(
     package="google.cloud.eventarc.publishing.v1",
     manifest={
@@ -27,6 +29,8 @@ __protobuf__ = proto.module(
         "PublishChannelConnectionEventsResponse",
         "PublishEventsRequest",
         "PublishEventsResponse",
+        "PublishRequest",
+        "PublishResponse",
     },
 )
 
@@ -110,6 +114,70 @@ class PublishEventsRequest(proto.Message):
 
 class PublishEventsResponse(proto.Message):
     r"""The response message for the PublishEvents method."""
+
+
+class PublishRequest(proto.Message):
+    r"""The request message for the Publish method.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        message_bus (str):
+            Required. The full name of the message bus to publish events
+            to. Format:
+            ``projects/{project}/locations/{location}/messageBuses/{messageBus}``.
+        proto_message (google.cloud.eventarc_publishing_v1.types.CloudEvent):
+            The Protobuf format of the CloudEvent being
+            published. Specification can be found here:
+
+            https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/protobuf-format.md
+
+            This field is a member of `oneof`_ ``format``.
+        json_message (str):
+            The JSON format of the CloudEvent being
+            published. Specification can be found here:
+
+            https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/json-format.md
+
+            This field is a member of `oneof`_ ``format``.
+        avro_message (bytes):
+            The Avro format of the CloudEvent being
+            published. Specification can be found here:
+
+            https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/avro-format.md
+
+            This field is a member of `oneof`_ ``format``.
+    """
+
+    message_bus: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    proto_message: cloud_event.CloudEvent = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="format",
+        message=cloud_event.CloudEvent,
+    )
+    json_message: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="format",
+    )
+    avro_message: bytes = proto.Field(
+        proto.BYTES,
+        number=4,
+        oneof="format",
+    )
+
+
+class PublishResponse(proto.Message):
+    r"""The response message for the Publish method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

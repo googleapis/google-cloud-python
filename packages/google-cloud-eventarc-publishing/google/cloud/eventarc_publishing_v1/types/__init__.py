@@ -13,16 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .cloud_event import CloudEvent
 from .publisher import (
     PublishChannelConnectionEventsRequest,
     PublishChannelConnectionEventsResponse,
     PublishEventsRequest,
     PublishEventsResponse,
+    PublishRequest,
+    PublishResponse,
 )
 
 __all__ = (
+    "CloudEvent",
     "PublishChannelConnectionEventsRequest",
     "PublishChannelConnectionEventsResponse",
     "PublishEventsRequest",
     "PublishEventsResponse",
+    "PublishRequest",
+    "PublishResponse",
 )
