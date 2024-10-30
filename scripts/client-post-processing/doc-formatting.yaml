@@ -115,46 +115,6 @@ replacements:
     after:  "            resource. Format: `projects/*/alertConfig`\n"
     count: 2
   - paths: [
-      packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
-    ]
-    before: |
-      \             1. the state could have changed \(e.g. IAM
-      \                permission lost\) or
-      \             2. A failure occurred during creation of the
-      \                module. Defaults to false.
-    after:  "            - The state could have changed (e.g. IAM permission lost) or\n            - A failure occurred during creation of the module. Defaults to false.\n"
-    count: 1
-  - paths: [
-      packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
-    ]
-    before: |
-      \            module could still fail because 1. the state
-      \            could have changed \(e.g. IAM permission lost\) or
-      \            2. A failure occurred while trying to update the
-      \                module.
-    after:  "            module could still fail because\n\n            - The state could have changed (e.g. IAM permission lost) or\n            - A failure occurred while trying to update the module.\n"
-    count: 2
-  - paths: [
-      packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
-    ]
-    before: |
-      \            module could still fail because 1. the state
-      \            could have changed \(e.g. IAM permission lost\) or
-      \            2. A failure occurred while trying to delete the
-      \                module.
-    after:  "            module could still fail because\n\n            - The state could have changed (e.g. IAM permission lost) or\n            - A failure occurred while trying to delete the module.\n"
-    count: 2
-  - paths: [
-      packages/google-cloud-securitycentermanagement/google/cloud/securitycentermanagement_v1/types/security_center_management.py,
-    ]
-    before: |
-      \            module could still fail because 1. the state
-      \            could have changed \(e.g. IAM permission lost\) or
-      \            2. A failure occurred during creation of the
-      \                module.
-    after:  "            module could still fail because\n\n            - The state could have changed (e.g. IAM permission lost) or\n            - A failure occurred during creation of the module.\n"
-    count: 1
-  - paths: [
       packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
       packages/google-cloud-visionai/google/cloud/visionai_v1alpha1/types/platform.py,
     ]
