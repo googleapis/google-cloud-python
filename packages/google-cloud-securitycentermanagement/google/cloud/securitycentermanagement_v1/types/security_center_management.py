@@ -76,74 +76,73 @@ class SecurityCenterService(proto.Message):
     addition to individual module settings. Service settings can be
     configured at the organization, folder, or project level.
     Service settings at the organization or folder level are
-    inherited by those in child folders and projects.
+    inherited by those in descendant folders and projects.
 
     Attributes:
         name (str):
-            Identifier. The name of the service.
+            Identifier. The name of the service, in one of the following
+            formats:
 
-            Its format is:
+            -  ``organizations/{organization}/locations/{location}/securityCenterServices/{service}``
+            -  ``folders/{folder}/locations/{location}/securityCenterServices/{service}``
+            -  ``projects/{project}/locations/{location}/securityCenterServices/{service}``
 
-            -  organizations/{organization}/locations/{location}/securityCenterServices/{service}
-            -  folders/{folder}/locations/{location}/securityCenterServices/{service}
-            -  projects/{project}/locations/{location}/securityCenterServices/{service}
+            The following values are valid for ``{service}``:
 
-            The possible values for id {service} are:
-
-            -  container-threat-detection
-            -  event-threat-detection
-            -  security-health-analytics
-            -  vm-threat-detection
-            -  web-security-scanner
+            -  ``container-threat-detection``
+            -  ``event-threat-detection``
+            -  ``security-health-analytics``
+            -  ``vm-threat-detection``
+            -  ``web-security-scanner``
         intended_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
-            Optional. The intended state of enablement for the service
-            at its level of the resource hierarchy. A DISABLED state
-            will override all module enablement_states to DISABLED.
+            Optional. The intended enablement state for the service at
+            its level of the resource hierarchy. A ``DISABLED`` state
+            will override all module enablement states to ``DISABLED``.
         effective_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
-            Output only. The effective enablement state
-            for the service at its level of the resource
-            hierarchy. If the intended state is set to
-            INHERITED, the effective state will be inherited
-            from the enablement state of an ancestor. This
-            state may differ from the intended enablement
-            state due to billing eligibility or onboarding
-            status.
+            Output only. The effective enablement state for the service
+            at its level of the resource hierarchy. If the intended
+            state is set to ``INHERITED``, the effective state will be
+            inherited from the enablement state of an ancestor. This
+            state may differ from the intended enablement state due to
+            billing eligibility or onboarding status.
         modules (MutableMapping[str, google.cloud.securitycentermanagement_v1.types.SecurityCenterService.ModuleSettings]):
-            Optional. The configurations including the
-            state of enablement for the service's different
+            Optional. The module configurations,
+            including the enablement state for the service's
             modules. The absence of a module in the map
-            implies its configuration is inherited from its
-            parents.
+            implies that its configuration is inherited from
+            its parents.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the service was last
             updated. This could be due to an explicit user
             update or due to a side effect of another system
-            change such as billing subscription expiry.
+            change, such as billing subscription expiry.
         service_config (google.protobuf.struct_pb2.Struct):
-            Optional. Additional service specific
+            Optional. Additional service-specific
             configuration. Not all services will utilize
             this field.
     """
 
     class EnablementState(proto.Enum):
-        r"""Represents the possible intended states of enablement for a
-        service or module.
+        r"""Represents the possible enablement states for a service or
+        module.
 
         Values:
             ENABLEMENT_STATE_UNSPECIFIED (0):
                 Default value. This value is unused.
             INHERITED (1):
                 State is inherited from the parent resource.
-                Not a valid effective enablement state.
+                Valid as an intended enablement state, but not
+                as an effective enablement state.
             ENABLED (2):
                 State is enabled.
             DISABLED (3):
                 State is disabled.
             INGEST_ONLY (4):
-                SCC is configured to ingest findings from this service but
-                not enable this service. Not a valid
-                intended_enablement_state (that is, this is a readonly
-                state).
+                Security Command Center is configured to
+                ingest findings from this service, but not to
+                enable this service. This state indicates that
+                Security Command Center is misconfigured. You
+                can't set this state yourself.
         """
         ENABLEMENT_STATE_UNSPECIFIED = 0
         INHERITED = 1
@@ -156,17 +155,15 @@ class SecurityCenterService(proto.Message):
 
         Attributes:
             intended_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
-                Optional. The intended state of enablement
-                for the module at its level of the resource
+                Optional. The intended enablement state for
+                the module at its level of the resource
                 hierarchy.
             effective_enablement_state (google.cloud.securitycentermanagement_v1.types.SecurityCenterService.EnablementState):
-                Output only. The effective enablement state
-                for the module at its level of the resource
-                hierarchy. If the intended state is set to
-                INHERITED, the effective state will be inherited
-                from the enablement state of an ancestor. This
-                state may
-                differ from the intended enablement state due to
+                Output only. The effective enablement state for the module
+                at its level of the resource hierarchy. If the intended
+                state is set to ``INHERITED``, the effective state will be
+                inherited from the enablement state of an ancestor. This
+                state may differ from the intended enablement state due to
                 billing eligibility or onboarding status.
         """
 
@@ -218,33 +215,30 @@ class SecurityCenterService(proto.Message):
 
 
 class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
-    r"""An EffectiveSecurityHealthAnalyticsCustomModule is the
-    representation of a Security Health Analytics custom module at a
+    r"""The representation of a Security Health Analytics custom module at a
     specified level of the resource hierarchy: organization, folder, or
-    project. If a custom module is inherited from a parent organization
-    or folder, the value of the ``enablementState`` property in
-    EffectiveSecurityHealthAnalyticsCustomModule is set to the value
-    that is effective in the parent, instead of ``INHERITED``. For
-    example, if the module is enabled in a parent organization or
-    folder, the effective enablement_state for the module in all child
-    folders or projects is also ``enabled``.
-    EffectiveSecurityHealthAnalyticsCustomModule is read-only.
+    project. If a custom module is inherited from an ancestor
+    organization or folder, then the enablement state is set to the
+    value that is effective in the parent, not to ``INHERITED``. For
+    example, if the module is enabled in an organization or folder, then
+    the effective enablement state for the module is ``ENABLED`` in all
+    descendant folders or projects.
 
     Attributes:
         name (str):
-            Identifier. The full resource name of the custom module,
-            specified in one of the following formats:
+            Identifier. The full resource name of the custom module, in
+            one of the following formats:
 
-            -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
-            -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
-            -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+            -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
         custom_config (google.cloud.securitycentermanagement_v1.types.CustomConfig):
             Output only. The user-specified configuration
             for the module.
         enablement_state (google.cloud.securitycentermanagement_v1.types.EffectiveSecurityHealthAnalyticsCustomModule.EnablementState):
-            Output only. The effective state of
-            enablement for the module at the given level of
-            the hierarchy.
+            Output only. The effective enablement state
+            for the module at the given level of the
+            hierarchy.
         display_name (str):
             Output only. The display name for the custom
             module. The name must be between 1 and 128
@@ -258,7 +252,7 @@ class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
 
         Values:
             ENABLEMENT_STATE_UNSPECIFIED (0):
-                Unspecified enablement state.
+                Default value. This value is unused.
             ENABLED (1):
                 The module is enabled at the given level.
             DISABLED (2):
@@ -289,24 +283,28 @@ class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
 
 
 class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
-    r"""Request message for listing effective Security Health
-    Analytics custom modules.
+    r"""Request message for
+    [SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules].
 
     Attributes:
         parent (str):
-            Required. Name of parent to list effective custom modules.
-            specified in one of the following formats:
+            Required. Name of parent to list effective custom modules,
+            in one of the following formats:
 
             -  ``organizations/{organization}/locations/{location}``
-            -  ``folders/{folder}/locations/{location}`` or
-               ``projects/{project}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in a single response. Default is 10,
             minimum is 1, maximum is 1000.
         page_token (str):
-            Optional. The value returned by the last call
-            indicating a continuation.
+            Optional. A pagination token returned from a
+            previous request. Provide this token to retrieve
+            the next page of results.
+
+            When paginating, the rest of the request must
+            match the request that generated the page token.
     """
 
     parent: str = proto.Field(
@@ -324,16 +322,17 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
 
 class ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
-    r"""Response message for listing effective Security Health
-    Analytics custom modules.
+    r"""Response message for
+    [SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules].
 
     Attributes:
         effective_security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycentermanagement_v1.types.EffectiveSecurityHealthAnalyticsCustomModule]):
-            The list of
-            EffectiveSecurityHealthAnalyticsCustomModule
+            The list of effective Security Health
+            Analytics custom modules.
         next_page_token (str):
-            A token identifying a page of results the
-            server should return.
+            A pagination token. To retrieve the next page
+            of results, call the method again with this
+            token.
     """
 
     @property
@@ -354,17 +353,17 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
 
 
 class GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Message for getting a
-    EffectiveSecurityHealthAnalyticsCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule].
 
     Attributes:
         name (str):
             Required. The full resource name of the custom module,
             specified in one of the following formats:
 
-            -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
-            -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
-            -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}``
+            -  ``organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}``
     """
 
     name: str = proto.Field(
@@ -379,16 +378,16 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
     state, and last updated time. You can create a custom module at
     the organization, folder, or project level. Custom modules that
     you create at the organization or folder level are inherited by
-    the child folders and projects.
+    the descendant folders and projects.
 
     Attributes:
         name (str):
-            Identifier. The full resource name of the custom module,
-            specified in one of the following formats:
+            Identifier. The full resource name of the custom module, in
+            one of the following formats:
 
-            -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``
-            -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``
-            -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``
+            -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
         display_name (str):
             Optional. The display name of the Security
             Health Analytics custom module. This display
@@ -415,7 +414,7 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
             or project in which you are viewing the custom
             module.
         custom_config (google.cloud.securitycentermanagement_v1.types.CustomConfig):
-            Optional. The user specified custom
+            Optional. The user-specified custom
             configuration for the module.
     """
 
@@ -424,20 +423,20 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
 
         Values:
             ENABLEMENT_STATE_UNSPECIFIED (0):
-                Unspecified enablement state.
+                Default value. This value is unused.
             ENABLED (1):
-                The module is enabled at the given CRM
-                resource.
+                The module is enabled at the given
+                organization, folder, or project.
             DISABLED (2):
-                The module is disabled at the given CRM
-                resource.
+                The module is disabled at the given
+                organization, folder, or project.
             INHERITED (3):
                 State is inherited from an ancestor module. The module will
-                either be effectively ENABLED or DISABLED based on its
-                closest non-inherited ancestor module in the CRM hierarchy.
-                Attempting to set a top level module (module with no parent)
-                to the INHERITED state will result in an INVALID_ARGUMENT
-                error.
+                either be effectively ``ENABLED`` or ``DISABLED`` based on
+                its closest non-inherited ancestor module in the resource
+                hierarchy. If you try to set a top-level module (a module
+                with no parent) to the ``INHERITED`` state, you receive an
+                ``INVALID_ARGUMENT`` error.
         """
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
@@ -485,10 +484,9 @@ class CustomConfig(proto.Message):
 
     Attributes:
         predicate (google.type.expr_pb2.Expr):
-            Optional. The CEL expression to evaluate to
-            produce findings. When the expression evaluates
-            to true against a resource, a finding is
-            generated.
+            Optional. The Common Expression Language (CEL) expression to
+            evaluate to produce findings. When the expression evaluates
+            to ``true`` against a resource, a finding is generated.
         custom_output (google.cloud.securitycentermanagement_v1.types.CustomConfig.CustomOutputSpec):
             Optional. Custom output properties.
         resource_selector (google.cloud.securitycentermanagement_v1.types.CustomConfig.ResourceSelector):
@@ -508,10 +506,10 @@ class CustomConfig(proto.Message):
             investigators understand the detected issue. The
             text must be enclosed in quotation marks.
         recommendation (str):
-            Optional. An explanation of the recommended steps that
-            security teams can take to resolve the detected issue. This
-            explanation is returned with each finding generated by this
-            module in the ``nextSteps`` property of the finding JSON.
+            Optional. An explanation of the recommended
+            steps that security teams can take to resolve
+            the detected issue. This explanation is returned
+            with each finding generated by this module.
     """
 
     class Severity(proto.Enum):
@@ -520,7 +518,7 @@ class CustomConfig(proto.Message):
 
         Values:
             SEVERITY_UNSPECIFIED (0):
-                Unspecified severity.
+                Default value. This value is unused.
             CRITICAL (1):
                 Critical severity.
             HIGH (2):
@@ -539,8 +537,8 @@ class CustomConfig(proto.Message):
     class CustomOutputSpec(proto.Message):
         r"""A set of optional name-value pairs that define custom source
         properties to return with each finding that is generated by the
-        custom module. The custom source properties that are defined here
-        are included in the finding JSON under ``sourceProperties``.
+        custom module. The custom source properties that are defined
+        here are included in the finding.
 
         Attributes:
             properties (MutableSequence[google.cloud.securitycentermanagement_v1.types.CustomConfig.CustomOutputSpec.Property]):
@@ -626,13 +624,13 @@ class CustomConfig(proto.Message):
 
 
 class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
-    r"""Request message for listing Security Health Analytics custom
-    modules.
+    r"""Request message for
+    [SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules].
 
     Attributes:
         parent (str):
-            Required. Name of parent organization, folder, or project in
-            which to list custom modules, specified in one of the
+            Required. Name of the parent organization, folder, or
+            project in which to list custom modules, in one of the
             following formats:
 
             -  ``organizations/{organization}/locations/{location}``
@@ -643,8 +641,12 @@ class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
             return in a single response. Default is 10,
             minimum is 1, maximum is 1000.
         page_token (str):
-            Optional. A token identifying a page of
-            results the server should return.
+            Optional. A pagination token returned from a
+            previous request. Provide this token to retrieve
+            the next page of results.
+
+            When paginating, the rest of the request must
+            match the request that generated the page token.
     """
 
     parent: str = proto.Field(
@@ -662,16 +664,17 @@ class ListSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
 
 class ListSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
-    r"""Response message for listing Security Health Analytics custom
-    modules.
+    r"""Response message for
+    [SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules].
 
     Attributes:
         security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycentermanagement_v1.types.SecurityHealthAnalyticsCustomModule]):
-            The list of
-            SecurityHealthAnalyticsCustomModules
+            The list of Security Health Analytics custom
+            modules.
         next_page_token (str):
-            A token identifying a page of results the
-            server should return.
+            A pagination token. To retrieve the next page
+            of results, call the method again with this
+            token.
     """
 
     @property
@@ -692,14 +695,14 @@ class ListSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
 
 
 class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
-    r"""Request message for listing descendant Security Health
-    Analytics custom modules.
+    r"""Request message for
+    [SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules].
 
     Attributes:
         parent (str):
             Required. Name of the parent organization, folder, or
-            project in which to list custom modules, specified in one of
-            the following formats:
+            project in which to list custom modules, in one of the
+            following formats:
 
             -  ``organizations/{organization}/locations/{location}``
             -  ``folders/{folder}/locations/{location}``
@@ -709,8 +712,12 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
             return in a single response. Default is 10,
             minimum is 1, maximum is 1000.
         page_token (str):
-            Optional. A token identifying a page of
-            results the server should return.
+            Optional. A pagination token returned from a
+            previous request. Provide this token to retrieve
+            the next page of results.
+
+            When paginating, the rest of the request must
+            match the request that generated the page token.
     """
 
     parent: str = proto.Field(
@@ -728,16 +735,17 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
 
 
 class ListDescendantSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
-    r"""Response message for listing descendant Security Health
-    Analytics custom modules.
+    r"""Response message for
+    [SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules].
 
     Attributes:
         security_health_analytics_custom_modules (MutableSequence[google.cloud.securitycentermanagement_v1.types.SecurityHealthAnalyticsCustomModule]):
             The list of
             SecurityHealthAnalyticsCustomModules
         next_page_token (str):
-            A token identifying a page of results the
-            server should return.
+            A pagination token. To retrieve the next page
+            of results, call the method again with this
+            token.
     """
 
     @property
@@ -758,11 +766,13 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesResponse(proto.Message):
 
 
 class GetSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Message for getting a SecurityHealthAnalyticsCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule].
 
     Attributes:
         name (str):
-            Required. Name of the resource
+            Required. Name of the resource, in the format
+            ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``.
     """
 
     name: str = proto.Field(
@@ -772,30 +782,34 @@ class GetSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
 
 class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Message for creating a SecurityHealthAnalyticsCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule].
 
     Attributes:
         parent (str):
             Required. Name of the parent organization, folder, or
-            project of the module, specified in one of the following
-            formats:
+            project of the module, in one of the following formats:
 
             -  ``organizations/{organization}/locations/{location}``
             -  ``folders/{folder}/locations/{location}``
             -  ``projects/{project}/locations/{location}``
         security_health_analytics_custom_module (google.cloud.securitycentermanagement_v1.types.SecurityHealthAnalyticsCustomModule):
-            Required. The resource being created
+            Required. The resource being created.
         validate_only (bool):
-            Optional. When set to true, only validations
-            (including IAM checks) will done for the request
-            (no module will be created). An OK response
-            indicates the request is valid while an error
-            response indicates the request is invalid. Note
-            that a subsequent request to actually create the
-            module could still fail because:
+            Optional. When set to ``true``, the request will be
+            validated (including IAM checks), but no module will be
+            created. An ``OK`` response indicates that the request is
+            valid, while an error response indicates that the request is
+            invalid.
 
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred during creation of the module. Defaults to false.
+            If the request is valid, a subsequent request to create the
+            module could still fail for one of the following reasons:
+
+            -  The state of your cloud resources changed; for example,
+               you lost a required IAM permission
+            -  An error occurred during creation of the module
+
+            Defaults to ``false``.
     """
 
     parent: str = proto.Field(
@@ -816,28 +830,36 @@ class CreateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
 
 class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Message for updating a SecurityHealthAnalyticsCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule].
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to be updated. The only fields
-            that can be updated are ``enablement_state`` and
-            ``custom_config``. If empty or set to the wildcard value
-            ``*``, both ``enablement_state`` and ``custom_config`` are
-            updated.
-        security_health_analytics_custom_module (google.cloud.securitycentermanagement_v1.types.SecurityHealthAnalyticsCustomModule):
-            Required. The resource being updated
-        validate_only (bool):
-            Optional. When set to true, only validations
-            (including IAM checks) will done for the request
-            (module will not be updated). An OK response
-            indicates the request is valid while an error
-            response indicates the request is invalid. Note
-            that a subsequent request to actually update the
-            module could still fail because
+            Required. The fields to update. The following values are
+            valid:
 
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to update the module.
+            -  ``custom_config``
+            -  ``enablement_state``
+
+            If you omit this field or set it to the wildcard value
+            ``*``, then all eligible fields are updated.
+        security_health_analytics_custom_module (google.cloud.securitycentermanagement_v1.types.SecurityHealthAnalyticsCustomModule):
+            Required. The resource being updated.
+        validate_only (bool):
+            Optional. When set to ``true``, the request will be
+            validated (including IAM checks), but no module will be
+            updated. An ``OK`` response indicates that the request is
+            valid, while an error response indicates that the request is
+            invalid.
+
+            If the request is valid, a subsequent request to update the
+            module could still fail for one of the following reasons:
+
+            -  The state of your cloud resources changed; for example,
+               you lost a required IAM permission
+            -  An error occurred during creation of the module
+
+            Defaults to ``false``.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -859,28 +881,32 @@ class UpdateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
 
 class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Message for deleting a SecurityHealthAnalyticsCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule].
 
     Attributes:
         name (str):
-            Required. The resource name of the SHA custom module.
+            Required. The resource name of the SHA custom module, in one
+            of the following formats:
 
-            Its format is:
-
-            -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
-            -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
-            -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}``.
+            -  ``organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
+            -  ``projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}``
         validate_only (bool):
-            Optional. When set to true, only validations
-            (including IAM checks) will done for the request
-            (module will not be deleted). An OK response
-            indicates the request is valid while an error
-            response indicates the request is invalid. Note
-            that a subsequent request to actually delete the
-            module could still fail because
+            Optional. When set to ``true``, the request will be
+            validated (including IAM checks), but no module will be
+            deleted. An ``OK`` response indicates that the request is
+            valid, while an error response indicates that the request is
+            invalid.
 
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to delete the module.
+            If the request is valid, a subsequent request to delete the
+            module could still fail for one of the following reasons:
+
+            -  The state of your cloud resources changed; for example,
+               you lost a required IAM permission
+            -  An error occurred during deletion of the module
+
+            Defaults to ``false``.
     """
 
     name: str = proto.Field(
@@ -894,16 +920,17 @@ class DeleteSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
 
 class SimulateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
-    r"""Request message to simulate a CustomConfig against a given
-    test resource. Maximum size of the request is 4 MB by default.
+    r"""Request message for
+    [SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule].
+    The maximum size of the request is 4 MiB.
 
     Attributes:
         parent (str):
             Required. The relative resource name of the organization,
             project, or folder. For more information about relative
-            resource names, see `Relative Resource
-            Name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
-            Example: ``organizations/{organization_id}``.
+            resource names, see `AIP-122: Resource
+            names <https://google.aip.dev/122>`__. Example:
+            ``organizations/{organization_id}``.
         custom_config (google.cloud.securitycentermanagement_v1.types.CustomConfig):
             Required. The custom configuration that you
             need to test.
@@ -913,21 +940,24 @@ class SimulateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
     """
 
     class SimulatedResource(proto.Message):
-        r"""Manually constructed resource name. If the custom module evaluates
-        against only the resource data, you can omit the ``iam_policy_data``
-        field. If it evaluates only the ``iam_policy_data`` field, you can
-        omit the resource data.
+        r"""Manually constructed information about a resource.
 
         Attributes:
             resource_type (str):
-                Required. The type of the resource, for example,
+                Required. The type of the resource. For example,
                 ``compute.googleapis.com/Disk``.
             resource_data (google.protobuf.struct_pb2.Struct):
                 Optional. A representation of the Google
                 Cloud resource. Should match the Google Cloud
                 resource JSON format.
+
+                If the custom module evaluates only the IAM
+                allow policy, then you can omit this field.
             iam_policy_data (google.iam.v1.policy_pb2.Policy):
-                Optional. A representation of the IAM policy.
+                Optional. A representation of the IAM allow
+                policy.
+                If the custom module evaluates only the resource
+                data, then you can omit this field.
         """
 
         resource_type: str = proto.Field(
@@ -962,54 +992,57 @@ class SimulateSecurityHealthAnalyticsCustomModuleRequest(proto.Message):
 
 
 class SimulatedFinding(proto.Message):
-    r"""A subset of the fields of the Security Center Finding proto.
-    The minimum set of fields needed to represent a simulated
-    finding from a SHA custom module.
+    r"""The minimum set of fields needed to represent a simulated
+    finding from a Security Health Analytics custom module.
 
     Attributes:
         name (str):
             Identifier. The `relative resource
-            name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
-            of the finding. Example:
-            ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}``,
-            ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``,
-            ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``.
+            name <https://google.aip.dev/122>`__ of the finding, in one
+            of the following formats:
+
+            -  ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}``
+            -  ``folders/{folder_id}/sources/{source_id}/findings/{finding_id}``
+            -  ``projects/{project_id}/sources/{source_id}/findings/{finding_id}``
         parent (str):
-            The relative resource name of the source the finding belongs
-            to. See:
-            https://cloud.google.com/apis/design/resource_names#relative_resource_name
-            This field is immutable after creation time. For example:
-            ``organizations/{organization_id}/sources/{source_id}``
-        resource_name (str):
-            For findings on Google Cloud resources, the full resource
-            name of the Google Cloud resource this finding is for. See:
-            https://cloud.google.com/apis/design/resource_names#full_resource_name
-            When the finding is for a non-Google Cloud resource, the
-            resourceName can be a customer or partner defined string.
+            The `relative resource name <https://google.aip.dev/122>`__
+            of the source the finding belongs to. For example,
+            ``organizations/{organization_id}/sources/{source_id}``.
             This field is immutable after creation time.
+        resource_name (str):
+            For findings on Google Cloud resources, the `full resource
+            name <https://google.aip.dev/122#full-resource-names>`__ of
+            the Google Cloud resource this finding is for. When the
+            finding is for a non-Google Cloud resource, the value can be
+            a customer or partner defined string. This field is
+            immutable after creation time.
         category (str):
             The additional taxonomy group within findings from a given
-            source. This field is immutable after creation time.
-            Example: "XSS_FLASH_INJECTION".
+            source. For example, ``XSS_FLASH_INJECTION``. This field is
+            immutable after creation time.
         state (google.cloud.securitycentermanagement_v1.types.SimulatedFinding.State):
             Output only. The state of the finding.
         source_properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
-            Source specific properties. These properties are managed by
-            the source that writes the finding. The key names in the
-            source_properties map must be between 1 and 255 characters,
-            and must start with a letter and contain alphanumeric
-            characters or underscores only.
+            Source-specific properties. These properties
+            are managed by the source that writes the
+            finding. The key names must be between 1 and 255
+            characters; they must start with a letter and
+            contain alphanumeric characters or underscores
+            only.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the finding was first detected. If
             an existing finding is updated, then this is the
-            time the update occurred. For example, if the
-            finding represents an open firewall, this
-            property captures the time the detector believes
-            the firewall became open. The accuracy is
-            determined by the detector. If the finding is
+            time the update occurred. If the finding is
             later resolved, then this time reflects when the
-            finding was resolved. This must not be set to a
-            value greater than the current timestamp.
+            finding was resolved.
+
+            For example, if the finding represents an open
+            firewall, this property captures the time the
+            detector believes the firewall became open. The
+            accuracy is determined by the detector.
+
+            The event time must not be set to a value
+            greater than the current timestamp.
         severity (google.cloud.securitycentermanagement_v1.types.SimulatedFinding.Severity):
             The severity of the finding. This field is
             managed by the source that writes the finding.
@@ -1022,13 +1055,13 @@ class SimulatedFinding(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-                Unspecified state.
+                Default value. This value is unused.
             ACTIVE (1):
                 The finding requires attention and has not
                 been addressed yet.
             INACTIVE (2):
                 The finding has been fixed, triaged as a
-                non-issue or otherwise addressed and is no
+                non-issue, or otherwise addressed and is no
                 longer active.
         """
         STATE_UNSPECIFIED = 0
@@ -1040,82 +1073,67 @@ class SimulatedFinding(proto.Message):
 
         Values:
             SEVERITY_UNSPECIFIED (0):
-                This value is used for findings when a source
-                doesn't write a severity value.
+                Default value. This value is unused.
             CRITICAL (1):
-                Vulnerability:
+                For vulnerabilities: A critical vulnerability
+                is easily discoverable by an external actor,
+                exploitable, and results in the direct ability
+                to execute arbitrary code, exfiltrate data, and
+                otherwise gain additional access and privileges
+                to cloud resources and workloads. Examples
+                include publicly accessible unprotected user
+                data and public SSH access with weak or no
+                passwords.
 
-                A critical vulnerability is easily discoverable
-                by an external actor, exploitable, and results
-                in the direct ability to execute arbitrary code,
+                For threats: Indicates a threat that is able to
+                access, modify, or delete data or execute
+                unauthorized code within existing resources.
+            HIGH (2):
+                For vulnerabilities: A high-risk
+                vulnerability can be easily discovered and
+                exploited in combination with other
+                vulnerabilities in order to gain direct access
+                and the ability to execute arbitrary code,
                 exfiltrate data, and otherwise gain additional
                 access and privileges to cloud resources and
-                workloads. Examples include publicly accessible
-                unprotected user data and public SSH access with
-                weak or no passwords.
+                workloads. An example is a database with weak or
+                no passwords that is only accessible internally.
+                This database could easily be compromised by an
+                actor that had access to the internal network.
 
-                Threat:
-
-                Indicates a threat that is able to access,
-                modify, or delete data or execute unauthorized
-                code within existing resources.
-            HIGH (2):
-                Vulnerability:
-
-                A high risk vulnerability can be easily
-                discovered and exploited in combination with
-                other vulnerabilities in order to gain direct
-                access and the ability to execute arbitrary
-                code, exfiltrate data, and otherwise gain
-                additional access and privileges to cloud
-                resources and workloads. An example is a
-                database with weak or no passwords that is only
-                accessible internally. This database could
-                easily be compromised by an actor that had
-                access to the internal network.
-
-                Threat:
-
-                Indicates a threat that is able to create new
-                computational resources in an environment but
-                not able to access data or execute code in
-                existing resources.
+                For threats: Indicates a threat that is able to
+                create new computational resources in an
+                environment but not able to access data or
+                execute code in existing resources.
             MEDIUM (3):
-                Vulnerability:
+                For vulnerabilities: A medium-risk
+                vulnerability could be used by an actor to gain
+                access to resources or privileges that enable
+                them to eventually (through multiple steps or a
+                complex exploit) gain access and the ability to
+                execute arbitrary code or exfiltrate data. An
+                example is a service account with access to more
+                projects than it should have. If an actor gains
+                access to the service account, they could
+                potentially use that access to manipulate a
+                project the service account was not intended to.
 
-                A medium risk vulnerability could be used by an
-                actor to gain access to resources or privileges
-                that enable them to eventually (through multiple
-                steps or a complex exploit) gain access and the
-                ability to execute arbitrary code or exfiltrate
-                data. An example is a service account with
-                access to more projects than it should have. If
-                an actor gains access to the service account,
-                they could potentially use that access to
-                manipulate a project the service account was not
-                intended to.
-
-                Threat:
-
-                Indicates a threat that is able to cause
-                operational impact but may not access data or
-                execute unauthorized code.
+                For threats: Indicates a threat that is able to
+                cause operational impact but may not access data
+                or execute unauthorized code.
             LOW (4):
-                Vulnerability:
+                For vulnerabilities: A low-risk vulnerability
+                hampers a security organization's ability to
+                detect vulnerabilities or active threats in
+                their deployment, or prevents the root cause
+                investigation of security issues. An example is
+                monitoring and logs being disabled for resource
+                configurations and access.
 
-                A low risk vulnerability hampers a security
-                organization's ability to detect vulnerabilities
-                or active threats in their deployment, or
-                prevents the root cause investigation of
-                security issues. An example is monitoring and
-                logs being disabled for resource configurations
-                and access.
-
-                Threat:
-
-                Indicates a threat that has obtained minimal
-                access to an environment but is not able to
-                access data, execute code, or create resources.
+                For threats: Indicates a threat that has
+                obtained minimal access to an environment but is
+                not able to access data, execute code, or create
+                resources.
         """
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
@@ -1124,27 +1142,27 @@ class SimulatedFinding(proto.Message):
         LOW = 4
 
     class FindingClass(proto.Enum):
-        r"""Represents what kind of Finding it is.
+        r"""Represents what kind of finding it is.
 
         Values:
             FINDING_CLASS_UNSPECIFIED (0):
-                Unspecified finding class.
+                Default value. This value is unused.
             THREAT (1):
                 Describes unwanted or malicious activity.
             VULNERABILITY (2):
                 Describes a potential weakness in software
-                that increases risk to Confidentiality &
-                Integrity & Availability.
+                that increases risk to confidentiality,
+                integrity, and availability.
             MISCONFIGURATION (3):
                 Describes a potential weakness in cloud
-                resource/asset configuration that increases
+                resource or asset configuration that increases
                 risk.
             OBSERVATION (4):
                 Describes a security observation that is for
                 informational purposes.
             SCC_ERROR (5):
-                Describes an error that prevents some SCC
-                functionality.
+                Describes an error that prevents Security
+                Command Center from working correctly.
             POSTURE_VIOLATION (6):
                 Describes a potential security risk due to a
                 change in the security posture.
@@ -1207,8 +1225,8 @@ class SimulatedFinding(proto.Message):
 
 
 class SimulateSecurityHealthAnalyticsCustomModuleResponse(proto.Message):
-    r"""Response message for simulating a
-    ``SecurityHealthAnalyticsCustomModule`` against a given resource.
+    r"""Response message for
+    [SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule].
 
     Attributes:
         result (google.cloud.securitycentermanagement_v1.types.SimulateSecurityHealthAnalyticsCustomModuleResponse.SimulatedResult):
@@ -1229,7 +1247,7 @@ class SimulateSecurityHealthAnalyticsCustomModuleResponse(proto.Message):
         Attributes:
             finding (google.cloud.securitycentermanagement_v1.types.SimulatedFinding):
                 Finding that would be published for the test
-                case, if a violation is detected.
+                case if a violation is detected.
 
                 This field is a member of `oneof`_ ``result``.
             no_violation (google.protobuf.empty_pb2.Empty):
@@ -1270,37 +1288,38 @@ class SimulateSecurityHealthAnalyticsCustomModuleResponse(proto.Message):
 
 
 class EffectiveEventThreatDetectionCustomModule(proto.Message):
-    r"""An EffectiveEventThreatDetectionCustomModule is the representation
-    of EventThreatDetectionCustomModule at a given level taking
-    hierarchy into account and resolving various fields accordingly.
-    e.g. if the module is enabled at the ancestor level, effective
-    modules at all descendant levels will have enablement_state set to
-    ENABLED. Similarly, if module.inherited is set, then effective
-    module's config will contain the ancestor's config details.
-    EffectiveEventThreatDetectionCustomModule is read-only.
+    r"""The representation of an
+    [EventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule]
+    at a given level, taking hierarchy into account and resolving
+    various fields accordingly. For example, if the module is enabled at
+    the ancestor level, then effective modules at all descendant levels
+    will have their enablement state set to ``ENABLED``. Similarly, if
+    ``module.inherited`` is set, then the effective module's
+    configuration will reflect the ancestor's configuration.
 
     Attributes:
         name (str):
-            Identifier. The resource name of the ETD custom module.
+            Identifier. The resource name of the Event Threat Detection
+            custom module, in one of the following formats:
 
-            Its format is:
-
-            -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
-            -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
-            -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+            -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
+            -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
+            -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
         config (google.protobuf.struct_pb2.Struct):
-            Output only. Config for the effective module.
+            Output only. Configuration for the effective
+            module.
         enablement_state (google.cloud.securitycentermanagement_v1.types.EffectiveEventThreatDetectionCustomModule.EnablementState):
             Output only. The effective state of
             enablement for the module at the given level of
             the hierarchy.
         type_ (str):
-            Output only. Type for the module. e.g. CONFIGURABLE_BAD_IP.
+            Output only. Type for the module (for example,
+            ``CONFIGURABLE_BAD_IP``).
         display_name (str):
-            Output only. The human readable name to be
-            displayed for the module.
+            Output only. The human-readable name of the
+            module.
         description (str):
-            Output only. The description for the module.
+            Output only. A description of the module.
     """
 
     class EnablementState(proto.Enum):
@@ -1308,7 +1327,7 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
 
         Values:
             ENABLEMENT_STATE_UNSPECIFIED (0):
-                Unspecified enablement state.
+                Default value. This value is unused.
             ENABLED (1):
                 The module is enabled at the given level.
             DISABLED (2):
@@ -1347,23 +1366,28 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
 
 
 class ListEffectiveEventThreatDetectionCustomModulesRequest(proto.Message):
-    r"""Request message for listing effective Event Threat Detection
-    custom modules.
+    r"""Request message for
+    [SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules].
 
     Attributes:
         parent (str):
-            Required. Name of parent to list effective custom modules.
-            Its format is
-            ``organizations/{organization}/locations/{location}``,
-            ``folders/{folder}/locations/{location}``, or
-            ``projects/{project}/locations/{location}``
+            Required. Name of parent to list effective custom modules,
+            in one of the following formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in a single response. Default is 10,
             minimum is 1, maximum is 1000.
         page_token (str):
-            Optional. The value returned by the last call
-            indicating a continuation
+            Optional. A pagination token returned from a
+            previous request. Provide this token to retrieve
+            the next page of results.
+
+            When paginating, the rest of the request must
+            match the request that generated the page token.
     """
 
     parent: str = proto.Field(
@@ -1381,16 +1405,17 @@ class ListEffectiveEventThreatDetectionCustomModulesRequest(proto.Message):
 
 
 class ListEffectiveEventThreatDetectionCustomModulesResponse(proto.Message):
-    r"""Response message for listing effective Event Threat Detection
-    custom modules.
+    r"""Response message for
+    [SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules].
 
     Attributes:
         effective_event_threat_detection_custom_modules (MutableSequence[google.cloud.securitycentermanagement_v1.types.EffectiveEventThreatDetectionCustomModule]):
-            The list of
-            EffectiveEventThreatDetectionCustomModules
+            The list of effective Event Threat Detection
+            custom modules.
         next_page_token (str):
-            A token identifying a page of results the
-            server should return.
+            A pagination token. To retrieve the next page
+            of results, call the method again with this
+            token.
     """
 
     @property
@@ -1411,18 +1436,17 @@ class ListEffectiveEventThreatDetectionCustomModulesResponse(proto.Message):
 
 
 class GetEffectiveEventThreatDetectionCustomModuleRequest(proto.Message):
-    r"""Message for getting a
-    EffectiveEventThreatDetectionCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule].
 
     Attributes:
         name (str):
-            Required. The resource name of the ETD custom module.
+            Required. The resource name of the Event Threat Detection
+            custom module, in one of the following formats:
 
-            Its format is:
-
-            -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
-            -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
-            -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}``.
+            -  ``organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
+            -  ``folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
+            -  ``projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}``
     """
 
     name: str = proto.Field(
@@ -1432,43 +1456,43 @@ class GetEffectiveEventThreatDetectionCustomModuleRequest(proto.Message):
 
 
 class EventThreatDetectionCustomModule(proto.Message):
-    r"""An event threat detection custom module is a Cloud SCC
-    resource that contains the configuration and enablement state of
-    a custom module, which enables ETD to write certain findings to
-    Cloud SCC.
+    r"""A Security Command Center resource that contains the
+    configuration and enablement state of a custom module, which
+    enables Event Threat Detection to write certain findings to
+    Security Command Center.
 
     Attributes:
         name (str):
-            Identifier. The resource name of the ETD custom module.
+            Identifier. The resource name of the Event Threat Detection
+            custom module, in one of the following formats:
 
-            Its format is:
-
-            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
-            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
-            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
         config (google.protobuf.struct_pb2.Struct):
-            Optional. Config for the module. For the
-            resident module, its config value is defined at
-            this level. For the inherited module, its config
-            value is inherited from the ancestor module.
+            Optional. Configuration for the module. For
+            the resident module, its configuration value is
+            defined at this level. For the inherited module,
+            its configuration value is inherited from the
+            ancestor module.
         ancestor_module (str):
             Output only. The closest ancestor module that
             this module inherits the enablement state from.
             If empty, indicates that the custom module was
             created in the requesting parent organization,
             folder, or project. The format is the same as
-            the EventThreatDetectionCustomModule resource
-            name.
+            the custom module's resource name.
         enablement_state (google.cloud.securitycentermanagement_v1.types.EventThreatDetectionCustomModule.EnablementState):
             Optional. The state of enablement for the
             module at the given level of the hierarchy.
         type_ (str):
-            Optional. Type for the module. e.g. CONFIGURABLE_BAD_IP.
+            Optional. Type for the module. For example,
+            ``CONFIGURABLE_BAD_IP``.
         display_name (str):
-            Optional. The human readable name to be
-            displayed for the module.
+            Optional. The human-readable name of the
+            module.
         description (str):
-            Optional. The description for the module.
+            Optional. A description of the module.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the module was last
             updated.
@@ -1488,13 +1512,12 @@ class EventThreatDetectionCustomModule(proto.Message):
             DISABLED (2):
                 The module is disabled at the given level.
             INHERITED (3):
-                State is inherited from an ancestor module.
-                The module will either be effectively ENABLED or
-                DISABLED based on its closest non-inherited
-                ancestor module in the CRM hierarchy. Attempting
-                to set a top level module (module with no
-                parent) to the INHERITED state will result in an
-                error.
+                State is inherited from an ancestor module. The module will
+                either be effectively ``ENABLED`` or ``DISABLED`` based on
+                its closest non-inherited ancestor module in the CRM
+                hierarchy. If you try to set a top-level module (a module
+                with no parent) to the ``INHERITED`` state, you receive an
+                ``INVALID_ARGUMENT`` error.
         """
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
@@ -1543,29 +1566,30 @@ class EventThreatDetectionCustomModule(proto.Message):
 
 
 class ListEventThreatDetectionCustomModulesRequest(proto.Message):
-    r"""Request message for listing Event Threat Detection custom
-    modules.
+    r"""Request message for
+    [SecurityCenterManagement.ListEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules].
 
     Attributes:
         parent (str):
-            Required. Name of parent to list custom modules. Its format
-            is ``organizations/{organization}/locations/{location}``,
-            ``folders/{folder}/locations/{location}``, or
-            ``projects/{project}/locations/{location}``
+            Required. Name of parent to list custom modules, in one of
+            the following formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of modules to
             return. The service may return fewer than this
-            value. If unspecified, at most 10 configs will
+            value. If unspecified, at most 10 modules will
             be returned. The maximum value is 1000; values
             above 1000 will be coerced to 1000.
         page_token (str):
-            Optional. A page token, received from a previous
-            ``ListEventThreatDetectionCustomModules`` call. Provide this
-            to retrieve the subsequent page.
+            Optional. A pagination token returned from a
+            previous request. Provide this token to retrieve
+            the next page of results.
 
-            When paginating, all other parameters provided to
-            ``ListEventThreatDetectionCustomModules`` must match the
-            call that provided the page token.
+            When paginating, the rest of the request must
+            match the request that generated the page token.
     """
 
     parent: str = proto.Field(
@@ -1583,15 +1607,16 @@ class ListEventThreatDetectionCustomModulesRequest(proto.Message):
 
 
 class ListEventThreatDetectionCustomModulesResponse(proto.Message):
-    r"""Response message for listing Event Threat Detection custom
-    modules.
+    r"""Response message for
+    [SecurityCenterManagement.ListEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules].
 
     Attributes:
         event_threat_detection_custom_modules (MutableSequence[google.cloud.securitycentermanagement_v1.types.EventThreatDetectionCustomModule]):
-            The list of EventThreatDetectionCustomModules
+            The list of custom modules.
         next_page_token (str):
-            A token identifying a page of results the
-            server should return.
+            A pagination token. To retrieve the next page
+            of results, call the method again with this
+            token.
     """
 
     @property
@@ -1612,15 +1637,17 @@ class ListEventThreatDetectionCustomModulesResponse(proto.Message):
 
 
 class ListDescendantEventThreatDetectionCustomModulesRequest(proto.Message):
-    r"""Request message for listing descendant Event Threat Detection
-    custom modules.
+    r"""Request message for
+    [SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules].
 
     Attributes:
         parent (str):
-            Required. Name of parent to list custom modules. Its format
-            is ``organizations/{organization}/locations/{location}``,
-            ``folders/{folder}/locations/{location}``, or
-            ``projects/{project}/locations/{location}``
+            Required. Name of parent to list custom modules, in one of
+            the following formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of modules to
             return. The service may return fewer than this
@@ -1628,8 +1655,12 @@ class ListDescendantEventThreatDetectionCustomModulesRequest(proto.Message):
             be returned. The maximum value is 1000; values
             above 1000 will be coerced to 1000.
         page_token (str):
-            Optional. A token identifying a page of
-            results the server should return.
+            Optional. A pagination token returned from a
+            previous request. Provide this token to retrieve
+            the next page of results.
+
+            When paginating, the rest of the request must
+            match the request that generated the page token.
     """
 
     parent: str = proto.Field(
@@ -1647,15 +1678,16 @@ class ListDescendantEventThreatDetectionCustomModulesRequest(proto.Message):
 
 
 class ListDescendantEventThreatDetectionCustomModulesResponse(proto.Message):
-    r"""Response message for listing descendant Event Threat
-    Detection custom modules.
+    r"""Response message for
+    [SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules].
 
     Attributes:
         event_threat_detection_custom_modules (MutableSequence[google.cloud.securitycentermanagement_v1.types.EventThreatDetectionCustomModule]):
-            The list of EventThreatDetectionCustomModules
+            The list of custom modules.
         next_page_token (str):
-            A token identifying a page of results the
-            server should return.
+            A pagination token. To retrieve the next page
+            of results, call the method again with this
+            token.
     """
 
     @property
@@ -1676,17 +1708,17 @@ class ListDescendantEventThreatDetectionCustomModulesResponse(proto.Message):
 
 
 class GetEventThreatDetectionCustomModuleRequest(proto.Message):
-    r"""Message for getting a EventThreatDetectionCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.GetEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEventThreatDetectionCustomModule].
 
     Attributes:
         name (str):
-            Required. The resource name of the ETD custom module.
+            Required. The resource name of the Event Threat Detection
+            custom module, in one of the following formats:
 
-            Its format is:
-
-            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
-            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
-            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
     """
 
     name: str = proto.Field(
@@ -1696,29 +1728,37 @@ class GetEventThreatDetectionCustomModuleRequest(proto.Message):
 
 
 class CreateEventThreatDetectionCustomModuleRequest(proto.Message):
-    r"""Message for creating a EventThreatDetectionCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.CreateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateEventThreatDetectionCustomModule].
 
     Attributes:
         parent (str):
-            Required. Name of parent for the module. Its format is
-            ``organizations/{organization}/locations/{location}``,
-            ``folders/{folder}/locations/{location}``, or
-            ``projects/{project}/locations/{location}``
+            Required. Name of parent for the module, in one of the
+            following formats:
+
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         event_threat_detection_custom_module (google.cloud.securitycentermanagement_v1.types.EventThreatDetectionCustomModule):
             Required. The module to create. The
-            event_threat_detection_custom_module.name will be ignored
-            and server generated.
+            [EventThreatDetectionCustomModule.name][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule.name]
+            field is ignored; Security Command Center generates the
+            name.
         validate_only (bool):
-            Optional. When set to true, only validations
-            (including IAM checks) will done for the request
-            (no module will be created). An OK response
-            indicates the request is valid while an error
-            response indicates the request is invalid. Note
-            that a subsequent request to actually create the
-            module could still fail because
+            Optional. When set to ``true``, the request will be
+            validated (including IAM checks), but no module will be
+            created. An ``OK`` response indicates that the request is
+            valid, while an error response indicates that the request is
+            invalid.
 
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred during creation of the module.
+            If the request is valid, a subsequent request to create the
+            module could still fail for one of the following reasons:
+
+            -  The state of your cloud resources changed; for example,
+               you lost a required IAM permission
+            -  An error occurred during creation of the module
+
+            Defaults to ``false``.
     """
 
     parent: str = proto.Field(
@@ -1743,25 +1783,25 @@ class UpdateEventThreatDetectionCustomModuleRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the EventThreatDetectionCustomModule resource
-            by the update. The fields specified in the update_mask are
-            relative to the resource, not the full request. A field will
-            be overwritten if it is in the mask. If the user does not
-            provide a mask then all fields will be overwritten.
+            Required. The fields to update. If omitted,
+            then all fields are updated.
         event_threat_detection_custom_module (google.cloud.securitycentermanagement_v1.types.EventThreatDetectionCustomModule):
-            Required. The module being updated
+            Required. The module being updated.
         validate_only (bool):
-            Optional. When set to true, only validations
-            (including IAM checks) will done for the request
-            (module will not be updated). An OK response
-            indicates the request is valid while an error
-            response indicates the request is invalid. Note
-            that a subsequent request to actually update the
-            module could still fail because
+            Optional. When set to ``true``, the request will be
+            validated (including IAM checks), but no module will be
+            updated. An ``OK`` response indicates that the request is
+            valid, while an error response indicates that the request is
+            invalid.
 
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to update the module.
+            If the request is valid, a subsequent request to update the
+            module could still fail for one of the following reasons:
+
+            -  The state of your cloud resources changed; for example,
+               you lost a required IAM permission
+            -  An error occurred during creation of the module
+
+            Defaults to ``false``.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1783,28 +1823,32 @@ class UpdateEventThreatDetectionCustomModuleRequest(proto.Message):
 
 
 class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
-    r"""Message for deleting a EventThreatDetectionCustomModule
+    r"""Request message for
+    [SecurityCenterManagement.DeleteEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteEventThreatDetectionCustomModule].
 
     Attributes:
         name (str):
-            Required. The resource name of the ETD custom module.
+            Required. The resource name of the Event Threat Detection
+            custom module, in one of the following formats:
 
-            Its format is:
-
-            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
-            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
-            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}``.
+            -  ``organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+            -  ``folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
+            -  ``projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}``
         validate_only (bool):
-            Optional. When set to true, only validations
-            (including IAM checks) will done for the request
-            (module will not be deleted). An OK response
-            indicates the request is valid while an error
-            response indicates the request is invalid. Note
-            that a subsequent request to actually delete the
-            module could still fail because
+            Optional. When set to ``true``, the request will be
+            validated (including IAM checks), but no module will be
+            deleted. An ``OK`` response indicates that the request is
+            valid, while an error response indicates that the request is
+            invalid.
 
-            - The state could have changed (e.g. IAM permission lost) or
-            - A failure occurred while trying to delete the module.
+            If the request is valid, a subsequent request to delete the
+            module could still fail for one of the following reasons:
+
+            -  The state of your cloud resources changed; for example,
+               you lost a required IAM permission
+            -  An error occurred during creation of the module
+
+            Defaults to ``false``.
     """
 
     name: str = proto.Field(
@@ -1818,21 +1862,21 @@ class DeleteEventThreatDetectionCustomModuleRequest(proto.Message):
 
 
 class ValidateEventThreatDetectionCustomModuleRequest(proto.Message):
-    r"""Request to validate an Event Threat Detection custom module.
+    r"""Request message for
+    [SecurityCenterManagement.ValidateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule].
 
     Attributes:
         parent (str):
-            Required. Resource name of the parent to validate the Custom
-            Module under.
+            Required. Resource name of the parent to validate the custom
+            modules under, in one of the following formats:
 
-            Its format is:
-
-            -  ``organizations/{organization}/locations/{location}``.
+            -  ``organizations/{organization}/locations/{location}``
         raw_text (str):
             Required. The raw text of the module's
             contents. Used to generate error messages.
         type_ (str):
-            Required. The type of the module (e.g. CONFIGURABLE_BAD_IP).
+            Required. The type of the module. For example,
+            ``CONFIGURABLE_BAD_IP``.
     """
 
     parent: str = proto.Field(
@@ -1850,8 +1894,8 @@ class ValidateEventThreatDetectionCustomModuleRequest(proto.Message):
 
 
 class ValidateEventThreatDetectionCustomModuleResponse(proto.Message):
-    r"""Response to validating an Event Threat Detection custom
-    module.
+    r"""Response message for
+    [SecurityCenterManagement.ValidateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule].
 
     Attributes:
         errors (MutableSequence[google.cloud.securitycentermanagement_v1.types.ValidateEventThreatDetectionCustomModuleResponse.CustomModuleValidationError]):
@@ -1861,31 +1905,31 @@ class ValidateEventThreatDetectionCustomModuleResponse(proto.Message):
 
     class CustomModuleValidationError(proto.Message):
         r"""An error encountered while validating the uploaded
-        configuration of an Event Threat Detection Custom Module.
+        configuration of an Event Threat Detection custom module.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             description (str):
-                A description of the error, suitable for
-                human consumption. Required.
+                A human-readable description of the error.
             field_path (str):
-                The path, in RFC 8901 JSON Pointer format, to
-                the field that failed validation. This may be
-                left empty if no specific field is affected.
+                The path, in `RFC 6901: JSON
+                Pointer <https://datatracker.ietf.org/doc/html/rfc6901>`__
+                format, to the field that failed validation. Omitted if no
+                specific field is affected.
             start (google.cloud.securitycentermanagement_v1.types.ValidateEventThreatDetectionCustomModuleResponse.Position):
                 The initial position of the error in the
-                uploaded text version of the module. This field
-                may be omitted if no specific position applies,
-                or if one could not be computed.
+                uploaded text version of the module. Omitted if
+                no specific position applies, or if the position
+                could not be computed.
 
                 This field is a member of `oneof`_ ``_start``.
             end (google.cloud.securitycentermanagement_v1.types.ValidateEventThreatDetectionCustomModuleResponse.Position):
                 The end position of the error in the uploaded
-                text version of the module. This field may be
-                omitted if no specific position applies, or if
-                one could not be computed..
+                text version of the module. Omitted if no
+                specific position applies, or if the position
+                could not be computed.
 
                 This field is a member of `oneof`_ ``_end``.
         """
@@ -1918,9 +1962,9 @@ class ValidateEventThreatDetectionCustomModuleResponse(proto.Message):
 
         Attributes:
             line_number (int):
-                The line position in the text
+                The line position in the text.
             column_number (int):
-                The column position in the line
+                The column position in the line.
         """
 
         line_number: int = proto.Field(
@@ -1940,31 +1984,28 @@ class ValidateEventThreatDetectionCustomModuleResponse(proto.Message):
 
 
 class GetSecurityCenterServiceRequest(proto.Message):
-    r"""Request message for getting a Security Command Center
-    service.
+    r"""Request message for
+    [SecurityCenterManagement.GetSecurityCenterService][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityCenterService].
 
     Attributes:
         name (str):
-            Required. The Security Command Center service to retrieve.
-
-            Formats:
+            Required. The Security Command Center service to retrieve,
+            in one of the following formats:
 
             -  organizations/{organization}/locations/{location}/securityCenterServices/{service}
             -  folders/{folder}/locations/{location}/securityCenterServices/{service}
             -  projects/{project}/locations/{location}/securityCenterServices/{service}
 
-            The possible values for id {service} are:
+            The following values are valid for ``{service}``:
 
-            -  container-threat-detection
-            -  event-threat-detection
-            -  security-health-analytics
-            -  vm-threat-detection
-            -  web-security-scanner
+            -  ``container-threat-detection``
+            -  ``event-threat-detection``
+            -  ``security-health-analytics``
+            -  ``vm-threat-detection``
+            -  ``web-security-scanner``
         show_eligible_modules_only (bool):
-            Flag that, when set, will be used to filter
-            the ModuleSettings that are in scope. The
-            default setting is that all modules will be
-            shown.
+            Set to ``true`` to show only modules that are in scope. By
+            default, all modules are shown.
     """
 
     name: str = proto.Field(
@@ -1978,30 +2019,32 @@ class GetSecurityCenterServiceRequest(proto.Message):
 
 
 class ListSecurityCenterServicesRequest(proto.Message):
-    r"""Request message for listing Security Command Center services.
+    r"""Request message for
+    [SecurityCenterManagement.ListSecurityCenterServices][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices].
 
     Attributes:
         parent (str):
             Required. The name of the parent to list Security Command
-            Center services.
+            Center services, in one of the following formats:
 
-            Formats:
-
-            -  organizations/{organization}/locations/{location}
-            -  folders/{folder}/locations/{location}
-            -  projects/{project}/locations/{location}
+            -  ``organizations/{organization}/locations/{location}``
+            -  ``folders/{folder}/locations/{location}``
+            -  ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. The maximum number of results to
             return in a single response. Default is 10,
             minimum is 1, maximum is 1000.
         page_token (str):
-            Optional. The value returned by the last call
-            indicating a continuation.
+            Optional. A pagination token returned from a
+            previous request. Provide this token to retrieve
+            the next page of results.
+
+            When paginating, the rest of the request must
+            match the request that generated the page token.
         show_eligible_modules_only (bool):
-            Flag that, when set, will be used to filter
-            the ModuleSettings that are in scope. The
-            default setting is that all modules will be
-            shown.
+            Flag that, when set, is used to filter the
+            module settings that are shown. The default
+            setting is that all modules are shown.
     """
 
     parent: str = proto.Field(
@@ -2023,15 +2066,16 @@ class ListSecurityCenterServicesRequest(proto.Message):
 
 
 class ListSecurityCenterServicesResponse(proto.Message):
-    r"""Response message for listing Security Command Center
-    services.
+    r"""Response message for
+    [SecurityCenterManagement.ListSecurityCenterServices][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices].
 
     Attributes:
         security_center_services (MutableSequence[google.cloud.securitycentermanagement_v1.types.SecurityCenterService]):
             The list of services.
         next_page_token (str):
-            A token identifying a page of results the
-            server should return.
+            A pagination token. To retrieve the next page
+            of results, call the method again with this
+            token.
     """
 
     @property
@@ -2052,31 +2096,35 @@ class ListSecurityCenterServicesResponse(proto.Message):
 
 
 class UpdateSecurityCenterServiceRequest(proto.Message):
-    r"""Request message for updating a Security Command Center
-    service.
+    r"""Request message for
+    [SecurityCenterManagement.UpdateSecurityCenterService][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityCenterService].
 
     Attributes:
         security_center_service (google.cloud.securitycentermanagement_v1.types.SecurityCenterService):
             Required. The updated service.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to be updated. Possible values:
+            Required. The fields to update. Accepts the following
+            values:
 
-            -  "intended_enablement_state"
-            -  "modules".
+            -  ``intended_enablement_state``
+            -  ``modules``
+
+            If omitted, then all eligible fields are updated.
         validate_only (bool):
-            Optional. When set to true, only validations
-            (including IAM checks) will be done for the
-            request (service will not be updated). An OK
-            response indicates that the request is valid,
-            while an error response indicates that the
-            request is invalid. Note that a subsequent
-            request to actually update the service could
-            still fail for one of the following reasons:
+            Optional. When set to ``true``, the request will be
+            validated (including IAM checks), but no service will be
+            updated. An ``OK`` response indicates that the request is
+            valid, while an error response indicates that the request is
+            invalid.
 
-            - The state could have changed (e.g. IAM
-              permission lost).
-            - A failure occurred while trying to delete the
-              module.
+            If the request is valid, a subsequent request to update the
+            service could still fail for one of the following reasons:
+
+            -  The state of your cloud resources changed; for example,
+               you lost a required IAM permission
+            -  An error occurred during update of the service
+
+            Defaults to ``false``.
     """
 
     security_center_service: "SecurityCenterService" = proto.Field(

@@ -92,6 +92,10 @@ class SearchRequest(proto.Message):
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
+        one_box_page_size (int):
+            The maximum number of results to return for
+            OneBox. This applies to each OneBox type
+            individually. Default number is 10.
         data_store_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchRequest.DataStoreSpec]):
             Specs defining dataStores to filter on in a
             search call and configurations for those
@@ -339,6 +343,17 @@ class SearchRequest(proto.Message):
             a balance of precision and recall to deliver
             both highly accurate results and comprehensive
             coverage of relevant information.
+        personalization_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.PersonalizationSpec):
+            The specification for personalization.
+
+            Notice that if both
+            [ServingConfig.personalization_spec][google.cloud.discoveryengine.v1beta.ServingConfig.personalization_spec]
+            and
+            [SearchRequest.personalization_spec][google.cloud.discoveryengine.v1beta.SearchRequest.personalization_spec]
+            are set,
+            [SearchRequest.personalization_spec][google.cloud.discoveryengine.v1beta.SearchRequest.personalization_spec]
+            overrides
+            [ServingConfig.personalization_spec][google.cloud.discoveryengine.v1beta.ServingConfig.personalization_spec].
     """
 
     class RelevanceThreshold(proto.Enum):
@@ -395,11 +410,20 @@ class SearchRequest(proto.Message):
                 [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
+            filter (str):
+                Optional. Filter specification to filter documents in the
+                data store specified by data_store field. For more
+                information on filtering, see
+                `Filtering <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
         """
 
         data_store: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        filter: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     class FacetSpec(proto.Message):
@@ -1022,6 +1046,19 @@ class SearchRequest(proto.Message):
                     used regardless of relevance to generate answers. If set to
                     ``true``, only queries with high relevance search results
                     will generate answers.
+                ignore_jail_breaking_query (bool):
+                    Optional. Specifies whether to filter out jail-breaking
+                    queries. The default value is ``false``.
+
+                    Google employs search-query classification to detect
+                    jail-breaking queries. No summary is returned if the search
+                    query is classified as a jail-breaking query. A user might
+                    add instructions to the query to change the tone, style,
+                    language, content of the answer, or ask the model to act as
+                    a different entity, e.g. "Reply in the tone of a competing
+                    company's CEO". If this field is set to ``true``, we skip
+                    generating summaries for jail-breaking queries and return
+                    fallback messages instead.
                 model_prompt_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec):
                     If specified, the spec will be used to modify
                     the prompt provided to the LLM.
@@ -1102,6 +1139,10 @@ class SearchRequest(proto.Message):
             ignore_low_relevant_content: bool = proto.Field(
                 proto.BOOL,
                 number=9,
+            )
+            ignore_jail_breaking_query: bool = proto.Field(
+                proto.BOOL,
+                number=10,
             )
             model_prompt_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec" = proto.Field(
                 proto.MESSAGE,
@@ -1432,6 +1473,38 @@ class SearchRequest(proto.Message):
             optional=True,
         )
 
+    class PersonalizationSpec(proto.Message):
+        r"""The specification for personalization.
+
+        Attributes:
+            mode (google.cloud.discoveryengine_v1beta.types.SearchRequest.PersonalizationSpec.Mode):
+                The personalization mode of the search request. Defaults to
+                [Mode.AUTO][google.cloud.discoveryengine.v1beta.SearchRequest.PersonalizationSpec.Mode.AUTO].
+        """
+
+        class Mode(proto.Enum):
+            r"""The personalization mode of each search request.
+
+            Values:
+                MODE_UNSPECIFIED (0):
+                    Default value. In this case, server behavior defaults to
+                    [Mode.AUTO][google.cloud.discoveryengine.v1beta.SearchRequest.PersonalizationSpec.Mode.AUTO].
+                AUTO (1):
+                    Personalization is enabled if data quality
+                    requirements are met.
+                DISABLED (2):
+                    Disable personalization.
+            """
+            MODE_UNSPECIFIED = 0
+            AUTO = 1
+            DISABLED = 2
+
+        mode: "SearchRequest.PersonalizationSpec.Mode" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SearchRequest.PersonalizationSpec.Mode",
+        )
+
     serving_config: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1460,6 +1533,10 @@ class SearchRequest(proto.Message):
     offset: int = proto.Field(
         proto.INT32,
         number=6,
+    )
+    one_box_page_size: int = proto.Field(
+        proto.INT32,
+        number=47,
     )
     data_store_specs: MutableSequence[DataStoreSpec] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1569,6 +1646,11 @@ class SearchRequest(proto.Message):
         proto.ENUM,
         number=44,
         enum=RelevanceThreshold,
+    )
+    personalization_spec: PersonalizationSpec = proto.Field(
+        proto.MESSAGE,
+        number=46,
+        message=PersonalizationSpec,
     )
 
 
@@ -1834,7 +1916,8 @@ class SearchResponse(proto.Message):
                 NON_SUMMARY_SEEKING_QUERY_IGNORED (2):
                     The non-summary seeking query ignored case.
 
-                    Only used when
+                    Google skips the summary if the query is chit chat. Only
+                    used when
                     [SummarySpec.ignore_non_summary_seeking_query][google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_summary_seeking_query]
                     is set to ``true``.
                 OUT_OF_DOMAIN_QUERY_IGNORED (3):
@@ -1874,6 +1957,13 @@ class SearchResponse(proto.Message):
                     Google skips the summary if there is a customer
                     policy violation detected. The policy is defined
                     by the customer.
+                NON_SUMMARY_SEEKING_QUERY_IGNORED_V2 (9):
+                    The non-answer seeking query ignored case.
+
+                    Google skips the summary if the query doesn't have clear
+                    intent. Only used when
+                    [SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_answer_seeking_query]
+                    is set to ``true``.
             """
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
@@ -1884,6 +1974,7 @@ class SearchResponse(proto.Message):
             NO_RELEVANT_CONTENT = 6
             JAIL_BREAKING_QUERY_IGNORED = 7
             CUSTOMER_POLICY_VIOLATION = 8
+            NON_SUMMARY_SEEKING_QUERY_IGNORED_V2 = 9
 
         class SafetyAttributes(proto.Message):
             r"""Safety Attribute categories and their associated confidence
@@ -2465,11 +2556,15 @@ class SearchResponse(proto.Message):
                     One Box result contains organization results.
                 SLACK (3):
                     One Box result contains slack results.
+                KNOWLEDGE_GRAPH (4):
+                    One Box result contains Knowledge Graph
+                    search responses.
             """
             ONE_BOX_TYPE_UNSPECIFIED = 0
             PEOPLE = 1
             ORGANIZATION = 2
             SLACK = 3
+            KNOWLEDGE_GRAPH = 4
 
         one_box_type: "SearchResponse.OneBoxResult.OneBoxType" = proto.Field(
             proto.ENUM,

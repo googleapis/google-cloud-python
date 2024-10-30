@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "PublisherClient",
           "rpcs": {
+            "Publish": {
+              "methods": [
+                "publish"
+              ]
+            },
             "PublishChannelConnectionEvents": {
               "methods": [
                 "publish_channel_connection_events"
@@ -25,6 +30,11 @@
         "grpc-async": {
           "libraryClient": "PublisherAsyncClient",
           "rpcs": {
+            "Publish": {
+              "methods": [
+                "publish"
+              ]
+            },
             "PublishChannelConnectionEvents": {
               "methods": [
                 "publish_channel_connection_events"
@@ -40,6 +50,11 @@
         "rest": {
           "libraryClient": "PublisherClient",
           "rpcs": {
+            "Publish": {
+              "methods": [
+                "publish"
+              ]
+            },
             "PublishChannelConnectionEvents": {
               "methods": [
                 "publish_channel_connection_events"

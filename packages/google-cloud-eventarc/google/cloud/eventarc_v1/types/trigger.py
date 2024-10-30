@@ -21,6 +21,8 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import code_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.eventarc_v1.types import network_config as gce_network_config
+
 __protobuf__ = proto.module(
     package="google.cloud.eventarc.v1",
     manifest={
@@ -32,6 +34,7 @@ __protobuf__ = proto.module(
         "CloudRun",
         "GKE",
         "Pubsub",
+        "HttpEndpoint",
     },
 )
 
@@ -64,25 +67,17 @@ class Trigger(proto.Message):
             trigger. The service account represents the identity of the
             trigger.
 
-            The principal who calls this API must have the
-            ``iam.serviceAccounts.actAs`` permission in the service
-            account. See
-            https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common
-            for more information.
-
-            For Cloud Run destinations, this service account is used to
-            generate identity tokens when invoking the service. See
-            https://cloud.google.com/run/docs/triggering/pubsub-push#create-service-account
-            for information on how to invoke authenticated Cloud Run
-            services. To create Audit Log triggers, the service account
-            should also have the ``roles/eventarc.eventReceiver`` IAM
-            role.
+            The ``iam.serviceAccounts.actAs`` permission must be granted
+            on the service account to allow a principal to impersonate
+            the service account. For more information, see the `Roles
+            and permissions </eventarc/docs/all-roles-permissions>`__
+            page specific to the trigger destination.
         destination (google.cloud.eventarc_v1.types.Destination):
             Required. Destination specifies where the
             events should be sent to.
         transport (google.cloud.eventarc_v1.types.Transport):
             Optional. To deliver messages, Eventarc might
-            use other GCP products as a transport
+            use other Google Cloud products as a transport
             intermediary. This field contains a reference to
             that transport intermediary. This information
             can be used for debugging purposes.
@@ -98,6 +93,15 @@ class Trigger(proto.Message):
         conditions (MutableMapping[str, google.cloud.eventarc_v1.types.StateCondition]):
             Output only. The reason(s) why a trigger is
             in FAILED state.
+        event_data_content_type (str):
+            Optional. EventDataContentType specifies the type of payload
+            in MIME format that is expected from the CloudEvent data
+            field. This is set to ``application/json`` if the value is
+            not defined.
+        satisfies_pzs (bool):
+            Output only. Whether or not this Trigger
+            satisfies the requirements of physical zone
+            separation
         etag (str):
             Output only. This checksum is computed by the
             server based on the value of other fields, and
@@ -158,6 +162,14 @@ class Trigger(proto.Message):
         number=15,
         message="StateCondition",
     )
+    event_data_content_type: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=19,
+    )
     etag: str = proto.Field(
         proto.STRING,
         number=99,
@@ -170,19 +182,21 @@ class EventFilter(proto.Message):
 
     Attributes:
         attribute (str):
-            Required. The name of a CloudEvents
-            attribute. Currently, only a subset of
-            attributes are supported for filtering.
+            Required. The name of a CloudEvents attribute. Currently,
+            only a subset of attributes are supported for filtering. You
+            can `retrieve a specific provider's supported event
+            types </eventarc/docs/list-providers#describe-provider>`__.
 
-            All triggers MUST provide a filter for the
-            'type' attribute.
+            All triggers MUST provide a filter for the 'type' attribute.
         value (str):
             Required. The value for the attribute.
         operator (str):
             Optional. The operator used for matching the events with the
             value of the filter. If not specified, only events that have
             an exact key-value pair specified in the filter are matched.
-            The only allowed value is ``match-path-pattern``.
+            The allowed values are ``path_pattern`` and
+            ``match-path-pattern``. ``path_pattern`` is only allowed for
+            GCFv1 triggers.
     """
 
     attribute: str = proto.Field(
@@ -238,9 +252,13 @@ class Destination(proto.Message):
 
             This field is a member of `oneof`_ ``descriptor``.
         cloud_function (str):
-            The Cloud Function resource name. Only Cloud Functions V2 is
-            supported. Format:
+            The Cloud Function resource name. Cloud Functions V1 and V2
+            are supported. Format:
             ``projects/{project}/locations/{location}/functions/{function}``
+
+            This is a read-only field. Creating Cloud Functions V1/V2
+            triggers is only supported via the Cloud Functions product.
+            An error will be returned if the user sets this value.
 
             This field is a member of `oneof`_ ``descriptor``.
         gke (google.cloud.eventarc_v1.types.GKE):
@@ -256,6 +274,16 @@ class Destination(proto.Message):
             ``projects/{project}/locations/{location}/workflows/{workflow}``
 
             This field is a member of `oneof`_ ``descriptor``.
+        http_endpoint (google.cloud.eventarc_v1.types.HttpEndpoint):
+            An HTTP endpoint destination described by an
+            URI.
+
+            This field is a member of `oneof`_ ``descriptor``.
+        network_config (google.cloud.eventarc_v1.types.NetworkConfig):
+            Optional. Network config is used to configure
+            how Eventarc resolves and connect to a
+            destination. This should only be used with
+            HttpEndpoint destination type.
     """
 
     cloud_run: "CloudRun" = proto.Field(
@@ -279,6 +307,17 @@ class Destination(proto.Message):
         proto.STRING,
         number=4,
         oneof="descriptor",
+    )
+    http_endpoint: "HttpEndpoint" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="descriptor",
+        message="HttpEndpoint",
+    )
+    network_config: gce_network_config.NetworkConfig = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=gce_network_config.NetworkConfig,
     )
 
 
@@ -319,6 +358,7 @@ class CloudRun(proto.Message):
         path (str):
             Optional. The relative path on the Cloud Run
             service the events should be sent to.
+
             The value must conform to the definition of a
             URI path segment (section 3.3 of RFC2396).
             Examples: "/route", "route", "route/subroute".
@@ -365,6 +405,7 @@ class GKE(proto.Message):
         path (str):
             Optional. The relative path on the GKE
             service the events should be sent to.
+
             The value must conform to the definition of a
             URI path segment (section 3.3 of RFC2396).
             Examples: "/route", "route", "route/subroute".
@@ -419,6 +460,28 @@ class Pubsub(proto.Message):
     subscription: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class HttpEndpoint(proto.Message):
+    r"""Represents a HTTP endpoint destination.
+
+    Attributes:
+        uri (str):
+            Required. The URI of the HTTP enpdoint.
+
+            The value must be a RFC2396 URI string. Examples:
+            ``http://10.10.10.8:80/route``,
+            ``http://svc.us-central1.p.local:8080/``. Only HTTP and
+            HTTPS protocols are supported. The host can be either a
+            static IP addressable from the VPC specified by the network
+            config, or an internal DNS hostname of the service
+            resolvable via Cloud DNS.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -3208,6 +3208,7 @@ def test_write_user_event_rest_call_success(request_type):
             "display_name": "display_name_value",
             "panel_position": 1508,
             "total_panels": 1286,
+            "documents": {},
         },
         "search_info": {
             "search_query": "search_query_value",
@@ -3233,6 +3234,7 @@ def test_write_user_event_rest_call_success(request_type):
             "media_progress_duration": {"seconds": 751, "nanos": 543},
             "media_progress_percentage": 0.2641,
         },
+        "panels": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

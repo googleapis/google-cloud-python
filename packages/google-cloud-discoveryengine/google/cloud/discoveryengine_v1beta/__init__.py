@@ -88,7 +88,12 @@ from .types.common import (
     UserInfo,
 )
 from .types.completion import CompletionSuggestion, SuggestionDenyListEntry
-from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .types.completion_service import (
+    AdvancedCompleteQueryRequest,
+    AdvancedCompleteQueryResponse,
+    CompleteQueryRequest,
+    CompleteQueryResponse,
+)
 from .types.control import Condition, Control
 from .types.control_service import (
     CreateControlRequest,
@@ -125,7 +130,12 @@ from .types.conversational_search_service import (
     UpdateSessionRequest,
 )
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import DataStore, LanguageInfo
+from .types.data_store import (
+    DataStore,
+    LanguageInfo,
+    NaturalLanguageQueryUnderstandingConfig,
+    WorkspaceConfig,
+)
 from .types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -178,8 +188,11 @@ from .types.grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
     CheckGroundingSpec,
+    GenerateGroundedContentRequest,
+    GenerateGroundedContentResponse,
+    GroundedGenerationContent,
 )
-from .types.grounding import FactChunk, GroundingFact
+from .types.grounding import FactChunk, GroundingConfig, GroundingFact
 from .types.import_config import (
     AlloyDbSource,
     BigQuerySource,
@@ -272,7 +285,12 @@ from .types.serving_config_service import (
     UpdateServingConfigRequest,
 )
 from .types.session import Query, Session
-from .types.site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
+from .types.site_search_engine import (
+    Sitemap,
+    SiteSearchEngine,
+    SiteVerificationInfo,
+    TargetSite,
+)
 from .types.site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
     BatchCreateTargetSitesRequest,
@@ -280,8 +298,12 @@ from .types.site_search_engine_service import (
     BatchVerifyTargetSitesMetadata,
     BatchVerifyTargetSitesRequest,
     BatchVerifyTargetSitesResponse,
+    CreateSitemapMetadata,
+    CreateSitemapRequest,
     CreateTargetSiteMetadata,
     CreateTargetSiteRequest,
+    DeleteSitemapMetadata,
+    DeleteSitemapRequest,
     DeleteTargetSiteMetadata,
     DeleteTargetSiteRequest,
     DisableAdvancedSiteSearchMetadata,
@@ -292,6 +314,8 @@ from .types.site_search_engine_service import (
     EnableAdvancedSiteSearchResponse,
     FetchDomainVerificationStatusRequest,
     FetchDomainVerificationStatusResponse,
+    FetchSitemapsRequest,
+    FetchSitemapsResponse,
     GetSiteSearchEngineRequest,
     GetTargetSiteRequest,
     ListTargetSitesRequest,
@@ -334,6 +358,8 @@ __all__ = (
     "ServingConfigServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "AdvancedCompleteQueryRequest",
+    "AdvancedCompleteQueryResponse",
     "AlloyDbSource",
     "Answer",
     "AnswerQueryRequest",
@@ -383,6 +409,8 @@ __all__ = (
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
     "CreateSessionRequest",
+    "CreateSitemapMetadata",
+    "CreateSitemapRequest",
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
     "CustomAttribute",
@@ -401,6 +429,8 @@ __all__ = (
     "DeleteSchemaMetadata",
     "DeleteSchemaRequest",
     "DeleteSessionRequest",
+    "DeleteSitemapMetadata",
+    "DeleteSitemapRequest",
     "DeleteTargetSiteMetadata",
     "DeleteTargetSiteRequest",
     "DisableAdvancedSiteSearchMetadata",
@@ -422,9 +452,13 @@ __all__ = (
     "FactChunk",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
+    "FetchSitemapsRequest",
+    "FetchSitemapsResponse",
     "FhirStoreSource",
     "FirestoreSource",
     "GcsSource",
+    "GenerateGroundedContentRequest",
+    "GenerateGroundedContentResponse",
     "GetAnswerRequest",
     "GetControlRequest",
     "GetConversationRequest",
@@ -439,7 +473,9 @@ __all__ = (
     "GetSessionRequest",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GroundedGenerationContent",
     "GroundedGenerationServiceClient",
+    "GroundingConfig",
     "GroundingFact",
     "ImportCompletionSuggestionsMetadata",
     "ImportCompletionSuggestionsRequest",
@@ -489,6 +525,7 @@ __all__ = (
     "ListTargetSitesRequest",
     "ListTargetSitesResponse",
     "MediaInfo",
+    "NaturalLanguageQueryUnderstandingConfig",
     "PageInfo",
     "PanelInfo",
     "PauseEngineRequest",
@@ -543,6 +580,7 @@ __all__ = (
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",
+    "Sitemap",
     "SolutionType",
     "SpannerSource",
     "SuggestionDenyListEntry",
@@ -571,5 +609,6 @@ __all__ = (
     "UserEvent",
     "UserEventServiceClient",
     "UserInfo",
+    "WorkspaceConfig",
     "WriteUserEventRequest",
 )

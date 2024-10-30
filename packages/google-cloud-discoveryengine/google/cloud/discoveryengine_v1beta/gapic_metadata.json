@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "CompletionServiceClient",
           "rpcs": {
+            "AdvancedCompleteQuery": {
+              "methods": [
+                "advanced_complete_query"
+              ]
+            },
             "CompleteQuery": {
               "methods": [
                 "complete_query"
@@ -40,6 +45,11 @@
         "grpc-async": {
           "libraryClient": "CompletionServiceAsyncClient",
           "rpcs": {
+            "AdvancedCompleteQuery": {
+              "methods": [
+                "advanced_complete_query"
+              ]
+            },
             "CompleteQuery": {
               "methods": [
                 "complete_query"
@@ -70,6 +80,11 @@
         "rest": {
           "libraryClient": "CompletionServiceClient",
           "rpcs": {
+            "AdvancedCompleteQuery": {
+              "methods": [
+                "advanced_complete_query"
+              ]
+            },
             "CompleteQuery": {
               "methods": [
                 "complete_query"
@@ -867,6 +882,16 @@
               "methods": [
                 "check_grounding"
               ]
+            },
+            "GenerateGroundedContent": {
+              "methods": [
+                "generate_grounded_content"
+              ]
+            },
+            "StreamGenerateGroundedContent": {
+              "methods": [
+                "stream_generate_grounded_content"
+              ]
             }
           }
         },
@@ -877,6 +902,16 @@
               "methods": [
                 "check_grounding"
               ]
+            },
+            "GenerateGroundedContent": {
+              "methods": [
+                "generate_grounded_content"
+              ]
+            },
+            "StreamGenerateGroundedContent": {
+              "methods": [
+                "stream_generate_grounded_content"
+              ]
             }
           }
         },
@@ -886,6 +921,16 @@
             "CheckGrounding": {
               "methods": [
                 "check_grounding"
+              ]
+            },
+            "GenerateGroundedContent": {
+              "methods": [
+                "generate_grounded_content"
+              ]
+            },
+            "StreamGenerateGroundedContent": {
+              "methods": [
+                "stream_generate_grounded_content"
               ]
             }
           }
@@ -1300,6 +1345,11 @@
               "methods": [
                 "search"
               ]
+            },
+            "SearchLite": {
+              "methods": [
+                "search_lite"
+              ]
             }
           }
         },
@@ -1310,6 +1360,11 @@
               "methods": [
                 "search"
               ]
+            },
+            "SearchLite": {
+              "methods": [
+                "search_lite"
+              ]
             }
           }
         },
@@ -1319,6 +1374,11 @@
             "Search": {
               "methods": [
                 "search"
+              ]
+            },
+            "SearchLite": {
+              "methods": [
+                "search_lite"
               ]
             }
           }
@@ -1453,9 +1513,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1476,6 +1546,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {
@@ -1518,9 +1593,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1541,6 +1626,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {
@@ -1583,9 +1673,19 @@
                 "batch_verify_target_sites"
               ]
             },
+            "CreateSitemap": {
+              "methods": [
+                "create_sitemap"
+              ]
+            },
             "CreateTargetSite": {
               "methods": [
                 "create_target_site"
+              ]
+            },
+            "DeleteSitemap": {
+              "methods": [
+                "delete_sitemap"
               ]
             },
             "DeleteTargetSite": {
@@ -1606,6 +1706,11 @@
             "FetchDomainVerificationStatus": {
               "methods": [
                 "fetch_domain_verification_status"
+              ]
+            },
+            "FetchSitemaps": {
+              "methods": [
+                "fetch_sitemaps"
               ]
             },
             "GetSiteSearchEngine": {

@@ -4467,7 +4467,10 @@ def test_create_evaluation_rest_call_success(request_type):
                 "page_size": 951,
                 "page_token": "page_token_value",
                 "offset": 647,
-                "data_store_specs": [{"data_store": "data_store_value"}],
+                "one_box_page_size": 1792,
+                "data_store_specs": [
+                    {"data_store": "data_store_value", "filter": "filter_value"}
+                ],
                 "filter": "filter_value",
                 "canonical_filter": "canonical_filter_value",
                 "order_by": "order_by_value",
@@ -4544,6 +4547,7 @@ def test_create_evaluation_rest_call_success(request_type):
                         "ignore_adversarial_query": True,
                         "ignore_non_summary_seeking_query": True,
                         "ignore_low_relevant_content": True,
+                        "ignore_jail_breaking_query": True,
                         "model_prompt_spec": {"preamble": "preamble_value"},
                         "language_code": "language_code_value",
                         "model_spec": {"version": "version_value"},
@@ -4584,6 +4588,7 @@ def test_create_evaluation_rest_call_success(request_type):
                     "search_result_persistence_count": 3328,
                 },
                 "relevance_threshold": 1,
+                "personalization_spec": {"mode": 1},
             },
             "query_set_spec": {"sample_query_set": "sample_query_set_value"},
         },

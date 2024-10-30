@@ -262,6 +262,46 @@ class SearchServiceGrpcTransport(SearchServiceTransport):
             )
         return self._stubs["search"]
 
+    @property
+    def search_lite(
+        self,
+    ) -> Callable[[search_service.SearchRequest], search_service.SearchResponse]:
+        r"""Return a callable for the search lite method over gRPC.
+
+        Performs a search. Similar to the
+        [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+        method, but a lite version that allows API key for
+        authentication, where OAuth and IAM checks are not required.
+
+        Only public website search is supported by this method. If data
+        stores and engines not associated with public website search are
+        specified, a ``FAILED_PRECONDITION`` error is returned.
+
+        This method can be used for easy onboarding without having to
+        implement an authentication backend. However, it is strongly
+        recommended to use
+        [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+        instead with required OAuth and IAM checks to provide better
+        data security.
+
+        Returns:
+            Callable[[~.SearchRequest],
+                    ~.SearchResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_lite" not in self._stubs:
+            self._stubs["search_lite"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.SearchService/SearchLite",
+                request_serializer=search_service.SearchRequest.serialize,
+                response_deserializer=search_service.SearchResponse.deserialize,
+            )
+        return self._stubs["search_lite"]
+
     def close(self):
         self.grpc_channel.close()
 

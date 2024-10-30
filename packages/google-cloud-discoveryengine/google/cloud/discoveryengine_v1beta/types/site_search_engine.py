@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
         "SiteSearchEngine",
         "TargetSite",
         "SiteVerificationInfo",
+        "Sitemap",
     },
 )
 
@@ -256,6 +257,42 @@ class SiteVerificationInfo(proto.Message):
     verify_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class Sitemap(proto.Message):
+    r"""A sitemap for the SiteSearchEngine.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        uri (str):
+            Public URI for the sitemap, e.g.
+            ``www.example.com/sitemap.xml``.
+
+            This field is a member of `oneof`_ ``feed``.
+        name (str):
+            Output only. The fully qualified resource name of the
+            sitemap.
+            ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/sitemaps/*``
+            The ``sitemap_id`` suffix is system-generated.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The sitemap's creation time.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="feed",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
         message=timestamp_pb2.Timestamp,
     )
 
