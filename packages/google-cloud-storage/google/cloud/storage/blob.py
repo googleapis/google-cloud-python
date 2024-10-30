@@ -653,6 +653,7 @@ class Blob(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
         soft_deleted=None,
+        restore_token=None,
     ):
         """Determines whether or not this blob exists.
 
@@ -704,6 +705,13 @@ class Blob(_PropertyMixin):
             :attr:`generation` is required to be set on the blob if ``soft_deleted`` is set to True.
             See: https://cloud.google.com/storage/docs/soft-delete
 
+        :type restore_token: str
+        :param restore_token:
+            (Optional) The restore_token is required to retrieve a soft-deleted object only if
+            its name and generation value do not uniquely identify it, and hierarchical namespace
+            is enabled on the bucket. Otherwise, this parameter is optional.
+            See: https://cloud.google.com/storage/docs/json_api/v1/objects/get
+
         :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
         """
@@ -714,6 +722,8 @@ class Blob(_PropertyMixin):
         query_params["fields"] = "name"
         if soft_deleted is not None:
             query_params["softDeleted"] = soft_deleted
+        if restore_token is not None:
+            query_params["restoreToken"] = restore_token
 
         _add_generation_match_parameters(
             query_params,
@@ -4793,6 +4803,19 @@ class Blob(_PropertyMixin):
         hard_delete_time = self._properties.get("hardDeleteTime")
         if hard_delete_time is not None:
             return _rfc3339_nanos_to_datetime(hard_delete_time)
+
+    @property
+    def restore_token(self):
+        """The restore token, a universally unique identifier (UUID), along with the object's
+        name and generation value, uniquely identifies a soft-deleted object.
+        This field is only returned for soft-deleted objects in hierarchical namespace buckets.
+
+        :rtype: string or ``NoneType``
+        :returns:
+            (readonly) The restore token used to differentiate soft-deleted objects with the same name and generation.
+            This field is only returned for soft-deleted objects in hierarchical namespace buckets.
+        """
+        return self._properties.get("restoreToken")
 
 
 def _get_host_name(connection):

@@ -1256,6 +1256,7 @@ class Bucket(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
         soft_deleted=None,
+        restore_token=None,
         **kwargs,
     ):
         """Get a blob object by name.
@@ -1323,6 +1324,13 @@ class Bucket(_PropertyMixin):
             Object ``generation`` is required if ``soft_deleted`` is set to True.
             See: https://cloud.google.com/storage/docs/soft-delete
 
+        :type restore_token: str
+        :param restore_token:
+            (Optional) The restore_token is required to retrieve a soft-deleted object only if
+            its name and generation value do not uniquely identify it, and hierarchical namespace
+            is enabled on the bucket. Otherwise, this parameter is optional.
+            See: https://cloud.google.com/storage/docs/json_api/v1/objects/get
+
         :param kwargs: Keyword arguments to pass to the
                        :class:`~google.cloud.storage.blob.Blob` constructor.
 
@@ -1351,6 +1359,7 @@ class Bucket(_PropertyMixin):
                 if_metageneration_not_match=if_metageneration_not_match,
                 retry=retry,
                 soft_deleted=soft_deleted,
+                restore_token=restore_token,
             )
         except NotFound:
             return None
@@ -2199,6 +2208,7 @@ class Bucket(_PropertyMixin):
         generation=None,
         copy_source_acl=None,
         projection=None,
+        restore_token=None,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
@@ -2228,6 +2238,13 @@ class Bucket(_PropertyMixin):
         :type projection: str
         :param projection: (Optional) Specifies the set of properties to return.
                            If used, must be 'full' or 'noAcl'.
+
+        :type restore_token: str
+        :param restore_token:
+            (Optional) The restore_token is required to restore a soft-deleted object
+            only if its name and generation value do not uniquely identify it, and hierarchical namespace
+            is enabled on the bucket. Otherwise, this parameter is optional.
+            See: https://cloud.google.com/storage/docs/json_api/v1/objects/restore
 
         :type if_generation_match: long
         :param if_generation_match:
@@ -2276,6 +2293,8 @@ class Bucket(_PropertyMixin):
             query_params["copySourceAcl"] = copy_source_acl
         if projection is not None:
             query_params["projection"] = projection
+        if restore_token is not None:
+            query_params["restoreToken"] = restore_token
 
         _add_generation_match_parameters(
             query_params,

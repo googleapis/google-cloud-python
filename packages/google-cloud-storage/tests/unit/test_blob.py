@@ -784,21 +784,25 @@ class Test_Blob(unittest.TestCase):
             _target_object=None,
         )
 
-    def test_exists_hit_w_generation_w_soft_deleted(self):
+    def test_exists_hit_w_gen_soft_deleted_restore_token(self):
         blob_name = "blob-name"
         generation = 123456
+        restore_token = "88ba0d97-639e-5902"
         api_response = {"name": blob_name}
         client = mock.Mock(spec=["_get_resource"])
         client._get_resource.return_value = api_response
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket, generation=generation)
 
-        self.assertTrue(blob.exists(retry=None, soft_deleted=True))
+        self.assertTrue(
+            blob.exists(retry=None, soft_deleted=True, restore_token=restore_token)
+        )
 
         expected_query_params = {
             "fields": "name",
             "generation": generation,
             "softDeleted": True,
+            "restoreToken": restore_token,
         }
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -5869,6 +5873,16 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
         self.assertEqual(blob.soft_delete_time, soft_timstamp)
         self.assertEqual(blob.hard_delete_time, hard_timstamp)
+
+    def test_restore_token_getter(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        restore_token = "88ba0d97-639e-5902"
+        properties = {
+            "restoreToken": restore_token,
+        }
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertEqual(blob.restore_token, restore_token)
 
     def test_soft_hard_delte_time_unset(self):
         BUCKET = object()
