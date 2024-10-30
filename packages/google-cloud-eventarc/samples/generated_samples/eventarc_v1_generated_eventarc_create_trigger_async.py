@@ -50,7 +50,6 @@ async def sample_create_trigger():
         parent="parent_value",
         trigger=trigger,
         trigger_id="trigger_id_value",
-        validate_only=True,
     )
 
     # Make the request

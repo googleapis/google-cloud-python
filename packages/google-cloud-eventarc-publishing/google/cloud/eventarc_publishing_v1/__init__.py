@@ -19,18 +19,24 @@ __version__ = package_version.__version__
 
 
 from .services.publisher import PublisherAsyncClient, PublisherClient
+from .types.cloud_event import CloudEvent
 from .types.publisher import (
     PublishChannelConnectionEventsRequest,
     PublishChannelConnectionEventsResponse,
     PublishEventsRequest,
     PublishEventsResponse,
+    PublishRequest,
+    PublishResponse,
 )
 
 __all__ = (
     "PublisherAsyncClient",
+    "CloudEvent",
     "PublishChannelConnectionEventsRequest",
     "PublishChannelConnectionEventsResponse",
     "PublishEventsRequest",
     "PublishEventsResponse",
+    "PublishRequest",
+    "PublishResponse",
     "PublisherClient",
 )

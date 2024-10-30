@@ -30,13 +30,15 @@ from google.cloud.eventarc_v1.types import (
     channel,
     channel_connection,
     discovery,
+    enrollment,
     eventarc,
+    google_api_source,
 )
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
 from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import trigger
+from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
 from .base import DEFAULT_CLIENT_INFO, EventarcTransport
 
@@ -742,6 +744,565 @@ class EventarcGrpcTransport(EventarcTransport):
                 response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
             )
         return self._stubs["update_google_channel_config"]
+
+    @property
+    def get_message_bus(
+        self,
+    ) -> Callable[[eventarc.GetMessageBusRequest], message_bus.MessageBus]:
+        r"""Return a callable for the get message bus method over gRPC.
+
+        Get a single MessageBus.
+
+        Returns:
+            Callable[[~.GetMessageBusRequest],
+                    ~.MessageBus]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_message_bus" not in self._stubs:
+            self._stubs["get_message_bus"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetMessageBus",
+                request_serializer=eventarc.GetMessageBusRequest.serialize,
+                response_deserializer=message_bus.MessageBus.deserialize,
+            )
+        return self._stubs["get_message_bus"]
+
+    @property
+    def list_message_buses(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusesRequest], eventarc.ListMessageBusesResponse
+    ]:
+        r"""Return a callable for the list message buses method over gRPC.
+
+        List message buses.
+
+        Returns:
+            Callable[[~.ListMessageBusesRequest],
+                    ~.ListMessageBusesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_message_buses" not in self._stubs:
+            self._stubs["list_message_buses"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListMessageBuses",
+                request_serializer=eventarc.ListMessageBusesRequest.serialize,
+                response_deserializer=eventarc.ListMessageBusesResponse.deserialize,
+            )
+        return self._stubs["list_message_buses"]
+
+    @property
+    def list_message_bus_enrollments(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusEnrollmentsRequest],
+        eventarc.ListMessageBusEnrollmentsResponse,
+    ]:
+        r"""Return a callable for the list message bus enrollments method over gRPC.
+
+        List message bus enrollments.
+
+        Returns:
+            Callable[[~.ListMessageBusEnrollmentsRequest],
+                    ~.ListMessageBusEnrollmentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_message_bus_enrollments" not in self._stubs:
+            self._stubs["list_message_bus_enrollments"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
+                request_serializer=eventarc.ListMessageBusEnrollmentsRequest.serialize,
+                response_deserializer=eventarc.ListMessageBusEnrollmentsResponse.deserialize,
+            )
+        return self._stubs["list_message_bus_enrollments"]
+
+    @property
+    def create_message_bus(
+        self,
+    ) -> Callable[[eventarc.CreateMessageBusRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create message bus method over gRPC.
+
+        Create a new MessageBus in a particular project and
+        location.
+
+        Returns:
+            Callable[[~.CreateMessageBusRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_message_bus" not in self._stubs:
+            self._stubs["create_message_bus"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateMessageBus",
+                request_serializer=eventarc.CreateMessageBusRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_message_bus"]
+
+    @property
+    def update_message_bus(
+        self,
+    ) -> Callable[[eventarc.UpdateMessageBusRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update message bus method over gRPC.
+
+        Update a single message bus.
+
+        Returns:
+            Callable[[~.UpdateMessageBusRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_message_bus" not in self._stubs:
+            self._stubs["update_message_bus"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/UpdateMessageBus",
+                request_serializer=eventarc.UpdateMessageBusRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_message_bus"]
+
+    @property
+    def delete_message_bus(
+        self,
+    ) -> Callable[[eventarc.DeleteMessageBusRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete message bus method over gRPC.
+
+        Delete a single message bus.
+
+        Returns:
+            Callable[[~.DeleteMessageBusRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_message_bus" not in self._stubs:
+            self._stubs["delete_message_bus"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteMessageBus",
+                request_serializer=eventarc.DeleteMessageBusRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_message_bus"]
+
+    @property
+    def get_enrollment(
+        self,
+    ) -> Callable[[eventarc.GetEnrollmentRequest], enrollment.Enrollment]:
+        r"""Return a callable for the get enrollment method over gRPC.
+
+        Get a single Enrollment.
+
+        Returns:
+            Callable[[~.GetEnrollmentRequest],
+                    ~.Enrollment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_enrollment" not in self._stubs:
+            self._stubs["get_enrollment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetEnrollment",
+                request_serializer=eventarc.GetEnrollmentRequest.serialize,
+                response_deserializer=enrollment.Enrollment.deserialize,
+            )
+        return self._stubs["get_enrollment"]
+
+    @property
+    def list_enrollments(
+        self,
+    ) -> Callable[[eventarc.ListEnrollmentsRequest], eventarc.ListEnrollmentsResponse]:
+        r"""Return a callable for the list enrollments method over gRPC.
+
+        List Enrollments.
+
+        Returns:
+            Callable[[~.ListEnrollmentsRequest],
+                    ~.ListEnrollmentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_enrollments" not in self._stubs:
+            self._stubs["list_enrollments"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListEnrollments",
+                request_serializer=eventarc.ListEnrollmentsRequest.serialize,
+                response_deserializer=eventarc.ListEnrollmentsResponse.deserialize,
+            )
+        return self._stubs["list_enrollments"]
+
+    @property
+    def create_enrollment(
+        self,
+    ) -> Callable[[eventarc.CreateEnrollmentRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create enrollment method over gRPC.
+
+        Create a new Enrollment in a particular project and
+        location.
+
+        Returns:
+            Callable[[~.CreateEnrollmentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_enrollment" not in self._stubs:
+            self._stubs["create_enrollment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateEnrollment",
+                request_serializer=eventarc.CreateEnrollmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_enrollment"]
+
+    @property
+    def update_enrollment(
+        self,
+    ) -> Callable[[eventarc.UpdateEnrollmentRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update enrollment method over gRPC.
+
+        Update a single Enrollment.
+
+        Returns:
+            Callable[[~.UpdateEnrollmentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_enrollment" not in self._stubs:
+            self._stubs["update_enrollment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/UpdateEnrollment",
+                request_serializer=eventarc.UpdateEnrollmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_enrollment"]
+
+    @property
+    def delete_enrollment(
+        self,
+    ) -> Callable[[eventarc.DeleteEnrollmentRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete enrollment method over gRPC.
+
+        Delete a single Enrollment.
+
+        Returns:
+            Callable[[~.DeleteEnrollmentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_enrollment" not in self._stubs:
+            self._stubs["delete_enrollment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteEnrollment",
+                request_serializer=eventarc.DeleteEnrollmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_enrollment"]
+
+    @property
+    def get_pipeline(
+        self,
+    ) -> Callable[[eventarc.GetPipelineRequest], pipeline.Pipeline]:
+        r"""Return a callable for the get pipeline method over gRPC.
+
+        Get a single Pipeline.
+
+        Returns:
+            Callable[[~.GetPipelineRequest],
+                    ~.Pipeline]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_pipeline" not in self._stubs:
+            self._stubs["get_pipeline"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetPipeline",
+                request_serializer=eventarc.GetPipelineRequest.serialize,
+                response_deserializer=pipeline.Pipeline.deserialize,
+            )
+        return self._stubs["get_pipeline"]
+
+    @property
+    def list_pipelines(
+        self,
+    ) -> Callable[[eventarc.ListPipelinesRequest], eventarc.ListPipelinesResponse]:
+        r"""Return a callable for the list pipelines method over gRPC.
+
+        List pipelines.
+
+        Returns:
+            Callable[[~.ListPipelinesRequest],
+                    ~.ListPipelinesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_pipelines" not in self._stubs:
+            self._stubs["list_pipelines"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListPipelines",
+                request_serializer=eventarc.ListPipelinesRequest.serialize,
+                response_deserializer=eventarc.ListPipelinesResponse.deserialize,
+            )
+        return self._stubs["list_pipelines"]
+
+    @property
+    def create_pipeline(
+        self,
+    ) -> Callable[[eventarc.CreatePipelineRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create pipeline method over gRPC.
+
+        Create a new Pipeline in a particular project and
+        location.
+
+        Returns:
+            Callable[[~.CreatePipelineRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_pipeline" not in self._stubs:
+            self._stubs["create_pipeline"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreatePipeline",
+                request_serializer=eventarc.CreatePipelineRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_pipeline"]
+
+    @property
+    def update_pipeline(
+        self,
+    ) -> Callable[[eventarc.UpdatePipelineRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update pipeline method over gRPC.
+
+        Update a single pipeline.
+
+        Returns:
+            Callable[[~.UpdatePipelineRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_pipeline" not in self._stubs:
+            self._stubs["update_pipeline"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/UpdatePipeline",
+                request_serializer=eventarc.UpdatePipelineRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_pipeline"]
+
+    @property
+    def delete_pipeline(
+        self,
+    ) -> Callable[[eventarc.DeletePipelineRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete pipeline method over gRPC.
+
+        Delete a single pipeline.
+
+        Returns:
+            Callable[[~.DeletePipelineRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_pipeline" not in self._stubs:
+            self._stubs["delete_pipeline"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeletePipeline",
+                request_serializer=eventarc.DeletePipelineRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_pipeline"]
+
+    @property
+    def get_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.GetGoogleApiSourceRequest], google_api_source.GoogleApiSource
+    ]:
+        r"""Return a callable for the get google api source method over gRPC.
+
+        Get a single GoogleApiSource.
+
+        Returns:
+            Callable[[~.GetGoogleApiSourceRequest],
+                    ~.GoogleApiSource]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_google_api_source" not in self._stubs:
+            self._stubs["get_google_api_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetGoogleApiSource",
+                request_serializer=eventarc.GetGoogleApiSourceRequest.serialize,
+                response_deserializer=google_api_source.GoogleApiSource.deserialize,
+            )
+        return self._stubs["get_google_api_source"]
+
+    @property
+    def list_google_api_sources(
+        self,
+    ) -> Callable[
+        [eventarc.ListGoogleApiSourcesRequest], eventarc.ListGoogleApiSourcesResponse
+    ]:
+        r"""Return a callable for the list google api sources method over gRPC.
+
+        List GoogleApiSources.
+
+        Returns:
+            Callable[[~.ListGoogleApiSourcesRequest],
+                    ~.ListGoogleApiSourcesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_google_api_sources" not in self._stubs:
+            self._stubs["list_google_api_sources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListGoogleApiSources",
+                request_serializer=eventarc.ListGoogleApiSourcesRequest.serialize,
+                response_deserializer=eventarc.ListGoogleApiSourcesResponse.deserialize,
+            )
+        return self._stubs["list_google_api_sources"]
+
+    @property
+    def create_google_api_source(
+        self,
+    ) -> Callable[[eventarc.CreateGoogleApiSourceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create google api source method over gRPC.
+
+        Create a new GoogleApiSource in a particular project
+        and location.
+
+        Returns:
+            Callable[[~.CreateGoogleApiSourceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_google_api_source" not in self._stubs:
+            self._stubs["create_google_api_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateGoogleApiSource",
+                request_serializer=eventarc.CreateGoogleApiSourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_google_api_source"]
+
+    @property
+    def update_google_api_source(
+        self,
+    ) -> Callable[[eventarc.UpdateGoogleApiSourceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update google api source method over gRPC.
+
+        Update a single GoogleApiSource.
+
+        Returns:
+            Callable[[~.UpdateGoogleApiSourceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_google_api_source" not in self._stubs:
+            self._stubs["update_google_api_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleApiSource",
+                request_serializer=eventarc.UpdateGoogleApiSourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_google_api_source"]
+
+    @property
+    def delete_google_api_source(
+        self,
+    ) -> Callable[[eventarc.DeleteGoogleApiSourceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete google api source method over gRPC.
+
+        Delete a single GoogleApiSource.
+
+        Returns:
+            Callable[[~.DeleteGoogleApiSourceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_google_api_source" not in self._stubs:
+            self._stubs["delete_google_api_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteGoogleApiSource",
+                request_serializer=eventarc.DeleteGoogleApiSourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_google_api_source"]
 
     def close(self):
         self.grpc_channel.close()

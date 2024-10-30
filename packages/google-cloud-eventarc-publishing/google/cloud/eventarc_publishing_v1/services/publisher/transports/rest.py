@@ -60,6 +60,14 @@ class PublisherRestInterceptor:
 
     .. code-block:: python
         class MyCustomPublisherInterceptor(PublisherRestInterceptor):
+            def pre_publish(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_publish(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_publish_channel_connection_events(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -81,6 +89,27 @@ class PublisherRestInterceptor:
 
 
     """
+
+    def pre_publish(
+        self, request: publisher.PublishRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[publisher.PublishRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for publish
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Publisher server.
+        """
+        return request, metadata
+
+    def post_publish(
+        self, response: publisher.PublishResponse
+    ) -> publisher.PublishResponse:
+        """Post-rpc interceptor for publish
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Publisher server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_publish_channel_connection_events(
         self,
@@ -243,6 +272,103 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PublisherRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _Publish(_BasePublisherRestTransport._BasePublish, PublisherRestStub):
+        def __hash__(self):
+            return hash("PublisherRestTransport.Publish")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: publisher.PublishRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> publisher.PublishResponse:
+            r"""Call the publish method over HTTP.
+
+            Args:
+                request (~.publisher.PublishRequest):
+                    The request object. The request message for the Publish
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.publisher.PublishResponse:
+                    The response message for the Publish
+                method.
+
+            """
+
+            http_options = _BasePublisherRestTransport._BasePublish._get_http_options()
+            request, metadata = self._interceptor.pre_publish(request, metadata)
+            transcoded_request = (
+                _BasePublisherRestTransport._BasePublish._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BasePublisherRestTransport._BasePublish._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BasePublisherRestTransport._BasePublish._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = PublisherRestTransport._Publish._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = publisher.PublishResponse()
+            pb_resp = publisher.PublishResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_publish(resp)
+            return resp
 
     class _PublishChannelConnectionEvents(
         _BasePublisherRestTransport._BasePublishChannelConnectionEvents,
@@ -449,6 +575,14 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_publish_events(resp)
             return resp
+
+    @property
+    def publish(
+        self,
+    ) -> Callable[[publisher.PublishRequest], publisher.PublishResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._Publish(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def publish_channel_connection_events(

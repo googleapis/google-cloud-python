@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
     package="google.cloud.edgecontainer.v1",
     manifest={
         "KmsKeyState",
+        "ResourceState",
         "Cluster",
         "ClusterNetworking",
         "Fleet",
@@ -36,10 +37,12 @@ __protobuf__ = proto.module(
         "VpnConnection",
         "LocationMetadata",
         "ZoneMetadata",
+        "ConfigData",
         "Quota",
         "MaintenancePolicy",
         "MaintenanceWindow",
         "RecurringTimeWindow",
+        "MaintenanceExclusionWindow",
         "TimeWindow",
         "ServerConfig",
         "ChannelConfig",
@@ -65,6 +68,22 @@ class KmsKeyState(proto.Enum):
     KMS_KEY_STATE_UNSPECIFIED = 0
     KMS_KEY_STATE_KEY_AVAILABLE = 1
     KMS_KEY_STATE_KEY_UNAVAILABLE = 2
+
+
+class ResourceState(proto.Enum):
+    r"""Represents if the resource is in lock down state or pending.
+
+    Values:
+        RESOURCE_STATE_UNSPECIFIED (0):
+            Default value.
+        RESOURCE_STATE_LOCK_DOWN (1):
+            The resource is in LOCK DOWN state.
+        RESOURCE_STATE_LOCK_DOWN_PENDING (2):
+            The resource is pending lock down.
+    """
+    RESOURCE_STATE_UNSPECIFIED = 0
+    RESOURCE_STATE_LOCK_DOWN = 1
+    RESOURCE_STATE_LOCK_DOWN_PENDING = 2
 
 
 class Cluster(proto.Message):
@@ -149,6 +168,9 @@ class Cluster(proto.Message):
         external_load_balancer_ipv6_address_pools (MutableSequence[str]):
             Optional. IPv6 address pools for cluster data
             plane external load balancing.
+        connection_state (google.cloud.edgecontainer_v1.types.Cluster.ConnectionState):
+            Output only. The current connection state of
+            the cluster.
     """
 
     class Status(proto.Enum):
@@ -274,6 +296,13 @@ class Cluster(proto.Message):
                 shared_deployment_policy (google.cloud.edgecontainer_v1.types.Cluster.ControlPlane.SharedDeploymentPolicy):
                     Policy configuration about how user
                     applications are deployed.
+                control_plane_node_storage_schema (str):
+                    Optional. Name for the storage schema of
+                    control plane nodes.
+                    Warning: Configurable node local storage schema
+                    feature is an experimental feature, and is not
+                    recommended for general use in production
+                    clusters/nodepools.
             """
 
             node_location: str = proto.Field(
@@ -294,6 +323,10 @@ class Cluster(proto.Message):
                     number=4,
                     enum="Cluster.ControlPlane.SharedDeploymentPolicy",
                 )
+            )
+            control_plane_node_storage_schema: str = proto.Field(
+                proto.STRING,
+                number=5,
             )
 
         remote: "Cluster.ControlPlane.Remote" = proto.Field(
@@ -316,6 +349,8 @@ class Cluster(proto.Message):
         Attributes:
             ingress (google.cloud.edgecontainer_v1.types.Cluster.SystemAddonsConfig.Ingress):
                 Optional. Config for Ingress.
+            vm_service_config (google.cloud.edgecontainer_v1.types.Cluster.SystemAddonsConfig.VMServiceConfig):
+                Optional. Config for VM Service.
         """
 
         class Ingress(proto.Message):
@@ -340,19 +375,38 @@ class Cluster(proto.Message):
                 number=2,
             )
 
+        class VMServiceConfig(proto.Message):
+            r"""VMServiceConfig defines the configuration for GDCE VM
+            Service.
+
+            Attributes:
+                vmm_enabled (bool):
+                    Optional. Whether VMM is enabled.
+            """
+
+            vmm_enabled: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+
         ingress: "Cluster.SystemAddonsConfig.Ingress" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="Cluster.SystemAddonsConfig.Ingress",
         )
+        vm_service_config: "Cluster.SystemAddonsConfig.VMServiceConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Cluster.SystemAddonsConfig.VMServiceConfig",
+        )
 
     class ControlPlaneEncryption(proto.Message):
-        r"""Configuration for Customer-managed KMS key support for remote
-        control plane cluster disk encryption.
+        r"""Configuration for Customer-managed KMS key support for
+        control plane nodes.
 
         Attributes:
             kms_key (str):
-                Immutable. The Cloud KMS CryptoKey e.g.
+                Optional. The Cloud KMS CryptoKey e.g.
                 projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
                 to use for protecting control plane disks. If
                 not specified, a Google-managed key will be used
@@ -373,6 +427,9 @@ class Cluster(proto.Message):
                 ``kms_key_state`` is not ``KMS_KEY_STATE_KEY_AVAILABLE``. If
                 populated, this field contains the error status reported by
                 Cloud KMS.
+            resource_state (google.cloud.edgecontainer_v1.types.ResourceState):
+                Output only. The current resource state
+                associated with the cmek.
         """
 
         kms_key: str = proto.Field(
@@ -392,6 +449,11 @@ class Cluster(proto.Message):
             proto.MESSAGE,
             number=4,
             message=status_pb2.Status,
+        )
+        resource_state: "ResourceState" = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="ResourceState",
         )
 
     class MaintenanceEvent(proto.Message):
@@ -551,6 +613,51 @@ class Cluster(proto.Message):
             message=duration_pb2.Duration,
         )
 
+    class ConnectionState(proto.Message):
+        r"""ConnectionState holds the current connection state from the
+        cluster to Google.
+
+        Attributes:
+            state (google.cloud.edgecontainer_v1.types.Cluster.ConnectionState.State):
+                Output only. The current connection state.
+            update_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time when the connection
+                state was last changed.
+        """
+
+        class State(proto.Enum):
+            r"""The connection state.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Unknown connection state.
+                DISCONNECTED (1):
+                    This cluster is currently disconnected from
+                    Google.
+                CONNECTED (2):
+                    This cluster is currently connected to
+                    Google.
+                CONNECTED_AND_SYNCING (3):
+                    This cluster is currently connected to
+                    Google, but may have recently reconnected after
+                    a disconnection. It is still syncing back.
+            """
+            STATE_UNSPECIFIED = 0
+            DISCONNECTED = 1
+            CONNECTED = 2
+            CONNECTED_AND_SYNCING = 3
+
+        state: "Cluster.ConnectionState.State" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Cluster.ConnectionState.State",
+        )
+        update_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -664,6 +771,11 @@ class Cluster(proto.Message):
     ] = proto.RepeatedField(
         proto.STRING,
         number=25,
+    )
+    connection_state: ConnectionState = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        message=ConnectionState,
     )
 
 
@@ -801,7 +913,7 @@ class NodePool(proto.Message):
 
         Attributes:
             kms_key (str):
-                Immutable. The Cloud KMS CryptoKey e.g.
+                Optional. The Cloud KMS CryptoKey e.g.
                 projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
                 to use for protecting node local disks. If not
                 specified, a Google-managed key will be used
@@ -822,6 +934,9 @@ class NodePool(proto.Message):
                 ``kms_key_state`` is not ``KMS_KEY_STATE_KEY_AVAILABLE``. If
                 populated, this field contains the error status reported by
                 Cloud KMS.
+            resource_state (google.cloud.edgecontainer_v1.types.ResourceState):
+                Output only. The current resource state
+                associated with the cmek.
         """
 
         kms_key: str = proto.Field(
@@ -842,6 +957,11 @@ class NodePool(proto.Message):
             number=4,
             message=status_pb2.Status,
         )
+        resource_state: "ResourceState" = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="ResourceState",
+        )
 
     class NodeConfig(proto.Message):
         r"""Configuration for each node in the NodePool
@@ -849,12 +969,23 @@ class NodePool(proto.Message):
         Attributes:
             labels (MutableMapping[str, str]):
                 Optional. The Kubernetes node labels
+            node_storage_schema (str):
+                Optional. Name for the storage schema of
+                worker nodes.
+                Warning: Configurable node local storage schema
+                feature is an experimental feature, and is not
+                recommended for general use in production
+                clusters/nodepools.
         """
 
         labels: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=1,
+        )
+        node_storage_schema: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     name: str = proto.Field(
@@ -1047,13 +1178,7 @@ class VpnConnection(proto.Message):
                 specified, it is the same as the cluster
                 project.
             service_account (str):
-                Optional. The service account in the VPC project configured
-                by user. It is used to create/delete Cloud Router and Cloud
-                HA VPNs for VPN connection. If this SA is changed
-                during/after a VPN connection is created, you need to remove
-                the Cloud Router and Cloud VPN resources in \|project_id|.
-                It is in the form of
-                service-{project_number}@gcp-sa-edgecontainer.iam.gserviceaccount.com.
+                Optional. Deprecated: do not use.
         """
 
         project_id: str = proto.Field(
@@ -1232,6 +1357,8 @@ class ZoneMetadata(proto.Message):
         rack_types (MutableMapping[str, google.cloud.edgecontainer_v1.types.ZoneMetadata.RackType]):
             The map keyed by rack name and has value of
             RackType.
+        config_data (google.cloud.edgecontainer_v1.types.ConfigData):
+            Config data for the zone.
     """
 
     class RackType(proto.Enum):
@@ -1262,6 +1389,33 @@ class ZoneMetadata(proto.Message):
         proto.ENUM,
         number=2,
         enum=RackType,
+    )
+    config_data: "ConfigData" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ConfigData",
+    )
+
+
+class ConfigData(proto.Message):
+    r"""Config data holds all the config related data for the zone.
+
+    Attributes:
+        available_external_lb_pools_ipv4 (MutableSequence[str]):
+            list of available v4 ip pools for external
+            loadbalancer
+        available_external_lb_pools_ipv6 (MutableSequence[str]):
+            list of available v6 ip pools for external
+            loadbalancer
+    """
+
+    available_external_lb_pools_ipv4: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    available_external_lb_pools_ipv6: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1298,12 +1452,26 @@ class MaintenancePolicy(proto.Message):
         window (google.cloud.edgecontainer_v1.types.MaintenanceWindow):
             Specifies the maintenance window in which
             maintenance may be performed.
+        maintenance_exclusions (MutableSequence[google.cloud.edgecontainer_v1.types.MaintenanceExclusionWindow]):
+            Optional. Exclusions to automatic
+            maintenance. Non-emergency maintenance should
+            not occur in these windows. Each exclusion has a
+            unique name and may be active or expired. The
+            max number of maintenance exclusions allowed at
+            a given time is 3.
     """
 
     window: "MaintenanceWindow" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="MaintenanceWindow",
+    )
+    maintenance_exclusions: MutableSequence[
+        "MaintenanceExclusionWindow"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MaintenanceExclusionWindow",
     )
 
 
@@ -1342,6 +1510,28 @@ class RecurringTimeWindow(proto.Message):
         message="TimeWindow",
     )
     recurrence: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class MaintenanceExclusionWindow(proto.Message):
+    r"""Represents a maintenance exclusion window.
+
+    Attributes:
+        window (google.cloud.edgecontainer_v1.types.TimeWindow):
+            Optional. The time window.
+        id (str):
+            Optional. A unique (per cluster) id for the
+            window.
+    """
+
+    window: "TimeWindow" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TimeWindow",
+    )
+    id: str = proto.Field(
         proto.STRING,
         number=2,
     )

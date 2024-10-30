@@ -130,6 +130,16 @@ class GroundedGenerationServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.stream_generate_grounded_content: gapic_v1.method.wrap_method(
+                self.stream_generate_grounded_content,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.generate_grounded_content: gapic_v1.method.wrap_method(
+                self.generate_grounded_content,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.check_grounding: gapic_v1.method.wrap_method(
                 self.check_grounding,
                 default_timeout=None,
@@ -159,6 +169,30 @@ class GroundedGenerationServiceTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def stream_generate_grounded_content(
+        self,
+    ) -> Callable[
+        [grounded_generation_service.GenerateGroundedContentRequest],
+        Union[
+            grounded_generation_service.GenerateGroundedContentResponse,
+            Awaitable[grounded_generation_service.GenerateGroundedContentResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_grounded_content(
+        self,
+    ) -> Callable[
+        [grounded_generation_service.GenerateGroundedContentRequest],
+        Union[
+            grounded_generation_service.GenerateGroundedContentResponse,
+            Awaitable[grounded_generation_service.GenerateGroundedContentResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

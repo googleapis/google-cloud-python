@@ -1231,6 +1231,430 @@ def test_grounded_generation_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
+        grounded_generation_service.GenerateGroundedContentRequest,
+        dict,
+    ],
+)
+def test_stream_generate_grounded_content(request_type, transport: str = "grpc"):
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_generate_grounded_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter(
+            [grounded_generation_service.GenerateGroundedContentResponse()]
+        )
+        response = client.stream_generate_grounded_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(
+            message, grounded_generation_service.GenerateGroundedContentResponse
+        )
+
+
+def test_stream_generate_grounded_content_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GroundedGenerationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.stream_generate_grounded_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.stream_generate_grounded_content
+        ] = mock_rpc
+        request = [{}]
+        client.stream_generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.stream_generate_grounded_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_generate_grounded_content_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = GroundedGenerationServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.stream_generate_grounded_content
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.stream_generate_grounded_content
+        ] = mock_rpc
+
+        request = [{}]
+        await client.stream_generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.stream_generate_grounded_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_generate_grounded_content_async(
+    transport: str = "grpc_asyncio",
+    request_type=grounded_generation_service.GenerateGroundedContentRequest,
+):
+    client = GroundedGenerationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_generate_grounded_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[grounded_generation_service.GenerateGroundedContentResponse()]
+        )
+        response = await client.stream_generate_grounded_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(
+        message, grounded_generation_service.GenerateGroundedContentResponse
+    )
+
+
+@pytest.mark.asyncio
+async def test_stream_generate_grounded_content_async_from_dict():
+    await test_stream_generate_grounded_content_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grounded_generation_service.GenerateGroundedContentRequest,
+        dict,
+    ],
+)
+def test_generate_grounded_content(request_type, transport: str = "grpc"):
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            grounded_generation_service.GenerateGroundedContentResponse()
+        )
+        response = client.generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = grounded_generation_service.GenerateGroundedContentRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, grounded_generation_service.GenerateGroundedContentResponse
+    )
+
+
+def test_generate_grounded_content_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = grounded_generation_service.GenerateGroundedContentRequest(
+        location="location_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.generate_grounded_content(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == grounded_generation_service.GenerateGroundedContentRequest(
+            location="location_value",
+        )
+
+
+def test_generate_grounded_content_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GroundedGenerationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.generate_grounded_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.generate_grounded_content
+        ] = mock_rpc
+        request = {}
+        client.generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_grounded_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_generate_grounded_content_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = GroundedGenerationServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.generate_grounded_content
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.generate_grounded_content
+        ] = mock_rpc
+
+        request = {}
+        await client.generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.generate_grounded_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_generate_grounded_content_async(
+    transport: str = "grpc_asyncio",
+    request_type=grounded_generation_service.GenerateGroundedContentRequest,
+):
+    client = GroundedGenerationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            grounded_generation_service.GenerateGroundedContentResponse()
+        )
+        response = await client.generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = grounded_generation_service.GenerateGroundedContentRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, grounded_generation_service.GenerateGroundedContentResponse
+    )
+
+
+@pytest.mark.asyncio
+async def test_generate_grounded_content_async_from_dict():
+    await test_generate_grounded_content_async(request_type=dict)
+
+
+def test_generate_grounded_content_field_headers():
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = grounded_generation_service.GenerateGroundedContentRequest()
+
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        call.return_value = (
+            grounded_generation_service.GenerateGroundedContentResponse()
+        )
+        client.generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "location=location_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_grounded_content_field_headers_async():
+    client = GroundedGenerationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = grounded_generation_service.GenerateGroundedContentRequest()
+
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            grounded_generation_service.GenerateGroundedContentResponse()
+        )
+        await client.generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "location=location_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         grounded_generation_service.CheckGroundingRequest,
         dict,
     ],
@@ -1472,6 +1896,146 @@ async def test_check_grounding_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_stream_generate_grounded_content_rest_unimplemented():
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = grounded_generation_service.GenerateGroundedContentRequest()
+    requests = [request]
+    with pytest.raises(NotImplementedError):
+        client.stream_generate_grounded_content(requests)
+
+
+def test_generate_grounded_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GroundedGenerationServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.generate_grounded_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.generate_grounded_content
+        ] = mock_rpc
+
+        request = {}
+        client.generate_grounded_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_grounded_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_generate_grounded_content_rest_required_fields(
+    request_type=grounded_generation_service.GenerateGroundedContentRequest,
+):
+    transport_class = transports.GroundedGenerationServiceRestTransport
+
+    request_init = {}
+    request_init["location"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_grounded_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["location"] = "location_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_grounded_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "location" in jsonified_request
+    assert jsonified_request["location"] == "location_value"
+
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = grounded_generation_service.GenerateGroundedContentResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                grounded_generation_service.GenerateGroundedContentResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_grounded_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_grounded_content_rest_unset_required_fields():
+    transport = transports.GroundedGenerationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.generate_grounded_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("location",)))
+
+
 def test_check_grounding_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1702,6 +2266,31 @@ def test_initialize_client_w_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_generate_grounded_content_empty_call_grpc():
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        call.return_value = (
+            grounded_generation_service.GenerateGroundedContentResponse()
+        )
+        client.generate_grounded_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = grounded_generation_service.GenerateGroundedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_check_grounding_empty_call_grpc():
     client = GroundedGenerationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1738,6 +2327,33 @@ def test_initialize_client_w_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_generate_grounded_content_empty_call_grpc_asyncio():
+    client = GroundedGenerationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            grounded_generation_service.GenerateGroundedContentResponse()
+        )
+        await client.generate_grounded_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = grounded_generation_service.GenerateGroundedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_check_grounding_empty_call_grpc_asyncio():
     client = GroundedGenerationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1767,6 +2383,147 @@ def test_transport_kind_rest():
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
+
+
+def test_stream_generate_grounded_content_rest_error():
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_generate_grounded_content({})
+    assert (
+        "Method StreamGenerateGroundedContent is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+def test_generate_grounded_content_rest_bad_request(
+    request_type=grounded_generation_service.GenerateGroundedContentRequest,
+):
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_grounded_content(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        grounded_generation_service.GenerateGroundedContentRequest,
+        dict,
+    ],
+)
+def test_generate_grounded_content_rest_call_success(request_type):
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = grounded_generation_service.GenerateGroundedContentResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = grounded_generation_service.GenerateGroundedContentResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_grounded_content(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, grounded_generation_service.GenerateGroundedContentResponse
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_grounded_content_rest_interceptors(null_interceptor):
+    transport = transports.GroundedGenerationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.GroundedGenerationServiceRestInterceptor(),
+    )
+    client = GroundedGenerationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.GroundedGenerationServiceRestInterceptor,
+        "post_generate_grounded_content",
+    ) as post, mock.patch.object(
+        transports.GroundedGenerationServiceRestInterceptor,
+        "pre_generate_grounded_content",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = grounded_generation_service.GenerateGroundedContentRequest.pb(
+            grounded_generation_service.GenerateGroundedContentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = (
+            grounded_generation_service.GenerateGroundedContentResponse.to_json(
+                grounded_generation_service.GenerateGroundedContentResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = grounded_generation_service.GenerateGroundedContentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            grounded_generation_service.GenerateGroundedContentResponse()
+        )
+
+        client.generate_grounded_content(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
 
 
 def test_check_grounding_rest_bad_request(
@@ -2100,6 +2857,28 @@ def test_initialize_client_w_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_generate_grounded_content_empty_call_rest():
+    client = GroundedGenerationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_grounded_content), "__call__"
+    ) as call:
+        client.generate_grounded_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = grounded_generation_service.GenerateGroundedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_check_grounding_empty_call_rest():
     client = GroundedGenerationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2151,6 +2930,8 @@ def test_grounded_generation_service_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "stream_generate_grounded_content",
+        "generate_grounded_content",
         "check_grounding",
         "get_operation",
         "cancel_operation",
@@ -2417,6 +3198,12 @@ def test_grounded_generation_service_client_transport_session_collision(transpor
         credentials=creds2,
         transport=transport_name,
     )
+    session1 = client1.transport.stream_generate_grounded_content._session
+    session2 = client2.transport.stream_generate_grounded_content._session
+    assert session1 != session2
+    session1 = client1.transport.generate_grounded_content._session
+    session2 = client2.transport.generate_grounded_content._session
+    assert session1 != session2
     session1 = client1.transport.check_grounding._session
     session2 = client2.transport.check_grounding._session
     assert session1 != session2
@@ -2573,6 +3360,60 @@ def test_parse_grounding_config_path():
 
     # Check that the path construction is reversible.
     actual = GroundedGenerationServiceClient.parse_grounding_config_path(path)
+    assert expected == actual
+
+
+def test_location_path():
+    project = "cuttlefish"
+    location = "mussel"
+    expected = "projects/{project}/locations/{location}".format(
+        project=project,
+        location=location,
+    )
+    actual = GroundedGenerationServiceClient.location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_location_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+    }
+    path = GroundedGenerationServiceClient.location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GroundedGenerationServiceClient.parse_location_path(path)
+    assert expected == actual
+
+
+def test_serving_config_path():
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    serving_config = "clam"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        serving_config=serving_config,
+    )
+    actual = GroundedGenerationServiceClient.serving_config_path(
+        project, location, data_store, serving_config
+    )
+    assert expected == actual
+
+
+def test_parse_serving_config_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "serving_config": "nudibranch",
+    }
+    path = GroundedGenerationServiceClient.serving_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GroundedGenerationServiceClient.parse_serving_config_path(path)
     assert expected == actual
 
 

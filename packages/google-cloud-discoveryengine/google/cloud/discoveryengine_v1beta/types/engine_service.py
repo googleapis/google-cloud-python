@@ -291,7 +291,7 @@ class PauseEngineRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the engine to pause. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 
     name: str = proto.Field(
@@ -306,7 +306,7 @@ class ResumeEngineRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the engine to resume. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 
     name: str = proto.Field(
@@ -322,7 +322,7 @@ class TuneEngineRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the engine to tune. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 
     name: str = proto.Field(
@@ -338,7 +338,7 @@ class TuneEngineMetadata(proto.Message):
         engine (str):
             Required. The resource name of the engine that this tune
             applies to. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``
     """
 
     engine: str = proto.Field(

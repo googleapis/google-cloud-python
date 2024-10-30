@@ -39,6 +39,7 @@ def partition(
 class eventarc_publishingCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'publish': ('message_bus', 'proto_message', 'json_message', 'avro_message', ),
         'publish_channel_connection_events': ('channel_connection', 'events', 'text_events', ),
         'publish_events': ('channel', 'events', 'text_events', ),
     }

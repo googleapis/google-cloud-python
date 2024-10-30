@@ -51,7 +51,7 @@ from google.cloud.discoveryengine_v1beta.services.serving_config_service import 
 from google.cloud.discoveryengine_v1beta.types import (
     serving_config as gcd_serving_config,
 )
-from google.cloud.discoveryengine_v1beta.types import common
+from google.cloud.discoveryengine_v1beta.types import common, search_service
 from google.cloud.discoveryengine_v1beta.types import serving_config
 from google.cloud.discoveryengine_v1beta.types import serving_config_service
 
@@ -456,7 +456,7 @@ class ServingConfigServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the ServingConfig to get.
                 Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -570,7 +570,7 @@ class ServingConfigServiceAsyncClient:
             parent (:class:`str`):
                 Required. Full resource name of the parent resource.
                 Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
+                ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

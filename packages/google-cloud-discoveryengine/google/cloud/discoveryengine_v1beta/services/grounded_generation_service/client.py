@@ -19,6 +19,8 @@ import re
 from typing import (
     Callable,
     Dict,
+    Iterable,
+    Iterator,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -206,6 +208,47 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
         """Parses a grounding_config path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/groundingConfigs/(?P<grounding_config>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def location_path(
+        project: str,
+        location: str,
+    ) -> str:
+        """Returns a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project,
+            location=location,
+        )
+
+    @staticmethod
+    def parse_location_path(path: str) -> Dict[str, str]:
+        """Parses a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def serving_config_path(
+        project: str,
+        location: str,
+        data_store: str,
+        serving_config: str,
+    ) -> str:
+        """Returns a fully-qualified serving_config string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            serving_config=serving_config,
+        )
+
+    @staticmethod
+    def parse_serving_config_path(path: str) -> Dict[str, str]:
+        """Parses a serving_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/servingConfigs/(?P<serving_config>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -690,6 +733,182 @@ class GroundedGenerationServiceClient(metaclass=GroundedGenerationServiceClientM
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
             )
+
+    def stream_generate_grounded_content(
+        self,
+        requests: Optional[
+            Iterator[grounded_generation_service.GenerateGroundedContentRequest]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> Iterable[grounded_generation_service.GenerateGroundedContentResponse]:
+        r"""Generates grounded content in a streaming fashion.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            def sample_stream_generate_grounded_content():
+                # Create a client
+                client = discoveryengine_v1beta.GroundedGenerationServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.GenerateGroundedContentRequest(
+                    location="location_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'discoveryengine_v1beta.GenerateGroundedContentRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.stream_generate_grounded_content(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
+        Args:
+            requests (Iterator[google.cloud.discoveryengine_v1beta.types.GenerateGroundedContentRequest]):
+                The request object iterator. Top-level message sent by the client for the
+                ``GenerateGroundedContent`` method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            Iterable[google.cloud.discoveryengine_v1beta.types.GenerateGroundedContentResponse]:
+                Response for the GenerateGroundedContent method.
+        """
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.stream_generate_grounded_content
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(()),)
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            requests,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def generate_grounded_content(
+        self,
+        request: Optional[
+            Union[grounded_generation_service.GenerateGroundedContentRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> grounded_generation_service.GenerateGroundedContentResponse:
+        r"""Generates grounded content.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            def sample_generate_grounded_content():
+                # Create a client
+                client = discoveryengine_v1beta.GroundedGenerationServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.GenerateGroundedContentRequest(
+                    location="location_value",
+                )
+
+                # Make the request
+                response = client.generate_grounded_content(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1beta.types.GenerateGroundedContentRequest, dict]):
+                The request object. Top-level message sent by the client for the
+                ``GenerateGroundedContent`` method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1beta.types.GenerateGroundedContentResponse:
+                Response for the GenerateGroundedContent method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, grounded_generation_service.GenerateGroundedContentRequest
+        ):
+            request = grounded_generation_service.GenerateGroundedContentRequest(
+                request
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.generate_grounded_content
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def check_grounding(
         self,

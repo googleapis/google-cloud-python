@@ -3584,6 +3584,7 @@ def test_update_serving_config_rest_call_success(request_type):
             "content_watched_percentage_threshold": 0.3811,
             "content_watched_seconds_threshold": 0.3508,
             "demotion_event_type": "demotion_event_type_value",
+            "demote_content_watched_past_days": 3390,
             "content_freshness_cutoff_days": 3105,
         },
         "generic_config": {
@@ -3599,6 +3600,7 @@ def test_update_serving_config_rest_call_success(request_type):
                     "ignore_adversarial_query": True,
                     "ignore_non_summary_seeking_query": True,
                     "ignore_low_relevant_content": True,
+                    "ignore_jail_breaking_query": True,
                     "model_prompt_spec": {"preamble": "preamble_value"},
                     "language_code": "language_code_value",
                     "model_spec": {"version": "version_value"},
@@ -3653,6 +3655,7 @@ def test_update_serving_config_rest_call_success(request_type):
             "ignore_control_ids_value1",
             "ignore_control_ids_value2",
         ],
+        "personalization_spec": {"mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
