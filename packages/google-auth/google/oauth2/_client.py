@@ -325,7 +325,7 @@ def call_iam_generate_id_token_endpoint(
     signer_email,
     audience,
     access_token,
-    universe_domain,
+    universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
 ):
     """Call iam.generateIdToken endpoint to get ID token.
 

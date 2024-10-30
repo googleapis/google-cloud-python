@@ -46,7 +46,12 @@ _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 
 
 def _make_iam_token_request(
-    request, principal, headers, body, universe_domain, iam_endpoint_override=None
+    request,
+    principal,
+    headers,
+    body,
+    universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
+    iam_endpoint_override=None,
 ):
     """Makes a request to the Google Cloud IAM service for an access token.
     Args:
