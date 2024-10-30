@@ -37,14 +37,21 @@ class Condition(proto.Message):
 
     Attributes:
         query_terms (MutableSequence[google.cloud.discoveryengine_v1beta.types.Condition.QueryTerm]):
-            Search only
-            A list of terms to match the query on.
+            Search only A list of terms to match the query on. Cannot be
+            set when
+            [Condition.query_regex][google.cloud.discoveryengine.v1beta.Condition.query_regex]
+            is set.
 
             Maximum of 10 query terms.
         active_time_range (MutableSequence[google.cloud.discoveryengine_v1beta.types.Condition.TimeRange]):
             Range of time(s) specifying when condition is
             active.
             Maximum of 10 time ranges.
+        query_regex (str):
+            Optional. Query regex to match the whole search query.
+            Cannot be set when
+            [Condition.query_terms][google.cloud.discoveryengine.v1beta.Condition.query_terms]
+            is set. This is currently supporting promotion use case.
     """
 
     class QueryTerm(proto.Message):
@@ -106,6 +113,10 @@ class Condition(proto.Message):
         proto.MESSAGE,
         number=3,
         message=TimeRange,
+    )
+    query_regex: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

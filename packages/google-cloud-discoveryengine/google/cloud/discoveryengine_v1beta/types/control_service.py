@@ -41,9 +41,9 @@ class CreateControlRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Full resource name of parent data store. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``
             or
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
         control (google.cloud.discoveryengine_v1beta.types.Control):
             Required. The Control to create.
         control_id (str):
@@ -105,7 +105,7 @@ class DeleteControlRequest(proto.Message):
         name (str):
             Required. The resource name of the Control to delete.
             Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
     """
 
     name: str = proto.Field(
@@ -120,7 +120,7 @@ class GetControlRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the Control to get. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
     """
 
     name: str = proto.Field(
@@ -135,9 +135,9 @@ class ListControlsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The data store resource name. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``
             or
-            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
         page_size (int):
             Optional. Maximum number of results to
             return. If unspecified, defaults to 50. Max

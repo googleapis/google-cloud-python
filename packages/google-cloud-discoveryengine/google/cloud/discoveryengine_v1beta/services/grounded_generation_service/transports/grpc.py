@@ -237,6 +237,67 @@ class GroundedGenerationServiceGrpcTransport(GroundedGenerationServiceTransport)
         return self._grpc_channel
 
     @property
+    def stream_generate_grounded_content(
+        self,
+    ) -> Callable[
+        [grounded_generation_service.GenerateGroundedContentRequest],
+        grounded_generation_service.GenerateGroundedContentResponse,
+    ]:
+        r"""Return a callable for the stream generate grounded
+        content method over gRPC.
+
+        Generates grounded content in a streaming fashion.
+
+        Returns:
+            Callable[[~.GenerateGroundedContentRequest],
+                    ~.GenerateGroundedContentResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stream_generate_grounded_content" not in self._stubs:
+            self._stubs[
+                "stream_generate_grounded_content"
+            ] = self.grpc_channel.stream_stream(
+                "/google.cloud.discoveryengine.v1beta.GroundedGenerationService/StreamGenerateGroundedContent",
+                request_serializer=grounded_generation_service.GenerateGroundedContentRequest.serialize,
+                response_deserializer=grounded_generation_service.GenerateGroundedContentResponse.deserialize,
+            )
+        return self._stubs["stream_generate_grounded_content"]
+
+    @property
+    def generate_grounded_content(
+        self,
+    ) -> Callable[
+        [grounded_generation_service.GenerateGroundedContentRequest],
+        grounded_generation_service.GenerateGroundedContentResponse,
+    ]:
+        r"""Return a callable for the generate grounded content method over gRPC.
+
+        Generates grounded content.
+
+        Returns:
+            Callable[[~.GenerateGroundedContentRequest],
+                    ~.GenerateGroundedContentResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_grounded_content" not in self._stubs:
+            self._stubs["generate_grounded_content"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.GroundedGenerationService/GenerateGroundedContent",
+                request_serializer=grounded_generation_service.GenerateGroundedContentRequest.serialize,
+                response_deserializer=grounded_generation_service.GenerateGroundedContentResponse.deserialize,
+            )
+        return self._stubs["generate_grounded_content"]
+
+    @property
     def check_grounding(
         self,
     ) -> Callable[

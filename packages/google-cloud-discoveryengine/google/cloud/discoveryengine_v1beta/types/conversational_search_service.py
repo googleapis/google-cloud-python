@@ -58,16 +58,16 @@ class ConverseConversationRequest(proto.Message):
         name (str):
             Required. The resource name of the Conversation to get.
             Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
             Use
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
             to activate auto session mode, which automatically creates a
             new conversation inside a ConverseConversation session.
         query (google.cloud.discoveryengine_v1beta.types.TextInput):
             Required. Current user input.
         serving_config (str):
             The resource name of the Serving Config to use. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/servingConfigs/{serving_config_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/servingConfigs/{serving_config_id}``
             If this is not set, the default serving config will be used.
         conversation (google.cloud.discoveryengine_v1beta.types.Conversation):
             The conversation to be used by auto session
@@ -218,7 +218,7 @@ class CreateConversationRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Full resource name of parent data store. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
         conversation (google.cloud.discoveryengine_v1beta.types.Conversation):
             Required. The conversation to create.
     """
@@ -269,7 +269,7 @@ class DeleteConversationRequest(proto.Message):
         name (str):
             Required. The resource name of the Conversation to delete.
             Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
     """
 
     name: str = proto.Field(
@@ -285,7 +285,7 @@ class GetConversationRequest(proto.Message):
         name (str):
             Required. The resource name of the Conversation to get.
             Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
     """
 
     name: str = proto.Field(
@@ -300,7 +300,7 @@ class ListConversationsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The data store resource name. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
         page_size (int):
             Maximum number of results to return. If
             unspecified, defaults to 50. Max allowed value
@@ -402,6 +402,8 @@ class AnswerQueryRequest(proto.Message):
             Model specification.
         related_questions_spec (google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.RelatedQuestionsSpec):
             Related questions specification.
+        grounding_spec (google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.GroundingSpec):
+            Optional. Grounding specification.
         answer_generation_spec (google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.AnswerGenerationSpec):
             Answer generation specification.
         search_spec (google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec):
@@ -409,6 +411,9 @@ class AnswerQueryRequest(proto.Message):
         query_understanding_spec (google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.QueryUnderstandingSpec):
             Query understanding specification.
         asynchronous_mode (bool):
+            Deprecated: This field is deprecated. Streaming Answer API
+            will be supported.
+
             Asynchronous mode control.
 
             If enabled, the response will be returned with
@@ -483,6 +488,50 @@ class AnswerQueryRequest(proto.Message):
             number=1,
         )
 
+    class GroundingSpec(proto.Message):
+        r"""Grounding specification.
+
+        Attributes:
+            include_grounding_supports (bool):
+                Optional. Specifies whether to include grounding_supports in
+                the answer. The default value is ``false``.
+
+                When this field is set to ``true``, returned answer will
+                have ``grounding_score`` and will contain GroundingSupports
+                for each claim.
+            filtering_level (google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.GroundingSpec.FilteringLevel):
+                Optional. Specifies whether to enable the
+                filtering based on grounding score and at what
+                level.
+        """
+
+        class FilteringLevel(proto.Enum):
+            r"""Level to filter based on answer grounding.
+
+            Values:
+                FILTERING_LEVEL_UNSPECIFIED (0):
+                    Default is no filter
+                FILTERING_LEVEL_LOW (1):
+                    Filter answers based on a low threshold.
+                FILTERING_LEVEL_HIGH (2):
+                    Filter answers based on a high threshold.
+            """
+            FILTERING_LEVEL_UNSPECIFIED = 0
+            FILTERING_LEVEL_LOW = 1
+            FILTERING_LEVEL_HIGH = 2
+
+        include_grounding_supports: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        filtering_level: "AnswerQueryRequest.GroundingSpec.FilteringLevel" = (
+            proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="AnswerQueryRequest.GroundingSpec.FilteringLevel",
+            )
+        )
+
     class AnswerGenerationSpec(proto.Message):
         r"""Answer generation specification.
 
@@ -532,6 +581,19 @@ class AnswerQueryRequest(proto.Message):
                 automatically by the service.
 
                 This field is a member of `oneof`_ ``_ignore_low_relevant_content``.
+            ignore_jail_breaking_query (bool):
+                Optional. Specifies whether to filter out jail-breaking
+                queries. The default value is ``false``.
+
+                Google employs search-query classification to detect
+                jail-breaking queries. No summary is returned if the search
+                query is classified as a jail-breaking query. A user might
+                add instructions to the query to change the tone, style,
+                language, content of the answer, or ask the model to act as
+                a different entity, e.g. "Reply in the tone of a competing
+                company's CEO". If this field is set to ``true``, we skip
+                generating summaries for jail-breaking queries and return
+                fallback messages instead.
         """
 
         class ModelSpec(proto.Message):
@@ -592,6 +654,10 @@ class AnswerQueryRequest(proto.Message):
             proto.BOOL,
             number=7,
             optional=True,
+        )
+        ignore_jail_breaking_query: bool = proto.Field(
+            proto.BOOL,
+            number=8,
         )
 
     class SearchSpec(proto.Message):
@@ -669,6 +735,10 @@ class AnswerQueryRequest(proto.Message):
                     with multiple dataStores use case. For single
                     dataStore within an engine, they should use the
                     specs at the top level.
+                natural_language_query_understanding_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.NaturalLanguageQueryUnderstandingSpec):
+                    Optional. Specification to enable natural
+                    language understanding capabilities for search
+                    requests.
             """
 
             max_return_results: int = proto.Field(
@@ -699,6 +769,11 @@ class AnswerQueryRequest(proto.Message):
                 proto.MESSAGE,
                 number=7,
                 message=search_service.SearchRequest.DataStoreSpec,
+            )
+            natural_language_query_understanding_spec: search_service.SearchRequest.NaturalLanguageQueryUnderstandingSpec = proto.Field(
+                proto.MESSAGE,
+                number=8,
+                message=search_service.SearchRequest.NaturalLanguageQueryUnderstandingSpec,
             )
 
         class SearchResultList(proto.Message):
@@ -741,11 +816,16 @@ class AnswerQueryRequest(proto.Message):
                         title (str):
                             Title.
                         document_contexts (MutableSequence[google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.DocumentContext]):
-                            List of document contexts.
+                            List of document contexts. The content will
+                            be used for Answer Generation. This is supposed
+                            to be the main content of the document that can
+                            be long and comprehensive.
                         extractive_segments (MutableSequence[google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment]):
                             List of extractive segments.
                         extractive_answers (MutableSequence[google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer]):
-                            List of extractive answers.
+                            Deprecated: This field is deprecated and will have no effect
+                            on the Answer generation. Please use document_contexts and
+                            extractive_segments fields. List of extractive answers.
                     """
 
                     class DocumentContext(proto.Message):
@@ -755,7 +835,8 @@ class AnswerQueryRequest(proto.Message):
                             page_identifier (str):
                                 Page identifier.
                             content (str):
-                                Document content.
+                                Document content to be used for answer
+                                generation.
                         """
 
                         page_identifier: str = proto.Field(
@@ -770,6 +851,8 @@ class AnswerQueryRequest(proto.Message):
                     class ExtractiveSegment(proto.Message):
                         r"""Extractive segment.
                         `Guide <https://cloud.google.com/generative-ai-app-builder/docs/snippets#extractive-segments>`__
+                        Answer generation will only use it if document_contexts is empty.
+                        This is supposed to be shorter snippets.
 
                         Attributes:
                             page_identifier (str):
@@ -849,7 +932,30 @@ class AnswerQueryRequest(proto.Message):
                             Chunk resource name.
                         content (str):
                             Chunk textual content.
+                        document_metadata (google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo.DocumentMetadata):
+                            Metadata of the document from the current
+                            chunk.
                     """
+
+                    class DocumentMetadata(proto.Message):
+                        r"""Document metadata contains the information of the document of
+                        the current chunk.
+
+                        Attributes:
+                            uri (str):
+                                Uri of the document.
+                            title (str):
+                                Title of the document.
+                        """
+
+                        uri: str = proto.Field(
+                            proto.STRING,
+                            number=1,
+                        )
+                        title: str = proto.Field(
+                            proto.STRING,
+                            number=2,
+                        )
 
                     chunk: str = proto.Field(
                         proto.STRING,
@@ -858,6 +964,11 @@ class AnswerQueryRequest(proto.Message):
                     content: str = proto.Field(
                         proto.STRING,
                         number=2,
+                    )
+                    document_metadata: "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo.DocumentMetadata" = proto.Field(
+                        proto.MESSAGE,
+                        number=4,
+                        message="AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.ChunkInfo.DocumentMetadata",
                     )
 
                 unstructured_document_info: "AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo" = proto.Field(
@@ -923,14 +1034,19 @@ class AnswerQueryRequest(proto.Message):
                     ADVERSARIAL_QUERY (1):
                         Adversarial query classification type.
                     NON_ANSWER_SEEKING_QUERY (2):
-                        Non-answer-seeking query classification type.
+                        Non-answer-seeking query classification type,
+                        for chit chat.
                     JAIL_BREAKING_QUERY (3):
                         Jail-breaking query classification type.
+                    NON_ANSWER_SEEKING_QUERY_V2 (4):
+                        Non-answer-seeking query classification type,
+                        for no clear intent.
                 """
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
                 JAIL_BREAKING_QUERY = 3
+                NON_ANSWER_SEEKING_QUERY_V2 = 4
 
             types: MutableSequence[
                 "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"
@@ -995,6 +1111,11 @@ class AnswerQueryRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=RelatedQuestionsSpec,
+    )
+    grounding_spec: GroundingSpec = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=GroundingSpec,
     )
     answer_generation_spec: AnswerGenerationSpec = proto.Field(
         proto.MESSAGE,
@@ -1071,7 +1192,7 @@ class GetAnswerRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the Answer to get. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
     """
 
     name: str = proto.Field(
@@ -1086,7 +1207,7 @@ class CreateSessionRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Full resource name of parent data store. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
         session (google.cloud.discoveryengine_v1beta.types.Session):
             Required. The session to create.
     """
@@ -1137,7 +1258,7 @@ class DeleteSessionRequest(proto.Message):
         name (str):
             Required. The resource name of the Session to delete.
             Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
     """
 
     name: str = proto.Field(
@@ -1152,7 +1273,7 @@ class GetSessionRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the Session to get. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
     """
 
     name: str = proto.Field(
@@ -1167,7 +1288,7 @@ class ListSessionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The data store resource name. Format:
-            ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+            ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
         page_size (int):
             Maximum number of results to return. If
             unspecified, defaults to 50. Max allowed value

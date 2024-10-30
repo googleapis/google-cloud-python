@@ -22,11 +22,15 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
 from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import discovery
+from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
+from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
+from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
 
 __protobuf__ = proto.module(
@@ -54,6 +58,32 @@ __protobuf__ = proto.module(
         "DeleteChannelConnectionRequest",
         "UpdateGoogleChannelConfigRequest",
         "GetGoogleChannelConfigRequest",
+        "GetMessageBusRequest",
+        "ListMessageBusesRequest",
+        "ListMessageBusesResponse",
+        "ListMessageBusEnrollmentsRequest",
+        "ListMessageBusEnrollmentsResponse",
+        "CreateMessageBusRequest",
+        "UpdateMessageBusRequest",
+        "DeleteMessageBusRequest",
+        "GetEnrollmentRequest",
+        "ListEnrollmentsRequest",
+        "ListEnrollmentsResponse",
+        "CreateEnrollmentRequest",
+        "UpdateEnrollmentRequest",
+        "DeleteEnrollmentRequest",
+        "GetPipelineRequest",
+        "ListPipelinesRequest",
+        "ListPipelinesResponse",
+        "CreatePipelineRequest",
+        "UpdatePipelineRequest",
+        "DeletePipelineRequest",
+        "GetGoogleApiSourceRequest",
+        "ListGoogleApiSourcesRequest",
+        "ListGoogleApiSourcesResponse",
+        "CreateGoogleApiSourceRequest",
+        "UpdateGoogleApiSourceRequest",
+        "DeleteGoogleApiSourceRequest",
         "OperationMetadata",
     },
 )
@@ -175,7 +205,7 @@ class CreateTriggerRequest(proto.Message):
             Required. The user-provided ID to be assigned
             to the trigger.
         validate_only (bool):
-            Required. If set, validate the request and
+            Optional. If set, validate the request and
             preview the review, but do not post it.
     """
 
@@ -214,7 +244,7 @@ class UpdateTriggerRequest(proto.Message):
             will be created. In this situation, ``update_mask`` is
             ignored.
         validate_only (bool):
-            Required. If set, validate the request and
+            Optional. If set, validate the request and
             preview the review, but do not post it.
     """
 
@@ -254,7 +284,7 @@ class DeleteTriggerRequest(proto.Message):
             the request will succeed but no action will be
             taken on the server.
         validate_only (bool):
-            Required. If set, validate the request and
+            Optional. If set, validate the request and
             preview the review, but do not post it.
     """
 
@@ -382,7 +412,7 @@ class CreateChannelRequest(proto.Message):
             Required. The user-provided ID to be assigned
             to the channel.
         validate_only (bool):
-            Required. If set, validate the request and
+            Optional. If set, validate the request and
             preview the review, but do not post it.
     """
 
@@ -417,7 +447,7 @@ class UpdateChannelRequest(proto.Message):
             fields in the request are updated. To update all fields,
             provide a field mask of "*".
         validate_only (bool):
-            Required. If set, validate the request and
+            Optional. If set, validate the request and
             preview the review, but do not post it.
     """
 
@@ -445,7 +475,7 @@ class DeleteChannelRequest(proto.Message):
             Required. The name of the channel to be
             deleted.
         validate_only (bool):
-            Required. If set, validate the request and
+            Optional. If set, validate the request and
             preview the review, but do not post it.
     """
 
@@ -723,6 +753,935 @@ class GetGoogleChannelConfigRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class GetMessageBusRequest(proto.Message):
+    r"""The request message for the GetMessageBus method.
+
+    Attributes:
+        name (str):
+            Required. The name of the message bus to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListMessageBusesRequest(proto.Message):
+    r"""The request message for the ListMessageBuses method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection to list
+            triggers on.
+        page_size (int):
+            Optional. The maximum number of results to
+            return on each page.
+            Note: The service may send fewer.
+        page_token (str):
+            Optional. The page token; provide the value from the
+            ``next_page_token`` field in a previous call to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided must match
+            the previous call that provided the page token.
+        order_by (str):
+            Optional. The sorting order of the resources returned. Value
+            should be a comma-separated list of fields. The default
+            sorting order is ascending. To specify descending order for
+            a field, append a ``desc`` suffix; for example:
+            ``name desc, update_time``.
+        filter (str):
+            Optional. The filter field that the list
+            request will filter on. Possible filtersare
+            described in https://google.aip.dev/160.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListMessageBusesResponse(proto.Message):
+    r"""The response message for the ``ListMessageBuses`` method.
+
+    Attributes:
+        message_buses (MutableSequence[google.cloud.eventarc_v1.types.MessageBus]):
+            The requested message buses, up to the number specified in
+            ``page_size``.
+        next_page_token (str):
+            A page token that can be sent to ``ListMessageBuses`` to
+            request the next page. If this is empty, then there are no
+            more pages.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    message_buses: MutableSequence[gce_message_bus.MessageBus] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gce_message_bus.MessageBus,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListMessageBusEnrollmentsRequest(proto.Message):
+    r"""The request message for the ``ListMessageBusEnrollments`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent message bus to list
+            enrollments on.
+        page_size (int):
+            Optional. The maximum number of results to
+            return on each page.
+            Note: The service may send fewer.
+        page_token (str):
+            Optional. The page token; provide the value from the
+            ``next_page_token`` field in a previous call to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided must match
+            the previous call that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListMessageBusEnrollmentsResponse(proto.Message):
+    r"""The response message for the ``ListMessageBusEnrollments`` method.\`
+
+    Attributes:
+        enrollments (MutableSequence[str]):
+            The requested enrollments, up to the number specified in
+            ``page_size``.
+        next_page_token (str):
+            A page token that can be sent to
+            ``ListMessageBusEnrollments`` to request the next page. If
+            this is empty, then there are no more pages.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    enrollments: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreateMessageBusRequest(proto.Message):
+    r"""The request message for the CreateMessageBus method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection in which to
+            add this message bus.
+        message_bus (google.cloud.eventarc_v1.types.MessageBus):
+            Required. The message bus to create.
+        message_bus_id (str):
+            Required. The user-provided ID to be assigned to the
+            MessageBus. It should match the format
+            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$)
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    message_bus: gce_message_bus.MessageBus = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gce_message_bus.MessageBus,
+    )
+    message_bus_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class UpdateMessageBusRequest(proto.Message):
+    r"""The request message for the UpdateMessageBus method.
+
+    Attributes:
+        message_bus (google.cloud.eventarc_v1.types.MessageBus):
+            Required. The MessageBus to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The fields to be updated; only fields explicitly
+            provided are updated. If no field mask is provided, all
+            provided fields in the request are updated. To update all
+            fields, provide a field mask of "*".
+        allow_missing (bool):
+            Optional. If set to true, and the MessageBus is not found, a
+            new MessageBus will be created. In this situation,
+            ``update_mask`` is ignored.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    message_bus: gce_message_bus.MessageBus = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gce_message_bus.MessageBus,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class DeleteMessageBusRequest(proto.Message):
+    r"""The request message for the DeleteMessageBus method.
+
+    Attributes:
+        name (str):
+            Required. The name of the MessageBus to be
+            deleted.
+        etag (str):
+            Optional. If provided, the MessageBus will
+            only be deleted if the etag matches the current
+            etag on the resource.
+        allow_missing (bool):
+            Optional. If set to true, and the MessageBus
+            is not found, the request will succeed but no
+            action will be taken on the server.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class GetEnrollmentRequest(proto.Message):
+    r"""The request message for the GetEnrollment method.
+
+    Attributes:
+        name (str):
+            Required. The name of the Enrollment to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListEnrollmentsRequest(proto.Message):
+    r"""The request message for the ListEnrollments method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection to list
+            triggers on.
+        page_size (int):
+            Optional. The maximum number of results to
+            return on each page.
+            Note: The service may send fewer.
+        page_token (str):
+            Optional. The page token; provide the value from the
+            ``next_page_token`` field in a previous call to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided must match
+            the previous call that provided the page token.
+        order_by (str):
+            Optional. The sorting order of the resources returned. Value
+            should be a comma-separated list of fields. The default
+            sorting order is ascending. To specify descending order for
+            a field, append a ``desc`` suffix; for example:
+            ``name desc, update_time``.
+        filter (str):
+            Optional. The filter field that the list
+            request will filter on. Possible filtersare
+            described in https://google.aip.dev/160.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListEnrollmentsResponse(proto.Message):
+    r"""The response message for the ``ListEnrollments`` method.
+
+    Attributes:
+        enrollments (MutableSequence[google.cloud.eventarc_v1.types.Enrollment]):
+            The requested Enrollments, up to the number specified in
+            ``page_size``.
+        next_page_token (str):
+            A page token that can be sent to ``ListEnrollments`` to
+            request the next page. If this is empty, then there are no
+            more pages.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    enrollments: MutableSequence[gce_enrollment.Enrollment] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gce_enrollment.Enrollment,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreateEnrollmentRequest(proto.Message):
+    r"""The request message for the CreateEnrollment method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection in which to
+            add this enrollment.
+        enrollment (google.cloud.eventarc_v1.types.Enrollment):
+            Required. The enrollment to create.
+        enrollment_id (str):
+            Required. The user-provided ID to be assigned to the
+            Enrollment. It should match the format
+            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    enrollment: gce_enrollment.Enrollment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gce_enrollment.Enrollment,
+    )
+    enrollment_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class UpdateEnrollmentRequest(proto.Message):
+    r"""The request message for the UpdateEnrollment method.
+
+    Attributes:
+        enrollment (google.cloud.eventarc_v1.types.Enrollment):
+            Required. The Enrollment to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The fields to be updated; only fields explicitly
+            provided are updated. If no field mask is provided, all
+            provided fields in the request are updated. To update all
+            fields, provide a field mask of "*".
+        allow_missing (bool):
+            Optional. If set to true, and the Enrollment is not found, a
+            new Enrollment will be created. In this situation,
+            ``update_mask`` is ignored.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    enrollment: gce_enrollment.Enrollment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gce_enrollment.Enrollment,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class DeleteEnrollmentRequest(proto.Message):
+    r"""The request message for the DeleteEnrollment method.
+
+    Attributes:
+        name (str):
+            Required. The name of the Enrollment to be
+            deleted.
+        etag (str):
+            Optional. If provided, the Enrollment will
+            only be deleted if the etag matches the current
+            etag on the resource.
+        allow_missing (bool):
+            Optional. If set to true, and the Enrollment
+            is not found, the request will succeed but no
+            action will be taken on the server.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class GetPipelineRequest(proto.Message):
+    r"""The request message for the GetPipeline method.
+
+    Attributes:
+        name (str):
+            Required. The name of the pipeline to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListPipelinesRequest(proto.Message):
+    r"""The request message for the ListPipelines method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection to list
+            pipelines on.
+        page_size (int):
+            Optional. The maximum number of results to
+            return on each page.
+            Note: The service may send fewer.
+        page_token (str):
+            Optional. The page token; provide the value from the
+            ``next_page_token`` field in a previous call to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided must match
+            the previous call that provided the page token.
+        order_by (str):
+            Optional. The sorting order of the resources returned. Value
+            should be a comma-separated list of fields. The default
+            sorting order is ascending. To specify descending order for
+            a field, append a ``desc`` suffix; for example:
+            ``name desc, update_time``.
+        filter (str):
+            Optional. The filter field that the list
+            request will filter on. Possible filters are
+            described in https://google.aip.dev/160.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListPipelinesResponse(proto.Message):
+    r"""The response message for the ListPipelines method.
+
+    Attributes:
+        pipelines (MutableSequence[google.cloud.eventarc_v1.types.Pipeline]):
+            The requested pipelines, up to the number specified in
+            ``page_size``.
+        next_page_token (str):
+            A page token that can be sent to ``ListPipelines`` to
+            request the next page. If this is empty, then there are no
+            more pages.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    pipelines: MutableSequence[gce_pipeline.Pipeline] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gce_pipeline.Pipeline,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreatePipelineRequest(proto.Message):
+    r"""The request message for the CreatePipeline method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection in which to
+            add this pipeline.
+        pipeline (google.cloud.eventarc_v1.types.Pipeline):
+            Required. The pipeline to create.
+        pipeline_id (str):
+            Required. The user-provided ID to be assigned
+            to the Pipeline.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    pipeline: gce_pipeline.Pipeline = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gce_pipeline.Pipeline,
+    )
+    pipeline_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class UpdatePipelineRequest(proto.Message):
+    r"""The request message for the UpdatePipeline method.
+
+    Attributes:
+        pipeline (google.cloud.eventarc_v1.types.Pipeline):
+            Required. The Pipeline to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The fields to be updated; only fields explicitly
+            provided are updated. If no field mask is provided, all
+            provided fields in the request are updated. To update all
+            fields, provide a field mask of "*".
+        allow_missing (bool):
+            Optional. If set to true, and the Pipeline is not found, a
+            new Pipeline will be created. In this situation,
+            ``update_mask`` is ignored.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    pipeline: gce_pipeline.Pipeline = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gce_pipeline.Pipeline,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class DeletePipelineRequest(proto.Message):
+    r"""The request message for the DeletePipeline method.
+
+    Attributes:
+        name (str):
+            Required. The name of the Pipeline to be
+            deleted.
+        etag (str):
+            Optional. If provided, the Pipeline will only
+            be deleted if the etag matches the current etag
+            on the resource.
+        allow_missing (bool):
+            Optional. If set to true, and the Pipeline is
+            not found, the request will succeed but no
+            action will be taken on the server.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class GetGoogleApiSourceRequest(proto.Message):
+    r"""The request message for the GetGoogleApiSource method.
+
+    Attributes:
+        name (str):
+            Required. The name of the google api source
+            to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListGoogleApiSourcesRequest(proto.Message):
+    r"""The request message for the ListGoogleApiSources method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection to list
+            GoogleApiSources on.
+        page_size (int):
+            Optional. The maximum number of results to
+            return on each page.
+            Note: The service may send fewer.
+        page_token (str):
+            Optional. The page token; provide the value from the
+            ``next_page_token`` field in a previous call to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided must match
+            the previous call that provided the page token.
+        order_by (str):
+            Optional. The sorting order of the resources returned. Value
+            should be a comma-separated list of fields. The default
+            sorting order is ascending. To specify descending order for
+            a field, append a ``desc`` suffix; for example:
+            ``name desc, update_time``.
+        filter (str):
+            Optional. The filter field that the list
+            request will filter on. Possible filtersare
+            described in https://google.aip.dev/160.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListGoogleApiSourcesResponse(proto.Message):
+    r"""The response message for the ``ListGoogleApiSources`` method.
+
+    Attributes:
+        google_api_sources (MutableSequence[google.cloud.eventarc_v1.types.GoogleApiSource]):
+            The requested GoogleApiSources, up to the number specified
+            in ``page_size``.
+        next_page_token (str):
+            A page token that can be sent to
+            ``ListMessageBusEnrollments`` to request the next page. If
+            this is empty, then there are no more pages.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    google_api_sources: MutableSequence[
+        gce_google_api_source.GoogleApiSource
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gce_google_api_source.GoogleApiSource,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreateGoogleApiSourceRequest(proto.Message):
+    r"""The request message for the CreateGoogleApiSource method.
+
+    Attributes:
+        parent (str):
+            Required. The parent collection in which to
+            add this google api source.
+        google_api_source (google.cloud.eventarc_v1.types.GoogleApiSource):
+            Required. The google api source to create.
+        google_api_source_id (str):
+            Required. The user-provided ID to be assigned to the
+            GoogleApiSource. It should match the format
+            (^`a-z <[a-z0-9-]{0,61}[a-z0-9]>`__?$).
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    google_api_source: gce_google_api_source.GoogleApiSource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gce_google_api_source.GoogleApiSource,
+    )
+    google_api_source_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class UpdateGoogleApiSourceRequest(proto.Message):
+    r"""The request message for the UpdateGoogleApiSource method.
+
+    Attributes:
+        google_api_source (google.cloud.eventarc_v1.types.GoogleApiSource):
+            Required. The GoogleApiSource to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The fields to be updated; only fields explicitly
+            provided are updated. If no field mask is provided, all
+            provided fields in the request are updated. To update all
+            fields, provide a field mask of "*".
+        allow_missing (bool):
+            Optional. If set to true, and the GoogleApiSource is not
+            found, a new GoogleApiSource will be created. In this
+            situation, ``update_mask`` is ignored.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    google_api_source: gce_google_api_source.GoogleApiSource = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gce_google_api_source.GoogleApiSource,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+
+
+class DeleteGoogleApiSourceRequest(proto.Message):
+    r"""The request message for the DeleteGoogleApiSource method.
+
+    Attributes:
+        name (str):
+            Required. The name of the GoogleApiSource to
+            be deleted.
+        etag (str):
+            Optional. If provided, the MessageBus will
+            only be deleted if the etag matches the current
+            etag on the resource.
+        allow_missing (bool):
+            Optional. If set to true, and the MessageBus
+            is not found, the request will succeed but no
+            action will be taken on the server.
+        validate_only (bool):
+            Optional. If set, validate the request and
+            preview the review, but do not post it.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
