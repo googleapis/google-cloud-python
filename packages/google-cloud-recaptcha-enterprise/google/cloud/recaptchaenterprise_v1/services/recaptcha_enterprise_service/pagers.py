@@ -193,6 +193,158 @@ class ListKeysAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListIpOverridesPager:
+    """A pager for iterating through ``list_ip_overrides`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.recaptchaenterprise_v1.types.ListIpOverridesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``ip_overrides`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListIpOverrides`` requests and continue to iterate
+    through the ``ip_overrides`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.recaptchaenterprise_v1.types.ListIpOverridesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., recaptchaenterprise.ListIpOverridesResponse],
+        request: recaptchaenterprise.ListIpOverridesRequest,
+        response: recaptchaenterprise.ListIpOverridesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.recaptchaenterprise_v1.types.ListIpOverridesRequest):
+                The initial request object.
+            response (google.cloud.recaptchaenterprise_v1.types.ListIpOverridesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = recaptchaenterprise.ListIpOverridesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[recaptchaenterprise.ListIpOverridesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[recaptchaenterprise.IpOverrideData]:
+        for page in self.pages:
+            yield from page.ip_overrides
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListIpOverridesAsyncPager:
+    """A pager for iterating through ``list_ip_overrides`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.recaptchaenterprise_v1.types.ListIpOverridesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``ip_overrides`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListIpOverrides`` requests and continue to iterate
+    through the ``ip_overrides`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.recaptchaenterprise_v1.types.ListIpOverridesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[recaptchaenterprise.ListIpOverridesResponse]],
+        request: recaptchaenterprise.ListIpOverridesRequest,
+        response: recaptchaenterprise.ListIpOverridesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.recaptchaenterprise_v1.types.ListIpOverridesRequest):
+                The initial request object.
+            response (google.cloud.recaptchaenterprise_v1.types.ListIpOverridesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = recaptchaenterprise.ListIpOverridesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[recaptchaenterprise.ListIpOverridesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[recaptchaenterprise.IpOverrideData]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.ip_overrides:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListFirewallPoliciesPager:
     """A pager for iterating through ``list_firewall_policies`` requests.
 

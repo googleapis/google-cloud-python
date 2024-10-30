@@ -14157,7 +14157,8 @@ def test_create_cluster_rest_call_success(request_type):
                     "window": {"start_time": {}, "end_time": {}},
                     "recurrence": "recurrence_value",
                 }
-            }
+            },
+            "maintenance_exclusions": [{"window": {}, "id": "id_value"}],
         },
         "control_plane_version": "control_plane_version_value",
         "node_version": "node_version_value",
@@ -14168,10 +14169,12 @@ def test_create_cluster_rest_call_success(request_type):
                 "node_count": 1070,
                 "machine_filter": "machine_filter_value",
                 "shared_deployment_policy": 1,
+                "control_plane_node_storage_schema": "control_plane_node_storage_schema_value",
             },
         },
         "system_addons_config": {
-            "ingress": {"disabled": True, "ipv4_vip": "ipv4_vip_value"}
+            "ingress": {"disabled": True, "ipv4_vip": "ipv4_vip_value"},
+            "vm_service_config": {"vmm_enabled": True},
         },
         "external_load_balancer_ipv4_address_pools": [
             "external_load_balancer_ipv4_address_pools_value1",
@@ -14191,6 +14194,7 @@ def test_create_cluster_rest_call_success(request_type):
                     }
                 ],
             },
+            "resource_state": 1,
         },
         "status": 1,
         "maintenance_events": [
@@ -14214,6 +14218,7 @@ def test_create_cluster_rest_call_success(request_type):
             "external_load_balancer_ipv6_address_pools_value1",
             "external_load_balancer_ipv6_address_pools_value2",
         ],
+        "connection_state": {"state": 1, "update_time": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -14424,7 +14429,8 @@ def test_update_cluster_rest_call_success(request_type):
                     "window": {"start_time": {}, "end_time": {}},
                     "recurrence": "recurrence_value",
                 }
-            }
+            },
+            "maintenance_exclusions": [{"window": {}, "id": "id_value"}],
         },
         "control_plane_version": "control_plane_version_value",
         "node_version": "node_version_value",
@@ -14435,10 +14441,12 @@ def test_update_cluster_rest_call_success(request_type):
                 "node_count": 1070,
                 "machine_filter": "machine_filter_value",
                 "shared_deployment_policy": 1,
+                "control_plane_node_storage_schema": "control_plane_node_storage_schema_value",
             },
         },
         "system_addons_config": {
-            "ingress": {"disabled": True, "ipv4_vip": "ipv4_vip_value"}
+            "ingress": {"disabled": True, "ipv4_vip": "ipv4_vip_value"},
+            "vm_service_config": {"vmm_enabled": True},
         },
         "external_load_balancer_ipv4_address_pools": [
             "external_load_balancer_ipv4_address_pools_value1",
@@ -14458,6 +14466,7 @@ def test_update_cluster_rest_call_success(request_type):
                     }
                 ],
             },
+            "resource_state": 1,
         },
         "status": 1,
         "maintenance_events": [
@@ -14481,6 +14490,7 @@ def test_update_cluster_rest_call_success(request_type):
             "external_load_balancer_ipv6_address_pools_value1",
             "external_load_balancer_ipv6_address_pools_value2",
         ],
+        "connection_state": {"state": 1, "update_time": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15396,9 +15406,13 @@ def test_create_node_pool_rest_call_success(request_type):
                     }
                 ],
             },
+            "resource_state": 1,
         },
         "node_version": "node_version_value",
-        "node_config": {"labels": {}},
+        "node_config": {
+            "labels": {},
+            "node_storage_schema": "node_storage_schema_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15608,9 +15622,13 @@ def test_update_node_pool_rest_call_success(request_type):
                     }
                 ],
             },
+            "resource_state": 1,
         },
         "node_version": "node_version_value",
-        "node_config": {"labels": {}},
+        "node_config": {
+            "labels": {},
+            "node_storage_schema": "node_storage_schema_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

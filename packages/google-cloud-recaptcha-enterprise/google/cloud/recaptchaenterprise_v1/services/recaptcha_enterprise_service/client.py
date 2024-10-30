@@ -1181,7 +1181,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 The request object. The list keys request message.
             parent (str):
                 Required. The name of the project that contains the keys
-                that are listed, in the format ``projects/{project}``.
+                that is listed, in the format ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1884,6 +1884,250 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         # Done; return the response.
         return response
 
+    def remove_ip_override(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.RemoveIpOverrideRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        ip_override_data: Optional[recaptchaenterprise.IpOverrideData] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.RemoveIpOverrideResponse:
+        r"""Removes an IP override from a key. The following restrictions
+        hold:
+
+        -  If the IP isn't found in an existing IP override, a
+           ``NOT_FOUND`` error is returned.
+        -  If the IP is found in an existing IP override, but the
+           override type does not match, a ``NOT_FOUND`` error is
+           returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_remove_ip_override():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                ip_override_data = recaptchaenterprise_v1.IpOverrideData()
+                ip_override_data.ip = "ip_value"
+                ip_override_data.override_type = "ALLOW"
+
+                request = recaptchaenterprise_v1.RemoveIpOverrideRequest(
+                    name="name_value",
+                    ip_override_data=ip_override_data,
+                )
+
+                # Make the request
+                response = client.remove_ip_override(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.RemoveIpOverrideRequest, dict]):
+                The request object. The removeIpOverride request message.
+            name (str):
+                Required. The name of the key from which the IP override
+                is removed, in the format
+                ``projects/{project}/keys/{key}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            ip_override_data (google.cloud.recaptchaenterprise_v1.types.IpOverrideData):
+                Required. IP override to be removed
+                from the key.
+
+                This corresponds to the ``ip_override_data`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.RemoveIpOverrideResponse:
+                Response for RemoveIpOverride.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, ip_override_data])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.RemoveIpOverrideRequest):
+            request = recaptchaenterprise.RemoveIpOverrideRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if ip_override_data is not None:
+                request.ip_override_data = ip_override_data
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.remove_ip_override]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_ip_overrides(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.ListIpOverridesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListIpOverridesPager:
+        r"""Lists all IP overrides for a key.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_list_ip_overrides():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.ListIpOverridesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_ip_overrides(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.ListIpOverridesRequest, dict]):
+                The request object. The ListIpOverrides request message.
+            parent (str):
+                Required. The parent key for which the IP overrides are
+                listed, in the format ``projects/{project}/keys/{key}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListIpOverridesPager:
+                Response for ListIpOverrides.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, recaptchaenterprise.ListIpOverridesRequest):
+            request = recaptchaenterprise.ListIpOverridesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_ip_overrides]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListIpOverridesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def get_metrics(
         self,
         request: Optional[Union[recaptchaenterprise.GetMetricsRequest, dict]] = None,
@@ -2032,7 +2276,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 The request object. The create firewall policy request
                 message.
             parent (str):
-                Required. The name of the project this policy will apply
+                Required. The name of the project this policy applies
                 to, in the format ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
