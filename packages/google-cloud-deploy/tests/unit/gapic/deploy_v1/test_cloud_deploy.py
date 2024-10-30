@@ -12395,6 +12395,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
             controller_rollout="controller_rollout_value",
             rollback_of_rollout="rollback_of_rollout_value",
             rolled_back_by_rollouts=["rolled_back_by_rollouts_value"],
+            active_repair_automation_run="active_repair_automation_run_value",
         )
         response = client.get_rollout(request)
 
@@ -12422,6 +12423,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
     assert response.controller_rollout == "controller_rollout_value"
     assert response.rollback_of_rollout == "rollback_of_rollout_value"
     assert response.rolled_back_by_rollouts == ["rolled_back_by_rollouts_value"]
+    assert response.active_repair_automation_run == "active_repair_automation_run_value"
 
 
 def test_get_rollout_non_empty_request_with_auto_populated_field():
@@ -12560,6 +12562,7 @@ async def test_get_rollout_async(
                 controller_rollout="controller_rollout_value",
                 rollback_of_rollout="rollback_of_rollout_value",
                 rolled_back_by_rollouts=["rolled_back_by_rollouts_value"],
+                active_repair_automation_run="active_repair_automation_run_value",
             )
         )
         response = await client.get_rollout(request)
@@ -12588,6 +12591,7 @@ async def test_get_rollout_async(
     assert response.controller_rollout == "controller_rollout_value"
     assert response.rollback_of_rollout == "rollback_of_rollout_value"
     assert response.rolled_back_by_rollouts == ["rolled_back_by_rollouts_value"]
+    assert response.active_repair_automation_run == "active_repair_automation_run_value"
 
 
 @pytest.mark.asyncio
@@ -29824,6 +29828,7 @@ async def test_get_rollout_empty_call_grpc_asyncio():
                 controller_rollout="controller_rollout_value",
                 rollback_of_rollout="rollback_of_rollout_value",
                 rolled_back_by_rollouts=["rolled_back_by_rollouts_value"],
+                active_repair_automation_run="active_repair_automation_run_value",
             )
         )
         await client.get_rollout(request=None)
@@ -30597,6 +30602,13 @@ def test_create_delivery_pipeline_rest_call_success(request_type):
                                         },
                                         "stable_cutback_duration": {},
                                         "pod_selector_label": "pod_selector_label_value",
+                                        "route_destinations": {
+                                            "destination_ids": [
+                                                "destination_ids_value1",
+                                                "destination_ids_value2",
+                                            ],
+                                            "propagate_service": True,
+                                        },
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -30891,6 +30903,13 @@ def test_update_delivery_pipeline_rest_call_success(request_type):
                                         },
                                         "stable_cutback_duration": {},
                                         "pod_selector_label": "pod_selector_label_value",
+                                        "route_destinations": {
+                                            "destination_ids": [
+                                                "destination_ids_value1",
+                                                "destination_ids_value2",
+                                            ],
+                                            "propagate_service": True,
+                                        },
                                     },
                                     "service_networking": {
                                         "service": "service_value",
@@ -31645,6 +31664,7 @@ def test_create_target_rest_call_success(request_type):
         "run": {"location": "location_value"},
         "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
         "custom_target": {"custom_target_type": "custom_target_type_value"},
+        "associated_entities": {},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -31870,6 +31890,7 @@ def test_update_target_rest_call_success(request_type):
         "run": {"location": "location_value"},
         "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
         "custom_target": {"custom_target_type": "custom_target_type_value"},
+        "associated_entities": {},
         "etag": "etag_value",
         "execution_configs": [
             {
@@ -33319,6 +33340,13 @@ def test_create_release_rest_call_success(request_type):
                                             },
                                             "stable_cutback_duration": {},
                                             "pod_selector_label": "pod_selector_label_value",
+                                            "route_destinations": {
+                                                "destination_ids": [
+                                                    "destination_ids_value1",
+                                                    "destination_ids_value2",
+                                                ],
+                                                "propagate_service": True,
+                                            },
                                         },
                                         "service_networking": {
                                             "service": "service_value",
@@ -33412,6 +33440,7 @@ def test_create_release_rest_call_success(request_type):
                     "target_ids": ["target_ids_value1", "target_ids_value2"]
                 },
                 "custom_target": {"custom_target_type": "custom_target_type_value"},
+                "associated_entities": {},
                 "etag": "etag_value",
                 "execution_configs": [
                     {
@@ -35130,6 +35159,7 @@ def test_get_rollout_rest_call_success(request_type):
             controller_rollout="controller_rollout_value",
             rollback_of_rollout="rollback_of_rollout_value",
             rolled_back_by_rollouts=["rolled_back_by_rollouts_value"],
+            active_repair_automation_run="active_repair_automation_run_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -35161,6 +35191,7 @@ def test_get_rollout_rest_call_success(request_type):
     assert response.controller_rollout == "controller_rollout_value"
     assert response.rollback_of_rollout == "rollback_of_rollout_value"
     assert response.rolled_back_by_rollouts == ["rolled_back_by_rollouts_value"]
+    assert response.active_repair_automation_run == "active_repair_automation_run_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -35335,6 +35366,7 @@ def test_create_rollout_rest_call_success(request_type):
             "rolled_back_by_rollouts_value1",
             "rolled_back_by_rollouts_value2",
         ],
+        "active_repair_automation_run": "active_repair_automation_run_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -36289,8 +36321,18 @@ def test_create_automation_rest_call_success(request_type):
                 },
                 "repair_rollout_rule": {
                     "id": "id_value",
+                    "phases": ["phases_value1", "phases_value2"],
                     "jobs": ["jobs_value1", "jobs_value2"],
                     "condition": {},
+                    "repair_phases": [
+                        {
+                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
+                            "rollback": {
+                                "destination_phase": "destination_phase_value",
+                                "disable_rollback_if_rollout_pending": True,
+                            },
+                        }
+                    ],
                 },
             }
         ],
@@ -36523,8 +36565,18 @@ def test_update_automation_rest_call_success(request_type):
                 },
                 "repair_rollout_rule": {
                     "id": "id_value",
+                    "phases": ["phases_value1", "phases_value2"],
                     "jobs": ["jobs_value1", "jobs_value2"],
                     "condition": {},
+                    "repair_phases": [
+                        {
+                            "retry": {"attempts": 882, "wait": {}, "backoff_mode": 1},
+                            "rollback": {
+                                "destination_phase": "destination_phase_value",
+                                "disable_rollback_if_rollout_pending": True,
+                            },
+                        }
+                    ],
                 },
             }
         ],
