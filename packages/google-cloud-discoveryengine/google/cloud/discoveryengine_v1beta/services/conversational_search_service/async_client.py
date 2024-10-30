@@ -357,9 +357,9 @@ class ConversationalSearchServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Conversation to get.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
                 Use
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
                 to activate auto session mode, which automatically
                 creates a new conversation inside a ConverseConversation
                 session.
@@ -486,7 +486,7 @@ class ConversationalSearchServiceAsyncClient:
             parent (:class:`str`):
                 Required. Full resource name of parent data store.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -605,7 +605,7 @@ class ConversationalSearchServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Conversation to
                 delete. Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -835,7 +835,7 @@ class ConversationalSearchServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Conversation to get.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -946,7 +946,7 @@ class ConversationalSearchServiceAsyncClient:
                 The request object. Request for ListConversations method.
             parent (:class:`str`):
                 Required. The data store resource name. Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1164,7 +1164,7 @@ class ConversationalSearchServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Answer to get.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine_id}/sessions/{session_id}/answers/{answer_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1274,7 +1274,7 @@ class ConversationalSearchServiceAsyncClient:
             parent (:class:`str`):
                 Required. Full resource name of parent data store.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1387,7 +1387,7 @@ class ConversationalSearchServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Session to delete.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1610,7 +1610,7 @@ class ConversationalSearchServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the Session to get.
                 Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1717,7 +1717,7 @@ class ConversationalSearchServiceAsyncClient:
                 The request object. Request for ListSessions method.
             parent (:class:`str`):
                 Required. The data store resource name. Format:
-                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

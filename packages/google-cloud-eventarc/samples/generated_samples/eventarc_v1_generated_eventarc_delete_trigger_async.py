@@ -41,7 +41,6 @@ async def sample_delete_trigger():
     # Initialize request argument(s)
     request = eventarc_v1.DeleteTriggerRequest(
         name="name_value",
-        validate_only=True,
     )
 
     # Make the request

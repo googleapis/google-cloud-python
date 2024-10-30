@@ -71,11 +71,15 @@ class Channel(proto.Message):
             channel. The token must be used by the provider
             to register the channel for publishing.
         crypto_key_name (str):
-            Optional. Resource name of a KMS crypto key (managed by the
-            user) used to encrypt/decrypt their event data.
+            Resource name of a KMS crypto key (managed by the user) used
+            to encrypt/decrypt their event data.
 
             It must match the pattern
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+        satisfies_pzs (bool):
+            Output only. Whether or not this Channel
+            satisfies the requirements of physical zone
+            separation
     """
 
     class State(proto.Enum):
@@ -153,6 +157,10 @@ class Channel(proto.Message):
     crypto_key_name: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
 
 

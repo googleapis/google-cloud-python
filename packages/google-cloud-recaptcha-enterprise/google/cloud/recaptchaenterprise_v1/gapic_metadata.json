@@ -65,6 +65,11 @@
                 "list_firewall_policies"
               ]
             },
+            "ListIpOverrides": {
+              "methods": [
+                "list_ip_overrides"
+              ]
+            },
             "ListKeys": {
               "methods": [
                 "list_keys"
@@ -83,6 +88,11 @@
             "MigrateKey": {
               "methods": [
                 "migrate_key"
+              ]
+            },
+            "RemoveIpOverride": {
+              "methods": [
+                "remove_ip_override"
               ]
             },
             "ReorderFirewallPolicies": {
@@ -170,6 +180,11 @@
                 "list_firewall_policies"
               ]
             },
+            "ListIpOverrides": {
+              "methods": [
+                "list_ip_overrides"
+              ]
+            },
             "ListKeys": {
               "methods": [
                 "list_keys"
@@ -188,6 +203,11 @@
             "MigrateKey": {
               "methods": [
                 "migrate_key"
+              ]
+            },
+            "RemoveIpOverride": {
+              "methods": [
+                "remove_ip_override"
               ]
             },
             "ReorderFirewallPolicies": {

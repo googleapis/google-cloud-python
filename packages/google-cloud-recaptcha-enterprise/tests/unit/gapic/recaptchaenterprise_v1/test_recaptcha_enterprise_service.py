@@ -4612,6 +4612,896 @@ async def test_add_ip_override_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        recaptchaenterprise.RemoveIpOverrideRequest,
+        dict,
+    ],
+)
+def test_remove_ip_override(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.RemoveIpOverrideResponse()
+        response = client.remove_ip_override(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.RemoveIpOverrideRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.RemoveIpOverrideResponse)
+
+
+def test_remove_ip_override_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = recaptchaenterprise.RemoveIpOverrideRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.remove_ip_override(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.RemoveIpOverrideRequest(
+            name="name_value",
+        )
+
+
+def test_remove_ip_override_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.remove_ip_override in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.remove_ip_override
+        ] = mock_rpc
+        request = {}
+        client.remove_ip_override(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.remove_ip_override(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_remove_ip_override_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.remove_ip_override
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.remove_ip_override
+        ] = mock_rpc
+
+        request = {}
+        await client.remove_ip_override(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.remove_ip_override(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_remove_ip_override_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.RemoveIpOverrideRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.RemoveIpOverrideResponse()
+        )
+        response = await client.remove_ip_override(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.RemoveIpOverrideRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.RemoveIpOverrideResponse)
+
+
+@pytest.mark.asyncio
+async def test_remove_ip_override_async_from_dict():
+    await test_remove_ip_override_async(request_type=dict)
+
+
+def test_remove_ip_override_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.RemoveIpOverrideRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.RemoveIpOverrideResponse()
+        client.remove_ip_override(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_remove_ip_override_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.RemoveIpOverrideRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.RemoveIpOverrideResponse()
+        )
+        await client.remove_ip_override(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_remove_ip_override_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.RemoveIpOverrideResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.remove_ip_override(
+            name="name_value",
+            ip_override_data=recaptchaenterprise.IpOverrideData(ip="ip_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].ip_override_data
+        mock_val = recaptchaenterprise.IpOverrideData(ip="ip_value")
+        assert arg == mock_val
+
+
+def test_remove_ip_override_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.remove_ip_override(
+            recaptchaenterprise.RemoveIpOverrideRequest(),
+            name="name_value",
+            ip_override_data=recaptchaenterprise.IpOverrideData(ip="ip_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_remove_ip_override_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.RemoveIpOverrideResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.RemoveIpOverrideResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.remove_ip_override(
+            name="name_value",
+            ip_override_data=recaptchaenterprise.IpOverrideData(ip="ip_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].ip_override_data
+        mock_val = recaptchaenterprise.IpOverrideData(ip="ip_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_remove_ip_override_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.remove_ip_override(
+            recaptchaenterprise.RemoveIpOverrideRequest(),
+            name="name_value",
+            ip_override_data=recaptchaenterprise.IpOverrideData(ip="ip_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.ListIpOverridesRequest,
+        dict,
+    ],
+)
+def test_list_ip_overrides(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListIpOverridesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_ip_overrides(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.ListIpOverridesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIpOverridesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_ip_overrides_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = recaptchaenterprise.ListIpOverridesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_ip_overrides(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.ListIpOverridesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_ip_overrides_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_ip_overrides in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_ip_overrides
+        ] = mock_rpc
+        request = {}
+        client.list_ip_overrides(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_ip_overrides(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = RecaptchaEnterpriseServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_ip_overrides
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_ip_overrides
+        ] = mock_rpc
+
+        request = {}
+        await client.list_ip_overrides(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_ip_overrides(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.ListIpOverridesRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListIpOverridesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_ip_overrides(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = recaptchaenterprise.ListIpOverridesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIpOverridesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_async_from_dict():
+    await test_list_ip_overrides_async(request_type=dict)
+
+
+def test_list_ip_overrides_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.ListIpOverridesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.ListIpOverridesResponse()
+        client.list_ip_overrides(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.ListIpOverridesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListIpOverridesResponse()
+        )
+        await client.list_ip_overrides(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_ip_overrides_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListIpOverridesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_ip_overrides(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_ip_overrides_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_ip_overrides(
+            recaptchaenterprise.ListIpOverridesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListIpOverridesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListIpOverridesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_ip_overrides(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_ip_overrides(
+            recaptchaenterprise.ListIpOverridesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_ip_overrides_pager(transport_name: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_ip_overrides(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, recaptchaenterprise.IpOverrideData) for i in results)
+
+
+def test_list_ip_overrides_pages(transport_name: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_ip_overrides(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_async_pager():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_ip_overrides(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, recaptchaenterprise.IpOverrideData) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_ip_overrides_async_pages():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListIpOverridesResponse(
+                ip_overrides=[
+                    recaptchaenterprise.IpOverrideData(),
+                    recaptchaenterprise.IpOverrideData(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_ip_overrides(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         recaptchaenterprise.GetMetricsRequest,
         dict,
     ],
@@ -9255,6 +10145,52 @@ def test_add_ip_override_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_remove_ip_override_empty_call_grpc():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.RemoveIpOverrideResponse()
+        client.remove_ip_override(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.RemoveIpOverrideRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_ip_overrides_empty_call_grpc():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.ListIpOverridesResponse()
+        client.list_ip_overrides(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.ListIpOverridesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_metrics_empty_call_grpc():
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9774,6 +10710,62 @@ async def test_add_ip_override_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_remove_ip_override_empty_call_grpc_asyncio():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_ip_override), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.RemoveIpOverrideResponse()
+        )
+        await client.remove_ip_override(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.RemoveIpOverrideRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_ip_overrides_empty_call_grpc_asyncio():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ip_overrides), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListIpOverridesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_ip_overrides(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = recaptchaenterprise.ListIpOverridesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_get_metrics_empty_call_grpc_asyncio():
     client = RecaptchaEnterpriseServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10105,6 +11097,8 @@ def test_recaptcha_enterprise_service_base_transport():
         "delete_key",
         "migrate_key",
         "add_ip_override",
+        "remove_ip_override",
+        "list_ip_overrides",
         "get_metrics",
         "create_firewall_policy",
         "list_firewall_policies",

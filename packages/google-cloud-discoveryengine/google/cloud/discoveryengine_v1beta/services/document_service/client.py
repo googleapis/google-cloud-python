@@ -251,6 +251,34 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def fhir_resource_path(
+        project: str,
+        location: str,
+        dataset: str,
+        fhir_store: str,
+        resource_type: str,
+        fhir_resource_id: str,
+    ) -> str:
+        """Returns a fully-qualified fhir_resource string."""
+        return "projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}".format(
+            project=project,
+            location=location,
+            dataset=dataset,
+            fhir_store=fhir_store,
+            resource_type=resource_type,
+            fhir_resource_id=fhir_resource_id,
+        )
+
+    @staticmethod
+    def parse_fhir_resource_path(path: str) -> Dict[str, str]:
+        """Parses a fhir_resource path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/datasets/(?P<dataset>.+?)/fhirStores/(?P<fhir_store>.+?)/fhir/(?P<resource_type>.+?)/(?P<fhir_resource_id>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def fhir_store_path(
         project: str,
         location: str,

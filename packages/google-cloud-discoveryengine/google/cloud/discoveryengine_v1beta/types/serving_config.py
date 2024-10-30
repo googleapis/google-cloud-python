@@ -209,6 +209,17 @@ class ServingConfig(proto.Message):
             controls in the list will execute.
             Order does not matter.
             Maximum number of specifications is 100.
+        personalization_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.PersonalizationSpec):
+            The specification for personalization spec.
+
+            Notice that if both
+            [ServingConfig.personalization_spec][google.cloud.discoveryengine.v1beta.ServingConfig.personalization_spec]
+            and
+            [SearchRequest.personalization_spec][google.cloud.discoveryengine.v1beta.SearchRequest.personalization_spec]
+            are set,
+            [SearchRequest.personalization_spec][google.cloud.discoveryengine.v1beta.SearchRequest.personalization_spec]
+            overrides
+            [ServingConfig.personalization_spec][google.cloud.discoveryengine.v1beta.ServingConfig.personalization_spec].
     """
 
     class MediaConfig(proto.Message):
@@ -261,6 +272,11 @@ class ServingConfig(proto.Message):
 
                 If unset, watch history demotion will not be applied.
                 Content freshness demotion will still be applied.
+            demote_content_watched_past_days (int):
+                Optional. Specifies the number of days to
+                look back for demoting watched content. If set
+                to zero or unset, defaults to the maximum of 365
+                days.
             content_freshness_cutoff_days (int):
                 Specifies the content freshness used for
                 recommendation result. Contents will be demoted
@@ -281,6 +297,10 @@ class ServingConfig(proto.Message):
         demotion_event_type: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        demote_content_watched_past_days: int = proto.Field(
+            proto.INT32,
+            number=37,
         )
         content_freshness_cutoff_days: int = proto.Field(
             proto.INT32,
@@ -392,6 +412,13 @@ class ServingConfig(proto.Message):
     ignore_control_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=19,
+    )
+    personalization_spec: search_service.SearchRequest.PersonalizationSpec = (
+        proto.Field(
+            proto.MESSAGE,
+            number=25,
+            message=search_service.SearchRequest.PersonalizationSpec,
+        )
     )
 
 

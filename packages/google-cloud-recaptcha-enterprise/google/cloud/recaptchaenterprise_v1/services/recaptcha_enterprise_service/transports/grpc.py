@@ -525,6 +525,71 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["add_ip_override"]
 
     @property
+    def remove_ip_override(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.RemoveIpOverrideRequest],
+        recaptchaenterprise.RemoveIpOverrideResponse,
+    ]:
+        r"""Return a callable for the remove ip override method over gRPC.
+
+        Removes an IP override from a key. The following restrictions
+        hold:
+
+        -  If the IP isn't found in an existing IP override, a
+           ``NOT_FOUND`` error is returned.
+        -  If the IP is found in an existing IP override, but the
+           override type does not match, a ``NOT_FOUND`` error is
+           returned.
+
+        Returns:
+            Callable[[~.RemoveIpOverrideRequest],
+                    ~.RemoveIpOverrideResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_ip_override" not in self._stubs:
+            self._stubs["remove_ip_override"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RemoveIpOverride",
+                request_serializer=recaptchaenterprise.RemoveIpOverrideRequest.serialize,
+                response_deserializer=recaptchaenterprise.RemoveIpOverrideResponse.deserialize,
+            )
+        return self._stubs["remove_ip_override"]
+
+    @property
+    def list_ip_overrides(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.ListIpOverridesRequest],
+        recaptchaenterprise.ListIpOverridesResponse,
+    ]:
+        r"""Return a callable for the list ip overrides method over gRPC.
+
+        Lists all IP overrides for a key.
+
+        Returns:
+            Callable[[~.ListIpOverridesRequest],
+                    ~.ListIpOverridesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_ip_overrides" not in self._stubs:
+            self._stubs["list_ip_overrides"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListIpOverrides",
+                request_serializer=recaptchaenterprise.ListIpOverridesRequest.serialize,
+                response_deserializer=recaptchaenterprise.ListIpOverridesResponse.deserialize,
+            )
+        return self._stubs["list_ip_overrides"]
+
+    @property
     def get_metrics(
         self,
     ) -> Callable[[recaptchaenterprise.GetMetricsRequest], recaptchaenterprise.Metrics]:

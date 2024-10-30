@@ -31,6 +31,8 @@ __protobuf__ = proto.module(
     manifest={
         "DataStore",
         "LanguageInfo",
+        "NaturalLanguageQueryUnderstandingConfig",
+        "WorkspaceConfig",
     },
 )
 
@@ -79,6 +81,18 @@ class DataStore(proto.Message):
             was created at.
         language_info (google.cloud.discoveryengine_v1beta.types.LanguageInfo):
             Language info for DataStore.
+        natural_language_query_understanding_config (google.cloud.discoveryengine_v1beta.types.NaturalLanguageQueryUnderstandingConfig):
+            Optional. Configuration for Natural Language
+            Query Understanding.
+        billing_estimation (google.cloud.discoveryengine_v1beta.types.DataStore.BillingEstimation):
+            Output only. Data size estimation for
+            billing.
+        workspace_config (google.cloud.discoveryengine_v1beta.types.WorkspaceConfig):
+            Config to store data store type configuration for workspace
+            data. This must be set when
+            [DataStore.content_config][google.cloud.discoveryengine.v1beta.DataStore.content_config]
+            is set as
+            [DataStore.ContentConfig.GOOGLE_WORKSPACE][google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.GOOGLE_WORKSPACE].
         document_processing_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig):
             Configuration for Document understanding and
             enrichment.
@@ -100,6 +114,9 @@ class DataStore(proto.Message):
             The provided schema will be validated against certain rules
             on schema. Learn more from `this
             doc <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
+        serving_config_data_store (google.cloud.discoveryengine_v1beta.types.DataStore.ServingConfigDataStore):
+            Optional. Stores serving config at DataStore
+            level.
     """
 
     class ContentConfig(proto.Enum):
@@ -117,11 +134,79 @@ class DataStore(proto.Message):
             PUBLIC_WEBSITE (3):
                 The data store is used for public website
                 search.
+            GOOGLE_WORKSPACE (4):
+                The data store is used for workspace search. Details of
+                workspace data store are specified in the
+                [WorkspaceConfig][google.cloud.discoveryengine.v1beta.WorkspaceConfig].
         """
         CONTENT_CONFIG_UNSPECIFIED = 0
         NO_CONTENT = 1
         CONTENT_REQUIRED = 2
         PUBLIC_WEBSITE = 3
+        GOOGLE_WORKSPACE = 4
+
+    class BillingEstimation(proto.Message):
+        r"""Estimation of data size per data store.
+
+        Attributes:
+            structured_data_size (int):
+                Data size for structured data in terms of
+                bytes.
+            unstructured_data_size (int):
+                Data size for unstructured data in terms of
+                bytes.
+            website_data_size (int):
+                Data size for websites in terms of bytes.
+            structured_data_update_time (google.protobuf.timestamp_pb2.Timestamp):
+                Last updated timestamp for structured data.
+            unstructured_data_update_time (google.protobuf.timestamp_pb2.Timestamp):
+                Last updated timestamp for unstructured data.
+            website_data_update_time (google.protobuf.timestamp_pb2.Timestamp):
+                Last updated timestamp for websites.
+        """
+
+        structured_data_size: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        unstructured_data_size: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        website_data_size: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+        structured_data_update_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
+        )
+        unstructured_data_update_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=timestamp_pb2.Timestamp,
+        )
+        website_data_update_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    class ServingConfigDataStore(proto.Message):
+        r"""Stores information regarding the serving configurations at
+        DataStore level.
+
+        Attributes:
+            disabled_for_serving (bool):
+                If set true, the DataStore will not be
+                available for serving search requests.
+        """
+
+        disabled_for_serving: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -160,6 +245,21 @@ class DataStore(proto.Message):
         number=14,
         message="LanguageInfo",
     )
+    natural_language_query_understanding_config: "NaturalLanguageQueryUnderstandingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        message="NaturalLanguageQueryUnderstandingConfig",
+    )
+    billing_estimation: BillingEstimation = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=BillingEstimation,
+    )
+    workspace_config: "WorkspaceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message="WorkspaceConfig",
+    )
     document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
         proto.MESSAGE,
         number=27,
@@ -169,6 +269,11 @@ class DataStore(proto.Message):
         proto.MESSAGE,
         number=28,
         message=schema.Schema,
+    )
+    serving_config_data_store: ServingConfigDataStore = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message=ServingConfigDataStore,
     )
 
 
@@ -207,6 +312,116 @@ class LanguageInfo(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class NaturalLanguageQueryUnderstandingConfig(proto.Message):
+    r"""Configuration for Natural Language Query Understanding.
+
+    Attributes:
+        mode (google.cloud.discoveryengine_v1beta.types.NaturalLanguageQueryUnderstandingConfig.Mode):
+            Mode of Natural Language Query Understanding. If this field
+            is unset, the behavior defaults to
+            [NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED][google.cloud.discoveryengine.v1beta.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED].
+    """
+
+    class Mode(proto.Enum):
+        r"""Mode of Natural Language Query Understanding. When the
+        NaturalLanguageQueryUnderstandingConfig.Mode is ENABLED, the
+        natural language understanding capabilities will be enabled for
+        a search request if the
+        NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition
+        in the SearchRequest is ENABLED.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default value.
+            DISABLED (1):
+                Natural Language Query Understanding is
+                disabled.
+            ENABLED (2):
+                Natural Language Query Understanding is
+                enabled.
+        """
+        MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        ENABLED = 2
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
+
+
+class WorkspaceConfig(proto.Message):
+    r"""Config to store data store type configuration for workspace
+    data
+
+    Attributes:
+        type_ (google.cloud.discoveryengine_v1beta.types.WorkspaceConfig.Type):
+            The Google Workspace data source.
+        dasher_customer_id (str):
+            Obfuscated Dasher customer ID.
+        super_admin_service_account (str):
+            Optional. The super admin service account for
+            the workspace that will be used for access token
+            generation. For now we only use it for Native
+            Google Drive connector data ingestion.
+        super_admin_email_address (str):
+            Optional. The super admin email address for
+            the workspace that will be used for access token
+            generation. For now we only use it for Native
+            Google Drive connector data ingestion.
+    """
+
+    class Type(proto.Enum):
+        r"""Specifies the type of Workspace App supported by this
+        DataStore
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Defaults to an unspecified Workspace type.
+            GOOGLE_DRIVE (1):
+                Workspace Data Store contains Drive data
+            GOOGLE_MAIL (2):
+                Workspace Data Store contains Mail data
+            GOOGLE_SITES (3):
+                Workspace Data Store contains Sites data
+            GOOGLE_CALENDAR (4):
+                Workspace Data Store contains Calendar data
+            GOOGLE_CHAT (5):
+                Workspace Data Store contains Chat data
+            GOOGLE_GROUPS (6):
+                Workspace Data Store contains Groups data
+            GOOGLE_KEEP (7):
+                Workspace Data Store contains Keep data
+        """
+        TYPE_UNSPECIFIED = 0
+        GOOGLE_DRIVE = 1
+        GOOGLE_MAIL = 2
+        GOOGLE_SITES = 3
+        GOOGLE_CALENDAR = 4
+        GOOGLE_CHAT = 5
+        GOOGLE_GROUPS = 6
+        GOOGLE_KEEP = 7
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    dasher_customer_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    super_admin_service_account: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    super_admin_email_address: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

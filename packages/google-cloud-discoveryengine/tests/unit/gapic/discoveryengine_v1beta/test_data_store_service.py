@@ -4587,6 +4587,21 @@ def test_create_data_store_rest_call_success(request_type):
             "language": "language_value",
             "region": "region_value",
         },
+        "natural_language_query_understanding_config": {"mode": 1},
+        "billing_estimation": {
+            "structured_data_size": 2152,
+            "unstructured_data_size": 2379,
+            "website_data_size": 1798,
+            "structured_data_update_time": {},
+            "unstructured_data_update_time": {},
+            "website_data_update_time": {},
+        },
+        "workspace_config": {
+            "type_": 1,
+            "dasher_customer_id": "dasher_customer_id_value",
+            "super_admin_service_account": "super_admin_service_account_value",
+            "super_admin_email_address": "super_admin_email_address_value",
+        },
         "document_processing_config": {
             "name": "name_value",
             "chunking_config": {
@@ -4613,6 +4628,7 @@ def test_create_data_store_rest_call_success(request_type):
             "json_schema": "json_schema_value",
             "name": "name_value",
         },
+        "serving_config_data_store": {"disabled_for_serving": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5179,6 +5195,21 @@ def test_update_data_store_rest_call_success(request_type):
             "language": "language_value",
             "region": "region_value",
         },
+        "natural_language_query_understanding_config": {"mode": 1},
+        "billing_estimation": {
+            "structured_data_size": 2152,
+            "unstructured_data_size": 2379,
+            "website_data_size": 1798,
+            "structured_data_update_time": {},
+            "unstructured_data_update_time": {},
+            "website_data_update_time": {},
+        },
+        "workspace_config": {
+            "type_": 1,
+            "dasher_customer_id": "dasher_customer_id_value",
+            "super_admin_service_account": "super_admin_service_account_value",
+            "super_admin_email_address": "super_admin_email_address_value",
+        },
         "document_processing_config": {
             "name": "name_value",
             "chunking_config": {
@@ -5205,6 +5236,7 @@ def test_update_data_store_rest_call_success(request_type):
             "json_schema": "json_schema_value",
             "name": "name_value",
         },
+        "serving_config_data_store": {"disabled_for_serving": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
