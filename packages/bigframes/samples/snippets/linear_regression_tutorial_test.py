@@ -52,9 +52,34 @@ def test_linear_regression(random_model_id: str) -> None:
     # Expected output results:
     # index  mean_absolute_error  mean_squared_error  mean_squared_log_error  median_absolute_error  r2_score  explained_variance
     #   0        227.012237         81838.159892            0.00507                173.080816        0.872377    0.872377
-    #   1 rows x columns
+    #   1 rows x 6 columns
     # [END bigquery_dataframes_bqml_linear_evaluate]
+    # [START bigquery_dataframes_bqml_linear_predict]
+    # Select the model you'll use for predictions. `read_gbq_model` loads
+    # model data from BigQuery, but you could also use the `model` object
+    # object from previous steps.
+    model = bpd.read_gbq_model(
+        your_model_id,
+        # For example: "bqml_tutorial.penguins_model",
+    )
+
+    # Load data from BigQuery
+    bq_df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
+
+    # Use 'contains' function to filter by island containing the string
+    # "Biscoe".
+    biscoe_data = bq_df.loc[bq_df["island"].str.contains("Biscoe")]
+
+    result = model.predict(biscoe_data)
+
+    # Expected output results:
+    #     predicted_body_mass_g  	      species	                island	 culmen_length_mm  culmen_depth_mm   body_mass_g 	flipper_length_mm	sex
+    # 23	  4681.782896	   Gentoo penguin (Pygoscelis papua)	Biscoe	      <NA>	            <NA>	        <NA>	          <NA>	        <NA>
+    # 332	  4740.7907	       Gentoo penguin (Pygoscelis papua)	Biscoe	      46.2	            14.4	        214.0	          4650.0	    <NA>
+    # 160	  4731.310452	   Gentoo penguin (Pygoscelis papua)	Biscoe	      44.5	            14.3	        216.0	          4100.0	    <NA>
+    # [END bigquery_dataframes_bqml_linear_predict]
     assert feature_columns is not None
     assert label_columns is not None
     assert model is not None
     assert score is not None
+    assert result is not None
