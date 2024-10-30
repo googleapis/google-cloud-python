@@ -138,6 +138,11 @@ class PublisherTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.publish: gapic_v1.method.wrap_method(
+                self.publish,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -169,6 +174,15 @@ class PublisherTransport(abc.ABC):
         Union[
             publisher.PublishEventsResponse, Awaitable[publisher.PublishEventsResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def publish(
+        self,
+    ) -> Callable[
+        [publisher.PublishRequest],
+        Union[publisher.PublishResponse, Awaitable[publisher.PublishResponse]],
     ]:
         raise NotImplementedError()
 

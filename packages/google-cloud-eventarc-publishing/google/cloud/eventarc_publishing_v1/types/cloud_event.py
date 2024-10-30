@@ -17,16 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.publishing.v1',
+    package="google.cloud.eventarc.publishing.v1",
     manifest={
-        'CloudEvent',
+        "CloudEvent",
     },
 )
 
@@ -119,37 +117,37 @@ class CloudEvent(proto.Message):
         ce_boolean: bool = proto.Field(
             proto.BOOL,
             number=1,
-            oneof='attr',
+            oneof="attr",
         )
         ce_integer: int = proto.Field(
             proto.INT32,
             number=2,
-            oneof='attr',
+            oneof="attr",
         )
         ce_string: str = proto.Field(
             proto.STRING,
             number=3,
-            oneof='attr',
+            oneof="attr",
         )
         ce_bytes: bytes = proto.Field(
             proto.BYTES,
             number=4,
-            oneof='attr',
+            oneof="attr",
         )
         ce_uri: str = proto.Field(
             proto.STRING,
             number=5,
-            oneof='attr',
+            oneof="attr",
         )
         ce_uri_ref: str = proto.Field(
             proto.STRING,
             number=6,
-            oneof='attr',
+            oneof="attr",
         )
         ce_timestamp: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=7,
-            oneof='attr',
+            oneof="attr",
             message=timestamp_pb2.Timestamp,
         )
 
@@ -178,17 +176,17 @@ class CloudEvent(proto.Message):
     binary_data: bytes = proto.Field(
         proto.BYTES,
         number=6,
-        oneof='data',
+        oneof="data",
     )
     text_data: str = proto.Field(
         proto.STRING,
         number=7,
-        oneof='data',
+        oneof="data",
     )
     proto_data: any_pb2.Any = proto.Field(
         proto.MESSAGE,
         number=8,
-        oneof='data',
+        oneof="data",
         message=any_pb2.Any,
     )
 
