@@ -86,7 +86,22 @@ class OperationMetadata(proto.Message):
             Warnings that do not block the operation, but
             still hold relevant information for the end user
             to receive.
+        status_reason (google.cloud.edgecontainer_v1.types.OperationMetadata.StatusReason):
+            Machine-readable status of the operation, if
+            any.
     """
+
+    class StatusReason(proto.Enum):
+        r"""Indicates the reason for the status of the operation.
+
+        Values:
+            STATUS_REASON_UNSPECIFIED (0):
+                Reason unknown.
+            UPGRADE_PAUSED (1):
+                The cluster upgrade is currently paused.
+        """
+        STATUS_REASON_UNSPECIFIED = 0
+        UPGRADE_PAUSED = 1
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -121,6 +136,11 @@ class OperationMetadata(proto.Message):
     warnings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=8,
+    )
+    status_reason: StatusReason = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=StatusReason,
     )
 
 

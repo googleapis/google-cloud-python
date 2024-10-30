@@ -33,13 +33,15 @@ from google.cloud.eventarc_v1.types import (
     channel,
     channel_connection,
     discovery,
+    enrollment,
     eventarc,
+    google_api_source,
 )
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
 from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import trigger
+from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -144,92 +146,377 @@ class EventarcTransport(abc.ABC):
         self._wrapped_methods = {
             self.get_trigger: gapic_v1.method.wrap_method(
                 self.get_trigger,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_triggers: gapic_v1.method.wrap_method(
                 self.list_triggers,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_trigger: gapic_v1.method.wrap_method(
                 self.create_trigger,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_trigger: gapic_v1.method.wrap_method(
                 self.update_trigger,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_trigger: gapic_v1.method.wrap_method(
                 self.delete_trigger,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_channel: gapic_v1.method.wrap_method(
                 self.get_channel,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_channels: gapic_v1.method.wrap_method(
                 self.list_channels,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_channel_: gapic_v1.method.wrap_method(
                 self.create_channel_,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_channel: gapic_v1.method.wrap_method(
                 self.update_channel,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_channel: gapic_v1.method.wrap_method(
                 self.delete_channel,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_provider: gapic_v1.method.wrap_method(
                 self.get_provider,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_providers: gapic_v1.method.wrap_method(
                 self.list_providers,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_channel_connection: gapic_v1.method.wrap_method(
                 self.get_channel_connection,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_channel_connections: gapic_v1.method.wrap_method(
                 self.list_channel_connections,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_channel_connection: gapic_v1.method.wrap_method(
                 self.create_channel_connection,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_channel_connection: gapic_v1.method.wrap_method(
                 self.delete_channel_connection,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_google_channel_config: gapic_v1.method.wrap_method(
                 self.get_google_channel_config,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_google_channel_config: gapic_v1.method.wrap_method(
                 self.update_google_channel_config,
-                default_timeout=None,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_message_bus: gapic_v1.method.wrap_method(
+                self.get_message_bus,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_message_buses: gapic_v1.method.wrap_method(
+                self.list_message_buses,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_message_bus_enrollments: gapic_v1.method.wrap_method(
+                self.list_message_bus_enrollments,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_message_bus: gapic_v1.method.wrap_method(
+                self.create_message_bus,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_message_bus: gapic_v1.method.wrap_method(
+                self.update_message_bus,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_message_bus: gapic_v1.method.wrap_method(
+                self.delete_message_bus,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_enrollment: gapic_v1.method.wrap_method(
+                self.get_enrollment,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_enrollments: gapic_v1.method.wrap_method(
+                self.list_enrollments,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_enrollment: gapic_v1.method.wrap_method(
+                self.create_enrollment,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_enrollment: gapic_v1.method.wrap_method(
+                self.update_enrollment,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_enrollment: gapic_v1.method.wrap_method(
+                self.delete_enrollment,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_pipeline: gapic_v1.method.wrap_method(
+                self.get_pipeline,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_pipelines: gapic_v1.method.wrap_method(
+                self.list_pipelines,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_pipeline: gapic_v1.method.wrap_method(
+                self.create_pipeline,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_pipeline: gapic_v1.method.wrap_method(
+                self.update_pipeline,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_pipeline: gapic_v1.method.wrap_method(
+                self.delete_pipeline,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_google_api_source: gapic_v1.method.wrap_method(
+                self.get_google_api_source,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_google_api_sources: gapic_v1.method.wrap_method(
+                self.list_google_api_sources,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_google_api_source: gapic_v1.method.wrap_method(
+                self.create_google_api_source,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_google_api_source: gapic_v1.method.wrap_method(
+                self.update_google_api_source,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_google_api_source: gapic_v1.method.wrap_method(
+                self.delete_google_api_source,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_location: gapic_v1.method.wrap_method(
@@ -464,6 +751,212 @@ class EventarcTransport(abc.ABC):
             gce_google_channel_config.GoogleChannelConfig,
             Awaitable[gce_google_channel_config.GoogleChannelConfig],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.GetMessageBusRequest],
+        Union[message_bus.MessageBus, Awaitable[message_bus.MessageBus]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_message_buses(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusesRequest],
+        Union[
+            eventarc.ListMessageBusesResponse,
+            Awaitable[eventarc.ListMessageBusesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_message_bus_enrollments(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusEnrollmentsRequest],
+        Union[
+            eventarc.ListMessageBusEnrollmentsResponse,
+            Awaitable[eventarc.ListMessageBusEnrollmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.CreateMessageBusRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateMessageBusRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteMessageBusRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.GetEnrollmentRequest],
+        Union[enrollment.Enrollment, Awaitable[enrollment.Enrollment]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_enrollments(
+        self,
+    ) -> Callable[
+        [eventarc.ListEnrollmentsRequest],
+        Union[
+            eventarc.ListEnrollmentsResponse,
+            Awaitable[eventarc.ListEnrollmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.CreateEnrollmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateEnrollmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteEnrollmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.GetPipelineRequest],
+        Union[pipeline.Pipeline, Awaitable[pipeline.Pipeline]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_pipelines(
+        self,
+    ) -> Callable[
+        [eventarc.ListPipelinesRequest],
+        Union[
+            eventarc.ListPipelinesResponse, Awaitable[eventarc.ListPipelinesResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.CreatePipelineRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.UpdatePipelineRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.DeletePipelineRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.GetGoogleApiSourceRequest],
+        Union[
+            google_api_source.GoogleApiSource,
+            Awaitable[google_api_source.GoogleApiSource],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_google_api_sources(
+        self,
+    ) -> Callable[
+        [eventarc.ListGoogleApiSourcesRequest],
+        Union[
+            eventarc.ListGoogleApiSourcesResponse,
+            Awaitable[eventarc.ListGoogleApiSourcesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.CreateGoogleApiSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateGoogleApiSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteGoogleApiSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
