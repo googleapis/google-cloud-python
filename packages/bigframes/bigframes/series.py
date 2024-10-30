@@ -1651,7 +1651,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         provided_name = name if name else self.name
         # To be consistent with Pandas, it assigns 0 as the column name if missing. 0 is the first element of RangeIndex.
         block = self._block.with_column_labels(
-            [provided_name] if provided_name else ["0"]
+            [provided_name] if provided_name else [0]
         )
         return bigframes.dataframe.DataFrame(block)
 

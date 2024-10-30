@@ -375,7 +375,7 @@ def _perform_loc_list_join(
     if isinstance(series_or_dataframe, bigframes.series.Series):
         _struct_accessor_check_and_warn(series_or_dataframe, keys_index)
         original_name = series_or_dataframe.name
-        name = series_or_dataframe.name if series_or_dataframe.name is not None else "0"
+        name = series_or_dataframe.name if series_or_dataframe.name is not None else 0
         result = typing.cast(
             bigframes.series.Series,
             series_or_dataframe.to_frame()._perform_join_by_index(
@@ -468,7 +468,7 @@ def _iloc_getitem_series_or_dataframe(
         if isinstance(series_or_dataframe, bigframes.series.Series):
             original_series_name = series_or_dataframe.name
             series_name = (
-                original_series_name if original_series_name is not None else "0"
+                original_series_name if original_series_name is not None else 0
             )
             df = series_or_dataframe.to_frame()
         original_index_names = df.index.names

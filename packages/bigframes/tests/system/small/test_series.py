@@ -2790,6 +2790,15 @@ def test_to_frame(scalars_dfs):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
+def test_to_frame_no_name(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df["int64_col"].rename(None).to_frame().to_pandas()
+    pd_result = scalars_pandas_df["int64_col"].rename(None).to_frame()
+
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 def test_to_json(gcs_folder, scalars_df_index, scalars_pandas_df_index):
     path = gcs_folder + "test_series_to_json*.jsonl"
     scalars_df_index["int64_col"].to_json(path, lines=True, orient="records")
