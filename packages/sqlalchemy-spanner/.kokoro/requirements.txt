@@ -531,9 +531,9 @@ readme-renderer==37.2 \
     --hash=sha256:d3f06a69e8c40fca9ab3174eca48f96d9771eddb43517b17d96583418427b106 \
     --hash=sha256:e8ad25293c98f781dbc2c5a36a309929390009f902f99e1798c761aaf04a7923
     # via twine
-requests==2.31.0 \
-    --hash=sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f \
-    --hash=sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1
+requests==2.32.2 \
+    --hash=sha256:dd951ff5ecf3e3b3aa26b40703ba77495dab41da839ae72ef3c8e5d8e2433289 \
+    --hash=sha256:fc06670dd0ed212426dfeb94fc1b983d917c4f9847c863f313c9dfaaffb7c23c
     # via
     #   gcp-releasetool
     #   google-api-core
