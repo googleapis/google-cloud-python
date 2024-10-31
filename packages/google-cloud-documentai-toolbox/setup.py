@@ -58,6 +58,7 @@ setuptools.setup(
         "pyarrow>=15.0.0, <16.0.0",
         "tabulate>=0.9.0, <1.0.0",
         "proto-plus>=1.22.3, <2.0.0dev",
+        "proto-plus >= 1.25.0, <2.0.0dev; python_version>='3.13'",
         "grpc-google-iam-v1>=0.12.6, <1.0.0dev",
         "google-cloud-bigquery>=3.5.0, <4.0.0dev",
         "google-cloud-documentai>=2.29.2, <4.0.0dev",
