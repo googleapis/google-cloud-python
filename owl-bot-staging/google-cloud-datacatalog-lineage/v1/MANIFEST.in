@@ -1,0 +1,2 @@
+recursive-include google/cloud/datacatalog_lineage *.py
+recursive-include google/cloud/datacatalog_lineage_v1 *.py
