@@ -72,14 +72,25 @@ class JSONArray(arrays.ArrowExtensionArray):
 
     _dtype = JSONDtype()
 
-    def __init__(self, values, dtype=None, copy=False) -> None:
+    def __init__(self, values) -> None:
+        super().__init__(values)
         self._dtype = JSONDtype()
         if isinstance(values, pa.Array):
-            self._pa_array = pa.chunked_array([values])
+            pa_data = pa.chunked_array([values])
         elif isinstance(values, pa.ChunkedArray):
-            self._pa_array = values
+            pa_data = values
         else:
-            raise ValueError(f"Unsupported type '{type(values)}' for JSONArray")
+            raise NotImplementedError(
+                f"Unsupported type '{type(values)}' for JSONArray"
+            )
+
+        # Ensures compatibility with pandas version 1.5.3
+        if hasattr(self, "_data"):
+            self._data = pa_data
+        elif hasattr(self, "_pa_array"):
+            self._pa_array = pa_data
+        else:
+            raise NotImplementedError(f"Unsupported pandas version: {pd.__version__}")
 
     @classmethod
     def _box_pa(
@@ -111,7 +122,7 @@ class JSONArray(arrays.ArrowExtensionArray):
     def _box_pa_array(cls, value, copy: bool = False) -> pa.Array | pa.ChunkedArray:
         """Box value into a pyarrow Array or ChunkedArray."""
         if isinstance(value, cls):
-            pa_array = value._pa_array
+            pa_array = value.pa_data
         else:
             value = [JSONArray._serialize_json(x) for x in value]
             pa_array = pa.array(value, type=cls._dtype.pyarrow_dtype, from_pandas=True)
@@ -147,11 +158,22 @@ class JSONArray(arrays.ArrowExtensionArray):
         """An instance of JSONDtype"""
         return self._dtype
 
+    @property
+    def pa_data(self):
+        """An instance of stored pa data"""
+        # Ensures compatibility with pandas version 1.5.3
+        if hasattr(self, "_data"):
+            return self._data
+        elif hasattr(self, "_pa_array"):
+            return self._pa_array
+        else:
+            raise NotImplementedError(f"Unsupported pandas version: {pd.__version__}")
+
     def _cmp_method(self, other, op):
         if op.__name__ == "eq":
-            result = pyarrow.compute.equal(self._pa_array, self._box_pa(other))
+            result = pyarrow.compute.equal(self.pa_data, self._box_pa(other))
         elif op.__name__ == "ne":
-            result = pyarrow.compute.not_equal(self._pa_array, self._box_pa(other))
+            result = pyarrow.compute.not_equal(self.pa_data, self._box_pa(other))
         else:
             # Comparison is not a meaningful one. We don't want to support sorting by JSON columns.
             raise TypeError(f"{op.__name__} not supported for JSONArray")
@@ -169,7 +191,7 @@ class JSONArray(arrays.ArrowExtensionArray):
             else:
                 # `check_array_indexer` should verify that the assertion hold true.
                 assert item.dtype.kind == "b"
-                return type(self)(self._pa_array.filter(item))
+                return type(self)(self.pa_data.filter(item))
         elif isinstance(item, tuple):
             item = indexers.unpack_tuple_and_ellipses(item)
 
@@ -181,7 +203,7 @@ class JSONArray(arrays.ArrowExtensionArray):
                 r"(`None`) and integer or boolean arrays are valid indices"
             )
 
-        value = self._pa_array[item]
+        value = self.pa_data[item]
         if isinstance(value, pa.ChunkedArray):
             return type(self)(value)
         else:
@@ -193,7 +215,7 @@ class JSONArray(arrays.ArrowExtensionArray):
 
     def __iter__(self):
         """Iterate over elements of the array."""
-        for value in self._pa_array:
+        for value in self.pa_data:
             val = JSONArray._deserialize_json(value.as_py())
             if val is None:
                 yield self._dtype.na_value

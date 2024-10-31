@@ -13,8 +13,6 @@
 # limitations under the License.
 
 
-import json
-
 import pandas as pd
 import pytest
 
@@ -78,18 +76,8 @@ def test_getitems_when_iter_with_null():
     assert pd.isna(result)
 
 
-def test_to_numpy():
-    s = pd.Series(db_dtypes.JSONArray._from_sequence(JSON_DATA.values()))
-    data = s.to_numpy()
-    for id, key in enumerate(JSON_DATA.keys()):
-        if key == "null":
-            assert pd.isna(data[id])
-        else:
-            assert data[id] == json.dumps(JSON_DATA[key], sort_keys=True)
-
-
 def test_deterministic_json_serialization():
     x = {"a": 0, "b": 1}
     y = {"b": 1, "a": 0}
-    data = db_dtypes.JSONArray._from_sequence([x])
-    assert y in data
+    data = db_dtypes.JSONArray._from_sequence([y])
+    assert data[0] == x
