@@ -1,2 +1,0 @@
-recursive-include google/cloud/billing *.py
-recursive-include google/cloud/billing_v1 *.py
