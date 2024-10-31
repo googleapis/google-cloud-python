@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.21.0...google-cloud-datacatalog-v3.21.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.20.1...google-cloud-datacatalog-v3.21.0) (2024-10-24)
 
 

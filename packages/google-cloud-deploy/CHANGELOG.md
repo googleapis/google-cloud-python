@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.2.0...google-cloud-deploy-v2.3.0) (2024-10-31)
+
+
+### Features
+
+* added new fields for the Automation Repair rule ([5bad720](https://github.com/googleapis/google-cloud-python/commit/5bad72013c2ad2727bdf3628454437e2047b2c9b))
+* added route destination related fields to Gateway service mesh message ([5bad720](https://github.com/googleapis/google-cloud-python/commit/5bad72013c2ad2727bdf3628454437e2047b2c9b))
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.1.0...google-cloud-deploy-v2.2.0) (2024-10-24)
 
 

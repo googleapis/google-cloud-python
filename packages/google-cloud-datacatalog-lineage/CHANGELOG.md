@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.9...google-cloud-datacatalog-lineage-v0.3.10) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [0.3.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.8...google-cloud-datacatalog-lineage-v0.3.9) (2024-10-24)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.3.0...google-cloud-dataplex-v2.3.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.2.2...google-cloud-dataplex-v2.3.0) (2024-10-24)
 
 

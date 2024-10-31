@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.2...google-cloud-discoveryengine-v0.13.3) (2024-10-31)
+
+
+### Features
+
+* Add AdvancedCompleteQuery API ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Add BillingEstimation in data store ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Add GroundedGenerationService API ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Add lite search API to allow public website search with API key ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Add one_box_page_size on search ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Add Sitemap APIs to preview channel ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Support advanced boost search ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Support Google Workspace search ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Support natural language understanding search ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* support query regex in control match rules ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* Support search personalization to preview channel ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+
+
+### Documentation
+
+* deprecate asynchronous mode in answer generation ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* deprecate extractive_answers in answer generation ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+* keep the API doc up-to-date with recent changes ([fc70893](https://github.com/googleapis/google-cloud-python/commit/fc708935dda0102226e83dbf6cff992f1bf21373))
+
 ## [0.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.1...google-cloud-discoveryengine-v0.13.2) (2024-10-28)
 
 

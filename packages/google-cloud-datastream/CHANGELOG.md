@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.10.0...google-cloud-datastream-v1.10.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.9.5...google-cloud-datastream-v1.10.0) (2024-10-24)
 
 
