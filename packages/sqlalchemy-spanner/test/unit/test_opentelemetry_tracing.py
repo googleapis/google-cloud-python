@@ -33,13 +33,14 @@ def _make_rpc_error(error_cls, trailing_metadata=None):
 if HAS_OPENTELEMETRY_INSTALLED:
 
     class NoTracingTest(OpenTelemetryBase):
-        def setup(self):
+        def setup_method(self):
             self._temp_opentelemetry = sys.modules["opentelemetry"]
 
             sys.modules["opentelemetry"] = None
             importlib.reload(_opentelemetry_tracing)
 
-        def teardown(self):
+        def teardown_method(self):
+            super(NoTracingTest, self).teardown_method()
             sys.modules["opentelemetry"] = self._temp_opentelemetry
             importlib.reload(_opentelemetry_tracing)
 

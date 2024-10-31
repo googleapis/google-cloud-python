@@ -82,7 +82,7 @@ class OpenTelemetryBase(fixtures.TestBase):
             use_test_ot_exporter()
             cls.ot_exporter = get_test_ot_exporter()
 
-    def teardown(self):
+    def teardown_method(self):
         if HAS_OPENTELEMETRY_INSTALLED:
             self.ot_exporter.clear()
 

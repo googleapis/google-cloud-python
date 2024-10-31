@@ -43,6 +43,8 @@ fi
 # otherwise run all the sessions.
 if [[ -n "${NOX_SESSION:-}" ]]; then
     python3 -m nox -s ${NOX_SESSION:-}
+elif [[ "${RUN_COMPLIANCE_TESTS}" -eq "false" ]]; then
+    python3 -m nox -s unit
 else
     python3 -m nox
 fi

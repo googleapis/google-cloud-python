@@ -90,6 +90,10 @@ def create_test_instance():
     except AlreadyExists:
         pass  # instance was already created
 
+    if USE_EMULATOR:
+        database = instance.database("compliance-test")
+        database.drop()
+
     try:
         database = instance.database("compliance-test")
         created_op = database.create()
