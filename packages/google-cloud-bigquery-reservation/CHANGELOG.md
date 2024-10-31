@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.14.0...google-cloud-bigquery-reservation-v1.14.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.13.5...google-cloud-bigquery-reservation-v1.14.0) (2024-10-24)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-binary-authorization-v1.11.0...google-cloud-binary-authorization-v1.11.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-binary-authorization-v1.10.5...google-cloud-binary-authorization-v1.11.0) (2024-10-24)
 
 

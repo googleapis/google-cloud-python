@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.17.0...google-cloud-bigquery-datatransfer-v3.17.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.16.0...google-cloud-bigquery-datatransfer-v3.17.0) (2024-10-24)
 
 

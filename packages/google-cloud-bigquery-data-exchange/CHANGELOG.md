@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.14...google-cloud-bigquery-data-exchange-v0.5.15) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [0.5.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.13...google-cloud-bigquery-data-exchange-v0.5.14) (2024-10-24)
 
 
