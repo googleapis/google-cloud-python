@@ -15,6 +15,7 @@
 #
 from .common import (
     OperationProgress,
+    ReplicaSelection,
     FulfillmentPeriod,
 )
 from .spanner_instance_admin import (
@@ -47,6 +48,7 @@ from .spanner_instance_admin import (
     MoveInstanceMetadata,
     MoveInstanceRequest,
     MoveInstanceResponse,
+    ReplicaComputeCapacity,
     ReplicaInfo,
     UpdateInstanceConfigMetadata,
     UpdateInstanceConfigRequest,
@@ -58,6 +60,7 @@ from .spanner_instance_admin import (
 
 __all__ = (
     "OperationProgress",
+    "ReplicaSelection",
     "FulfillmentPeriod",
     "AutoscalingConfig",
     "CreateInstanceConfigMetadata",
@@ -88,6 +91,7 @@ __all__ = (
     "MoveInstanceMetadata",
     "MoveInstanceRequest",
     "MoveInstanceResponse",
+    "ReplicaComputeCapacity",
     "ReplicaInfo",
     "UpdateInstanceConfigMetadata",
     "UpdateInstanceConfigRequest",

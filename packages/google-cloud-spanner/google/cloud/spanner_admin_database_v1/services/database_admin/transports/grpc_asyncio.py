@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -246,6 +247,9 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1131,7 +1135,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_databases: gapic_v1.method_async.wrap_method(
+            self.list_databases: self._wrap_method(
                 self.list_databases,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1146,12 +1150,12 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.create_database: gapic_v1.method_async.wrap_method(
+            self.create_database: self._wrap_method(
                 self.create_database,
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.get_database: gapic_v1.method_async.wrap_method(
+            self.get_database: self._wrap_method(
                 self.get_database,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1166,7 +1170,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.update_database: gapic_v1.method_async.wrap_method(
+            self.update_database: self._wrap_method(
                 self.update_database,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1181,7 +1185,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.update_database_ddl: gapic_v1.method_async.wrap_method(
+            self.update_database_ddl: self._wrap_method(
                 self.update_database_ddl,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1196,7 +1200,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.drop_database: gapic_v1.method_async.wrap_method(
+            self.drop_database: self._wrap_method(
                 self.drop_database,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1211,7 +1215,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.get_database_ddl: gapic_v1.method_async.wrap_method(
+            self.get_database_ddl: self._wrap_method(
                 self.get_database_ddl,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1226,12 +1230,12 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1246,22 +1250,22 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_backup: gapic_v1.method_async.wrap_method(
+            self.create_backup: self._wrap_method(
                 self.create_backup,
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.copy_backup: gapic_v1.method_async.wrap_method(
+            self.copy_backup: self._wrap_method(
                 self.copy_backup,
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.get_backup: gapic_v1.method_async.wrap_method(
+            self.get_backup: self._wrap_method(
                 self.get_backup,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1276,7 +1280,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.update_backup: gapic_v1.method_async.wrap_method(
+            self.update_backup: self._wrap_method(
                 self.update_backup,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1291,7 +1295,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.delete_backup: gapic_v1.method_async.wrap_method(
+            self.delete_backup: self._wrap_method(
                 self.delete_backup,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1306,7 +1310,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.list_backups: gapic_v1.method_async.wrap_method(
+            self.list_backups: self._wrap_method(
                 self.list_backups,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1321,12 +1325,12 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.restore_database: gapic_v1.method_async.wrap_method(
+            self.restore_database: self._wrap_method(
                 self.restore_database,
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.list_database_operations: gapic_v1.method_async.wrap_method(
+            self.list_database_operations: self._wrap_method(
                 self.list_database_operations,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1341,7 +1345,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.list_backup_operations: gapic_v1.method_async.wrap_method(
+            self.list_backup_operations: self._wrap_method(
                 self.list_backup_operations,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1356,7 +1360,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.list_database_roles: gapic_v1.method_async.wrap_method(
+            self.list_database_roles: self._wrap_method(
                 self.list_database_roles,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1371,7 +1375,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.create_backup_schedule: gapic_v1.method_async.wrap_method(
+            self.create_backup_schedule: self._wrap_method(
                 self.create_backup_schedule,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1386,7 +1390,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.get_backup_schedule: gapic_v1.method_async.wrap_method(
+            self.get_backup_schedule: self._wrap_method(
                 self.get_backup_schedule,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1401,7 +1405,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.update_backup_schedule: gapic_v1.method_async.wrap_method(
+            self.update_backup_schedule: self._wrap_method(
                 self.update_backup_schedule,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1416,7 +1420,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.delete_backup_schedule: gapic_v1.method_async.wrap_method(
+            self.delete_backup_schedule: self._wrap_method(
                 self.delete_backup_schedule,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1431,7 +1435,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.list_backup_schedules: gapic_v1.method_async.wrap_method(
+            self.list_backup_schedules: self._wrap_method(
                 self.list_backup_schedules,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1446,10 +1450,39 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 import math
@@ -36,6 +36,13 @@ from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -82,8 +89,22 @@ from google.type import expr_pb2  # type: ignore
 import google.auth
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1182,25 +1203,6 @@ def test_list_databases(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_databases_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_databases()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabasesRequest()
-
-
 def test_list_databases_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1267,29 +1269,6 @@ def test_list_databases_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_databases_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner_database_admin.ListDatabasesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_databases()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabasesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_databases_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1297,7 +1276,7 @@ async def test_list_databases_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1337,7 +1316,7 @@ async def test_list_databases_async(
     request_type=spanner_database_admin.ListDatabasesRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1403,7 +1382,7 @@ def test_list_databases_field_headers():
 @pytest.mark.asyncio
 async def test_list_databases_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1473,7 +1452,7 @@ def test_list_databases_flattened_error():
 @pytest.mark.asyncio
 async def test_list_databases_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1502,7 +1481,7 @@ async def test_list_databases_flattened_async():
 @pytest.mark.asyncio
 async def test_list_databases_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1612,7 +1591,7 @@ def test_list_databases_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_databases_async_pager():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1662,7 +1641,7 @@ async def test_list_databases_async_pager():
 @pytest.mark.asyncio
 async def test_list_databases_async_pages():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1741,25 +1720,6 @@ def test_create_database(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_database_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.CreateDatabaseRequest()
-
-
 def test_create_database_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1831,27 +1791,6 @@ def test_create_database_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_database_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.CreateDatabaseRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_database_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1859,7 +1798,7 @@ async def test_create_database_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1904,7 +1843,7 @@ async def test_create_database_async(
     request_type=spanner_database_admin.CreateDatabaseRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1967,7 +1906,7 @@ def test_create_database_field_headers():
 @pytest.mark.asyncio
 async def test_create_database_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2042,7 +1981,7 @@ def test_create_database_flattened_error():
 @pytest.mark.asyncio
 async def test_create_database_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2075,7 +2014,7 @@ async def test_create_database_flattened_async():
 @pytest.mark.asyncio
 async def test_create_database_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2134,25 +2073,6 @@ def test_get_database(request_type, transport: str = "grpc"):
     assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
     assert response.enable_drop_protection is True
     assert response.reconciling is True
-
-
-def test_get_database_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.GetDatabaseRequest()
 
 
 def test_get_database_non_empty_request_with_auto_populated_field():
@@ -2219,35 +2139,6 @@ def test_get_database_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_database_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner_database_admin.Database(
-                name="name_value",
-                state=spanner_database_admin.Database.State.CREATING,
-                version_retention_period="version_retention_period_value",
-                default_leader="default_leader_value",
-                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
-                enable_drop_protection=True,
-                reconciling=True,
-            )
-        )
-        response = await client.get_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.GetDatabaseRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_database_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2255,7 +2146,7 @@ async def test_get_database_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2295,7 +2186,7 @@ async def test_get_database_async(
     request_type=spanner_database_admin.GetDatabaseRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2373,7 +2264,7 @@ def test_get_database_field_headers():
 @pytest.mark.asyncio
 async def test_get_database_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2443,7 +2334,7 @@ def test_get_database_flattened_error():
 @pytest.mark.asyncio
 async def test_get_database_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2472,7 +2363,7 @@ async def test_get_database_flattened_async():
 @pytest.mark.asyncio
 async def test_get_database_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2515,25 +2406,6 @@ def test_update_database(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_database_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.UpdateDatabaseRequest()
 
 
 def test_update_database_non_empty_request_with_auto_populated_field():
@@ -2601,27 +2473,6 @@ def test_update_database_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_database_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.UpdateDatabaseRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_database_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2629,7 +2480,7 @@ async def test_update_database_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2674,7 +2525,7 @@ async def test_update_database_async(
     request_type=spanner_database_admin.UpdateDatabaseRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2737,7 +2588,7 @@ def test_update_database_field_headers():
 @pytest.mark.asyncio
 async def test_update_database_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2812,7 +2663,7 @@ def test_update_database_flattened_error():
 @pytest.mark.asyncio
 async def test_update_database_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2845,7 +2696,7 @@ async def test_update_database_flattened_async():
 @pytest.mark.asyncio
 async def test_update_database_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2891,27 +2742,6 @@ def test_update_database_ddl(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_database_ddl_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_database_ddl), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_database_ddl()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.UpdateDatabaseDdlRequest()
 
 
 def test_update_database_ddl_non_empty_request_with_auto_populated_field():
@@ -2991,29 +2821,6 @@ def test_update_database_ddl_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_database_ddl_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_database_ddl), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_database_ddl()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.UpdateDatabaseDdlRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_database_ddl_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3021,7 +2828,7 @@ async def test_update_database_ddl_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3066,7 +2873,7 @@ async def test_update_database_ddl_async(
     request_type=spanner_database_admin.UpdateDatabaseDdlRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3133,7 +2940,7 @@ def test_update_database_ddl_field_headers():
 @pytest.mark.asyncio
 async def test_update_database_ddl_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3212,7 +3019,7 @@ def test_update_database_ddl_flattened_error():
 @pytest.mark.asyncio
 async def test_update_database_ddl_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3247,7 +3054,7 @@ async def test_update_database_ddl_flattened_async():
 @pytest.mark.asyncio
 async def test_update_database_ddl_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3291,25 +3098,6 @@ def test_drop_database(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_drop_database_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.drop_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.DropDatabaseRequest()
 
 
 def test_drop_database_non_empty_request_with_auto_populated_field():
@@ -3376,25 +3164,6 @@ def test_drop_database_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_drop_database_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.drop_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.DropDatabaseRequest()
-
-
-@pytest.mark.asyncio
 async def test_drop_database_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3402,7 +3171,7 @@ async def test_drop_database_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3442,7 +3211,7 @@ async def test_drop_database_async(
     request_type=spanner_database_admin.DropDatabaseRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3503,7 +3272,7 @@ def test_drop_database_field_headers():
 @pytest.mark.asyncio
 async def test_drop_database_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3571,7 +3340,7 @@ def test_drop_database_flattened_error():
 @pytest.mark.asyncio
 async def test_drop_database_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3598,7 +3367,7 @@ async def test_drop_database_flattened_async():
 @pytest.mark.asyncio
 async def test_drop_database_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3646,25 +3415,6 @@ def test_get_database_ddl(request_type, transport: str = "grpc"):
     assert isinstance(response, spanner_database_admin.GetDatabaseDdlResponse)
     assert response.statements == ["statements_value"]
     assert response.proto_descriptors == b"proto_descriptors_blob"
-
-
-def test_get_database_ddl_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_database_ddl()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.GetDatabaseDdlRequest()
 
 
 def test_get_database_ddl_non_empty_request_with_auto_populated_field():
@@ -3733,30 +3483,6 @@ def test_get_database_ddl_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_database_ddl_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner_database_admin.GetDatabaseDdlResponse(
-                statements=["statements_value"],
-                proto_descriptors=b"proto_descriptors_blob",
-            )
-        )
-        response = await client.get_database_ddl()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.GetDatabaseDdlRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_database_ddl_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3764,7 +3490,7 @@ async def test_get_database_ddl_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3804,7 +3530,7 @@ async def test_get_database_ddl_async(
     request_type=spanner_database_admin.GetDatabaseDdlRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3872,7 +3598,7 @@ def test_get_database_ddl_field_headers():
 @pytest.mark.asyncio
 async def test_get_database_ddl_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3942,7 +3668,7 @@ def test_get_database_ddl_flattened_error():
 @pytest.mark.asyncio
 async def test_get_database_ddl_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3971,7 +3697,7 @@ async def test_get_database_ddl_flattened_async():
 @pytest.mark.asyncio
 async def test_get_database_ddl_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4019,25 +3745,6 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_set_iam_policy_non_empty_request_with_auto_populated_field():
@@ -4104,30 +3811,6 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4135,7 +3818,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4174,7 +3857,7 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4242,7 +3925,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4328,7 +4011,7 @@ def test_set_iam_policy_flattened_error():
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4355,7 +4038,7 @@ async def test_set_iam_policy_flattened_async():
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4403,25 +4086,6 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_get_iam_policy_non_empty_request_with_auto_populated_field():
@@ -4488,30 +4152,6 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4519,7 +4159,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4558,7 +4198,7 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4626,7 +4266,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4711,7 +4351,7 @@ def test_get_iam_policy_flattened_error():
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4738,7 +4378,7 @@ async def test_get_iam_policy_flattened_async():
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4786,27 +4426,6 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
@@ -4879,31 +4498,6 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse(
-                permissions=["permissions_value"],
-            )
-        )
-        response = await client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4911,7 +4505,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4951,7 +4545,7 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5021,7 +4615,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5119,7 +4713,7 @@ def test_test_iam_permissions_flattened_error():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5154,7 +4748,7 @@ async def test_test_iam_permissions_flattened_async():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5198,25 +4792,6 @@ def test_create_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup.CreateBackupRequest()
 
 
 def test_create_backup_non_empty_request_with_auto_populated_field():
@@ -5290,27 +4865,6 @@ def test_create_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup.CreateBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5318,7 +4872,7 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5362,7 +4916,7 @@ async def test_create_backup_async(
     transport: str = "grpc_asyncio", request_type=gsad_backup.CreateBackupRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5425,7 +4979,7 @@ def test_create_backup_field_headers():
 @pytest.mark.asyncio
 async def test_create_backup_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5505,7 +5059,7 @@ def test_create_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_create_backup_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5542,7 +5096,7 @@ async def test_create_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_create_backup_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5587,25 +5141,6 @@ def test_copy_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_copy_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.copy_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.CopyBackupRequest()
 
 
 def test_copy_backup_non_empty_request_with_auto_populated_field():
@@ -5681,27 +5216,6 @@ def test_copy_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_copy_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.copy_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.CopyBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_copy_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5709,7 +5223,7 @@ async def test_copy_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5753,7 +5267,7 @@ async def test_copy_backup_async(
     transport: str = "grpc_asyncio", request_type=backup.CopyBackupRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5816,7 +5330,7 @@ def test_copy_backup_field_headers():
 @pytest.mark.asyncio
 async def test_copy_backup_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5901,7 +5415,7 @@ def test_copy_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_copy_backup_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5942,7 +5456,7 @@ async def test_copy_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_copy_backup_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6013,25 +5527,6 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
-def test_get_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.GetBackupRequest()
-
-
 def test_get_backup_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6096,45 +5591,12 @@ def test_get_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            backup.Backup(
-                database="database_value",
-                name="name_value",
-                size_bytes=1089,
-                freeable_size_bytes=2006,
-                exclusive_size_bytes=2168,
-                state=backup.Backup.State.CREATING,
-                referencing_databases=["referencing_databases_value"],
-                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
-                referencing_backups=["referencing_backups_value"],
-                backup_schedules=["backup_schedules_value"],
-                incremental_backup_chain_id="incremental_backup_chain_id_value",
-            )
-        )
-        response = await client.get_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.GetBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6173,7 +5635,7 @@ async def test_get_backup_async(
     transport: str = "grpc_asyncio", request_type=backup.GetBackupRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6259,7 +5721,7 @@ def test_get_backup_field_headers():
 @pytest.mark.asyncio
 async def test_get_backup_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6327,7 +5789,7 @@ def test_get_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_get_backup_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6354,7 +5816,7 @@ async def test_get_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_get_backup_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6422,25 +5884,6 @@ def test_update_backup(request_type, transport: str = "grpc"):
     assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
-def test_update_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup.UpdateBackupRequest()
-
-
 def test_update_backup_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6501,39 +5944,6 @@ def test_update_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gsad_backup.Backup(
-                database="database_value",
-                name="name_value",
-                size_bytes=1089,
-                freeable_size_bytes=2006,
-                exclusive_size_bytes=2168,
-                state=gsad_backup.Backup.State.CREATING,
-                referencing_databases=["referencing_databases_value"],
-                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
-                referencing_backups=["referencing_backups_value"],
-                backup_schedules=["backup_schedules_value"],
-                incremental_backup_chain_id="incremental_backup_chain_id_value",
-            )
-        )
-        response = await client.update_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup.UpdateBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6541,7 +5951,7 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6580,7 +5990,7 @@ async def test_update_backup_async(
     transport: str = "grpc_asyncio", request_type=gsad_backup.UpdateBackupRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6666,7 +6076,7 @@ def test_update_backup_field_headers():
 @pytest.mark.asyncio
 async def test_update_backup_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6739,7 +6149,7 @@ def test_update_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_update_backup_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6770,7 +6180,7 @@ async def test_update_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_update_backup_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6814,25 +6224,6 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.DeleteBackupRequest()
 
 
 def test_delete_backup_non_empty_request_with_auto_populated_field():
@@ -6899,25 +6290,6 @@ def test_delete_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.DeleteBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6925,7 +6297,7 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6964,7 +6336,7 @@ async def test_delete_backup_async(
     transport: str = "grpc_asyncio", request_type=backup.DeleteBackupRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7025,7 +6397,7 @@ def test_delete_backup_field_headers():
 @pytest.mark.asyncio
 async def test_delete_backup_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7093,7 +6465,7 @@ def test_delete_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_backup_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7120,7 +6492,7 @@ async def test_delete_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_backup_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7166,25 +6538,6 @@ def test_list_backups(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_backups_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_backups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupsRequest()
 
 
 def test_list_backups_non_empty_request_with_auto_populated_field():
@@ -7255,29 +6608,6 @@ def test_list_backups_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_backups_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            backup.ListBackupsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_backups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_backups_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7285,7 +6615,7 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7324,7 +6654,7 @@ async def test_list_backups_async(
     transport: str = "grpc_asyncio", request_type=backup.ListBackupsRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7390,7 +6720,7 @@ def test_list_backups_field_headers():
 @pytest.mark.asyncio
 async def test_list_backups_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7460,7 +6790,7 @@ def test_list_backups_flattened_error():
 @pytest.mark.asyncio
 async def test_list_backups_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7489,7 +6819,7 @@ async def test_list_backups_flattened_async():
 @pytest.mark.asyncio
 async def test_list_backups_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7599,7 +6929,7 @@ def test_list_backups_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_backups_async_pager():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7649,7 +6979,7 @@ async def test_list_backups_async_pager():
 @pytest.mark.asyncio
 async def test_list_backups_async_pages():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7728,25 +7058,6 @@ def test_restore_database(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_restore_database_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.restore_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.RestoreDatabaseRequest()
-
-
 def test_restore_database_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7822,27 +7133,6 @@ def test_restore_database_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_restore_database_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.restore_database()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.RestoreDatabaseRequest()
-
-
-@pytest.mark.asyncio
 async def test_restore_database_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7850,7 +7140,7 @@ async def test_restore_database_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7895,7 +7185,7 @@ async def test_restore_database_async(
     request_type=spanner_database_admin.RestoreDatabaseRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7958,7 +7248,7 @@ def test_restore_database_field_headers():
 @pytest.mark.asyncio
 async def test_restore_database_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8036,7 +7326,7 @@ def test_restore_database_flattened_error():
 @pytest.mark.asyncio
 async def test_restore_database_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8071,7 +7361,7 @@ async def test_restore_database_flattened_async():
 @pytest.mark.asyncio
 async def test_restore_database_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8121,27 +7411,6 @@ def test_list_database_operations(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabaseOperationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_database_operations_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_database_operations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_database_operations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabaseOperationsRequest()
 
 
 def test_list_database_operations_non_empty_request_with_auto_populated_field():
@@ -8219,31 +7488,6 @@ def test_list_database_operations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_database_operations_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_database_operations), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner_database_admin.ListDatabaseOperationsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_database_operations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabaseOperationsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_database_operations_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8251,7 +7495,7 @@ async def test_list_database_operations_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8291,7 +7535,7 @@ async def test_list_database_operations_async(
     request_type=spanner_database_admin.ListDatabaseOperationsRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8361,7 +7605,7 @@ def test_list_database_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_database_operations_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8435,7 +7679,7 @@ def test_list_database_operations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_database_operations_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8466,7 +7710,7 @@ async def test_list_database_operations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_database_operations_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8582,7 +7826,7 @@ def test_list_database_operations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_database_operations_async_pager():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8634,7 +7878,7 @@ async def test_list_database_operations_async_pager():
 @pytest.mark.asyncio
 async def test_list_database_operations_async_pages():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8720,27 +7964,6 @@ def test_list_backup_operations(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_backup_operations_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_backup_operations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_backup_operations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupOperationsRequest()
-
-
 def test_list_backup_operations_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -8816,31 +8039,6 @@ def test_list_backup_operations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_backup_operations_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_backup_operations), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            backup.ListBackupOperationsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_backup_operations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup.ListBackupOperationsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_backup_operations_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8848,7 +8046,7 @@ async def test_list_backup_operations_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8887,7 +8085,7 @@ async def test_list_backup_operations_async(
     transport: str = "grpc_asyncio", request_type=backup.ListBackupOperationsRequest
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8957,7 +8155,7 @@ def test_list_backup_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_backup_operations_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9031,7 +8229,7 @@ def test_list_backup_operations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_backup_operations_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9062,7 +8260,7 @@ async def test_list_backup_operations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_backup_operations_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9176,7 +8374,7 @@ def test_list_backup_operations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_backup_operations_async_pager():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9228,7 +8426,7 @@ async def test_list_backup_operations_async_pager():
 @pytest.mark.asyncio
 async def test_list_backup_operations_async_pages():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9314,27 +8512,6 @@ def test_list_database_roles(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_database_roles_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_database_roles), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_database_roles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabaseRolesRequest()
-
-
 def test_list_database_roles_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -9407,31 +8584,6 @@ def test_list_database_roles_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_database_roles_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_database_roles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner_database_admin.ListDatabaseRolesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_database_roles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner_database_admin.ListDatabaseRolesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_database_roles_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9439,7 +8591,7 @@ async def test_list_database_roles_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9479,7 +8631,7 @@ async def test_list_database_roles_async(
     request_type=spanner_database_admin.ListDatabaseRolesRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9549,7 +8701,7 @@ def test_list_database_roles_field_headers():
 @pytest.mark.asyncio
 async def test_list_database_roles_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9623,7 +8775,7 @@ def test_list_database_roles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_database_roles_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9654,7 +8806,7 @@ async def test_list_database_roles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_database_roles_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9768,7 +8920,7 @@ def test_list_database_roles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_database_roles_async_pager():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9822,7 +8974,7 @@ async def test_list_database_roles_async_pager():
 @pytest.mark.asyncio
 async def test_list_database_roles_async_pages():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9908,27 +9060,6 @@ def test_create_backup_schedule(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
 
 
-def test_create_backup_schedule_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_backup_schedule), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup_schedule.CreateBackupScheduleRequest()
-
-
 def test_create_backup_schedule_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -10002,31 +9133,6 @@ def test_create_backup_schedule_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_backup_schedule_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_backup_schedule), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gsad_backup_schedule.BackupSchedule(
-                name="name_value",
-            )
-        )
-        response = await client.create_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup_schedule.CreateBackupScheduleRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_backup_schedule_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10034,7 +9140,7 @@ async def test_create_backup_schedule_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10074,7 +9180,7 @@ async def test_create_backup_schedule_async(
     request_type=gsad_backup_schedule.CreateBackupScheduleRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10144,7 +9250,7 @@ def test_create_backup_schedule_field_headers():
 @pytest.mark.asyncio
 async def test_create_backup_schedule_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10228,7 +9334,7 @@ def test_create_backup_schedule_flattened_error():
 @pytest.mark.asyncio
 async def test_create_backup_schedule_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10267,7 +9373,7 @@ async def test_create_backup_schedule_flattened_async():
 @pytest.mark.asyncio
 async def test_create_backup_schedule_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10317,27 +9423,6 @@ def test_get_backup_schedule(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, backup_schedule.BackupSchedule)
     assert response.name == "name_value"
-
-
-def test_get_backup_schedule_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_backup_schedule), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.GetBackupScheduleRequest()
 
 
 def test_get_backup_schedule_non_empty_request_with_auto_populated_field():
@@ -10410,31 +9495,6 @@ def test_get_backup_schedule_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_backup_schedule_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_backup_schedule), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            backup_schedule.BackupSchedule(
-                name="name_value",
-            )
-        )
-        response = await client.get_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.GetBackupScheduleRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_backup_schedule_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10442,7 +9502,7 @@ async def test_get_backup_schedule_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10482,7 +9542,7 @@ async def test_get_backup_schedule_async(
     request_type=backup_schedule.GetBackupScheduleRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10552,7 +9612,7 @@ def test_get_backup_schedule_field_headers():
 @pytest.mark.asyncio
 async def test_get_backup_schedule_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10626,7 +9686,7 @@ def test_get_backup_schedule_flattened_error():
 @pytest.mark.asyncio
 async def test_get_backup_schedule_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10657,7 +9717,7 @@ async def test_get_backup_schedule_flattened_async():
 @pytest.mark.asyncio
 async def test_get_backup_schedule_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10705,27 +9765,6 @@ def test_update_backup_schedule(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gsad_backup_schedule.BackupSchedule)
     assert response.name == "name_value"
-
-
-def test_update_backup_schedule_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_backup_schedule), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup_schedule.UpdateBackupScheduleRequest()
 
 
 def test_update_backup_schedule_non_empty_request_with_auto_populated_field():
@@ -10795,31 +9834,6 @@ def test_update_backup_schedule_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_backup_schedule_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_backup_schedule), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gsad_backup_schedule.BackupSchedule(
-                name="name_value",
-            )
-        )
-        response = await client.update_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsad_backup_schedule.UpdateBackupScheduleRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_backup_schedule_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10827,7 +9841,7 @@ async def test_update_backup_schedule_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10867,7 +9881,7 @@ async def test_update_backup_schedule_async(
     request_type=gsad_backup_schedule.UpdateBackupScheduleRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10937,7 +9951,7 @@ def test_update_backup_schedule_field_headers():
 @pytest.mark.asyncio
 async def test_update_backup_schedule_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11016,7 +10030,7 @@ def test_update_backup_schedule_flattened_error():
 @pytest.mark.asyncio
 async def test_update_backup_schedule_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11051,7 +10065,7 @@ async def test_update_backup_schedule_flattened_async():
 @pytest.mark.asyncio
 async def test_update_backup_schedule_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11097,27 +10111,6 @@ def test_delete_backup_schedule(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_backup_schedule_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_backup_schedule), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.DeleteBackupScheduleRequest()
 
 
 def test_delete_backup_schedule_non_empty_request_with_auto_populated_field():
@@ -11191,27 +10184,6 @@ def test_delete_backup_schedule_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_schedule_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_backup_schedule), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_backup_schedule()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.DeleteBackupScheduleRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_backup_schedule_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11219,7 +10191,7 @@ async def test_delete_backup_schedule_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11259,7 +10231,7 @@ async def test_delete_backup_schedule_async(
     request_type=backup_schedule.DeleteBackupScheduleRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11324,7 +10296,7 @@ def test_delete_backup_schedule_field_headers():
 @pytest.mark.asyncio
 async def test_delete_backup_schedule_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11396,7 +10368,7 @@ def test_delete_backup_schedule_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_backup_schedule_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11425,7 +10397,7 @@ async def test_delete_backup_schedule_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_backup_schedule_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11473,27 +10445,6 @@ def test_list_backup_schedules(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupSchedulesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_backup_schedules_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_backup_schedules), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_backup_schedules()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.ListBackupSchedulesRequest()
 
 
 def test_list_backup_schedules_non_empty_request_with_auto_populated_field():
@@ -11569,31 +10520,6 @@ def test_list_backup_schedules_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_backup_schedules_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_backup_schedules), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            backup_schedule.ListBackupSchedulesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_backup_schedules()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == backup_schedule.ListBackupSchedulesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_backup_schedules_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11601,7 +10527,7 @@ async def test_list_backup_schedules_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DatabaseAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11641,7 +10567,7 @@ async def test_list_backup_schedules_async(
     request_type=backup_schedule.ListBackupSchedulesRequest,
 ):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11711,7 +10637,7 @@ def test_list_backup_schedules_field_headers():
 @pytest.mark.asyncio
 async def test_list_backup_schedules_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11785,7 +10711,7 @@ def test_list_backup_schedules_flattened_error():
 @pytest.mark.asyncio
 async def test_list_backup_schedules_flattened_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11816,7 +10742,7 @@ async def test_list_backup_schedules_flattened_async():
 @pytest.mark.asyncio
 async def test_list_backup_schedules_flattened_error_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11930,7 +10856,7 @@ def test_list_backup_schedules_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_backup_schedules_async_pager():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11982,7 +10908,7 @@ async def test_list_backup_schedules_async_pager():
 @pytest.mark.asyncio
 async def test_list_backup_schedules_async_pages():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12028,46 +10954,6 @@ async def test_list_backup_schedules_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.ListDatabasesRequest,
-        dict,
-    ],
-)
-def test_list_databases_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner_database_admin.ListDatabasesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner_database_admin.ListDatabasesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_databases(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDatabasesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_databases_rest_use_cached_wrapped_rpc():
@@ -12204,89 +11090,6 @@ def test_list_databases_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_databases_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_list_databases"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_list_databases"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.ListDatabasesRequest.pb(
-            spanner_database_admin.ListDatabasesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            spanner_database_admin.ListDatabasesResponse.to_json(
-                spanner_database_admin.ListDatabasesResponse()
-            )
-        )
-
-        request = spanner_database_admin.ListDatabasesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner_database_admin.ListDatabasesResponse()
-
-        client.list_databases(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_databases_rest_bad_request(
-    transport: str = "rest", request_type=spanner_database_admin.ListDatabasesRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_databases(request)
-
-
 def test_list_databases_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12404,41 +11207,6 @@ def test_list_databases_rest_pager(transport: str = "rest"):
         pages = list(client.list_databases(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.CreateDatabaseRequest,
-        dict,
-    ],
-)
-def test_create_database_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_database(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_database_rest_use_cached_wrapped_rpc():
@@ -12574,89 +11342,6 @@ def test_create_database_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_database_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_create_database"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_create_database"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.CreateDatabaseRequest.pb(
-            spanner_database_admin.CreateDatabaseRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = spanner_database_admin.CreateDatabaseRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_database(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_database_rest_bad_request(
-    transport: str = "rest", request_type=spanner_database_admin.CreateDatabaseRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_database(request)
-
-
 def test_create_database_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12711,64 +11396,6 @@ def test_create_database_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             create_statement="create_statement_value",
         )
-
-
-def test_create_database_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.GetDatabaseRequest,
-        dict,
-    ],
-)
-def test_get_database_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner_database_admin.Database(
-            name="name_value",
-            state=spanner_database_admin.Database.State.CREATING,
-            version_retention_period="version_retention_period_value",
-            default_leader="default_leader_value",
-            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
-            enable_drop_protection=True,
-            reconciling=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner_database_admin.Database.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_database(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner_database_admin.Database)
-    assert response.name == "name_value"
-    assert response.state == spanner_database_admin.Database.State.CREATING
-    assert response.version_retention_period == "version_retention_period_value"
-    assert response.default_leader == "default_leader_value"
-    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
-    assert response.enable_drop_protection is True
-    assert response.reconciling is True
 
 
 def test_get_database_rest_use_cached_wrapped_rpc():
@@ -12890,87 +11517,6 @@ def test_get_database_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_database_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_get_database"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_get_database"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.GetDatabaseRequest.pb(
-            spanner_database_admin.GetDatabaseRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner_database_admin.Database.to_json(
-            spanner_database_admin.Database()
-        )
-
-        request = spanner_database_admin.GetDatabaseRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner_database_admin.Database()
-
-        client.get_database(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_database_rest_bad_request(
-    transport: str = "rest", request_type=spanner_database_admin.GetDatabaseRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_database(request)
-
-
 def test_get_database_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13027,156 +11573,6 @@ def test_get_database_rest_flattened_error(transport: str = "rest"):
             spanner_database_admin.GetDatabaseRequest(),
             name="name_value",
         )
-
-
-def test_get_database_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.UpdateDatabaseRequest,
-        dict,
-    ],
-)
-def test_update_database_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "database": {"name": "projects/sample1/instances/sample2/databases/sample3"}
-    }
-    request_init["database"] = {
-        "name": "projects/sample1/instances/sample2/databases/sample3",
-        "state": 1,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "restore_info": {
-            "source_type": 1,
-            "backup_info": {
-                "backup": "backup_value",
-                "version_time": {},
-                "create_time": {},
-                "source_database": "source_database_value",
-            },
-        },
-        "encryption_config": {
-            "kms_key_name": "kms_key_name_value",
-            "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
-        },
-        "encryption_info": [
-            {
-                "encryption_type": 1,
-                "encryption_status": {
-                    "code": 411,
-                    "message": "message_value",
-                    "details": [
-                        {
-                            "type_url": "type.googleapis.com/google.protobuf.Duration",
-                            "value": b"\x08\x0c\x10\xdb\x07",
-                        }
-                    ],
-                },
-                "kms_key_version": "kms_key_version_value",
-            }
-        ],
-        "version_retention_period": "version_retention_period_value",
-        "earliest_version_time": {},
-        "default_leader": "default_leader_value",
-        "database_dialect": 1,
-        "enable_drop_protection": True,
-        "reconciling": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = spanner_database_admin.UpdateDatabaseRequest.meta.fields["database"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["database"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["database"][field])):
-                    del request_init["database"][field][i][subfield]
-            else:
-                del request_init["database"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_database(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_database_rest_use_cached_wrapped_rpc():
@@ -13305,91 +11701,6 @@ def test_update_database_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_database_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_update_database"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_update_database"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.UpdateDatabaseRequest.pb(
-            spanner_database_admin.UpdateDatabaseRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = spanner_database_admin.UpdateDatabaseRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_database(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_database_rest_bad_request(
-    transport: str = "rest", request_type=spanner_database_admin.UpdateDatabaseRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "database": {"name": "projects/sample1/instances/sample2/databases/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_database(request)
-
-
 def test_update_database_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13447,47 +11758,6 @@ def test_update_database_rest_flattened_error(transport: str = "rest"):
             database=spanner_database_admin.Database(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_database_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.UpdateDatabaseDdlRequest,
-        dict,
-    ],
-)
-def test_update_database_ddl_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_database_ddl(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_database_ddl_rest_use_cached_wrapped_rpc():
@@ -13627,90 +11897,6 @@ def test_update_database_ddl_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_database_ddl_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_update_database_ddl"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_update_database_ddl"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.UpdateDatabaseDdlRequest.pb(
-            spanner_database_admin.UpdateDatabaseDdlRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = spanner_database_admin.UpdateDatabaseDdlRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_database_ddl(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_database_ddl_rest_bad_request(
-    transport: str = "rest",
-    request_type=spanner_database_admin.UpdateDatabaseDdlRequest,
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_database_ddl(request)
-
-
 def test_update_database_ddl_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13768,47 +11954,6 @@ def test_update_database_ddl_rest_flattened_error(transport: str = "rest"):
             database="database_value",
             statements=["statements_value"],
         )
-
-
-def test_update_database_ddl_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.DropDatabaseRequest,
-        dict,
-    ],
-)
-def test_drop_database_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.drop_database(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_drop_database_rest_use_cached_wrapped_rpc():
@@ -13927,79 +12072,6 @@ def test_drop_database_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("database",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_drop_database_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_drop_database"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = spanner_database_admin.DropDatabaseRequest.pb(
-            spanner_database_admin.DropDatabaseRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = spanner_database_admin.DropDatabaseRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.drop_database(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_drop_database_rest_bad_request(
-    transport: str = "rest", request_type=spanner_database_admin.DropDatabaseRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.drop_database(request)
-
-
 def test_drop_database_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14055,54 +12127,6 @@ def test_drop_database_rest_flattened_error(transport: str = "rest"):
             spanner_database_admin.DropDatabaseRequest(),
             database="database_value",
         )
-
-
-def test_drop_database_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.GetDatabaseDdlRequest,
-        dict,
-    ],
-)
-def test_get_database_ddl_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner_database_admin.GetDatabaseDdlResponse(
-            statements=["statements_value"],
-            proto_descriptors=b"proto_descriptors_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner_database_admin.GetDatabaseDdlResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_database_ddl(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner_database_admin.GetDatabaseDdlResponse)
-    assert response.statements == ["statements_value"]
-    assert response.proto_descriptors == b"proto_descriptors_blob"
 
 
 def test_get_database_ddl_rest_use_cached_wrapped_rpc():
@@ -14228,89 +12252,6 @@ def test_get_database_ddl_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("database",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_database_ddl_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_get_database_ddl"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_get_database_ddl"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.GetDatabaseDdlRequest.pb(
-            spanner_database_admin.GetDatabaseDdlRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            spanner_database_admin.GetDatabaseDdlResponse.to_json(
-                spanner_database_admin.GetDatabaseDdlResponse()
-            )
-        )
-
-        request = spanner_database_admin.GetDatabaseDdlRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner_database_admin.GetDatabaseDdlResponse()
-
-        client.get_database_ddl(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_database_ddl_rest_bad_request(
-    transport: str = "rest", request_type=spanner_database_admin.GetDatabaseDdlRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_database_ddl(request)
-
-
 def test_get_database_ddl_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14368,52 +12309,6 @@ def test_get_database_ddl_rest_flattened_error(transport: str = "rest"):
             spanner_database_admin.GetDatabaseDdlRequest(),
             database="database_value",
         )
-
-
-def test_get_database_ddl_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.set_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
 
 
 def test_set_iam_policy_rest_use_cached_wrapped_rpc():
@@ -14542,83 +12437,6 @@ def test_set_iam_policy_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_set_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.SetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
-
-        request = iam_policy_pb2.SetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-
-        client.set_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_set_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_iam_policy(request)
-
-
 def test_set_iam_policy_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14674,52 +12492,6 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
             iam_policy_pb2.SetIamPolicyRequest(),
             resource="resource_value",
         )
-
-
-def test_set_iam_policy_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
 
 
 def test_get_iam_policy_rest_use_cached_wrapped_rpc():
@@ -14840,83 +12612,6 @@ def test_get_iam_policy_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("resource",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.GetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
-
-        request = iam_policy_pb2.GetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-
-        client.get_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
-
 def test_get_iam_policy_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14972,50 +12667,6 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
             iam_policy_pb2.GetIamPolicyRequest(),
             resource="resource_value",
         )
-
-
-def test_get_iam_policy_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = iam_policy_pb2.TestIamPermissionsResponse(
-            permissions=["permissions_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.test_iam_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-    assert response.permissions == ["permissions_value"]
 
 
 def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
@@ -15152,85 +12803,6 @@ def test_test_iam_permissions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_test_iam_permissions_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
-
-        request = iam_policy_pb2.TestIamPermissionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        client.test_iam_permissions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_test_iam_permissions_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
-
-
 def test_test_iam_permissions_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15288,153 +12860,6 @@ def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
             resource="resource_value",
             permissions=["permissions_value"],
         )
-
-
-def test_test_iam_permissions_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gsad_backup.CreateBackupRequest,
-        dict,
-    ],
-)
-def test_create_backup_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request_init["backup"] = {
-        "database": "database_value",
-        "version_time": {"seconds": 751, "nanos": 543},
-        "expire_time": {},
-        "name": "name_value",
-        "create_time": {},
-        "size_bytes": 1089,
-        "freeable_size_bytes": 2006,
-        "exclusive_size_bytes": 2168,
-        "state": 1,
-        "referencing_databases": [
-            "referencing_databases_value1",
-            "referencing_databases_value2",
-        ],
-        "encryption_info": {
-            "encryption_type": 1,
-            "encryption_status": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "kms_key_version": "kms_key_version_value",
-        },
-        "encryption_information": {},
-        "database_dialect": 1,
-        "referencing_backups": [
-            "referencing_backups_value1",
-            "referencing_backups_value2",
-        ],
-        "max_expire_time": {},
-        "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
-        "incremental_backup_chain_id": "incremental_backup_chain_id_value",
-        "oldest_version_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gsad_backup.CreateBackupRequest.meta.fields["backup"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["backup"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["backup"][field])):
-                    del request_init["backup"][field][i][subfield]
-            else:
-                del request_init["backup"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_backup_rest_use_cached_wrapped_rpc():
@@ -15592,89 +13017,6 @@ def test_create_backup_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_backup_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_create_backup"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_create_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gsad_backup.CreateBackupRequest.pb(
-            gsad_backup.CreateBackupRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = gsad_backup.CreateBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_backup_rest_bad_request(
-    transport: str = "rest", request_type=gsad_backup.CreateBackupRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_backup(request)
-
-
 def test_create_backup_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15731,47 +13073,6 @@ def test_create_backup_rest_flattened_error(transport: str = "rest"):
             backup=gsad_backup.Backup(database="database_value"),
             backup_id="backup_id_value",
         )
-
-
-def test_create_backup_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup.CopyBackupRequest,
-        dict,
-    ],
-)
-def test_copy_backup_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.copy_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_copy_backup_rest_use_cached_wrapped_rpc():
@@ -15911,87 +13212,6 @@ def test_copy_backup_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_copy_backup_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_copy_backup"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_copy_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = backup.CopyBackupRequest.pb(backup.CopyBackupRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = backup.CopyBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.copy_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_copy_backup_rest_bad_request(
-    transport: str = "rest", request_type=backup.CopyBackupRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.copy_backup(request)
-
-
 def test_copy_backup_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16051,72 +13271,6 @@ def test_copy_backup_rest_flattened_error(transport: str = "rest"):
             source_backup="source_backup_value",
             expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
-
-
-def test_copy_backup_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup.GetBackupRequest,
-        dict,
-    ],
-)
-def test_get_backup_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = backup.Backup(
-            database="database_value",
-            name="name_value",
-            size_bytes=1089,
-            freeable_size_bytes=2006,
-            exclusive_size_bytes=2168,
-            state=backup.Backup.State.CREATING,
-            referencing_databases=["referencing_databases_value"],
-            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
-            referencing_backups=["referencing_backups_value"],
-            backup_schedules=["backup_schedules_value"],
-            incremental_backup_chain_id="incremental_backup_chain_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = backup.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, backup.Backup)
-    assert response.database == "database_value"
-    assert response.name == "name_value"
-    assert response.size_bytes == 1089
-    assert response.freeable_size_bytes == 2006
-    assert response.exclusive_size_bytes == 2168
-    assert response.state == backup.Backup.State.CREATING
-    assert response.referencing_databases == ["referencing_databases_value"]
-    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
-    assert response.referencing_backups == ["referencing_backups_value"]
-    assert response.backup_schedules == ["backup_schedules_value"]
-    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 def test_get_backup_rest_use_cached_wrapped_rpc():
@@ -16236,83 +13390,6 @@ def test_get_backup_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_backup_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_get_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = backup.GetBackupRequest.pb(backup.GetBackupRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = backup.Backup.to_json(backup.Backup())
-
-        request = backup.GetBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = backup.Backup()
-
-        client.get_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_backup_rest_bad_request(
-    transport: str = "rest", request_type=backup.GetBackupRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_backup(request)
-
-
 def test_get_backup_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16367,180 +13444,6 @@ def test_get_backup_rest_flattened_error(transport: str = "rest"):
             backup.GetBackupRequest(),
             name="name_value",
         )
-
-
-def test_get_backup_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gsad_backup.UpdateBackupRequest,
-        dict,
-    ],
-)
-def test_update_backup_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "backup": {"name": "projects/sample1/instances/sample2/backups/sample3"}
-    }
-    request_init["backup"] = {
-        "database": "database_value",
-        "version_time": {"seconds": 751, "nanos": 543},
-        "expire_time": {},
-        "name": "projects/sample1/instances/sample2/backups/sample3",
-        "create_time": {},
-        "size_bytes": 1089,
-        "freeable_size_bytes": 2006,
-        "exclusive_size_bytes": 2168,
-        "state": 1,
-        "referencing_databases": [
-            "referencing_databases_value1",
-            "referencing_databases_value2",
-        ],
-        "encryption_info": {
-            "encryption_type": 1,
-            "encryption_status": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "kms_key_version": "kms_key_version_value",
-        },
-        "encryption_information": {},
-        "database_dialect": 1,
-        "referencing_backups": [
-            "referencing_backups_value1",
-            "referencing_backups_value2",
-        ],
-        "max_expire_time": {},
-        "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
-        "incremental_backup_chain_id": "incremental_backup_chain_id_value",
-        "oldest_version_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gsad_backup.UpdateBackupRequest.meta.fields["backup"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["backup"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["backup"][field])):
-                    del request_init["backup"][field][i][subfield]
-            else:
-                del request_init["backup"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gsad_backup.Backup(
-            database="database_value",
-            name="name_value",
-            size_bytes=1089,
-            freeable_size_bytes=2006,
-            exclusive_size_bytes=2168,
-            state=gsad_backup.Backup.State.CREATING,
-            referencing_databases=["referencing_databases_value"],
-            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
-            referencing_backups=["referencing_backups_value"],
-            backup_schedules=["backup_schedules_value"],
-            incremental_backup_chain_id="incremental_backup_chain_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gsad_backup.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gsad_backup.Backup)
-    assert response.database == "database_value"
-    assert response.name == "name_value"
-    assert response.size_bytes == 1089
-    assert response.freeable_size_bytes == 2006
-    assert response.exclusive_size_bytes == 2168
-    assert response.state == gsad_backup.Backup.State.CREATING
-    assert response.referencing_databases == ["referencing_databases_value"]
-    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
-    assert response.referencing_backups == ["referencing_backups_value"]
-    assert response.backup_schedules == ["backup_schedules_value"]
-    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
 
 
 def test_update_backup_rest_use_cached_wrapped_rpc():
@@ -16668,87 +13571,6 @@ def test_update_backup_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_backup_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_update_backup"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_update_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gsad_backup.UpdateBackupRequest.pb(
-            gsad_backup.UpdateBackupRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gsad_backup.Backup.to_json(gsad_backup.Backup())
-
-        request = gsad_backup.UpdateBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gsad_backup.Backup()
-
-        client.update_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_backup_rest_bad_request(
-    transport: str = "rest", request_type=gsad_backup.UpdateBackupRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "backup": {"name": "projects/sample1/instances/sample2/backups/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_backup(request)
-
-
 def test_update_backup_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16808,47 +13630,6 @@ def test_update_backup_rest_flattened_error(transport: str = "rest"):
             backup=gsad_backup.Backup(database="database_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_backup_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup.DeleteBackupRequest,
-        dict,
-    ],
-)
-def test_delete_backup_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_backup_rest_use_cached_wrapped_rpc():
@@ -16965,77 +13746,6 @@ def test_delete_backup_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_backup_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_delete_backup"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = backup.DeleteBackupRequest.pb(backup.DeleteBackupRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = backup.DeleteBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_backup_rest_bad_request(
-    transport: str = "rest", request_type=backup.DeleteBackupRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_backup(request)
-
-
 def test_delete_backup_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17088,52 +13798,6 @@ def test_delete_backup_rest_flattened_error(transport: str = "rest"):
             backup.DeleteBackupRequest(),
             name="name_value",
         )
-
-
-def test_delete_backup_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup.ListBackupsRequest,
-        dict,
-    ],
-)
-def test_list_backups_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = backup.ListBackupsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = backup.ListBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_backups(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBackupsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_backups_rest_use_cached_wrapped_rpc():
@@ -17270,85 +13934,6 @@ def test_list_backups_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_backups_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_list_backups"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = backup.ListBackupsRequest.pb(backup.ListBackupsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = backup.ListBackupsResponse.to_json(
-            backup.ListBackupsResponse()
-        )
-
-        request = backup.ListBackupsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = backup.ListBackupsResponse()
-
-        client.list_backups(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_backups_rest_bad_request(
-    transport: str = "rest", request_type=backup.ListBackupsRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_backups(request)
-
-
 def test_list_backups_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17464,41 +14049,6 @@ def test_list_backups_rest_pager(transport: str = "rest"):
         pages = list(client.list_backups(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.RestoreDatabaseRequest,
-        dict,
-    ],
-)
-def test_restore_database_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.restore_database(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_restore_database_rest_use_cached_wrapped_rpc():
@@ -17636,89 +14186,6 @@ def test_restore_database_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_restore_database_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_restore_database"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_restore_database"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.RestoreDatabaseRequest.pb(
-            spanner_database_admin.RestoreDatabaseRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = spanner_database_admin.RestoreDatabaseRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.restore_database(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_restore_database_rest_bad_request(
-    transport: str = "rest", request_type=spanner_database_admin.RestoreDatabaseRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.restore_database(request)
-
-
 def test_restore_database_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17775,54 +14242,6 @@ def test_restore_database_rest_flattened_error(transport: str = "rest"):
             database_id="database_id_value",
             backup="backup_value",
         )
-
-
-def test_restore_database_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.ListDatabaseOperationsRequest,
-        dict,
-    ],
-)
-def test_list_database_operations_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner_database_admin.ListDatabaseOperationsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner_database_admin.ListDatabaseOperationsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_database_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDatabaseOperationsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_database_operations_rest_use_cached_wrapped_rpc():
@@ -17968,90 +14387,6 @@ def test_list_database_operations_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_database_operations_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_list_database_operations"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_list_database_operations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.ListDatabaseOperationsRequest.pb(
-            spanner_database_admin.ListDatabaseOperationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            spanner_database_admin.ListDatabaseOperationsResponse.to_json(
-                spanner_database_admin.ListDatabaseOperationsResponse()
-            )
-        )
-
-        request = spanner_database_admin.ListDatabaseOperationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner_database_admin.ListDatabaseOperationsResponse()
-
-        client.list_database_operations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_database_operations_rest_bad_request(
-    transport: str = "rest",
-    request_type=spanner_database_admin.ListDatabaseOperationsRequest,
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_database_operations(request)
-
-
 def test_list_database_operations_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18173,46 +14508,6 @@ def test_list_database_operations_rest_pager(transport: str = "rest"):
         pages = list(client.list_database_operations(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup.ListBackupOperationsRequest,
-        dict,
-    ],
-)
-def test_list_backup_operations_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = backup.ListBackupOperationsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = backup.ListBackupOperationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_backup_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBackupOperationsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_backup_operations_rest_use_cached_wrapped_rpc():
@@ -18356,87 +14651,6 @@ def test_list_backup_operations_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_backup_operations_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_list_backup_operations"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_list_backup_operations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = backup.ListBackupOperationsRequest.pb(
-            backup.ListBackupOperationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = backup.ListBackupOperationsResponse.to_json(
-            backup.ListBackupOperationsResponse()
-        )
-
-        request = backup.ListBackupOperationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = backup.ListBackupOperationsResponse()
-
-        client.list_backup_operations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_backup_operations_rest_bad_request(
-    transport: str = "rest", request_type=backup.ListBackupOperationsRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_backup_operations(request)
-
-
 def test_list_backup_operations_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18555,46 +14769,6 @@ def test_list_backup_operations_rest_pager(transport: str = "rest"):
         pages = list(client.list_backup_operations(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner_database_admin.ListDatabaseRolesRequest,
-        dict,
-    ],
-)
-def test_list_database_roles_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner_database_admin.ListDatabaseRolesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner_database_admin.ListDatabaseRolesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_database_roles(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDatabaseRolesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_database_roles_rest_use_cached_wrapped_rpc():
@@ -18737,90 +14911,6 @@ def test_list_database_roles_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_database_roles_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_list_database_roles"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_list_database_roles"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner_database_admin.ListDatabaseRolesRequest.pb(
-            spanner_database_admin.ListDatabaseRolesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            spanner_database_admin.ListDatabaseRolesResponse.to_json(
-                spanner_database_admin.ListDatabaseRolesResponse()
-            )
-        )
-
-        request = spanner_database_admin.ListDatabaseRolesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner_database_admin.ListDatabaseRolesResponse()
-
-        client.list_database_roles(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_database_roles_rest_bad_request(
-    transport: str = "rest",
-    request_type=spanner_database_admin.ListDatabaseRolesRequest,
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_database_roles(request)
-
-
 def test_list_database_roles_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18944,134 +15034,6 @@ def test_list_database_roles_rest_pager(transport: str = "rest"):
         pages = list(client.list_database_roles(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gsad_backup_schedule.CreateBackupScheduleRequest,
-        dict,
-    ],
-)
-def test_create_backup_schedule_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
-    request_init["backup_schedule"] = {
-        "name": "name_value",
-        "spec": {
-            "cron_spec": {
-                "text": "text_value",
-                "time_zone": "time_zone_value",
-                "creation_window": {"seconds": 751, "nanos": 543},
-            }
-        },
-        "retention_duration": {},
-        "encryption_config": {
-            "encryption_type": 1,
-            "kms_key_name": "kms_key_name_value",
-            "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
-        },
-        "full_backup_spec": {},
-        "incremental_backup_spec": {},
-        "update_time": {"seconds": 751, "nanos": 543},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gsad_backup_schedule.CreateBackupScheduleRequest.meta.fields[
-        "backup_schedule"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["backup_schedule"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["backup_schedule"][field])):
-                    del request_init["backup_schedule"][field][i][subfield]
-            else:
-                del request_init["backup_schedule"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gsad_backup_schedule.BackupSchedule(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gsad_backup_schedule.BackupSchedule.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_backup_schedule(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gsad_backup_schedule.BackupSchedule)
-    assert response.name == "name_value"
 
 
 def test_create_backup_schedule_rest_use_cached_wrapped_rpc():
@@ -19223,88 +15185,6 @@ def test_create_backup_schedule_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_backup_schedule_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_create_backup_schedule"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_create_backup_schedule"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gsad_backup_schedule.CreateBackupScheduleRequest.pb(
-            gsad_backup_schedule.CreateBackupScheduleRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gsad_backup_schedule.BackupSchedule.to_json(
-            gsad_backup_schedule.BackupSchedule()
-        )
-
-        request = gsad_backup_schedule.CreateBackupScheduleRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gsad_backup_schedule.BackupSchedule()
-
-        client.create_backup_schedule(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_backup_schedule_rest_bad_request(
-    transport: str = "rest",
-    request_type=gsad_backup_schedule.CreateBackupScheduleRequest,
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_backup_schedule(request)
-
-
 def test_create_backup_schedule_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19366,54 +15246,6 @@ def test_create_backup_schedule_rest_flattened_error(transport: str = "rest"):
             backup_schedule=gsad_backup_schedule.BackupSchedule(name="name_value"),
             backup_schedule_id="backup_schedule_id_value",
         )
-
-
-def test_create_backup_schedule_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup_schedule.GetBackupScheduleRequest,
-        dict,
-    ],
-)
-def test_get_backup_schedule_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = backup_schedule.BackupSchedule(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = backup_schedule.BackupSchedule.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_backup_schedule(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, backup_schedule.BackupSchedule)
-    assert response.name == "name_value"
 
 
 def test_get_backup_schedule_rest_use_cached_wrapped_rpc():
@@ -19539,89 +15371,6 @@ def test_get_backup_schedule_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_backup_schedule_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_get_backup_schedule"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_get_backup_schedule"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = backup_schedule.GetBackupScheduleRequest.pb(
-            backup_schedule.GetBackupScheduleRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = backup_schedule.BackupSchedule.to_json(
-            backup_schedule.BackupSchedule()
-        )
-
-        request = backup_schedule.GetBackupScheduleRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = backup_schedule.BackupSchedule()
-
-        client.get_backup_schedule(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_backup_schedule_rest_bad_request(
-    transport: str = "rest", request_type=backup_schedule.GetBackupScheduleRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_backup_schedule(request)
-
-
 def test_get_backup_schedule_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19679,144 +15428,6 @@ def test_get_backup_schedule_rest_flattened_error(transport: str = "rest"):
             backup_schedule.GetBackupScheduleRequest(),
             name="name_value",
         )
-
-
-def test_get_backup_schedule_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gsad_backup_schedule.UpdateBackupScheduleRequest,
-        dict,
-    ],
-)
-def test_update_backup_schedule_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "backup_schedule": {
-            "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
-        }
-    }
-    request_init["backup_schedule"] = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4",
-        "spec": {
-            "cron_spec": {
-                "text": "text_value",
-                "time_zone": "time_zone_value",
-                "creation_window": {"seconds": 751, "nanos": 543},
-            }
-        },
-        "retention_duration": {},
-        "encryption_config": {
-            "encryption_type": 1,
-            "kms_key_name": "kms_key_name_value",
-            "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
-        },
-        "full_backup_spec": {},
-        "incremental_backup_spec": {},
-        "update_time": {"seconds": 751, "nanos": 543},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gsad_backup_schedule.UpdateBackupScheduleRequest.meta.fields[
-        "backup_schedule"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["backup_schedule"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["backup_schedule"][field])):
-                    del request_init["backup_schedule"][field][i][subfield]
-            else:
-                del request_init["backup_schedule"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gsad_backup_schedule.BackupSchedule(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gsad_backup_schedule.BackupSchedule.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_backup_schedule(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gsad_backup_schedule.BackupSchedule)
-    assert response.name == "name_value"
 
 
 def test_update_backup_schedule_rest_use_cached_wrapped_rpc():
@@ -19949,92 +15560,6 @@ def test_update_backup_schedule_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_backup_schedule_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_update_backup_schedule"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_update_backup_schedule"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gsad_backup_schedule.UpdateBackupScheduleRequest.pb(
-            gsad_backup_schedule.UpdateBackupScheduleRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gsad_backup_schedule.BackupSchedule.to_json(
-            gsad_backup_schedule.BackupSchedule()
-        )
-
-        request = gsad_backup_schedule.UpdateBackupScheduleRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gsad_backup_schedule.BackupSchedule()
-
-        client.update_backup_schedule(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_backup_schedule_rest_bad_request(
-    transport: str = "rest",
-    request_type=gsad_backup_schedule.UpdateBackupScheduleRequest,
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "backup_schedule": {
-            "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_backup_schedule(request)
-
-
 def test_update_backup_schedule_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20096,49 +15621,6 @@ def test_update_backup_schedule_rest_flattened_error(transport: str = "rest"):
             backup_schedule=gsad_backup_schedule.BackupSchedule(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_backup_schedule_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup_schedule.DeleteBackupScheduleRequest,
-        dict,
-    ],
-)
-def test_delete_backup_schedule_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_backup_schedule(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_backup_schedule_rest_use_cached_wrapped_rpc():
@@ -20262,81 +15744,6 @@ def test_delete_backup_schedule_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_backup_schedule_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_delete_backup_schedule"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = backup_schedule.DeleteBackupScheduleRequest.pb(
-            backup_schedule.DeleteBackupScheduleRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = backup_schedule.DeleteBackupScheduleRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_backup_schedule(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_backup_schedule_rest_bad_request(
-    transport: str = "rest", request_type=backup_schedule.DeleteBackupScheduleRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_backup_schedule(request)
-
-
 def test_delete_backup_schedule_rest_flattened():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20392,52 +15799,6 @@ def test_delete_backup_schedule_rest_flattened_error(transport: str = "rest"):
             backup_schedule.DeleteBackupScheduleRequest(),
             name="name_value",
         )
-
-
-def test_delete_backup_schedule_rest_error():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        backup_schedule.ListBackupSchedulesRequest,
-        dict,
-    ],
-)
-def test_list_backup_schedules_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = backup_schedule.ListBackupSchedulesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = backup_schedule.ListBackupSchedulesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_backup_schedules(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBackupSchedulesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_backup_schedules_rest_use_cached_wrapped_rpc():
@@ -20577,87 +15938,6 @@ def test_list_backup_schedules_rest_unset_required_fields():
         )
         & set(("parent",))
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_backup_schedules_rest_interceptors(null_interceptor):
-    transport = transports.DatabaseAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DatabaseAdminRestInterceptor(),
-    )
-    client = DatabaseAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "post_list_backup_schedules"
-    ) as post, mock.patch.object(
-        transports.DatabaseAdminRestInterceptor, "pre_list_backup_schedules"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = backup_schedule.ListBackupSchedulesRequest.pb(
-            backup_schedule.ListBackupSchedulesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = backup_schedule.ListBackupSchedulesResponse.to_json(
-            backup_schedule.ListBackupSchedulesResponse()
-        )
-
-        request = backup_schedule.ListBackupSchedulesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = backup_schedule.ListBackupSchedulesResponse()
-
-        client.list_backup_schedules(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_backup_schedules_rest_bad_request(
-    transport: str = "rest", request_type=backup_schedule.ListBackupSchedulesRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_backup_schedules(request)
 
 
 def test_list_backup_schedules_rest_flattened():
@@ -20876,18 +16156,5564 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = DatabaseAdminClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_databases_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        call.return_value = spanner_database_admin.ListDatabasesResponse()
+        client.list_databases(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabasesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_database_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.CreateDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_database_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        call.return_value = spanner_database_admin.Database()
+        client.get_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.GetDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_database_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.UpdateDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_database_ddl_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_database_ddl), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_database_ddl(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.UpdateDatabaseDdlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_drop_database_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
+        call.return_value = None
+        client.drop_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.DropDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_database_ddl_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
+        call.return_value = spanner_database_admin.GetDatabaseDdlResponse()
+        client.get_database_ddl(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.GetDatabaseDdlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_copy_backup_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.copy_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.CopyBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        call.return_value = backup.Backup()
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_backup_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        call.return_value = gsad_backup.Backup()
+        client.update_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup.UpdateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        call.return_value = None
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        call.return_value = backup.ListBackupsResponse()
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_restore_database_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.restore_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.RestoreDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_database_operations_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_database_operations), "__call__"
+    ) as call:
+        call.return_value = spanner_database_admin.ListDatabaseOperationsResponse()
+        client.list_database_operations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabaseOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backup_operations_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_operations), "__call__"
+    ) as call:
+        call.return_value = backup.ListBackupOperationsResponse()
+        client.list_backup_operations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.ListBackupOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_database_roles_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_database_roles), "__call__"
+    ) as call:
+        call.return_value = spanner_database_admin.ListDatabaseRolesResponse()
+        client.list_database_roles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabaseRolesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_schedule_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_schedule), "__call__"
+    ) as call:
+        call.return_value = gsad_backup_schedule.BackupSchedule()
+        client.create_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup_schedule.CreateBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_schedule_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_schedule), "__call__"
+    ) as call:
+        call.return_value = backup_schedule.BackupSchedule()
+        client.get_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.GetBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_backup_schedule_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_schedule), "__call__"
+    ) as call:
+        call.return_value = gsad_backup_schedule.BackupSchedule()
+        client.update_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup_schedule.UpdateBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_schedule_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_schedule), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.DeleteBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backup_schedules_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_schedules), "__call__"
+    ) as call:
+        call.return_value = backup_schedule.ListBackupSchedulesResponse()
+        client.list_backup_schedules(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.ListBackupSchedulesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = DatabaseAdminAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_databases_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.ListDatabasesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_databases(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabasesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_database_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.CreateDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_database_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.Database(
+                name="name_value",
+                state=spanner_database_admin.Database.State.CREATING,
+                version_retention_period="version_retention_period_value",
+                default_leader="default_leader_value",
+                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
+                enable_drop_protection=True,
+                reconciling=True,
+            )
+        )
+        await client.get_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.GetDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_database_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.UpdateDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_database_ddl_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_database_ddl), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_database_ddl(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.UpdateDatabaseDdlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_drop_database_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.drop_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.DropDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_database_ddl_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.GetDatabaseDdlResponse(
+                statements=["statements_value"],
+                proto_descriptors=b"proto_descriptors_blob",
+            )
+        )
+        await client.get_database_ddl(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.GetDatabaseDdlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_set_iam_policy_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_iam_policy_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_test_iam_permissions_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+        await client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_backup_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_copy_backup_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.copy_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.CopyBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_backup_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup.Backup(
+                database="database_value",
+                name="name_value",
+                size_bytes=1089,
+                freeable_size_bytes=2006,
+                exclusive_size_bytes=2168,
+                state=backup.Backup.State.CREATING,
+                referencing_databases=["referencing_databases_value"],
+                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
+                referencing_backups=["referencing_backups_value"],
+                backup_schedules=["backup_schedules_value"],
+                incremental_backup_chain_id="incremental_backup_chain_id_value",
+            )
+        )
+        await client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_backup_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsad_backup.Backup(
+                database="database_value",
+                name="name_value",
+                size_bytes=1089,
+                freeable_size_bytes=2006,
+                exclusive_size_bytes=2168,
+                state=gsad_backup.Backup.State.CREATING,
+                referencing_databases=["referencing_databases_value"],
+                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
+                referencing_backups=["referencing_backups_value"],
+                backup_schedules=["backup_schedules_value"],
+                incremental_backup_chain_id="incremental_backup_chain_id_value",
+            )
+        )
+        await client.update_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup.UpdateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_backup_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_backups_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup.ListBackupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_restore_database_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.restore_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.RestoreDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_database_operations_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_database_operations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.ListDatabaseOperationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_database_operations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabaseOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_backup_operations_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_operations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup.ListBackupOperationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_backup_operations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.ListBackupOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_database_roles_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_database_roles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.ListDatabaseRolesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_database_roles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabaseRolesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_backup_schedule_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsad_backup_schedule.BackupSchedule(
+                name="name_value",
+            )
+        )
+        await client.create_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup_schedule.CreateBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_backup_schedule_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup_schedule.BackupSchedule(
+                name="name_value",
+            )
+        )
+        await client.get_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.GetBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_backup_schedule_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsad_backup_schedule.BackupSchedule(
+                name="name_value",
+            )
+        )
+        await client.update_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup_schedule.UpdateBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_backup_schedule_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_schedule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.DeleteBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_backup_schedules_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_schedules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            backup_schedule.ListBackupSchedulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_backup_schedules(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.ListBackupSchedulesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = DatabaseAdminClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_databases_rest_bad_request(
+    request_type=spanner_database_admin.ListDatabasesRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_databases(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        spanner_database_admin.ListDatabasesRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = DatabaseAdminClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_databases_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner_database_admin.ListDatabasesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner_database_admin.ListDatabasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_databases(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatabasesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_databases_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_databases"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_list_databases"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.ListDatabasesRequest.pb(
+            spanner_database_admin.ListDatabasesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner_database_admin.ListDatabasesResponse.to_json(
+            spanner_database_admin.ListDatabasesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.ListDatabasesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner_database_admin.ListDatabasesResponse()
+
+        client.list_databases(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_database_rest_bad_request(
+    request_type=spanner_database_admin.CreateDatabaseRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.CreateDatabaseRequest,
+        dict,
+    ],
+)
+def test_create_database_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_database(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_database_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_create_database"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_create_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.CreateDatabaseRequest.pb(
+            spanner_database_admin.CreateDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.CreateDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_database_rest_bad_request(
+    request_type=spanner_database_admin.GetDatabaseRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.GetDatabaseRequest,
+        dict,
+    ],
+)
+def test_get_database_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner_database_admin.Database(
+            name="name_value",
+            state=spanner_database_admin.Database.State.CREATING,
+            version_retention_period="version_retention_period_value",
+            default_leader="default_leader_value",
+            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
+            enable_drop_protection=True,
+            reconciling=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner_database_admin.Database.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_database(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner_database_admin.Database)
+    assert response.name == "name_value"
+    assert response.state == spanner_database_admin.Database.State.CREATING
+    assert response.version_retention_period == "version_retention_period_value"
+    assert response.default_leader == "default_leader_value"
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
+    assert response.enable_drop_protection is True
+    assert response.reconciling is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_database_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_database"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_get_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.GetDatabaseRequest.pb(
+            spanner_database_admin.GetDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner_database_admin.Database.to_json(
+            spanner_database_admin.Database()
+        )
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.GetDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner_database_admin.Database()
+
+        client.get_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_database_rest_bad_request(
+    request_type=spanner_database_admin.UpdateDatabaseRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "database": {"name": "projects/sample1/instances/sample2/databases/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.UpdateDatabaseRequest,
+        dict,
+    ],
+)
+def test_update_database_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "database": {"name": "projects/sample1/instances/sample2/databases/sample3"}
+    }
+    request_init["database"] = {
+        "name": "projects/sample1/instances/sample2/databases/sample3",
+        "state": 1,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "restore_info": {
+            "source_type": 1,
+            "backup_info": {
+                "backup": "backup_value",
+                "version_time": {},
+                "create_time": {},
+                "source_database": "source_database_value",
+            },
+        },
+        "encryption_config": {
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
+        },
+        "encryption_info": [
+            {
+                "encryption_type": 1,
+                "encryption_status": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+                "kms_key_version": "kms_key_version_value",
+            }
+        ],
+        "version_retention_period": "version_retention_period_value",
+        "earliest_version_time": {},
+        "default_leader": "default_leader_value",
+        "database_dialect": 1,
+        "enable_drop_protection": True,
+        "reconciling": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = spanner_database_admin.UpdateDatabaseRequest.meta.fields["database"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["database"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["database"][field])):
+                    del request_init["database"][field][i][subfield]
+            else:
+                del request_init["database"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_database(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_database_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_update_database"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_update_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.UpdateDatabaseRequest.pb(
+            spanner_database_admin.UpdateDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.UpdateDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_database_ddl_rest_bad_request(
+    request_type=spanner_database_admin.UpdateDatabaseDdlRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_database_ddl(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.UpdateDatabaseDdlRequest,
+        dict,
+    ],
+)
+def test_update_database_ddl_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_database_ddl(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_database_ddl_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_update_database_ddl"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_update_database_ddl"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.UpdateDatabaseDdlRequest.pb(
+            spanner_database_admin.UpdateDatabaseDdlRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.UpdateDatabaseDdlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_database_ddl(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_drop_database_rest_bad_request(
+    request_type=spanner_database_admin.DropDatabaseRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.drop_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.DropDatabaseRequest,
+        dict,
+    ],
+)
+def test_drop_database_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.drop_database(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_drop_database_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_drop_database"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = spanner_database_admin.DropDatabaseRequest.pb(
+            spanner_database_admin.DropDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = spanner_database_admin.DropDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.drop_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_get_database_ddl_rest_bad_request(
+    request_type=spanner_database_admin.GetDatabaseDdlRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_database_ddl(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.GetDatabaseDdlRequest,
+        dict,
+    ],
+)
+def test_get_database_ddl_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner_database_admin.GetDatabaseDdlResponse(
+            statements=["statements_value"],
+            proto_descriptors=b"proto_descriptors_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner_database_admin.GetDatabaseDdlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_database_ddl(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner_database_admin.GetDatabaseDdlResponse)
+    assert response.statements == ["statements_value"]
+    assert response.proto_descriptors == b"proto_descriptors_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_database_ddl_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_database_ddl"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_get_database_ddl"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.GetDatabaseDdlRequest.pb(
+            spanner_database_admin.GetDatabaseDdlRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner_database_admin.GetDatabaseDdlResponse.to_json(
+            spanner_database_admin.GetDatabaseDdlResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.GetDatabaseDdlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner_database_admin.GetDatabaseDdlResponse()
+
+        client.get_database_ddl(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.SetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(policy_pb2.Policy())
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.GetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(policy_pb2.Policy())
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_backup_rest_bad_request(request_type=gsad_backup.CreateBackupRequest):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup.CreateBackupRequest,
+        dict,
+    ],
+)
+def test_create_backup_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request_init["backup"] = {
+        "database": "database_value",
+        "version_time": {"seconds": 751, "nanos": 543},
+        "expire_time": {},
+        "name": "name_value",
+        "create_time": {},
+        "size_bytes": 1089,
+        "freeable_size_bytes": 2006,
+        "exclusive_size_bytes": 2168,
+        "state": 1,
+        "referencing_databases": [
+            "referencing_databases_value1",
+            "referencing_databases_value2",
+        ],
+        "encryption_info": {
+            "encryption_type": 1,
+            "encryption_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "kms_key_version": "kms_key_version_value",
+        },
+        "encryption_information": {},
+        "database_dialect": 1,
+        "referencing_backups": [
+            "referencing_backups_value1",
+            "referencing_backups_value2",
+        ],
+        "max_expire_time": {},
+        "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
+        "incremental_backup_chain_id": "incremental_backup_chain_id_value",
+        "oldest_version_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gsad_backup.CreateBackupRequest.meta.fields["backup"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup"][field])):
+                    del request_init["backup"][field][i][subfield]
+            else:
+                del request_init["backup"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_backup(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_backup_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_create_backup"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_create_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsad_backup.CreateBackupRequest.pb(
+            gsad_backup.CreateBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = gsad_backup.CreateBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_copy_backup_rest_bad_request(request_type=backup.CopyBackupRequest):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.copy_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.CopyBackupRequest,
+        dict,
+    ],
+)
+def test_copy_backup_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.copy_backup(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_copy_backup_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_copy_backup"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_copy_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = backup.CopyBackupRequest.pb(backup.CopyBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = backup.CopyBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.copy_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_rest_bad_request(request_type=backup.GetBackupRequest):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.GetBackupRequest,
+        dict,
+    ],
+)
+def test_get_backup_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup.Backup(
+            database="database_value",
+            name="name_value",
+            size_bytes=1089,
+            freeable_size_bytes=2006,
+            exclusive_size_bytes=2168,
+            state=backup.Backup.State.CREATING,
+            referencing_databases=["referencing_databases_value"],
+            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
+            referencing_backups=["referencing_backups_value"],
+            backup_schedules=["backup_schedules_value"],
+            incremental_backup_chain_id="incremental_backup_chain_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = backup.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, backup.Backup)
+    assert response.database == "database_value"
+    assert response.name == "name_value"
+    assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
+    assert response.state == backup.Backup.State.CREATING
+    assert response.referencing_databases == ["referencing_databases_value"]
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
+    assert response.referencing_backups == ["referencing_backups_value"]
+    assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_backup"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_get_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = backup.GetBackupRequest.pb(backup.GetBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = backup.Backup.to_json(backup.Backup())
+        req.return_value.content = return_value
+
+        request = backup.GetBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = backup.Backup()
+
+        client.get_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_backup_rest_bad_request(request_type=gsad_backup.UpdateBackupRequest):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": {"name": "projects/sample1/instances/sample2/backups/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup.UpdateBackupRequest,
+        dict,
+    ],
+)
+def test_update_backup_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": {"name": "projects/sample1/instances/sample2/backups/sample3"}
+    }
+    request_init["backup"] = {
+        "database": "database_value",
+        "version_time": {"seconds": 751, "nanos": 543},
+        "expire_time": {},
+        "name": "projects/sample1/instances/sample2/backups/sample3",
+        "create_time": {},
+        "size_bytes": 1089,
+        "freeable_size_bytes": 2006,
+        "exclusive_size_bytes": 2168,
+        "state": 1,
+        "referencing_databases": [
+            "referencing_databases_value1",
+            "referencing_databases_value2",
+        ],
+        "encryption_info": {
+            "encryption_type": 1,
+            "encryption_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "kms_key_version": "kms_key_version_value",
+        },
+        "encryption_information": {},
+        "database_dialect": 1,
+        "referencing_backups": [
+            "referencing_backups_value1",
+            "referencing_backups_value2",
+        ],
+        "max_expire_time": {},
+        "backup_schedules": ["backup_schedules_value1", "backup_schedules_value2"],
+        "incremental_backup_chain_id": "incremental_backup_chain_id_value",
+        "oldest_version_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gsad_backup.UpdateBackupRequest.meta.fields["backup"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup"][field])):
+                    del request_init["backup"][field][i][subfield]
+            else:
+                del request_init["backup"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsad_backup.Backup(
+            database="database_value",
+            name="name_value",
+            size_bytes=1089,
+            freeable_size_bytes=2006,
+            exclusive_size_bytes=2168,
+            state=gsad_backup.Backup.State.CREATING,
+            referencing_databases=["referencing_databases_value"],
+            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
+            referencing_backups=["referencing_backups_value"],
+            backup_schedules=["backup_schedules_value"],
+            incremental_backup_chain_id="incremental_backup_chain_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gsad_backup.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsad_backup.Backup)
+    assert response.database == "database_value"
+    assert response.name == "name_value"
+    assert response.size_bytes == 1089
+    assert response.freeable_size_bytes == 2006
+    assert response.exclusive_size_bytes == 2168
+    assert response.state == gsad_backup.Backup.State.CREATING
+    assert response.referencing_databases == ["referencing_databases_value"]
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
+    assert response.referencing_backups == ["referencing_backups_value"]
+    assert response.backup_schedules == ["backup_schedules_value"]
+    assert response.incremental_backup_chain_id == "incremental_backup_chain_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_backup_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_update_backup"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_update_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsad_backup.UpdateBackupRequest.pb(
+            gsad_backup.UpdateBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gsad_backup.Backup.to_json(gsad_backup.Backup())
+        req.return_value.content = return_value
+
+        request = gsad_backup.UpdateBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsad_backup.Backup()
+
+        client.update_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_backup_rest_bad_request(request_type=backup.DeleteBackupRequest):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.DeleteBackupRequest,
+        dict,
+    ],
+)
+def test_delete_backup_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/backups/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_backup_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_delete_backup"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = backup.DeleteBackupRequest.pb(backup.DeleteBackupRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = backup.DeleteBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_backups_rest_bad_request(request_type=backup.ListBackupsRequest):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_backups(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.ListBackupsRequest,
+        dict,
+    ],
+)
+def test_list_backups_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup.ListBackupsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = backup.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backups_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_backups"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_list_backups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = backup.ListBackupsRequest.pb(backup.ListBackupsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = backup.ListBackupsResponse.to_json(backup.ListBackupsResponse())
+        req.return_value.content = return_value
+
+        request = backup.ListBackupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = backup.ListBackupsResponse()
+
+        client.list_backups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_restore_database_rest_bad_request(
+    request_type=spanner_database_admin.RestoreDatabaseRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.restore_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.RestoreDatabaseRequest,
+        dict,
+    ],
+)
+def test_restore_database_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.restore_database(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_restore_database_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_restore_database"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_restore_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.RestoreDatabaseRequest.pb(
+            spanner_database_admin.RestoreDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.RestoreDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.restore_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_database_operations_rest_bad_request(
+    request_type=spanner_database_admin.ListDatabaseOperationsRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_database_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.ListDatabaseOperationsRequest,
+        dict,
+    ],
+)
+def test_list_database_operations_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner_database_admin.ListDatabaseOperationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner_database_admin.ListDatabaseOperationsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_database_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatabaseOperationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_database_operations_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_database_operations"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_list_database_operations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.ListDatabaseOperationsRequest.pb(
+            spanner_database_admin.ListDatabaseOperationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner_database_admin.ListDatabaseOperationsResponse.to_json(
+            spanner_database_admin.ListDatabaseOperationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.ListDatabaseOperationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner_database_admin.ListDatabaseOperationsResponse()
+
+        client.list_database_operations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_backup_operations_rest_bad_request(
+    request_type=backup.ListBackupOperationsRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_backup_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup.ListBackupOperationsRequest,
+        dict,
+    ],
+)
+def test_list_backup_operations_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup.ListBackupOperationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = backup.ListBackupOperationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backup_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupOperationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backup_operations_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_backup_operations"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_list_backup_operations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = backup.ListBackupOperationsRequest.pb(
+            backup.ListBackupOperationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = backup.ListBackupOperationsResponse.to_json(
+            backup.ListBackupOperationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = backup.ListBackupOperationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = backup.ListBackupOperationsResponse()
+
+        client.list_backup_operations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_database_roles_rest_bad_request(
+    request_type=spanner_database_admin.ListDatabaseRolesRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_database_roles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.ListDatabaseRolesRequest,
+        dict,
+    ],
+)
+def test_list_database_roles_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner_database_admin.ListDatabaseRolesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner_database_admin.ListDatabaseRolesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_database_roles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatabaseRolesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_database_roles_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_database_roles"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_list_database_roles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner_database_admin.ListDatabaseRolesRequest.pb(
+            spanner_database_admin.ListDatabaseRolesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner_database_admin.ListDatabaseRolesResponse.to_json(
+            spanner_database_admin.ListDatabaseRolesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner_database_admin.ListDatabaseRolesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner_database_admin.ListDatabaseRolesResponse()
+
+        client.list_database_roles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_backup_schedule_rest_bad_request(
+    request_type=gsad_backup_schedule.CreateBackupScheduleRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_backup_schedule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup_schedule.CreateBackupScheduleRequest,
+        dict,
+    ],
+)
+def test_create_backup_schedule_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
+    request_init["backup_schedule"] = {
+        "name": "name_value",
+        "spec": {
+            "cron_spec": {
+                "text": "text_value",
+                "time_zone": "time_zone_value",
+                "creation_window": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "retention_duration": {},
+        "encryption_config": {
+            "encryption_type": 1,
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
+        },
+        "full_backup_spec": {},
+        "incremental_backup_spec": {},
+        "update_time": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gsad_backup_schedule.CreateBackupScheduleRequest.meta.fields[
+        "backup_schedule"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup_schedule"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup_schedule"][field])):
+                    del request_init["backup_schedule"][field][i][subfield]
+            else:
+                del request_init["backup_schedule"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsad_backup_schedule.BackupSchedule(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gsad_backup_schedule.BackupSchedule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_backup_schedule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsad_backup_schedule.BackupSchedule)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_backup_schedule_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_create_backup_schedule"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_create_backup_schedule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsad_backup_schedule.CreateBackupScheduleRequest.pb(
+            gsad_backup_schedule.CreateBackupScheduleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gsad_backup_schedule.BackupSchedule.to_json(
+            gsad_backup_schedule.BackupSchedule()
+        )
+        req.return_value.content = return_value
+
+        request = gsad_backup_schedule.CreateBackupScheduleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsad_backup_schedule.BackupSchedule()
+
+        client.create_backup_schedule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_schedule_rest_bad_request(
+    request_type=backup_schedule.GetBackupScheduleRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_backup_schedule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup_schedule.GetBackupScheduleRequest,
+        dict,
+    ],
+)
+def test_get_backup_schedule_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup_schedule.BackupSchedule(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = backup_schedule.BackupSchedule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup_schedule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, backup_schedule.BackupSchedule)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_schedule_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_get_backup_schedule"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_get_backup_schedule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = backup_schedule.GetBackupScheduleRequest.pb(
+            backup_schedule.GetBackupScheduleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = backup_schedule.BackupSchedule.to_json(
+            backup_schedule.BackupSchedule()
+        )
+        req.return_value.content = return_value
+
+        request = backup_schedule.GetBackupScheduleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = backup_schedule.BackupSchedule()
+
+        client.get_backup_schedule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_backup_schedule_rest_bad_request(
+    request_type=gsad_backup_schedule.UpdateBackupScheduleRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup_schedule": {
+            "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_backup_schedule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsad_backup_schedule.UpdateBackupScheduleRequest,
+        dict,
+    ],
+)
+def test_update_backup_schedule_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup_schedule": {
+            "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
+        }
+    }
+    request_init["backup_schedule"] = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4",
+        "spec": {
+            "cron_spec": {
+                "text": "text_value",
+                "time_zone": "time_zone_value",
+                "creation_window": {"seconds": 751, "nanos": 543},
+            }
+        },
+        "retention_duration": {},
+        "encryption_config": {
+            "encryption_type": 1,
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_names": ["kms_key_names_value1", "kms_key_names_value2"],
+        },
+        "full_backup_spec": {},
+        "incremental_backup_spec": {},
+        "update_time": {"seconds": 751, "nanos": 543},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gsad_backup_schedule.UpdateBackupScheduleRequest.meta.fields[
+        "backup_schedule"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup_schedule"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup_schedule"][field])):
+                    del request_init["backup_schedule"][field][i][subfield]
+            else:
+                del request_init["backup_schedule"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsad_backup_schedule.BackupSchedule(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gsad_backup_schedule.BackupSchedule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_backup_schedule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsad_backup_schedule.BackupSchedule)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_backup_schedule_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_update_backup_schedule"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_update_backup_schedule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsad_backup_schedule.UpdateBackupScheduleRequest.pb(
+            gsad_backup_schedule.UpdateBackupScheduleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gsad_backup_schedule.BackupSchedule.to_json(
+            gsad_backup_schedule.BackupSchedule()
+        )
+        req.return_value.content = return_value
+
+        request = gsad_backup_schedule.UpdateBackupScheduleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsad_backup_schedule.BackupSchedule()
+
+        client.update_backup_schedule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_backup_schedule_rest_bad_request(
+    request_type=backup_schedule.DeleteBackupScheduleRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_backup_schedule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup_schedule.DeleteBackupScheduleRequest,
+        dict,
+    ],
+)
+def test_delete_backup_schedule_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/backupSchedules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_backup_schedule(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_backup_schedule_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_delete_backup_schedule"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = backup_schedule.DeleteBackupScheduleRequest.pb(
+            backup_schedule.DeleteBackupScheduleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = backup_schedule.DeleteBackupScheduleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_backup_schedule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_backup_schedules_rest_bad_request(
+    request_type=backup_schedule.ListBackupSchedulesRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_backup_schedules(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backup_schedule.ListBackupSchedulesRequest,
+        dict,
+    ],
+)
+def test_list_backup_schedules_rest_call_success(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = backup_schedule.ListBackupSchedulesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = backup_schedule.ListBackupSchedulesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backup_schedules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupSchedulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backup_schedules_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseAdminRestInterceptor(),
+    )
+    client = DatabaseAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "post_list_backup_schedules"
+    ) as post, mock.patch.object(
+        transports.DatabaseAdminRestInterceptor, "pre_list_backup_schedules"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = backup_schedule.ListBackupSchedulesRequest.pb(
+            backup_schedule.ListBackupSchedulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = backup_schedule.ListBackupSchedulesResponse.to_json(
+            backup_schedule.ListBackupSchedulesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = backup_schedule.ListBackupSchedulesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = backup_schedule.ListBackupSchedulesResponse()
+
+        client.list_backup_schedules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/instances/sample2/databases/sample3/operations"},
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/operations"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_databases_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        client.list_databases(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabasesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_database_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        client.create_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.CreateDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_database_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        client.get_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.GetDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_database_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_database), "__call__") as call:
+        client.update_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.UpdateDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_database_ddl_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_database_ddl), "__call__"
+    ) as call:
+        client.update_database_ddl(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.UpdateDatabaseDdlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_drop_database_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
+        client.drop_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.DropDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_database_ddl_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
+        client.get_database_ddl(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.GetDatabaseDdlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_copy_backup_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
+        client.copy_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.CopyBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_backup_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        client.update_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup.UpdateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_restore_database_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
+        client.restore_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.RestoreDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_database_operations_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_database_operations), "__call__"
+    ) as call:
+        client.list_database_operations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabaseOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backup_operations_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_operations), "__call__"
+    ) as call:
+        client.list_backup_operations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup.ListBackupOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_database_roles_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_database_roles), "__call__"
+    ) as call:
+        client.list_database_roles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.ListDatabaseRolesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_schedule_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_backup_schedule), "__call__"
+    ) as call:
+        client.create_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup_schedule.CreateBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_schedule_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_schedule), "__call__"
+    ) as call:
+        client.get_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.GetBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_backup_schedule_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_backup_schedule), "__call__"
+    ) as call:
+        client.update_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsad_backup_schedule.UpdateBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_schedule_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_backup_schedule), "__call__"
+    ) as call:
+        client.delete_backup_schedule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.DeleteBackupScheduleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backup_schedules_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_schedules), "__call__"
+    ) as call:
+        client.list_backup_schedules(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = backup_schedule.ListBackupSchedulesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_database_admin_rest_lro_client():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -21162,23 +21988,6 @@ def test_database_admin_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_database_admin_rest_lro_client():
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -21805,270 +22614,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {
-            "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
-        },
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {
-            "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
-        },
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {
-            "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
-        },
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/operations/sample4"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/instances/sample2/databases/sample3/operations"},
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = DatabaseAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/operations"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22096,7 +22641,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -22149,7 +22694,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22194,7 +22739,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -22235,7 +22780,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -22288,7 +22833,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22333,7 +22878,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -22374,7 +22919,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -22429,7 +22974,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22476,7 +23021,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -22519,7 +23064,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -22574,7 +23119,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22621,7 +23166,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = DatabaseAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -22637,22 +23182,41 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = DatabaseAdminClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

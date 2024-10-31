@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.cloud.spanner_v1.types import transaction
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -33,6 +34,8 @@ __protobuf__ = proto.module(
 class CommitResponse(proto.Message):
     r"""The response for [Commit][google.spanner.v1.Spanner.Commit].
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         commit_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             The Cloud Spanner timestamp at which the
@@ -41,6 +44,12 @@ class CommitResponse(proto.Message):
             The statistics about this Commit. Not returned by default.
             For more information, see
             [CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats].
+        precommit_token (google.cloud.spanner_v1.types.MultiplexedSessionPrecommitToken):
+            If specified, transaction has not committed
+            yet. Clients must retry the commit with the new
+            precommit token.
+
+            This field is a member of `oneof`_ ``MultiplexedSessionRetry``.
     """
 
     class CommitStats(proto.Message):
@@ -73,6 +82,12 @@ class CommitResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=CommitStats,
+    )
+    precommit_token: transaction.MultiplexedSessionPrecommitToken = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="MultiplexedSessionRetry",
+        message=transaction.MultiplexedSessionPrecommitToken,
     )
 
 

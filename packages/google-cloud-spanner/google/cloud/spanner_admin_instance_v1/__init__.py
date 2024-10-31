@@ -22,6 +22,7 @@ from .services.instance_admin import InstanceAdminClient
 from .services.instance_admin import InstanceAdminAsyncClient
 
 from .types.common import OperationProgress
+from .types.common import ReplicaSelection
 from .types.common import FulfillmentPeriod
 from .types.spanner_instance_admin import AutoscalingConfig
 from .types.spanner_instance_admin import CreateInstanceConfigMetadata
@@ -52,6 +53,7 @@ from .types.spanner_instance_admin import ListInstancesResponse
 from .types.spanner_instance_admin import MoveInstanceMetadata
 from .types.spanner_instance_admin import MoveInstanceRequest
 from .types.spanner_instance_admin import MoveInstanceResponse
+from .types.spanner_instance_admin import ReplicaComputeCapacity
 from .types.spanner_instance_admin import ReplicaInfo
 from .types.spanner_instance_admin import UpdateInstanceConfigMetadata
 from .types.spanner_instance_admin import UpdateInstanceConfigRequest
@@ -94,7 +96,9 @@ __all__ = (
     "MoveInstanceRequest",
     "MoveInstanceResponse",
     "OperationProgress",
+    "ReplicaComputeCapacity",
     "ReplicaInfo",
+    "ReplicaSelection",
     "UpdateInstanceConfigMetadata",
     "UpdateInstanceConfigRequest",
     "UpdateInstanceMetadata",

@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     manifest={
         "FulfillmentPeriod",
         "OperationProgress",
+        "ReplicaSelection",
     },
 )
 
@@ -77,6 +78,21 @@ class OperationProgress(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ReplicaSelection(proto.Message):
+    r"""ReplicaSelection identifies replicas with common properties.
+
+    Attributes:
+        location (str):
+            Required. Name of the location of the
+            replicas (e.g., "us-central1").
+    """
+
+    location: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

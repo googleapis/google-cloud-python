@@ -60,6 +60,7 @@ from .spanner import (
     Session,
 )
 from .transaction import (
+    MultiplexedSessionPrecommitToken,
     Transaction,
     TransactionOptions,
     TransactionSelector,
@@ -106,6 +107,7 @@ __all__ = (
     "RequestOptions",
     "RollbackRequest",
     "Session",
+    "MultiplexedSessionPrecommitToken",
     "Transaction",
     "TransactionOptions",
     "TransactionSelector",

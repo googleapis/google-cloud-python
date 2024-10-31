@@ -62,6 +62,14 @@ class ResultSet(proto.Message):
             [ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode].
             Other fields may or may not be populated, based on the
             [ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode].
+        precommit_token (google.cloud.spanner_v1.types.MultiplexedSessionPrecommitToken):
+            Optional. A precommit token will be included if the
+            read-write transaction is on a multiplexed session. The
+            precommit token with the highest sequence number from this
+            transaction attempt should be passed to the
+            [Commit][google.spanner.v1.Spanner.Commit] request for this
+            transaction. This feature is not yet supported and will
+            result in an UNIMPLEMENTED error.
     """
 
     metadata: "ResultSetMetadata" = proto.Field(
@@ -78,6 +86,11 @@ class ResultSet(proto.Message):
         proto.MESSAGE,
         number=3,
         message="ResultSetStats",
+    )
+    precommit_token: gs_transaction.MultiplexedSessionPrecommitToken = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=gs_transaction.MultiplexedSessionPrecommitToken,
     )
 
 
@@ -194,6 +207,14 @@ class PartialResultSet(proto.Message):
             and are sent only once with the last response in the stream.
             This field will also be present in the last response for DML
             statements.
+        precommit_token (google.cloud.spanner_v1.types.MultiplexedSessionPrecommitToken):
+            Optional. A precommit token will be included if the
+            read-write transaction is on a multiplexed session. The
+            precommit token with the highest sequence number from this
+            transaction attempt should be passed to the
+            [Commit][google.spanner.v1.Spanner.Commit] request for this
+            transaction. This feature is not yet supported and will
+            result in an UNIMPLEMENTED error.
     """
 
     metadata: "ResultSetMetadata" = proto.Field(
@@ -218,6 +239,11 @@ class PartialResultSet(proto.Message):
         proto.MESSAGE,
         number=5,
         message="ResultSetStats",
+    )
+    precommit_token: gs_transaction.MultiplexedSessionPrecommitToken = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=gs_transaction.MultiplexedSessionPrecommitToken,
     )
 
 

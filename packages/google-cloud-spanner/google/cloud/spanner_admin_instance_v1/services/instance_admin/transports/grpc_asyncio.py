@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -255,6 +256,9 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1287,7 +1291,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_instance_configs: gapic_v1.method_async.wrap_method(
+            self.list_instance_configs: self._wrap_method(
                 self.list_instance_configs,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1302,7 +1306,7 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.get_instance_config: gapic_v1.method_async.wrap_method(
+            self.get_instance_config: self._wrap_method(
                 self.get_instance_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1317,27 +1321,27 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.create_instance_config: gapic_v1.method_async.wrap_method(
+            self.create_instance_config: self._wrap_method(
                 self.create_instance_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_instance_config: gapic_v1.method_async.wrap_method(
+            self.update_instance_config: self._wrap_method(
                 self.update_instance_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_instance_config: gapic_v1.method_async.wrap_method(
+            self.delete_instance_config: self._wrap_method(
                 self.delete_instance_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_instance_config_operations: gapic_v1.method_async.wrap_method(
+            self.list_instance_config_operations: self._wrap_method(
                 self.list_instance_config_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_instances: gapic_v1.method_async.wrap_method(
+            self.list_instances: self._wrap_method(
                 self.list_instances,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1352,12 +1356,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.list_instance_partitions: gapic_v1.method_async.wrap_method(
+            self.list_instance_partitions: self._wrap_method(
                 self.list_instance_partitions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_instance: gapic_v1.method_async.wrap_method(
+            self.get_instance: self._wrap_method(
                 self.get_instance,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1372,17 +1376,17 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.create_instance: gapic_v1.method_async.wrap_method(
+            self.create_instance: self._wrap_method(
                 self.create_instance,
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.update_instance: gapic_v1.method_async.wrap_method(
+            self.update_instance: self._wrap_method(
                 self.update_instance,
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.delete_instance: gapic_v1.method_async.wrap_method(
+            self.delete_instance: self._wrap_method(
                 self.delete_instance,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1397,12 +1401,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1417,45 +1421,54 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_instance_partition: gapic_v1.method_async.wrap_method(
+            self.get_instance_partition: self._wrap_method(
                 self.get_instance_partition,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_instance_partition: gapic_v1.method_async.wrap_method(
+            self.create_instance_partition: self._wrap_method(
                 self.create_instance_partition,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_instance_partition: gapic_v1.method_async.wrap_method(
+            self.delete_instance_partition: self._wrap_method(
                 self.delete_instance_partition,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_instance_partition: gapic_v1.method_async.wrap_method(
+            self.update_instance_partition: self._wrap_method(
                 self.update_instance_partition,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_instance_partition_operations: gapic_v1.method_async.wrap_method(
+            self.list_instance_partition_operations: self._wrap_method(
                 self.list_instance_partition_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.move_instance: gapic_v1.method_async.wrap_method(
+            self.move_instance: self._wrap_method(
                 self.move_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("InstanceAdminGrpcAsyncIOTransport",)

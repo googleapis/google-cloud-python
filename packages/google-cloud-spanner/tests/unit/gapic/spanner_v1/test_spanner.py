@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 import math
@@ -36,6 +36,13 @@ from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -65,8 +72,22 @@ from google.rpc import status_pb2  # type: ignore
 import google.auth
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1106,25 +1127,6 @@ def test_create_session(request_type, transport: str = "grpc"):
     assert response.multiplexed is True
 
 
-def test_create_session_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_session()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.CreateSessionRequest()
-
-
 def test_create_session_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1189,31 +1191,6 @@ def test_create_session_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_session_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner.Session(
-                name="name_value",
-                creator_role="creator_role_value",
-                multiplexed=True,
-            )
-        )
-        response = await client.create_session()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.CreateSessionRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_session_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1221,7 +1198,7 @@ async def test_create_session_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1260,7 +1237,7 @@ async def test_create_session_async(
     transport: str = "grpc_asyncio", request_type=spanner.CreateSessionRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1330,7 +1307,7 @@ def test_create_session_field_headers():
 @pytest.mark.asyncio
 async def test_create_session_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1398,7 +1375,7 @@ def test_create_session_flattened_error():
 @pytest.mark.asyncio
 async def test_create_session_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1425,7 +1402,7 @@ async def test_create_session_flattened_async():
 @pytest.mark.asyncio
 async def test_create_session_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1470,27 +1447,6 @@ def test_batch_create_sessions(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.BatchCreateSessionsResponse)
-
-
-def test_batch_create_sessions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_sessions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_create_sessions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BatchCreateSessionsRequest()
 
 
 def test_batch_create_sessions_non_empty_request_with_auto_populated_field():
@@ -1564,29 +1520,6 @@ def test_batch_create_sessions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_create_sessions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_sessions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner.BatchCreateSessionsResponse()
-        )
-        response = await client.batch_create_sessions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BatchCreateSessionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_create_sessions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1594,7 +1527,7 @@ async def test_batch_create_sessions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1633,7 +1566,7 @@ async def test_batch_create_sessions_async(
     transport: str = "grpc_asyncio", request_type=spanner.BatchCreateSessionsRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1700,7 +1633,7 @@ def test_batch_create_sessions_field_headers():
 @pytest.mark.asyncio
 async def test_batch_create_sessions_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1779,7 +1712,7 @@ def test_batch_create_sessions_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_create_sessions_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1814,7 +1747,7 @@ async def test_batch_create_sessions_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_create_sessions_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1865,25 +1798,6 @@ def test_get_session(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.creator_role == "creator_role_value"
     assert response.multiplexed is True
-
-
-def test_get_session_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_session()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.GetSessionRequest()
 
 
 def test_get_session_non_empty_request_with_auto_populated_field():
@@ -1950,31 +1864,6 @@ def test_get_session_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_session_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner.Session(
-                name="name_value",
-                creator_role="creator_role_value",
-                multiplexed=True,
-            )
-        )
-        response = await client.get_session()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.GetSessionRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_session_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1982,7 +1871,7 @@ async def test_get_session_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2021,7 +1910,7 @@ async def test_get_session_async(
     transport: str = "grpc_asyncio", request_type=spanner.GetSessionRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2091,7 +1980,7 @@ def test_get_session_field_headers():
 @pytest.mark.asyncio
 async def test_get_session_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2159,7 +2048,7 @@ def test_get_session_flattened_error():
 @pytest.mark.asyncio
 async def test_get_session_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2186,7 +2075,7 @@ async def test_get_session_flattened_async():
 @pytest.mark.asyncio
 async def test_get_session_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2232,25 +2121,6 @@ def test_list_sessions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_sessions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_sessions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ListSessionsRequest()
 
 
 def test_list_sessions_non_empty_request_with_auto_populated_field():
@@ -2321,29 +2191,6 @@ def test_list_sessions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_sessions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner.ListSessionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_sessions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ListSessionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_sessions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2351,7 +2198,7 @@ async def test_list_sessions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2390,7 +2237,7 @@ async def test_list_sessions_async(
     transport: str = "grpc_asyncio", request_type=spanner.ListSessionsRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2456,7 +2303,7 @@ def test_list_sessions_field_headers():
 @pytest.mark.asyncio
 async def test_list_sessions_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2526,7 +2373,7 @@ def test_list_sessions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_sessions_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2555,7 +2402,7 @@ async def test_list_sessions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_sessions_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2665,7 +2512,7 @@ def test_list_sessions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_sessions_async_pager():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2715,7 +2562,7 @@ async def test_list_sessions_async_pager():
 @pytest.mark.asyncio
 async def test_list_sessions_async_pages():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2794,25 +2641,6 @@ def test_delete_session(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_session_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_session()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.DeleteSessionRequest()
-
-
 def test_delete_session_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2877,25 +2705,6 @@ def test_delete_session_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_session_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_session()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.DeleteSessionRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_session_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2903,7 +2712,7 @@ async def test_delete_session_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2942,7 +2751,7 @@ async def test_delete_session_async(
     transport: str = "grpc_asyncio", request_type=spanner.DeleteSessionRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3003,7 +2812,7 @@ def test_delete_session_field_headers():
 @pytest.mark.asyncio
 async def test_delete_session_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3071,7 +2880,7 @@ def test_delete_session_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_session_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3098,7 +2907,7 @@ async def test_delete_session_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_session_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3141,25 +2950,6 @@ def test_execute_sql(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, result_set.ResultSet)
-
-
-def test_execute_sql_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.execute_sql()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteSqlRequest()
 
 
 def test_execute_sql_non_empty_request_with_auto_populated_field():
@@ -3228,27 +3018,6 @@ def test_execute_sql_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_execute_sql_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            result_set.ResultSet()
-        )
-        response = await client.execute_sql()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteSqlRequest()
-
-
-@pytest.mark.asyncio
 async def test_execute_sql_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3256,7 +3025,7 @@ async def test_execute_sql_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3295,7 +3064,7 @@ async def test_execute_sql_async(
     transport: str = "grpc_asyncio", request_type=spanner.ExecuteSqlRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3358,7 +3127,7 @@ def test_execute_sql_field_headers():
 @pytest.mark.asyncio
 async def test_execute_sql_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3421,27 +3190,6 @@ def test_execute_streaming_sql(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, result_set.PartialResultSet)
-
-
-def test_execute_streaming_sql_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.execute_streaming_sql), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.execute_streaming_sql()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteSqlRequest()
 
 
 def test_execute_streaming_sql_non_empty_request_with_auto_populated_field():
@@ -3517,30 +3265,6 @@ def test_execute_streaming_sql_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_execute_streaming_sql_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.execute_streaming_sql), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(
-            side_effect=[result_set.PartialResultSet()]
-        )
-        response = await client.execute_streaming_sql()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteSqlRequest()
-
-
-@pytest.mark.asyncio
 async def test_execute_streaming_sql_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3548,7 +3272,7 @@ async def test_execute_streaming_sql_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3587,7 +3311,7 @@ async def test_execute_streaming_sql_async(
     transport: str = "grpc_asyncio", request_type=spanner.ExecuteSqlRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3656,7 +3380,7 @@ def test_execute_streaming_sql_field_headers():
 @pytest.mark.asyncio
 async def test_execute_streaming_sql_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3721,27 +3445,6 @@ def test_execute_batch_dml(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.ExecuteBatchDmlResponse)
-
-
-def test_execute_batch_dml_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.execute_batch_dml), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.execute_batch_dml()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteBatchDmlRequest()
 
 
 def test_execute_batch_dml_non_empty_request_with_auto_populated_field():
@@ -3812,29 +3515,6 @@ def test_execute_batch_dml_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_execute_batch_dml_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.execute_batch_dml), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner.ExecuteBatchDmlResponse()
-        )
-        response = await client.execute_batch_dml()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ExecuteBatchDmlRequest()
-
-
-@pytest.mark.asyncio
 async def test_execute_batch_dml_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3842,7 +3522,7 @@ async def test_execute_batch_dml_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3881,7 +3561,7 @@ async def test_execute_batch_dml_async(
     transport: str = "grpc_asyncio", request_type=spanner.ExecuteBatchDmlRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3948,7 +3628,7 @@ def test_execute_batch_dml_field_headers():
 @pytest.mark.asyncio
 async def test_execute_batch_dml_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4010,25 +3690,6 @@ def test_read(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, result_set.ResultSet)
-
-
-def test_read_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.read), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.read()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ReadRequest()
 
 
 def test_read_non_empty_request_with_auto_populated_field():
@@ -4099,33 +3760,12 @@ def test_read_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_read_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.read), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            result_set.ResultSet()
-        )
-        response = await client.read()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ReadRequest()
-
-
-@pytest.mark.asyncio
 async def test_read_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4163,7 +3803,7 @@ async def test_read_async(
     transport: str = "grpc_asyncio", request_type=spanner.ReadRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4226,7 +3866,7 @@ def test_read_field_headers():
 @pytest.mark.asyncio
 async def test_read_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4287,25 +3927,6 @@ def test_streaming_read(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, result_set.PartialResultSet)
-
-
-def test_streaming_read_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.streaming_read()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ReadRequest()
 
 
 def test_streaming_read_non_empty_request_with_auto_populated_field():
@@ -4376,28 +3997,6 @@ def test_streaming_read_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_streaming_read_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(
-            side_effect=[result_set.PartialResultSet()]
-        )
-        response = await client.streaming_read()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.ReadRequest()
-
-
-@pytest.mark.asyncio
 async def test_streaming_read_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4405,7 +4004,7 @@ async def test_streaming_read_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4444,7 +4043,7 @@ async def test_streaming_read_async(
     transport: str = "grpc_asyncio", request_type=spanner.ReadRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4509,7 +4108,7 @@ def test_streaming_read_field_headers():
 @pytest.mark.asyncio
 async def test_streaming_read_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4575,27 +4174,6 @@ def test_begin_transaction(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, transaction.Transaction)
     assert response.id == b"id_blob"
-
-
-def test_begin_transaction_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.begin_transaction), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.begin_transaction()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BeginTransactionRequest()
 
 
 def test_begin_transaction_non_empty_request_with_auto_populated_field():
@@ -4666,31 +4244,6 @@ def test_begin_transaction_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_begin_transaction_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.begin_transaction), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            transaction.Transaction(
-                id=b"id_blob",
-            )
-        )
-        response = await client.begin_transaction()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BeginTransactionRequest()
-
-
-@pytest.mark.asyncio
 async def test_begin_transaction_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4698,7 +4251,7 @@ async def test_begin_transaction_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4737,7 +4290,7 @@ async def test_begin_transaction_async(
     transport: str = "grpc_asyncio", request_type=spanner.BeginTransactionRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4807,7 +4360,7 @@ def test_begin_transaction_field_headers():
 @pytest.mark.asyncio
 async def test_begin_transaction_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4898,7 +4451,7 @@ def test_begin_transaction_flattened_error():
 @pytest.mark.asyncio
 async def test_begin_transaction_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4941,7 +4494,7 @@ async def test_begin_transaction_flattened_async():
 @pytest.mark.asyncio
 async def test_begin_transaction_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4989,25 +4542,6 @@ def test_commit(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, commit_response.CommitResponse)
-
-
-def test_commit_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.commit), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.commit()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.CommitRequest()
 
 
 def test_commit_non_empty_request_with_auto_populated_field():
@@ -5074,33 +4608,12 @@ def test_commit_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_commit_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.commit), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            commit_response.CommitResponse()
-        )
-        response = await client.commit()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.CommitRequest()
-
-
-@pytest.mark.asyncio
 async def test_commit_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5139,7 +4652,7 @@ async def test_commit_async(
     transport: str = "grpc_asyncio", request_type=spanner.CommitRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5202,7 +4715,7 @@ def test_commit_field_headers():
 @pytest.mark.asyncio
 async def test_commit_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5300,7 +4813,7 @@ def test_commit_flattened_error():
 @pytest.mark.asyncio
 async def test_commit_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5348,7 +4861,7 @@ async def test_commit_flattened_async():
 @pytest.mark.asyncio
 async def test_commit_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5400,25 +4913,6 @@ def test_rollback(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_rollback_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.rollback()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.RollbackRequest()
 
 
 def test_rollback_non_empty_request_with_auto_populated_field():
@@ -5485,31 +4979,12 @@ def test_rollback_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_rollback_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.rollback()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.RollbackRequest()
-
-
-@pytest.mark.asyncio
 async def test_rollback_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5548,7 +5023,7 @@ async def test_rollback_async(
     transport: str = "grpc_asyncio", request_type=spanner.RollbackRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5609,7 +5084,7 @@ def test_rollback_field_headers():
 @pytest.mark.asyncio
 async def test_rollback_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5682,7 +5157,7 @@ def test_rollback_flattened_error():
 @pytest.mark.asyncio
 async def test_rollback_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5713,7 +5188,7 @@ async def test_rollback_flattened_async():
 @pytest.mark.asyncio
 async def test_rollback_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5757,25 +5232,6 @@ def test_partition_query(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.PartitionResponse)
-
-
-def test_partition_query_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.partition_query()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.PartitionQueryRequest()
 
 
 def test_partition_query_non_empty_request_with_auto_populated_field():
@@ -5844,27 +5300,6 @@ def test_partition_query_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_partition_query_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner.PartitionResponse()
-        )
-        response = await client.partition_query()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.PartitionQueryRequest()
-
-
-@pytest.mark.asyncio
 async def test_partition_query_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5872,7 +5307,7 @@ async def test_partition_query_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5911,7 +5346,7 @@ async def test_partition_query_async(
     transport: str = "grpc_asyncio", request_type=spanner.PartitionQueryRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5974,7 +5409,7 @@ def test_partition_query_field_headers():
 @pytest.mark.asyncio
 async def test_partition_query_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6034,25 +5469,6 @@ def test_partition_read(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.PartitionResponse)
-
-
-def test_partition_read_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.partition_read()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.PartitionReadRequest()
 
 
 def test_partition_read_non_empty_request_with_auto_populated_field():
@@ -6123,27 +5539,6 @@ def test_partition_read_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_partition_read_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            spanner.PartitionResponse()
-        )
-        response = await client.partition_read()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.PartitionReadRequest()
-
-
-@pytest.mark.asyncio
 async def test_partition_read_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6151,7 +5546,7 @@ async def test_partition_read_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6190,7 +5585,7 @@ async def test_partition_read_async(
     transport: str = "grpc_asyncio", request_type=spanner.PartitionReadRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6253,7 +5648,7 @@ def test_partition_read_field_headers():
 @pytest.mark.asyncio
 async def test_partition_read_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6314,25 +5709,6 @@ def test_batch_write(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, spanner.BatchWriteResponse)
-
-
-def test_batch_write_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_write()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BatchWriteRequest()
 
 
 def test_batch_write_non_empty_request_with_auto_populated_field():
@@ -6399,28 +5775,6 @@ def test_batch_write_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_write_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        call.return_value.read = mock.AsyncMock(
-            side_effect=[spanner.BatchWriteResponse()]
-        )
-        response = await client.batch_write()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == spanner.BatchWriteRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_write_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6428,7 +5782,7 @@ async def test_batch_write_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SpannerAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6467,7 +5821,7 @@ async def test_batch_write_async(
     transport: str = "grpc_asyncio", request_type=spanner.BatchWriteRequest
 ):
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6532,7 +5886,7 @@ def test_batch_write_field_headers():
 @pytest.mark.asyncio
 async def test_batch_write_field_headers_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6632,7 +5986,7 @@ def test_batch_write_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_write_flattened_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6679,7 +6033,7 @@ async def test_batch_write_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_write_flattened_error_async():
     client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6698,50 +6052,6 @@ async def test_batch_write_flattened_error_async():
                 )
             ],
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.CreateSessionRequest,
-        dict,
-    ],
-)
-def test_create_session_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.Session(
-            name="name_value",
-            creator_role="creator_role_value",
-            multiplexed=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.Session.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_session(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner.Session)
-    assert response.name == "name_value"
-    assert response.creator_role == "creator_role_value"
-    assert response.multiplexed is True
 
 
 def test_create_session_rest_use_cached_wrapped_rpc():
@@ -6870,81 +6180,6 @@ def test_create_session_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_session_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_create_session"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_create_session"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.CreateSessionRequest.pb(spanner.CreateSessionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.Session.to_json(spanner.Session())
-
-        request = spanner.CreateSessionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.Session()
-
-        client.create_session(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_session_rest_bad_request(
-    transport: str = "rest", request_type=spanner.CreateSessionRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_session(request)
-
-
 def test_create_session_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7002,49 +6237,6 @@ def test_create_session_rest_flattened_error(transport: str = "rest"):
             spanner.CreateSessionRequest(),
             database="database_value",
         )
-
-
-def test_create_session_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.BatchCreateSessionsRequest,
-        dict,
-    ],
-)
-def test_batch_create_sessions_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.BatchCreateSessionsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_create_sessions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner.BatchCreateSessionsResponse)
 
 
 def test_batch_create_sessions_rest_use_cached_wrapped_rpc():
@@ -7184,85 +6376,6 @@ def test_batch_create_sessions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_create_sessions_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_batch_create_sessions"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_batch_create_sessions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.BatchCreateSessionsRequest.pb(
-            spanner.BatchCreateSessionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.BatchCreateSessionsResponse.to_json(
-            spanner.BatchCreateSessionsResponse()
-        )
-
-        request = spanner.BatchCreateSessionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.BatchCreateSessionsResponse()
-
-        client.batch_create_sessions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_create_sessions_rest_bad_request(
-    transport: str = "rest", request_type=spanner.BatchCreateSessionsRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_create_sessions(request)
-
-
 def test_batch_create_sessions_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7322,58 +6435,6 @@ def test_batch_create_sessions_rest_flattened_error(transport: str = "rest"):
             database="database_value",
             session_count=1420,
         )
-
-
-def test_batch_create_sessions_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.GetSessionRequest,
-        dict,
-    ],
-)
-def test_get_session_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.Session(
-            name="name_value",
-            creator_role="creator_role_value",
-            multiplexed=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.Session.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_session(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner.Session)
-    assert response.name == "name_value"
-    assert response.creator_role == "creator_role_value"
-    assert response.multiplexed is True
 
 
 def test_get_session_rest_use_cached_wrapped_rpc():
@@ -7493,83 +6554,6 @@ def test_get_session_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_session_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_get_session"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_get_session"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.GetSessionRequest.pb(spanner.GetSessionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.Session.to_json(spanner.Session())
-
-        request = spanner.GetSessionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.Session()
-
-        client.get_session(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_session_rest_bad_request(
-    transport: str = "rest", request_type=spanner.GetSessionRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_session(request)
-
-
 def test_get_session_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7627,52 +6611,6 @@ def test_get_session_rest_flattened_error(transport: str = "rest"):
             spanner.GetSessionRequest(),
             name="name_value",
         )
-
-
-def test_get_session_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.ListSessionsRequest,
-        dict,
-    ],
-)
-def test_list_sessions_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.ListSessionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.ListSessionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_sessions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSessionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_sessions_rest_use_cached_wrapped_rpc():
@@ -7809,83 +6747,6 @@ def test_list_sessions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_sessions_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_list_sessions"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_list_sessions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.ListSessionsRequest.pb(spanner.ListSessionsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.ListSessionsResponse.to_json(
-            spanner.ListSessionsResponse()
-        )
-
-        request = spanner.ListSessionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.ListSessionsResponse()
-
-        client.list_sessions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_sessions_rest_bad_request(
-    transport: str = "rest", request_type=spanner.ListSessionsRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_sessions(request)
-
-
 def test_list_sessions_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8008,43 +6869,6 @@ def test_list_sessions_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.DeleteSessionRequest,
-        dict,
-    ],
-)
-def test_delete_session_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_session(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
 def test_delete_session_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8159,77 +6983,6 @@ def test_delete_session_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_session_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_delete_session"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = spanner.DeleteSessionRequest.pb(spanner.DeleteSessionRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = spanner.DeleteSessionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_session(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_session_rest_bad_request(
-    transport: str = "rest", request_type=spanner.DeleteSessionRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_session(request)
-
-
 def test_delete_session_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8285,51 +7038,6 @@ def test_delete_session_rest_flattened_error(transport: str = "rest"):
             spanner.DeleteSessionRequest(),
             name="name_value",
         )
-
-
-def test_delete_session_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.ExecuteSqlRequest,
-        dict,
-    ],
-)
-def test_execute_sql_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = result_set.ResultSet()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = result_set.ResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.execute_sql(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, result_set.ResultSet)
 
 
 def test_execute_sql_rest_use_cached_wrapped_rpc():
@@ -8460,140 +7168,6 @@ def test_execute_sql_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_execute_sql_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_sql"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_execute_sql"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.ExecuteSqlRequest.pb(spanner.ExecuteSqlRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = result_set.ResultSet.to_json(result_set.ResultSet())
-
-        request = spanner.ExecuteSqlRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = result_set.ResultSet()
-
-        client.execute_sql(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_execute_sql_rest_bad_request(
-    transport: str = "rest", request_type=spanner.ExecuteSqlRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.execute_sql(request)
-
-
-def test_execute_sql_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.ExecuteSqlRequest,
-        dict,
-    ],
-)
-def test_execute_streaming_sql_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = result_set.PartialResultSet(
-            chunked_value=True,
-            resume_token=b"resume_token_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = result_set.PartialResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        json_return_value = "[{}]".format(json_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        with mock.patch.object(response_value, "iter_content") as iter_content:
-            iter_content.return_value = iter(json_return_value)
-            response = client.execute_streaming_sql(request)
-
-    assert isinstance(response, Iterable)
-    response = next(response)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, result_set.PartialResultSet)
-    assert response.chunked_value is True
-    assert response.resume_token == b"resume_token_blob"
 
 
 def test_execute_streaming_sql_rest_use_cached_wrapped_rpc():
@@ -8736,131 +7310,6 @@ def test_execute_streaming_sql_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_execute_streaming_sql_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_streaming_sql"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_execute_streaming_sql"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.ExecuteSqlRequest.pb(spanner.ExecuteSqlRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = result_set.PartialResultSet.to_json(
-            result_set.PartialResultSet()
-        )
-        req.return_value._content = "[{}]".format(req.return_value._content)
-
-        request = spanner.ExecuteSqlRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = result_set.PartialResultSet()
-
-        client.execute_streaming_sql(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_execute_streaming_sql_rest_bad_request(
-    transport: str = "rest", request_type=spanner.ExecuteSqlRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.execute_streaming_sql(request)
-
-
-def test_execute_streaming_sql_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.ExecuteBatchDmlRequest,
-        dict,
-    ],
-)
-def test_execute_batch_dml_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.ExecuteBatchDmlResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.execute_batch_dml(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner.ExecuteBatchDmlResponse)
-
-
 def test_execute_batch_dml_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8997,130 +7446,6 @@ def test_execute_batch_dml_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_execute_batch_dml_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_execute_batch_dml"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_execute_batch_dml"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.ExecuteBatchDmlRequest.pb(spanner.ExecuteBatchDmlRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.ExecuteBatchDmlResponse.to_json(
-            spanner.ExecuteBatchDmlResponse()
-        )
-
-        request = spanner.ExecuteBatchDmlRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.ExecuteBatchDmlResponse()
-
-        client.execute_batch_dml(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_execute_batch_dml_rest_bad_request(
-    transport: str = "rest", request_type=spanner.ExecuteBatchDmlRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.execute_batch_dml(request)
-
-
-def test_execute_batch_dml_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.ReadRequest,
-        dict,
-    ],
-)
-def test_read_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = result_set.ResultSet()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = result_set.ResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.read(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, result_set.ResultSet)
-
-
 def test_read_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9255,140 +7580,6 @@ def test_read_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_read_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_read"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_read"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.ReadRequest.pb(spanner.ReadRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = result_set.ResultSet.to_json(result_set.ResultSet())
-
-        request = spanner.ReadRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = result_set.ResultSet()
-
-        client.read(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_read_rest_bad_request(
-    transport: str = "rest", request_type=spanner.ReadRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.read(request)
-
-
-def test_read_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.ReadRequest,
-        dict,
-    ],
-)
-def test_streaming_read_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = result_set.PartialResultSet(
-            chunked_value=True,
-            resume_token=b"resume_token_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = result_set.PartialResultSet.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        json_return_value = "[{}]".format(json_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        with mock.patch.object(response_value, "iter_content") as iter_content:
-            iter_content.return_value = iter(json_return_value)
-            response = client.streaming_read(request)
-
-    assert isinstance(response, Iterable)
-    response = next(response)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, result_set.PartialResultSet)
-    assert response.chunked_value is True
-    assert response.resume_token == b"resume_token_blob"
 
 
 def test_streaming_read_rest_use_cached_wrapped_rpc():
@@ -9530,134 +7721,6 @@ def test_streaming_read_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_streaming_read_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_streaming_read"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_streaming_read"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.ReadRequest.pb(spanner.ReadRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = result_set.PartialResultSet.to_json(
-            result_set.PartialResultSet()
-        )
-        req.return_value._content = "[{}]".format(req.return_value._content)
-
-        request = spanner.ReadRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = result_set.PartialResultSet()
-
-        client.streaming_read(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_streaming_read_rest_bad_request(
-    transport: str = "rest", request_type=spanner.ReadRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.streaming_read(request)
-
-
-def test_streaming_read_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.BeginTransactionRequest,
-        dict,
-    ],
-)
-def test_begin_transaction_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = transaction.Transaction(
-            id=b"id_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = transaction.Transaction.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.begin_transaction(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, transaction.Transaction)
-    assert response.id == b"id_blob"
-
-
 def test_begin_transaction_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9788,87 +7851,6 @@ def test_begin_transaction_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_begin_transaction_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_begin_transaction"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_begin_transaction"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.BeginTransactionRequest.pb(
-            spanner.BeginTransactionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = transaction.Transaction.to_json(
-            transaction.Transaction()
-        )
-
-        request = spanner.BeginTransactionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = transaction.Transaction()
-
-        client.begin_transaction(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_begin_transaction_rest_bad_request(
-    transport: str = "rest", request_type=spanner.BeginTransactionRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.begin_transaction(request)
-
-
 def test_begin_transaction_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9936,51 +7918,6 @@ def test_begin_transaction_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_begin_transaction_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.CommitRequest,
-        dict,
-    ],
-)
-def test_commit_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = commit_response.CommitResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = commit_response.CommitResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.commit(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, commit_response.CommitResponse)
 
 
 def test_commit_rest_use_cached_wrapped_rpc():
@@ -10101,85 +8038,6 @@ def test_commit_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("session",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_commit_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_commit"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_commit"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.CommitRequest.pb(spanner.CommitRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = commit_response.CommitResponse.to_json(
-            commit_response.CommitResponse()
-        )
-
-        request = spanner.CommitRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = commit_response.CommitResponse()
-
-        client.commit(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_commit_rest_bad_request(
-    transport: str = "rest", request_type=spanner.CommitRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.commit(request)
-
-
 def test_commit_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10249,49 +8107,6 @@ def test_commit_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_commit_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.RollbackRequest,
-        dict,
-    ],
-)
-def test_rollback_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.rollback(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_rollback_rest_use_cached_wrapped_rpc():
@@ -10421,77 +8236,6 @@ def test_rollback_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_rollback_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_rollback"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = spanner.RollbackRequest.pb(spanner.RollbackRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = spanner.RollbackRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.rollback(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_rollback_rest_bad_request(
-    transport: str = "rest", request_type=spanner.RollbackRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.rollback(request)
-
-
 def test_rollback_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10549,51 +8293,6 @@ def test_rollback_rest_flattened_error(transport: str = "rest"):
             session="session_value",
             transaction_id=b"transaction_id_blob",
         )
-
-
-def test_rollback_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.PartitionQueryRequest,
-        dict,
-    ],
-)
-def test_partition_query_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.PartitionResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.PartitionResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.partition_query(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner.PartitionResponse)
 
 
 def test_partition_query_rest_use_cached_wrapped_rpc():
@@ -10728,130 +8427,6 @@ def test_partition_query_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_partition_query_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_partition_query"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_partition_query"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.PartitionQueryRequest.pb(spanner.PartitionQueryRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.PartitionResponse.to_json(
-            spanner.PartitionResponse()
-        )
-
-        request = spanner.PartitionQueryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.PartitionResponse()
-
-        client.partition_query(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_partition_query_rest_bad_request(
-    transport: str = "rest", request_type=spanner.PartitionQueryRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.partition_query(request)
-
-
-def test_partition_query_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.PartitionReadRequest,
-        dict,
-    ],
-)
-def test_partition_read_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.PartitionResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.PartitionResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.partition_read(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner.PartitionResponse)
-
-
 def test_partition_read_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10983,140 +8558,6 @@ def test_partition_read_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_partition_read_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_partition_read"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_partition_read"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.PartitionReadRequest.pb(spanner.PartitionReadRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.PartitionResponse.to_json(
-            spanner.PartitionResponse()
-        )
-
-        request = spanner.PartitionReadRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.PartitionResponse()
-
-        client.partition_read(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_partition_read_rest_bad_request(
-    transport: str = "rest", request_type=spanner.PartitionReadRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.partition_read(request)
-
-
-def test_partition_read_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        spanner.BatchWriteRequest,
-        dict,
-    ],
-)
-def test_batch_write_rest(request_type):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = spanner.BatchWriteResponse(
-            indexes=[752],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = spanner.BatchWriteResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        json_return_value = "[{}]".format(json_return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        with mock.patch.object(response_value, "iter_content") as iter_content:
-            iter_content.return_value = iter(json_return_value)
-            response = client.batch_write(request)
-
-    assert isinstance(response, Iterable)
-    response = next(response)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, spanner.BatchWriteResponse)
-    assert response.indexes == [752]
-
-
 def test_batch_write_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11246,86 +8687,6 @@ def test_batch_write_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_write_rest_interceptors(null_interceptor):
-    transport = transports.SpannerRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
-    )
-    client = SpannerClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SpannerRestInterceptor, "post_batch_write"
-    ) as post, mock.patch.object(
-        transports.SpannerRestInterceptor, "pre_batch_write"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = spanner.BatchWriteRequest.pb(spanner.BatchWriteRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = spanner.BatchWriteResponse.to_json(
-            spanner.BatchWriteResponse()
-        )
-        req.return_value._content = "[{}]".format(req.return_value._content)
-
-        request = spanner.BatchWriteRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = spanner.BatchWriteResponse()
-
-        client.batch_write(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_write_rest_bad_request(
-    transport: str = "rest", request_type=spanner.BatchWriteRequest
-):
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_write(request)
-
-
 def test_batch_write_rest_flattened():
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11404,12 +8765,6 @@ def test_batch_write_rest_flattened_error(transport: str = "rest"):
                 )
             ],
         )
-
-
-def test_batch_write_rest_error():
-    client = SpannerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -11504,18 +8859,2996 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = SpannerClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_session_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        call.return_value = spanner.Session()
+        client.create_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.CreateSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_sessions_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_sessions), "__call__"
+    ) as call:
+        call.return_value = spanner.BatchCreateSessionsResponse()
+        client.batch_create_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BatchCreateSessionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_session_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        call.return_value = spanner.Session()
+        client.get_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.GetSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_sessions_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        call.return_value = spanner.ListSessionsResponse()
+        client.list_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ListSessionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_session_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        call.return_value = None
+        client.delete_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.DeleteSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_sql_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
+        call.return_value = result_set.ResultSet()
+        client.execute_sql(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteSqlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_streaming_sql_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_streaming_sql), "__call__"
+    ) as call:
+        call.return_value = iter([result_set.PartialResultSet()])
+        client.execute_streaming_sql(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteSqlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_batch_dml_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_batch_dml), "__call__"
+    ) as call:
+        call.return_value = spanner.ExecuteBatchDmlResponse()
+        client.execute_batch_dml(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteBatchDmlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_read_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.read), "__call__") as call:
+        call.return_value = result_set.ResultSet()
+        client.read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_streaming_read_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
+        call.return_value = iter([result_set.PartialResultSet()])
+        client.streaming_read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_begin_transaction_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        call.return_value = transaction.Transaction()
+        client.begin_transaction(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BeginTransactionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_commit_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        call.return_value = commit_response.CommitResponse()
+        client.commit(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.CommitRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rollback_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        call.return_value = None
+        client.rollback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.RollbackRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_partition_query_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
+        call.return_value = spanner.PartitionResponse()
+        client.partition_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.PartitionQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_partition_read_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
+        call.return_value = spanner.PartitionResponse()
+        client.partition_read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.PartitionReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_write_empty_call_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
+        call.return_value = iter([spanner.BatchWriteResponse()])
+        client.batch_write(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BatchWriteRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = SpannerAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_session_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner.Session(
+                name="name_value",
+                creator_role="creator_role_value",
+                multiplexed=True,
+            )
+        )
+        await client.create_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.CreateSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_create_sessions_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_sessions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner.BatchCreateSessionsResponse()
+        )
+        await client.batch_create_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BatchCreateSessionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_session_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner.Session(
+                name="name_value",
+                creator_role="creator_role_value",
+                multiplexed=True,
+            )
+        )
+        await client.get_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.GetSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_sessions_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner.ListSessionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ListSessionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_session_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.DeleteSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_execute_sql_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            result_set.ResultSet()
+        )
+        await client.execute_sql(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteSqlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_execute_streaming_sql_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_streaming_sql), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[result_set.PartialResultSet()]
+        )
+        await client.execute_streaming_sql(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteSqlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_execute_batch_dml_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_batch_dml), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner.ExecuteBatchDmlResponse()
+        )
+        await client.execute_batch_dml(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteBatchDmlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_read_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.read), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            result_set.ResultSet()
+        )
+        await client.read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_streaming_read_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[result_set.PartialResultSet()]
+        )
+        await client.streaming_read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_begin_transaction_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transaction.Transaction(
+                id=b"id_blob",
+            )
+        )
+        await client.begin_transaction(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BeginTransactionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_commit_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            commit_response.CommitResponse()
+        )
+        await client.commit(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.CommitRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_rollback_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.rollback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.RollbackRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_partition_query_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner.PartitionResponse()
+        )
+        await client.partition_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.PartitionQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_partition_read_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner.PartitionResponse()
+        )
+        await client.partition_read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.PartitionReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_write_empty_call_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[spanner.BatchWriteResponse()]
+        )
+        await client.batch_write(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BatchWriteRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = SpannerClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_session_rest_bad_request(request_type=spanner.CreateSessionRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_session(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        spanner.CreateSessionRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = SpannerClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_session_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.Session(
+            name="name_value",
+            creator_role="creator_role_value",
+            multiplexed=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.Session)
+    assert response.name == "name_value"
+    assert response.creator_role == "creator_role_value"
+    assert response.multiplexed is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_session_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_create_session"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_create_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.CreateSessionRequest.pb(spanner.CreateSessionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.Session.to_json(spanner.Session())
+        req.return_value.content = return_value
+
+        request = spanner.CreateSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.Session()
+
+        client.create_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_sessions_rest_bad_request(
+    request_type=spanner.BatchCreateSessionsRequest,
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_create_sessions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BatchCreateSessionsRequest,
+        dict,
+    ],
+)
+def test_batch_create_sessions_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.BatchCreateSessionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.BatchCreateSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_sessions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.BatchCreateSessionsResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_sessions_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_batch_create_sessions"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_batch_create_sessions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.BatchCreateSessionsRequest.pb(
+            spanner.BatchCreateSessionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.BatchCreateSessionsResponse.to_json(
+            spanner.BatchCreateSessionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner.BatchCreateSessionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.BatchCreateSessionsResponse()
+
+        client.batch_create_sessions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_session_rest_bad_request(request_type=spanner.GetSessionRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_session(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.GetSessionRequest,
+        dict,
+    ],
+)
+def test_get_session_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.Session(
+            name="name_value",
+            creator_role="creator_role_value",
+            multiplexed=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.Session.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.Session)
+    assert response.name == "name_value"
+    assert response.creator_role == "creator_role_value"
+    assert response.multiplexed is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_session_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_get_session"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_get_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.GetSessionRequest.pb(spanner.GetSessionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.Session.to_json(spanner.Session())
+        req.return_value.content = return_value
+
+        request = spanner.GetSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.Session()
+
+        client.get_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_sessions_rest_bad_request(request_type=spanner.ListSessionsRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_sessions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ListSessionsRequest,
+        dict,
+    ],
+)
+def test_list_sessions_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"database": "projects/sample1/instances/sample2/databases/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.ListSessionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.ListSessionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_sessions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSessionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_sessions_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_list_sessions"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_list_sessions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ListSessionsRequest.pb(spanner.ListSessionsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.ListSessionsResponse.to_json(
+            spanner.ListSessionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner.ListSessionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.ListSessionsResponse()
+
+        client.list_sessions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_session_rest_bad_request(request_type=spanner.DeleteSessionRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_session(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.DeleteSessionRequest,
+        dict,
+    ],
+)
+def test_delete_session_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_session_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_delete_session"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = spanner.DeleteSessionRequest.pb(spanner.DeleteSessionRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = spanner.DeleteSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_execute_sql_rest_bad_request(request_type=spanner.ExecuteSqlRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.execute_sql(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteSqlRequest,
+        dict,
+    ],
+)
+def test_execute_sql_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.ResultSet()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = result_set.ResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.execute_sql(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.ResultSet)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_sql_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_execute_sql"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_execute_sql"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ExecuteSqlRequest.pb(spanner.ExecuteSqlRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = result_set.ResultSet.to_json(result_set.ResultSet())
+        req.return_value.content = return_value
+
+        request = spanner.ExecuteSqlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.ResultSet()
+
+        client.execute_sql(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_execute_streaming_sql_rest_bad_request(request_type=spanner.ExecuteSqlRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.execute_streaming_sql(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteSqlRequest,
+        dict,
+    ],
+)
+def test_execute_streaming_sql_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.PartialResultSet(
+            chunked_value=True,
+            resume_token=b"resume_token_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = result_set.PartialResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        json_return_value = "[{}]".format(json_return_value)
+        response_value.iter_content = mock.Mock(return_value=iter(json_return_value))
+        req.return_value = response_value
+        response = client.execute_streaming_sql(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.PartialResultSet)
+    assert response.chunked_value is True
+    assert response.resume_token == b"resume_token_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_streaming_sql_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_execute_streaming_sql"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_execute_streaming_sql"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ExecuteSqlRequest.pb(spanner.ExecuteSqlRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = result_set.PartialResultSet.to_json(
+            result_set.PartialResultSet()
+        )
+        req.return_value.iter_content = mock.Mock(return_value=iter(return_value))
+
+        request = spanner.ExecuteSqlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.PartialResultSet()
+
+        client.execute_streaming_sql(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_execute_batch_dml_rest_bad_request(
+    request_type=spanner.ExecuteBatchDmlRequest,
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.execute_batch_dml(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ExecuteBatchDmlRequest,
+        dict,
+    ],
+)
+def test_execute_batch_dml_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.ExecuteBatchDmlResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.ExecuteBatchDmlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.execute_batch_dml(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.ExecuteBatchDmlResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_execute_batch_dml_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_execute_batch_dml"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_execute_batch_dml"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ExecuteBatchDmlRequest.pb(spanner.ExecuteBatchDmlRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.ExecuteBatchDmlResponse.to_json(
+            spanner.ExecuteBatchDmlResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner.ExecuteBatchDmlRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.ExecuteBatchDmlResponse()
+
+        client.execute_batch_dml(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_read_rest_bad_request(request_type=spanner.ReadRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.read(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ReadRequest,
+        dict,
+    ],
+)
+def test_read_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.ResultSet()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = result_set.ResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.read(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.ResultSet)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_read_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_read"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_read"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ReadRequest.pb(spanner.ReadRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = result_set.ResultSet.to_json(result_set.ResultSet())
+        req.return_value.content = return_value
+
+        request = spanner.ReadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.ResultSet()
+
+        client.read(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_streaming_read_rest_bad_request(request_type=spanner.ReadRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.streaming_read(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.ReadRequest,
+        dict,
+    ],
+)
+def test_streaming_read_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = result_set.PartialResultSet(
+            chunked_value=True,
+            resume_token=b"resume_token_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = result_set.PartialResultSet.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        json_return_value = "[{}]".format(json_return_value)
+        response_value.iter_content = mock.Mock(return_value=iter(json_return_value))
+        req.return_value = response_value
+        response = client.streaming_read(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, result_set.PartialResultSet)
+    assert response.chunked_value is True
+    assert response.resume_token == b"resume_token_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_streaming_read_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_streaming_read"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_streaming_read"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.ReadRequest.pb(spanner.ReadRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = result_set.PartialResultSet.to_json(
+            result_set.PartialResultSet()
+        )
+        req.return_value.iter_content = mock.Mock(return_value=iter(return_value))
+
+        request = spanner.ReadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = result_set.PartialResultSet()
+
+        client.streaming_read(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_begin_transaction_rest_bad_request(
+    request_type=spanner.BeginTransactionRequest,
+):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.begin_transaction(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BeginTransactionRequest,
+        dict,
+    ],
+)
+def test_begin_transaction_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = transaction.Transaction(
+            id=b"id_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = transaction.Transaction.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.begin_transaction(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transaction.Transaction)
+    assert response.id == b"id_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_begin_transaction_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_begin_transaction"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_begin_transaction"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.BeginTransactionRequest.pb(
+            spanner.BeginTransactionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = transaction.Transaction.to_json(transaction.Transaction())
+        req.return_value.content = return_value
+
+        request = spanner.BeginTransactionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = transaction.Transaction()
+
+        client.begin_transaction(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_commit_rest_bad_request(request_type=spanner.CommitRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.commit(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.CommitRequest,
+        dict,
+    ],
+)
+def test_commit_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = commit_response.CommitResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = commit_response.CommitResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.commit(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, commit_response.CommitResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_commit_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_commit"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_commit"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.CommitRequest.pb(spanner.CommitRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = commit_response.CommitResponse.to_json(
+            commit_response.CommitResponse()
+        )
+        req.return_value.content = return_value
+
+        request = spanner.CommitRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = commit_response.CommitResponse()
+
+        client.commit(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rollback_rest_bad_request(request_type=spanner.RollbackRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.rollback(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.RollbackRequest,
+        dict,
+    ],
+)
+def test_rollback_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_rollback"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = spanner.RollbackRequest.pb(spanner.RollbackRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = spanner.RollbackRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.rollback(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_partition_query_rest_bad_request(request_type=spanner.PartitionQueryRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.partition_query(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.PartitionQueryRequest,
+        dict,
+    ],
+)
+def test_partition_query_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.PartitionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.PartitionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.partition_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.PartitionResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_partition_query_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_partition_query"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_partition_query"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.PartitionQueryRequest.pb(spanner.PartitionQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.PartitionResponse.to_json(spanner.PartitionResponse())
+        req.return_value.content = return_value
+
+        request = spanner.PartitionQueryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.PartitionResponse()
+
+        client.partition_query(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_partition_read_rest_bad_request(request_type=spanner.PartitionReadRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.partition_read(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.PartitionReadRequest,
+        dict,
+    ],
+)
+def test_partition_read_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.PartitionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.PartitionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.partition_read(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.PartitionResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_partition_read_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_partition_read"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_partition_read"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.PartitionReadRequest.pb(spanner.PartitionReadRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.PartitionResponse.to_json(spanner.PartitionResponse())
+        req.return_value.content = return_value
+
+        request = spanner.PartitionReadRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.PartitionResponse()
+
+        client.partition_read(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_write_rest_bad_request(request_type=spanner.BatchWriteRequest):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_write(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner.BatchWriteRequest,
+        dict,
+    ],
+)
+def test_batch_write_rest_call_success(request_type):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/instances/sample2/databases/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = spanner.BatchWriteResponse(
+            indexes=[752],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = spanner.BatchWriteResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        json_return_value = "[{}]".format(json_return_value)
+        response_value.iter_content = mock.Mock(return_value=iter(json_return_value))
+        req.return_value = response_value
+        response = client.batch_write(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, spanner.BatchWriteResponse)
+    assert response.indexes == [752]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_write_rest_interceptors(null_interceptor):
+    transport = transports.SpannerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SpannerRestInterceptor(),
+    )
+    client = SpannerClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SpannerRestInterceptor, "post_batch_write"
+    ) as post, mock.patch.object(
+        transports.SpannerRestInterceptor, "pre_batch_write"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = spanner.BatchWriteRequest.pb(spanner.BatchWriteRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = spanner.BatchWriteResponse.to_json(spanner.BatchWriteResponse())
+        req.return_value.iter_content = mock.Mock(return_value=iter(return_value))
+
+        request = spanner.BatchWriteRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = spanner.BatchWriteResponse()
+
+        client.batch_write(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_session_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        client.create_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.CreateSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_sessions_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_sessions), "__call__"
+    ) as call:
+        client.batch_create_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BatchCreateSessionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_session_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        client.get_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.GetSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_sessions_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        client.list_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ListSessionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_session_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        client.delete_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.DeleteSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_sql_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
+        client.execute_sql(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteSqlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_streaming_sql_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_streaming_sql), "__call__"
+    ) as call:
+        client.execute_streaming_sql(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteSqlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_execute_batch_dml_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_batch_dml), "__call__"
+    ) as call:
+        client.execute_batch_dml(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ExecuteBatchDmlRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_read_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.read), "__call__") as call:
+        client.read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_streaming_read_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
+        client.streaming_read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.ReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_begin_transaction_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        client.begin_transaction(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BeginTransactionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_commit_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        client.commit(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.CommitRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rollback_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        client.rollback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.RollbackRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_partition_query_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
+        client.partition_query(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.PartitionQueryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_partition_read_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
+        client.partition_read(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.PartitionReadRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_write_empty_call_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.batch_write), "__call__") as call:
+        client.batch_write(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner.BatchWriteRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -12183,36 +12516,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = SpannerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = SpannerAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = SpannerClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

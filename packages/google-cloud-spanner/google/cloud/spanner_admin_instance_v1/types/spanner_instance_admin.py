@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
     manifest={
         "ReplicaInfo",
         "InstanceConfig",
+        "ReplicaComputeCapacity",
         "AutoscalingConfig",
         "Instance",
         "ListInstanceConfigsRequest",
@@ -317,6 +318,56 @@ class InstanceConfig(proto.Message):
     )
 
 
+class ReplicaComputeCapacity(proto.Message):
+    r"""ReplicaComputeCapacity describes the amount of server
+    resources that are allocated to each replica identified by the
+    replica selection.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        replica_selection (google.cloud.spanner_admin_instance_v1.types.ReplicaSelection):
+            Required. Identifies replicas by specified
+            properties. All replicas in the selection have
+            the same amount of compute capacity.
+        node_count (int):
+            The number of nodes allocated to each replica.
+
+            This may be zero in API responses for instances that are not
+            yet in state ``READY``.
+
+            This field is a member of `oneof`_ ``compute_capacity``.
+        processing_units (int):
+            The number of processing units allocated to each replica.
+
+            This may be zero in API responses for instances that are not
+            yet in state ``READY``.
+
+            This field is a member of `oneof`_ ``compute_capacity``.
+    """
+
+    replica_selection: common.ReplicaSelection = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.ReplicaSelection,
+    )
+    node_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+        oneof="compute_capacity",
+    )
+    processing_units: int = proto.Field(
+        proto.INT32,
+        number=3,
+        oneof="compute_capacity",
+    )
+
+
 class AutoscalingConfig(proto.Message):
     r"""Autoscaling configuration for an instance.
 
@@ -326,6 +377,19 @@ class AutoscalingConfig(proto.Message):
         autoscaling_targets (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig.AutoscalingTargets):
             Required. The autoscaling targets for an
             instance.
+        asymmetric_autoscaling_options (MutableSequence[google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig.AsymmetricAutoscalingOption]):
+            Optional. Optional asymmetric autoscaling
+            options. Replicas matching the replica selection
+            criteria will be autoscaled independently from
+            other replicas. The autoscaler will scale the
+            replicas based on the utilization of replicas
+            identified by the replica selection. Replica
+            selections should not overlap with each other.
+
+            Other replicas (those do not match any replica
+            selection) will be autoscaled together and will
+            have the same compute capacity allocated to
+            them.
     """
 
     class AutoscalingLimits(proto.Message):
@@ -415,6 +479,59 @@ class AutoscalingConfig(proto.Message):
             number=2,
         )
 
+    class AsymmetricAutoscalingOption(proto.Message):
+        r"""AsymmetricAutoscalingOption specifies the scaling of replicas
+        identified by the given selection.
+
+        Attributes:
+            replica_selection (google.cloud.spanner_admin_instance_v1.types.ReplicaSelection):
+                Required. Selects the replicas to which this
+                AsymmetricAutoscalingOption applies. Only
+                read-only replicas are supported.
+            overrides (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides):
+                Optional. Overrides applied to the top-level
+                autoscaling configuration for the selected
+                replicas.
+        """
+
+        class AutoscalingConfigOverrides(proto.Message):
+            r"""Overrides the top-level autoscaling configuration for the replicas
+            identified by ``replica_selection``. All fields in this message are
+            optional. Any unspecified fields will use the corresponding values
+            from the top-level autoscaling configuration.
+
+            Attributes:
+                autoscaling_limits (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig.AutoscalingLimits):
+                    Optional. If specified, overrides the min/max
+                    limit in the top-level autoscaling configuration
+                    for the selected replicas.
+                autoscaling_target_high_priority_cpu_utilization_percent (int):
+                    Optional. If specified, overrides the autoscaling target
+                    high_priority_cpu_utilization_percent in the top-level
+                    autoscaling configuration for the selected replicas.
+            """
+
+            autoscaling_limits: "AutoscalingConfig.AutoscalingLimits" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="AutoscalingConfig.AutoscalingLimits",
+            )
+            autoscaling_target_high_priority_cpu_utilization_percent: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        replica_selection: common.ReplicaSelection = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=common.ReplicaSelection,
+        )
+        overrides: "AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides",
+        )
+
     autoscaling_limits: AutoscalingLimits = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -424,6 +541,13 @@ class AutoscalingConfig(proto.Message):
         proto.MESSAGE,
         number=2,
         message=AutoscalingTargets,
+    )
+    asymmetric_autoscaling_options: MutableSequence[
+        AsymmetricAutoscalingOption
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=AsymmetricAutoscalingOption,
     )
 
 
@@ -453,33 +577,57 @@ class Instance(proto.Message):
             per project and between 4 and 30 characters in
             length.
         node_count (int):
-            The number of nodes allocated to this instance. At most one
-            of either node_count or processing_units should be present
-            in the message.
-
-            Users can set the node_count field to specify the target
-            number of nodes allocated to the instance.
-
-            This may be zero in API responses for instances that are not
-            yet in state ``READY``.
-
-            See `the
-            documentation <https://cloud.google.com/spanner/docs/compute-capacity>`__
-            for more information about nodes and processing units.
-        processing_units (int):
-            The number of processing units allocated to this instance.
-            At most one of processing_units or node_count should be
+            The number of nodes allocated to this instance. At most, one
+            of either ``node_count`` or ``processing_units`` should be
             present in the message.
 
-            Users can set the processing_units field to specify the
+            Users can set the ``node_count`` field to specify the target
+            number of nodes allocated to the instance.
+
+            If autoscaling is enabled, ``node_count`` is treated as an
+            ``OUTPUT_ONLY`` field and reflects the current number of
+            nodes allocated to the instance.
+
+            This might be zero in API responses for instances that are
+            not yet in the ``READY`` state.
+
+            If the instance has varying node count across replicas
+            (achieved by setting asymmetric_autoscaling_options in
+            autoscaling config), the node_count here is the maximum node
+            count across all replicas.
+
+            For more information, see `Compute capacity, nodes, and
+            processing
+            units <https://cloud.google.com/spanner/docs/compute-capacity>`__.
+        processing_units (int):
+            The number of processing units allocated to this instance.
+            At most, one of either ``processing_units`` or
+            ``node_count`` should be present in the message.
+
+            Users can set the ``processing_units`` field to specify the
             target number of processing units allocated to the instance.
 
-            This may be zero in API responses for instances that are not
-            yet in state ``READY``.
+            If autoscaling is enabled, ``processing_units`` is treated
+            as an ``OUTPUT_ONLY`` field and reflects the current number
+            of processing units allocated to the instance.
 
-            See `the
-            documentation <https://cloud.google.com/spanner/docs/compute-capacity>`__
-            for more information about nodes and processing units.
+            This might be zero in API responses for instances that are
+            not yet in the ``READY`` state.
+
+            If the instance has varying processing units per replica
+            (achieved by setting asymmetric_autoscaling_options in
+            autoscaling config), the processing_units here is the
+            maximum processing units across all replicas.
+
+            For more information, see `Compute capacity, nodes and
+            processing
+            units <https://cloud.google.com/spanner/docs/compute-capacity>`__.
+        replica_compute_capacity (MutableSequence[google.cloud.spanner_admin_instance_v1.types.ReplicaComputeCapacity]):
+            Output only. Lists the compute capacity per
+            ReplicaSelection. A replica selection identifies
+            a set of replicas with common properties.
+            Replicas identified by a ReplicaSelection are
+            scaled with the same compute capacity.
         autoscaling_config (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig):
             Optional. The autoscaling configuration. Autoscaling is
             enabled if this field is set. When autoscaling is enabled,
@@ -531,6 +679,18 @@ class Instance(proto.Message):
             was most recently updated.
         edition (google.cloud.spanner_admin_instance_v1.types.Instance.Edition):
             Optional. The ``Edition`` of the current instance.
+        default_backup_schedule_type (google.cloud.spanner_admin_instance_v1.types.Instance.DefaultBackupScheduleType):
+            Optional. Controls the default backup behavior for new
+            databases within the instance.
+
+            Note that ``AUTOMATIC`` is not permitted for free instances,
+            as backups and backup schedules are not allowed for free
+            instances.
+
+            In the ``GetInstance`` or ``ListInstances`` response, if the
+            value of default_backup_schedule_type is unset or NONE, no
+            default backup schedule will be created for new databases
+            within the instance.
     """
 
     class State(proto.Enum):
@@ -571,6 +731,31 @@ class Instance(proto.Message):
         ENTERPRISE = 2
         ENTERPRISE_PLUS = 3
 
+    class DefaultBackupScheduleType(proto.Enum):
+        r"""Indicates the default backup behavior for new databases
+        within the instance.
+
+        Values:
+            DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED (0):
+                Not specified.
+            NONE (1):
+                No default backup schedule will be created
+                automatically on creation of a database within
+                the instance.
+            AUTOMATIC (2):
+                A default backup schedule will be created
+                automatically on creation of a database within
+                the instance. The default backup schedule
+                creates a full backup every 24 hours and retains
+                the backup for a period of 7 days. Once created,
+                the default backup schedule can be
+                edited/deleted similar to any other backup
+                schedule.
+        """
+        DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED = 0
+        NONE = 1
+        AUTOMATIC = 2
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -590,6 +775,13 @@ class Instance(proto.Message):
     processing_units: int = proto.Field(
         proto.INT32,
         number=9,
+    )
+    replica_compute_capacity: MutableSequence[
+        "ReplicaComputeCapacity"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=19,
+        message="ReplicaComputeCapacity",
     )
     autoscaling_config: "AutoscalingConfig" = proto.Field(
         proto.MESSAGE,
@@ -624,6 +816,11 @@ class Instance(proto.Message):
         proto.ENUM,
         number=20,
         enum=Edition,
+    )
+    default_backup_schedule_type: DefaultBackupScheduleType = proto.Field(
+        proto.ENUM,
+        number=23,
+        enum=DefaultBackupScheduleType,
     )
 
 
