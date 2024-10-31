@@ -45,8 +45,8 @@ if typing.TYPE_CHECKING:
 def get_table_metadata(
     bqclient: bigquery.Client,
     table_ref: google.cloud.bigquery.table.TableReference,
+    bq_time: datetime.datetime,
     *,
-    api_name: str,
     cache: Dict[bigquery.TableReference, Tuple[datetime.datetime, bigquery.Table]],
     use_cache: bool = True,
 ) -> Tuple[datetime.datetime, google.cloud.bigquery.table.Table]:
@@ -76,23 +76,9 @@ def get_table_metadata(
         )
         return cached_table
 
-    # TODO(swast): It's possible that the table metadata is changed between now
-    # and when we run the CURRENT_TIMESTAMP() query to see when we can time
-    # travel to. Find a way to fetch the table metadata and BQ's current time
-    # atomically.
     table = bqclient.get_table(table_ref)
 
-    # TODO(swast): Use session._start_query instead?
-    # TODO(swast): Use query_and_wait since we know these are small results.
-    job_config = bigquery.QueryJobConfig()
-    bigframes.session._io.bigquery.add_labels(job_config, api_name=api_name)
-    snapshot_timestamp = list(
-        bqclient.query(
-            "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
-            job_config=job_config,
-        ).result()
-    )[0][0]
-    cached_table = (snapshot_timestamp, table)
+    cached_table = (bq_time, table)
     cache[table_ref] = cached_table
     return cached_table
 

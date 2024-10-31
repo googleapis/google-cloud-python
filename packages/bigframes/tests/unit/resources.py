@@ -91,7 +91,16 @@ def create_bigquery_session(
 
         return query_job
 
+    existing_query_and_wait = bqclient.query_and_wait
+
+    def query_and_wait_mock(query, *args, **kwargs):
+        if query.startswith("SELECT CURRENT_TIMESTAMP()"):
+            return iter([[datetime.datetime.now()]])
+        else:
+            return existing_query_and_wait(query, *args, **kwargs)
+
     bqclient.query = query_mock
+    bqclient.query_and_wait = query_and_wait_mock
 
     clients_provider = mock.create_autospec(bigframes.session.clients.ClientsProvider)
     type(clients_provider).bqclient = mock.PropertyMock(return_value=bqclient)
