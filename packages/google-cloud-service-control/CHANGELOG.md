@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.13.0...google-cloud-service-control-v1.13.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([59c4287](https://github.com/googleapis/google-cloud-python/commit/59c42878386ee08d1717b73e47d33d76cfb38ba0))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.12.3...google-cloud-service-control-v1.13.0) (2024-10-24)
 
 

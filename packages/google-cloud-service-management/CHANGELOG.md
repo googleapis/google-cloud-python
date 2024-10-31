@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.10.0...google-cloud-service-management-v1.10.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([59c4287](https://github.com/googleapis/google-cloud-python/commit/59c42878386ee08d1717b73e47d33d76cfb38ba0))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.9.0...google-cloud-service-management-v1.10.0) (2024-10-24)
 
 

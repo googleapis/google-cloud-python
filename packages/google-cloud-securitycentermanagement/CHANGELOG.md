@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.15...google-cloud-securitycentermanagement-v0.1.16) (2024-10-31)
+
+
+### Documentation
+
+* update documentation ([f611927](https://github.com/googleapis/google-cloud-python/commit/f61192719e42218a751e30ad9aca4c40d795c63a))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.14...google-cloud-securitycentermanagement-v0.1.15) (2024-10-24)
 
 

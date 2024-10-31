@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.12...google-cloud-eventarc-publishing-v0.6.13) (2024-10-31)
+
+
+### Features
+
+* Publish Eventarc Advanced Publishing API proto, allowing ([b5718b7](https://github.com/googleapis/google-cloud-python/commit/b5718b7e1196cc19e9c6e848bae19d716eb2b070))
+* Publish Eventarc Advanced Publishing API proto, allowing publishing events to a Message Bus ([#13232](https://github.com/googleapis/google-cloud-python/issues/13232)) ([b5718b7](https://github.com/googleapis/google-cloud-python/commit/b5718b7e1196cc19e9c6e848bae19d716eb2b070))
+
 ## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.11...google-cloud-eventarc-publishing-v0.6.12) (2024-10-24)
 
 
