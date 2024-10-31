@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.36.0](https://github.com/googleapis/google-auth-library-python/compare/v2.35.0...v2.36.0) (2024-10-30)
+
+
+### Features
+
+* IAM signblob retries ([#1600](https://github.com/googleapis/google-auth-library-python/issues/1600)) ([484c8db](https://github.com/googleapis/google-auth-library-python/commit/484c8db151690a4ae7b6b0ae38db0a8ede88df69))
+* Making iam endpoint universe-aware ([#1604](https://github.com/googleapis/google-auth-library-python/issues/1604)) ([16c728d](https://github.com/googleapis/google-auth-library-python/commit/16c728d30adb36e19aabe34f0ed5a95152d9a135))
+* Support External Account Authorized User as a Source Credential for impersonated credentials in ADC ([#1608](https://github.com/googleapis/google-auth-library-python/issues/1608)) ([875796c](https://github.com/googleapis/google-auth-library-python/commit/875796cbace847797898bc506eac188edbaa3192))
+
+
+### Bug Fixes
+
+* Adding default parameters to updated interfaces ([#1622](https://github.com/googleapis/google-auth-library-python/issues/1622)) ([8cf1cb1](https://github.com/googleapis/google-auth-library-python/commit/8cf1cb1663fccd03ea17a1bf055d862bddf61406))
+* Change universe_domain to universe-domain ([#1613](https://github.com/googleapis/google-auth-library-python/issues/1613)) ([168fcc6](https://github.com/googleapis/google-auth-library-python/commit/168fcc63593cb1da018b86070e20a576d5b93b7b))
+* Remove base class to avoid type conflict ([#1619](https://github.com/googleapis/google-auth-library-python/issues/1619)) ([9e2789a](https://github.com/googleapis/google-auth-library-python/commit/9e2789a208d58221292873b0095ae4e8a924a703))
+* Revert templates for iam endpoints ([#1614](https://github.com/googleapis/google-auth-library-python/issues/1614)) ([0a4363a](https://github.com/googleapis/google-auth-library-python/commit/0a4363a556455a29ececc1339385826e26459c65))
+* Update secret ([#1611](https://github.com/googleapis/google-auth-library-python/issues/1611)) ([f070de0](https://github.com/googleapis/google-auth-library-python/commit/f070de06492a5eed3fab54313272acb5f603193a))
+* Update secret ([#1617](https://github.com/googleapis/google-auth-library-python/issues/1617)) ([10f42a7](https://github.com/googleapis/google-auth-library-python/commit/10f42a70e6089f1eecd060893632dd0ef40423f7))
+* Update secret ([#1621](https://github.com/googleapis/google-auth-library-python/issues/1621)) ([6be19fb](https://github.com/googleapis/google-auth-library-python/commit/6be19fb6ad571f3a8275db8ccdd7a69cf97e1ceb))
+
 ## [2.35.0](https://github.com/googleapis/google-auth-library-python/compare/v2.34.0...v2.35.0) (2024-09-17)
 
 
