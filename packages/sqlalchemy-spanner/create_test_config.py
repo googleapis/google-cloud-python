@@ -18,12 +18,19 @@ import configparser
 import sys
 
 
-def set_test_config(project, instance):
+def set_test_config(project, instance, user=None, password=None, host=None, port=None):
     config = configparser.ConfigParser()
-    url = (
-        f"spanner+spanner:///projects/{project}/instances/{instance}/"
-        "databases/compliance-test"
-    )
+    if user is not None and password is not None and host is not None and port is not None:
+        url = (
+            f"spanner+spanner://{user}:{password}@{host}:{port}"
+            f"/projects/{project}/instances/{instance}/"
+            "databases/compliance-test"
+        )
+    else:
+        url = (
+            f"spanner+spanner:///projects/{project}/instances/{instance}/"
+            "databases/compliance-test"
+        )
     config.add_section("db")
     config["db"]["default"] = url
 
@@ -34,7 +41,17 @@ def set_test_config(project, instance):
 def main(argv):
     project = argv[0]
     instance = argv[1]
-    set_test_config(project, instance)
+    if len(argv) == 6:
+        user = argv[2]
+        password = argv[3]
+        host = argv[4]
+        port = argv[5]
+    else:
+        user = None
+        password = None
+        host = None
+        port = None
+    set_test_config(project, instance, user, password, host, port)
 
 
 if __name__ == "__main__":

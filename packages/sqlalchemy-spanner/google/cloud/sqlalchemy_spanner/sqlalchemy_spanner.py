@@ -22,6 +22,9 @@ from alembic.ddl.base import (
     alter_table,
     format_type,
 )
+from google.api_core.client_options import ClientOptions
+from google.auth.credentials import AnonymousCredentials
+from google.cloud.spanner_v1 import Client
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.sql import elements
 from sqlalchemy import ForeignKeyConstraint, types
@@ -709,9 +712,29 @@ class SpannerDialect(DefaultDialect):
             url.database,
         )
         dist = pkg_resources.get_distribution("sqlalchemy-spanner")
+        options = {"user_agent": f"gl-{dist.project_name}/{dist.version}"}
+        connect_opts = url.translate_connect_args()
+        if (
+            "host" in connect_opts
+            and "port" in connect_opts
+            and "password" in connect_opts
+        ):
+            # Create a test client that connects to a local Spanner (mock) server.
+            if (
+                connect_opts["host"] == "localhost"
+                and connect_opts["password"] == "AnonymousCredentials"
+            ):
+                client = Client(
+                    project=match.group("project"),
+                    credentials=AnonymousCredentials(),
+                    client_options=ClientOptions(
+                        api_endpoint=f"{connect_opts['host']}:{connect_opts['port']}",
+                    ),
+                )
+                options["client"] = client
         return (
             [match.group("instance"), match.group("database"), match.group("project")],
-            {"user_agent": f"gl-{dist.project_name}/{dist.version}"},
+            options,
         )
 
     @engine_to_connection
