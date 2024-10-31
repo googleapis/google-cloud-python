@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.1...google-cloud-apihub-v0.2.2) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.0...google-cloud-apihub-v0.2.1) (2024-10-24)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.14.0...google-cloud-access-approval-v1.14.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-approval-v1.13.5...google-cloud-access-approval-v1.14.0) (2024-10-24)
 
 

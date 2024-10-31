@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.15](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.14...google-analytics-data-v0.18.15) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [0.18.14](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.13...google-analytics-data-v0.18.14) (2024-10-24)
 
 
