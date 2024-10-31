@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.1.5...google-cloud-backupdr-v0.1.6) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.1.4...google-cloud-backupdr-v0.1.5) (2024-10-24)
 
 

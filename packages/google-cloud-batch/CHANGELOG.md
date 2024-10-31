@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.31](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.30...google-cloud-batch-v0.17.31) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [0.17.30](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.29...google-cloud-batch-v0.17.30) (2024-10-24)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.14.0...google-cloud-automl-v2.14.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.13.5...google-cloud-automl-v2.14.0) (2024-10-24)
 
 

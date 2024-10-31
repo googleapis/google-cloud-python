@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientgateways-v0.4.11...google-cloud-beyondcorp-clientgateways-v0.4.12) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [0.4.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientgateways-v0.4.10...google-cloud-beyondcorp-clientgateways-v0.4.11) (2024-10-24)
 
 

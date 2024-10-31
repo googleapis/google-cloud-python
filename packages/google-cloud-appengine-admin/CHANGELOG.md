@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.12.0...google-cloud-appengine-admin-v1.12.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.11.5...google-cloud-appengine-admin-v1.12.0) (2024-10-24)
 
 
