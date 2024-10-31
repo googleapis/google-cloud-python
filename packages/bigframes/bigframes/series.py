@@ -60,6 +60,9 @@ import bigframes.operations.plotting as plotting
 import bigframes.operations.strings as strings
 import bigframes.operations.structs as structs
 
+if typing.TYPE_CHECKING:
+    import bigframes.geopandas.geoseries
+
 LevelType = typing.Union[str, int]
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
@@ -90,6 +93,20 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     @property
     def dtypes(self):
         return self._dtype
+
+    @property
+    def geo(self) -> bigframes.geopandas.geoseries.GeoSeries:
+        """
+        Accessor object for geography properties of the Series values.
+
+        Returns:
+            bigframes.geopandas.geoseries.GeoSeries:
+                An accessor containing geography methods.
+
+        """
+        import bigframes.geopandas.geoseries
+
+        return bigframes.geopandas.geoseries.GeoSeries(self)
 
     @property
     @validations.requires_index

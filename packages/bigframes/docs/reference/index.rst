@@ -8,7 +8,8 @@ packages.
     :maxdepth: 2
 
     bigframes/index
-    bigframes.pandas/index
-    bigframes.ml/index
     bigframes.bigquery/index
+    bigframes.geopandas/index
+    bigframes.ml/index
+    bigframes.pandas/index
     bigframes.streaming/index
