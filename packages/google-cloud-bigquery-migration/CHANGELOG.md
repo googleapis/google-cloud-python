@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.10...google-cloud-bigquery-migration-v0.11.11) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [0.11.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.9...google-cloud-bigquery-migration-v0.11.10) (2024-10-24)
 
 

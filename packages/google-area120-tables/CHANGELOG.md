@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.13](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.12...google-area120-tables-v0.11.13) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [0.11.12](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.11...google-area120-tables-v0.11.12) (2024-10-24)
 
 

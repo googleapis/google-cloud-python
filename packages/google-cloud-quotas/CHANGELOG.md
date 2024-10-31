@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.11...google-cloud-quotas-v0.1.12) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([59c4287](https://github.com/googleapis/google-cloud-python/commit/59c42878386ee08d1717b73e47d33d76cfb38ba0))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.10...google-cloud-quotas-v0.1.11) (2024-10-24)
 
 

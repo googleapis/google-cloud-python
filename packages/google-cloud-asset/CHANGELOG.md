@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.27.0...google-cloud-asset-v3.27.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [3.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.26.4...google-cloud-asset-v3.27.0) (2024-10-24)
 
 

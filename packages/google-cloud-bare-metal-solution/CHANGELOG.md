@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.8.0...google-cloud-bare-metal-solution-v1.8.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.7.5...google-cloud-bare-metal-solution-v1.8.0) (2024-10-24)
 
 

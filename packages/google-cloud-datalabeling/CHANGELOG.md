@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.11.0...google-cloud-datalabeling-v1.11.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.10.5...google-cloud-datalabeling-v1.11.0) (2024-10-24)
 
 

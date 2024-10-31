@@ -1,4 +1,11 @@
 # Changelog
+## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.15.0...google-cloud-billing-budgets-v1.15.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([4ed4108](https://github.com/googleapis/google-cloud-python/commit/4ed41088ab3cbadfe4de7fa170f172666015ed24))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.14.5...google-cloud-billing-budgets-v1.15.0) (2024-10-24)
 
 

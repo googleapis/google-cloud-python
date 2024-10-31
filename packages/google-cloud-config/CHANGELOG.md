@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.12...google-cloud-config-v0.1.13) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.11...google-cloud-config-v0.1.12) (2024-10-24)
 
 

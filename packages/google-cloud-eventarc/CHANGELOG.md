@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.12.0...google-cloud-eventarc-v1.13.0) (2024-10-31)
+
+
+### Features
+
+* Publish Eventarc Advanced protos ([e90120b](https://github.com/googleapis/google-cloud-python/commit/e90120b0661c17acfdeec5f3edb37c4155c19aa6))
+
+
+### Documentation
+
+* Clarified multiple comments in Eventarc Standard protos ([e90120b](https://github.com/googleapis/google-cloud-python/commit/e90120b0661c17acfdeec5f3edb37c4155c19aa6))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.11.5...google-cloud-eventarc-v1.12.0) (2024-10-24)
 
 

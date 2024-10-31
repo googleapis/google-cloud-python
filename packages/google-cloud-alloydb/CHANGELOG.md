@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.15...google-cloud-alloydb-v0.3.16) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [0.3.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.14...google-cloud-alloydb-v0.3.15) (2024-10-24)
 
 

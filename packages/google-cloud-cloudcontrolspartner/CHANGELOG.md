@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.1...google-cloud-cloudcontrolspartner-v0.2.2) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.0...google-cloud-cloudcontrolspartner-v0.2.1) (2024-10-24)
 
 

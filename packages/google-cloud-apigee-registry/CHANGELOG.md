@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.12...google-cloud-apigee-registry-v0.6.13) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.11...google-cloud-apigee-registry-v0.6.12) (2024-10-24)
 
 

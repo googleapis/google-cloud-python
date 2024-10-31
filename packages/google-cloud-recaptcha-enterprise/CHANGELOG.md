@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.23.0...google-cloud-recaptcha-enterprise-v1.24.0) (2024-10-31)
+
+
+### Features
+
+* enable Akamai web application firewall ([81bf6fe](https://github.com/googleapis/google-cloud-python/commit/81bf6fe826181c729ec756756d1bf315914a8fc4))
+* support for ListIpOverrides and RemoveIpOverride ([81bf6fe](https://github.com/googleapis/google-cloud-python/commit/81bf6fe826181c729ec756756d1bf315914a8fc4))
+
+
+### Documentation
+
+* minor updates to reference documentation ([81bf6fe](https://github.com/googleapis/google-cloud-python/commit/81bf6fe826181c729ec756756d1bf315914a8fc4))
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.22.1...google-cloud-recaptcha-enterprise-v1.23.0) (2024-10-24)
 
 

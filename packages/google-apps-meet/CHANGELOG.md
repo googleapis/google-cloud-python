@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.9...google-apps-meet-v0.1.10) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.8...google-apps-meet-v0.1.9) (2024-10-24)
 
 

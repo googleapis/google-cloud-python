@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.12...google-cloud-edgecontainer-v0.5.13) (2024-10-31)
+
+
+### Features
+
+* add config data to zone metadata ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add connection state to cluster ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add maintenance exclusion window to maintenance policy ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add resource state to control plane encryption ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add resource state to local disk encryption ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add status reason to operation metadata ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add storage schema to local control plane config ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add storage schema to node config ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+* add VM service config to system addons config ([a0f0c7e](https://github.com/googleapis/google-cloud-python/commit/a0f0c7ee4045081927f9c3241cfff8e0c916798f))
+
 ## [0.5.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.11...google-cloud-edgecontainer-v0.5.12) (2024-10-24)
 
 

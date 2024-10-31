@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.11...google-cloud-advisorynotifications-v0.3.12) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([85c7512](https://github.com/googleapis/google-cloud-python/commit/85c7512bbdde2b9cc60b4ad42b8c36c4558a07a5))
+
 ## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.10...google-cloud-advisorynotifications-v0.3.11) (2024-10-24)
 
 

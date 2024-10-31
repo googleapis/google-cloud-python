@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.3...google-cloud-developerconnect-v0.1.4) (2024-10-31)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([53c951e](https://github.com/googleapis/google-cloud-python/commit/53c951e90ad1d702fa507495532086d5d2f6b3c0))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.2...google-cloud-developerconnect-v0.1.3) (2024-10-24)
 
 
