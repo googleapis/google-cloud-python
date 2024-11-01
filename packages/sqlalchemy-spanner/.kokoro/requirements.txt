@@ -464,9 +464,9 @@ more-itertools==10.5.0 \
     --hash=sha256:037b0d3203ce90cca8ab1defbbdac29d5f993fc20131f3664dc8d6acfa872aef \
     --hash=sha256:5482bfef7849c25dc3c6dd53a6173ae4795da2a41a80faea6700d9f5846c5da6
     # via jaraco-classes
-nox==2022.8.7 \
-    --hash=sha256:1b894940551dc5c389f9271d197ca5d655d40bdc6ccf93ed6880e4042760a34b \
-    --hash=sha256:96cca88779e08282a699d672258ec01eb7c792d35bbbf538c723172bce23212c
+nox==2022.11.21 \
+    --hash=sha256:0e41a990e290e274cb205a976c4c97ee3c5234441a8132c8c3fd9ea3c22149eb \
+    --hash=sha256:e21c31de0711d1274ca585a2c5fde36b1aa962005ba8e9322bf5eeed16dcd684
     # via -r requirements.in
 packaging==24.1 \
     --hash=sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002 \
