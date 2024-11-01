@@ -9,3 +9,5 @@ nox
 nh3
 proto-plus
 tomli
+jaraco.context
+backports.tarfile
