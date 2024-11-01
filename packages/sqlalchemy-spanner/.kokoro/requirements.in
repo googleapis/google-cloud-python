@@ -7,3 +7,4 @@ wheel
 setuptools
 nox
 nh3
+proto-plus
