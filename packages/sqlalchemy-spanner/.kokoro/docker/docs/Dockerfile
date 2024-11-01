@@ -4,7 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from ubuntu:20.04
+from ubuntu:24.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
