@@ -467,9 +467,9 @@ nox==2022.8.7 \
     --hash=sha256:1b894940551dc5c389f9271d197ca5d655d40bdc6ccf93ed6880e4042760a34b \
     --hash=sha256:96cca88779e08282a699d672258ec01eb7c792d35bbbf538c723172bce23212c
     # via -r requirements.in
-packaging==21.3 \
-    --hash=sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb \
-    --hash=sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522
+packaging==24.1 \
+    --hash=sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002 \
+    --hash=sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124
     # via
     #   gcp-releasetool
     #   nox
