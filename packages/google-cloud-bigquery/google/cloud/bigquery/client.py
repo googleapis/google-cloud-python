@@ -328,6 +328,15 @@ class Client(ClientWithProject):
     ) -> str:
         """Get the email address of the project's BigQuery service account
 
+        Example:
+
+        .. code-block:: python
+
+            from google.cloud import bigquery
+            client = bigquery.Client()
+            client.get_service_account_email()
+            # returns an email similar to: my_service_account@my-project.iam.gserviceaccount.com
+
         Note:
             This is the service account that BigQuery uses to manage tables
             encrypted by a key in KMS.
@@ -344,13 +353,6 @@ class Client(ClientWithProject):
         Returns:
             str:
                 service account email address
-
-        Example:
-
-            >>> from google.cloud import bigquery
-            >>> client = bigquery.Client()
-            >>> client.get_service_account_email()
-            my_service_account@my-project.iam.gserviceaccount.com
 
         """
         if project is None:
@@ -629,8 +631,18 @@ class Client(ClientWithProject):
     ) -> Dataset:
         """API call: create the dataset via a POST request.
 
+
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/insert
+
+        Example:
+
+        .. code-block:: python
+
+            from google.cloud import bigquery
+            client = bigquery.Client()
+            dataset = bigquery.Dataset('my_project.my_dataset')
+            dataset = client.create_dataset(dataset)
 
         Args:
             dataset (Union[ \
@@ -658,14 +670,6 @@ class Client(ClientWithProject):
         Raises:
             google.cloud.exceptions.Conflict:
                 If the dataset already exists.
-
-        Example:
-
-            >>> from google.cloud import bigquery
-            >>> client = bigquery.Client()
-            >>> dataset = bigquery.Dataset('my_project.my_dataset')
-            >>> dataset = client.create_dataset(dataset)
-
         """
         dataset = self._dataset_from_arg(dataset)
         if isinstance(dataset, DatasetReference):
