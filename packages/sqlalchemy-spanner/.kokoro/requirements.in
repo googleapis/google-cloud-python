@@ -8,3 +8,4 @@ setuptools
 nox
 nh3
 proto-plus
+tomli

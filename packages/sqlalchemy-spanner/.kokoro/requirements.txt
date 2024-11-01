@@ -315,7 +315,9 @@ google-crc32c==1.6.0 \
     --hash=sha256:ebab974b1687509e5c973b5c4b8b146683e101e102e17a86bd196ecaa4d099fc \
     --hash=sha256:ed767bf4ba90104c1216b68111613f0d5926fb3780660ea1198fc469af410e9d \
     --hash=sha256:f7a1fc29803712f80879b0806cb83ab24ce62fc8daf0569f2204a0cfd7f68ed4
-    # via google-resumable-media
+    # via
+    #   google-cloud-storage
+    #   google-resumable-media
 google-resumable-media==2.7.2 \
     --hash=sha256:3ce7551e9fe6d99e9a126101d2536612bb73486721951e9562fee0f90c6ababa \
     --hash=sha256:5280aed4629f2b60b847b0d42f9857fd4935c11af266744df33d8074cae92fe0
@@ -449,9 +451,9 @@ nh3==0.2.18 \
     # via
     #   -r requirements.in
     #   readme-renderer
-nox==2022.11.21 \
-    --hash=sha256:0e41a990e290e274cb205a976c4c97ee3c5234441a8132c8c3fd9ea3c22149eb \
-    --hash=sha256:e21c31de0711d1274ca585a2c5fde36b1aa962005ba8e9322bf5eeed16dcd684
+nox==2024.10.9 \
+    --hash=sha256:1d36f309a0a2a853e9bccb76bbef6bb118ba92fa92674d15604ca99adeb29eab \
+    --hash=sha256:7aa9dc8d1c27e9f45ab046ffd1c3b2c4f7c91755304769df231308849ebded95
     # via -r requirements.in
 packaging==24.1 \
     --hash=sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002 \
@@ -466,10 +468,13 @@ pkginfo==1.10.0 \
 platformdirs==4.3.6 \
     --hash=sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907 \
     --hash=sha256:73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb
+    # via virtualenv
 proto-plus==1.25.0 \
     --hash=sha256:c91fc4a65074ade8e458e95ef8bac34d4008daa7cce4a12d6707066fca648961 \
     --hash=sha256:fbb17f57f7bd05a68b7707e745e26528b0b3c34e378db91eef93912c54982d91
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   google-api-core
 protobuf==3.20.3 \
     --hash=sha256:03038ac1cfbc41aa21f6afcbcd357281d7521b4157926f30ebecc8d4ea59dcb7 \
     --hash=sha256:28545383d61f55b57cf4df63eebd9827754fd2dc25f80c5253f9184235db242c \
@@ -576,6 +581,10 @@ six==1.16.0 \
     # via
     #   gcp-docuploader
     #   python-dateutil
+tomli==2.0.2 \
+    --hash=sha256:2ebe24485c53d303f690b0ec092806a085f07af5a5aa1464f3931eec36caaa38 \
+    --hash=sha256:d46d457a85337051c36524bc5349dd91b1877838e2979ac5ced3e710ed8a60ed
+    # via -r requirements.in
 twine==5.1.1 \
     --hash=sha256:215dbe7b4b94c2c50a7315c0275d2258399280fbb7d04182c7e55e24b5f93997 \
     --hash=sha256:9aa0825139c02b3434d913545c7b847a21c835e11597f5255842d457da2322db
