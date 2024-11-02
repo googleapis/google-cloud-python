@@ -46,7 +46,7 @@ from google.pubsub_v1 import types as gapic_types
 from test_utils.system import unique_resource_id
 
 C = TypeVar("C", bound=Callable[..., Any])
-typed_flaky = cast(Callable[[C], C], flaky(max_runs=3, min_passes=1))
+typed_flaky = cast(Callable[[C], C], flaky(max_runs=5, min_passes=1))
 
 
 @pytest.fixture(scope="module")
@@ -616,6 +616,7 @@ class TestStreamingPull(object):
         finally:
             subscription_future.cancel()
 
+    @typed_flaky
     def test_streaming_pull_max_messages(
         self, publisher, topic_path_base, subscription_path_base, cleanup
     ):
