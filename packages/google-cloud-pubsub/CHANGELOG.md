@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.27.0](https://github.com/googleapis/python-pubsub/compare/v2.26.1...v2.27.0) (2024-11-02)
+
+
+### Features
+
+* Add support for Python 3.13 ([#1281](https://github.com/googleapis/python-pubsub/issues/1281)) ([0b46a33](https://github.com/googleapis/python-pubsub/commit/0b46a3321d6f19cd72e4f2ccdba73d062c7bd832))
+
+
+### Bug Fixes
+
+* Mark test_streaming_pull_max_messages flaky ([#1288](https://github.com/googleapis/python-pubsub/issues/1288)) ([d6635a0](https://github.com/googleapis/python-pubsub/commit/d6635a00dc2c614dd8608ef32ad4e79f9124e040))
+
 ## [2.26.1](https://github.com/googleapis/python-pubsub/compare/v2.26.0...v2.26.1) (2024-10-10)
 
 
