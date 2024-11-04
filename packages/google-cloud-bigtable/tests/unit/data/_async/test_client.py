@@ -654,6 +654,48 @@ class TestBigtableDataClientAsync:
         )
 
     @pytest.mark.asyncio
+    async def test__register_instance_duplicate(self):
+        """
+        test double instance registration. Should be no-op
+        """
+        # set up mock client
+        client_mock = mock.Mock()
+        client_mock._gapic_client.instance_path.side_effect = lambda a, b: f"prefix/{b}"
+        active_instances = set()
+        instance_owners = {}
+        client_mock._active_instances = active_instances
+        client_mock._instance_owners = instance_owners
+        client_mock._channel_refresh_tasks = [object()]
+        mock_channels = [mock.Mock()]
+        client_mock.transport.channels = mock_channels
+        client_mock._ping_and_warm_instances = AsyncMock()
+        table_mock = mock.Mock()
+        expected_key = (
+            "prefix/instance-1",
+            table_mock.table_name,
+            table_mock.app_profile_id,
+        )
+        # fake first registration
+        await self._get_target_class()._register_instance(
+            client_mock, "instance-1", table_mock
+        )
+        assert len(active_instances) == 1
+        assert expected_key == tuple(list(active_instances)[0])
+        assert len(instance_owners) == 1
+        assert expected_key == tuple(list(instance_owners)[0])
+        # should have called ping and warm
+        assert client_mock._ping_and_warm_instances.call_count == 1
+        # next call should do nothing
+        await self._get_target_class()._register_instance(
+            client_mock, "instance-1", table_mock
+        )
+        assert len(active_instances) == 1
+        assert expected_key == tuple(list(active_instances)[0])
+        assert len(instance_owners) == 1
+        assert expected_key == tuple(list(instance_owners)[0])
+        assert client_mock._ping_and_warm_instances.call_count == 1
+
+    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "insert_instances,expected_active,expected_owner_keys",
         [
