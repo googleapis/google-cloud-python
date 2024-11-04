@@ -1564,8 +1564,9 @@ def visit_column_nullable(
 def visit_column_type(
     element: "ColumnType", compiler: "SpannerDDLCompiler", **kw
 ) -> str:
-    return "%s %s %s" % (
+    return "%s %s %s %s" % (
         alter_table(compiler, element.table_name, element.schema),
         alter_column(compiler, element.column_name),
         "%s" % format_type(compiler, element.type_),
+        "" if element.existing_nullable else "NOT NULL",
     )
