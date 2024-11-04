@@ -350,7 +350,7 @@ class BigtableDataClientAsync(ClientWithProject):
             instance_name, owner.table_name, owner.app_profile_id
         )
         self._instance_owners.setdefault(instance_key, set()).add(id(owner))
-        if instance_name not in self._active_instances:
+        if instance_key not in self._active_instances:
             self._active_instances.add(instance_key)
             if self._channel_refresh_tasks:
                 # refresh tasks already running
