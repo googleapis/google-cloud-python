@@ -1,2 +1,0 @@
-recursive-include google/cloud/resourcemanager *.py
-recursive-include google/cloud/resourcemanager_v3 *.py
