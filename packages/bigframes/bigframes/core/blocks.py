@@ -3139,7 +3139,7 @@ def _pd_index_to_array_value(
     rows = []
     labels_as_tuples = utils.index_as_tuples(index)
     for row_offset in range(len(index)):
-        id_gen = bigframes.core.identifiers.standard_identifiers()
+        id_gen = bigframes.core.identifiers.standard_id_strings()
         row_label = labels_as_tuples[row_offset]
         row_label = (row_label,) if not isinstance(row_label, tuple) else row_label
         row = {}

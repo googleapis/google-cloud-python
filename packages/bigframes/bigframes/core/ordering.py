@@ -222,6 +222,11 @@ class RowOrdering:
 class TotalOrdering(RowOrdering):
     """Immutable object that holds information about the ordering of rows in a ArrayValue object. Guaranteed to be unambiguous."""
 
+    def __post_init__(self):
+        assert set(ref.id for ref in self.total_ordering_columns).issubset(
+            self.referenced_columns
+        )
+
     # A table has a total ordering defined by the identities of a set of 1 or more columns.
     # These columns must always be part of the ordering, in order to guarantee that the ordering is total.
     # Therefore, any modifications(or drops) done to these columns must result in hidden copies being made.

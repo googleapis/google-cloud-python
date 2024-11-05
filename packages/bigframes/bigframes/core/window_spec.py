@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import itertools
-from typing import Optional, Set, Tuple, Union
+from typing import Mapping, Optional, Set, Tuple, Union
 
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
@@ -180,3 +180,21 @@ class WindowSpec:
             item.scalar_expression.column_references for item in self.ordering
         )
         return set(itertools.chain((i.id for i in self.grouping_keys), ordering_vars))
+
+    def remap_column_refs(
+        self,
+        mapping: Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> WindowSpec:
+        return WindowSpec(
+            grouping_keys=tuple(
+                key.remap_column_refs(mapping, allow_partial_bindings)
+                for key in self.grouping_keys
+            ),
+            ordering=tuple(
+                order_part.remap_column_refs(mapping, allow_partial_bindings)
+                for order_part in self.ordering
+            ),
+            bounds=self.bounds,
+            min_periods=self.min_periods,
+        )

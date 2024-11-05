@@ -268,7 +268,13 @@ class ArrayValue:
     def concat(self, other: typing.Sequence[ArrayValue]) -> ArrayValue:
         """Append together multiple ArrayValue objects."""
         return ArrayValue(
-            nodes.ConcatNode(children=tuple([self.node, *[val.node for val in other]]))
+            nodes.ConcatNode(
+                children=tuple([self.node, *[val.node for val in other]]),
+                output_ids=tuple(
+                    ids.ColumnId(bigframes.core.guid.generate_guid())
+                    for id in self.column_ids
+                ),
+            )
         )
 
     def compute_values(self, assignments: Sequence[ex.Expression]):

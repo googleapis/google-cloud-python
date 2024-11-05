@@ -16,7 +16,7 @@ from __future__ import annotations
 import dataclasses
 import functools
 import itertools
-from typing import cast, Mapping, Optional, Sequence, Tuple
+from typing import cast, Generator, Mapping, Optional, Sequence, Tuple
 
 import bigframes.core.expression as scalar_exprs
 import bigframes.core.guid as guids
@@ -578,3 +578,39 @@ def convert_complex_slice(
         )
         conditions.append(step_cond)
     return merge_predicates(conditions) or scalar_exprs.const(True)
+
+
+# TODO: May as well just outright remove selection nodes in this process.
+def remap_variables(
+    root: nodes.BigFrameNode, id_generator: Generator[ids.ColumnId, None, None]
+) -> Tuple[nodes.BigFrameNode, dict[ids.ColumnId, ids.ColumnId]]:
+    """
+    Remap all variables in the BFET using the id_generator.
+
+    Note: this will convert a DAG to a tree.
+    """
+    child_replacement_map = dict()
+    ref_mapping = dict()
+    # Sequential ids are assigned bottom-up left-to-right
+    for child in root.child_nodes:
+        new_child, child_var_mapping = remap_variables(child, id_generator=id_generator)
+        child_replacement_map[child] = new_child
+        ref_mapping.update(child_var_mapping)
+
+    # This is actually invalid until we've replaced all of children, refs and var defs
+    with_new_children = root.transform_children(
+        lambda node: child_replacement_map[node]
+    )
+
+    with_new_refs = with_new_children.remap_refs(ref_mapping)
+
+    node_var_mapping = {old_id: next(id_generator) for old_id in root.node_defined_ids}
+    with_new_vars = with_new_refs.remap_vars(node_var_mapping)
+    with_new_vars._validate()
+
+    return (
+        with_new_vars,
+        node_var_mapping
+        if root.defines_namespace
+        else (ref_mapping | node_var_mapping),
+    )

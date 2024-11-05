@@ -15,13 +15,14 @@ from __future__ import annotations
 
 import dataclasses
 import functools
+import itertools
 from typing import Generator
 
 
-def standard_identifiers() -> Generator[str, None, None]:
+def standard_id_strings(prefix: str = "col_") -> Generator[str, None, None]:
     i = 0
     while True:
-        yield f"col_{i}"
+        yield f"{prefix}{i}"
         i = i + 1
 
 
@@ -44,4 +45,28 @@ class ColumnId:
         return self  # == ColumnId(name=self.sql)
 
     def __lt__(self, other: ColumnId) -> bool:
-        return self.name < other.name
+        return self.sql < other.sql
+
+
+@dataclasses.dataclass(frozen=True)
+class SerialColumnId(ColumnId):
+    """Id that is assigned a unique serial within the tree."""
+
+    name: str
+    id: int
+
+    @property
+    def sql(self) -> str:
+        """Returns the unescaped SQL name."""
+        return f"{self.name}_{self.id}"
+
+    @property
+    def local_normalized(self) -> ColumnId:
+        """For use in compiler only. Normalizes to ColumnId referring to sql name."""
+        return ColumnId(name=self.sql)
+
+
+# TODO: Create serial ids locally, so can preserve name info
+def anonymous_serial_ids() -> Generator[ColumnId, None, None]:
+    for i in itertools.count():
+        yield SerialColumnId("uid", i)

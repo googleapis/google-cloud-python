@@ -18,7 +18,7 @@ import abc
 import dataclasses
 import itertools
 import typing
-from typing import Mapping, Union
+from typing import Mapping, TypeVar, Union
 
 import bigframes.core.identifiers as ids
 import bigframes.dtypes as dtypes
@@ -56,6 +56,14 @@ class Aggregation(abc.ABC):
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
         return ()
 
+    @abc.abstractmethod
+    def remap_column_refs(
+        self,
+        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> Aggregation:
+        ...
+
 
 @dataclasses.dataclass(frozen=True)
 class NullaryAggregation(Aggregation):
@@ -65,6 +73,13 @@ class NullaryAggregation(Aggregation):
         self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
         return self.op.output_type()
+
+    def remap_column_refs(
+        self,
+        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> NullaryAggregation:
+        return self
 
 
 @dataclasses.dataclass(frozen=True)
@@ -80,6 +95,18 @@ class UnaryAggregation(Aggregation):
     @property
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
         return self.arg.column_references
+
+    def remap_column_refs(
+        self,
+        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> UnaryAggregation:
+        return UnaryAggregation(
+            self.op,
+            self.arg.remap_column_refs(
+                name_mapping, allow_partial_bindings=allow_partial_bindings
+            ),
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -99,6 +126,24 @@ class BinaryAggregation(Aggregation):
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
         return (*self.left.column_references, *self.right.column_references)
 
+    def remap_column_refs(
+        self,
+        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> BinaryAggregation:
+        return BinaryAggregation(
+            self.op,
+            self.left.remap_column_refs(
+                name_mapping, allow_partial_bindings=allow_partial_bindings
+            ),
+            self.right.remap_column_refs(
+                name_mapping, allow_partial_bindings=allow_partial_bindings
+            ),
+        )
+
+
+TExpression = TypeVar("TExpression", bound="Expression")
+
 
 @dataclasses.dataclass(frozen=True)
 class Expression(abc.ABC):
@@ -109,14 +154,18 @@ class Expression(abc.ABC):
         return ()
 
     @property
+    @abc.abstractmethod
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
-        return ()
+        ...
 
     def remap_column_refs(
-        self, name_mapping: Mapping[ids.ColumnId, ids.ColumnId]
-    ) -> Expression:
+        self: TExpression,
+        name_mapping: Mapping[ids.ColumnId, ids.ColumnId],
+        allow_partial_bindings: bool = False,
+    ) -> TExpression:
         return self.bind_refs(
-            {old_id: DerefOp(new_id) for old_id, new_id in name_mapping.items()}
+            {old_id: DerefOp(new_id) for old_id, new_id in name_mapping.items()},  # type: ignore
+            allow_partial_bindings=allow_partial_bindings,
         )
 
     @property
@@ -174,6 +223,10 @@ class ScalarConstantExpression(Expression):
     def is_const(self) -> bool:
         return True
 
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return ()
+
     def output_type(
         self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]
     ) -> dtypes.ExpressionType:
@@ -210,6 +263,10 @@ class UnboundVariableExpression(Expression):
     @property
     def is_const(self) -> bool:
         return False
+
+    @property
+    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
+        return ()
 
     def output_type(
         self, input_types: dict[ids.ColumnId, bigframes.dtypes.Dtype]

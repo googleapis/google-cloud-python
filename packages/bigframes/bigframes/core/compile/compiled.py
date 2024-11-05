@@ -202,7 +202,12 @@ class BaseIbisIR(abc.ABC):
             )
             # Must have deterministic ordering, so order by the unique "by" column
             ordering = TotalOrdering(
-                tuple([OrderingExpression(column_id) for column_id in by_column_ids]),
+                tuple(
+                    [
+                        OrderingExpression(ex.DerefOp(ref.id.local_normalized))
+                        for ref in by_column_ids
+                    ]
+                ),
                 total_ordering_columns=frozenset(
                     [ex.DerefOp(ref.id.local_normalized) for ref in by_column_ids]
                 ),
@@ -266,31 +271,26 @@ class UnorderedIR(BaseIbisIR):
     def to_sql(
         self,
         offset_column: typing.Optional[str] = None,
-        col_id_overrides: typing.Mapping[str, str] = {},
         ordered: bool = False,
     ) -> str:
         if offset_column or ordered:
             raise ValueError("Cannot produce sorted sql in partial ordering mode")
-        sql = ibis_bigquery.Backend().compile(
-            self._to_ibis_expr(
-                col_id_overrides=col_id_overrides,
-            )
-        )
+        sql = ibis_bigquery.Backend().compile(self._to_ibis_expr())
         return typing.cast(str, sql)
 
-    def row_count(self) -> OrderedIR:
+    def row_count(self, name: str) -> OrderedIR:
         original_table = self._to_ibis_expr()
         ibis_table = original_table.agg(
             [
-                original_table.count().name("count"),
+                original_table.count().name(name),
             ]
         )
         return OrderedIR(
             ibis_table,
-            (ibis_table["count"],),
+            (ibis_table[name],),
             ordering=TotalOrdering(
-                ordering_value_columns=(ascending_over("count"),),
-                total_ordering_columns=frozenset([ex.deref("count")]),
+                ordering_value_columns=(ascending_over(name),),
+                total_ordering_columns=frozenset([ex.deref(name)]),
             ),
         )
 
@@ -299,7 +299,6 @@ class UnorderedIR(BaseIbisIR):
         *,
         expose_hidden_cols: bool = False,
         fraction: Optional[float] = None,
-        col_id_overrides: typing.Mapping[str, str] = {},
     ):
         """
         Creates an Ibis table expression representing the DataFrame.
@@ -320,8 +319,6 @@ class UnorderedIR(BaseIbisIR):
                 If True, include the hidden ordering columns in the results.
                 Only compatible with `order_by` and `unordered`
                 ``ordering_mode``.
-            col_id_overrides:
-                overrides the column ids for the result
         Returns:
             An ibis expression representing the data help by the ArrayValue object.
         """
@@ -346,10 +343,6 @@ class UnorderedIR(BaseIbisIR):
         if self._reduced_predicate is not None:
             table = table.filter(base_table[PREDICATE_COLUMN])
         table = table.drop(*columns_to_drop)
-        if col_id_overrides:
-            table = table.rename(
-                {value: key for key, value in col_id_overrides.items()}
-            )
         if fraction is not None:
             table = table.filter(ibis.random() < ibis.literal(fraction))
         return table
@@ -941,7 +934,6 @@ class OrderedIR(BaseIbisIR):
 
     def to_sql(
         self,
-        col_id_overrides: typing.Mapping[str, str] = {},
         ordered: bool = False,
         limit: Optional[int] = None,
     ) -> str:
@@ -951,17 +943,13 @@ class OrderedIR(BaseIbisIR):
             sql = ibis_bigquery.Backend().compile(
                 baked_ir._to_ibis_expr(
                     ordering_mode="unordered",
-                    col_id_overrides=col_id_overrides,
                     expose_hidden_cols=True,
                 )
             )
-            output_columns = [
-                col_id_overrides.get(col, col) for col in baked_ir.column_ids
-            ]
             sql = (
                 bigframes.core.compile.googlesql.Select()
                 .from_(sql)
-                .select(output_columns)
+                .select(self.column_ids)
                 .sql()
             )
 
@@ -979,7 +967,6 @@ class OrderedIR(BaseIbisIR):
             sql = ibis_bigquery.Backend().compile(
                 self._to_ibis_expr(
                     ordering_mode="unordered",
-                    col_id_overrides=col_id_overrides,
                     expose_hidden_cols=False,
                 )
             )
@@ -987,16 +974,19 @@ class OrderedIR(BaseIbisIR):
 
     def raw_sql_and_schema(
         self,
+        column_ids: typing.Sequence[str],
     ) -> typing.Tuple[str, typing.Sequence[google.cloud.bigquery.SchemaField]]:
         """Return sql with all hidden columns. Used to cache with ordering information.
 
         Also returns schema, as the extra ordering columns are determined compile-time.
         """
+        col_id_overrides = dict(zip(self.column_ids, column_ids))
         all_columns = (*self.column_ids, *self._hidden_ordering_column_names.keys())
         as_ibis = self._to_ibis_expr(
             ordering_mode="unordered",
             expose_hidden_cols=True,
-        ).select(all_columns)
+        )
+        as_ibis = as_ibis.select(all_columns).rename(col_id_overrides)
 
         # Ibis will produce non-nullable schema types, but bigframes should always be nullable
         fixed_ibis_schema = ibis_schema.Schema.from_tuples(
@@ -1013,7 +1003,6 @@ class OrderedIR(BaseIbisIR):
         *,
         expose_hidden_cols: bool = False,
         fraction: Optional[float] = None,
-        col_id_overrides: typing.Mapping[str, str] = {},
         ordering_mode: Literal["string_encoded", "unordered"],
         order_col_name: Optional[str] = ORDER_ID_COLUMN,
     ):
@@ -1043,8 +1032,6 @@ class OrderedIR(BaseIbisIR):
             order_col_name:
                 If the ordering mode outputs a single ordering or offsets
                 column, use this as the column name.
-            col_id_overrides:
-                overrides the column ids for the result
         Returns:
             An ibis expression representing the data help by the ArrayValue object.
         """
@@ -1086,10 +1073,6 @@ class OrderedIR(BaseIbisIR):
         if self._reduced_predicate is not None:
             table = table.filter(base_table[PREDICATE_COLUMN])
         table = table.drop(*columns_to_drop)
-        if col_id_overrides:
-            table = table.rename(
-                {value: key for key, value in col_id_overrides.items()}
-            )
         if fraction is not None:
             table = table.filter(ibis.random() < ibis.literal(fraction))
         return table
