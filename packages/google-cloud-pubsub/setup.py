@@ -50,7 +50,7 @@ dependencies = [
     "opentelemetry-sdk <= 1.22.0; python_version<='3.7'",
     "opentelemetry-sdk >= 1.27.0; python_version>='3.8'",
 ]
-extras = {"libcst": "libcst >= 0.3.10"}
+extras = {"libcst": "libcst >= 0.3.10,", "flaky": "flaky"}
 url = "https://github.com/googleapis/python-pubsub"
 
 package_root = os.path.abspath(os.path.dirname(__file__))

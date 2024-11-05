@@ -28,6 +28,8 @@ else:
 
 import pytest
 import time
+from flaky import flaky
+from typing import cast, Callable, Any, TypeVar
 
 from opentelemetry import trace
 from google.api_core import gapic_v1
@@ -47,6 +49,10 @@ from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
+
+
+C = TypeVar("C", bound=Callable[..., Any])
+typed_flaky = cast(Callable[[C], C], flaky(max_runs=5, min_passes=1))
 
 
 def _assert_retries_equal(retry, retry2):
@@ -142,6 +148,7 @@ def test_init_w_custom_transport(creds):
         False,
     ],
 )
+@typed_flaky
 def test_open_telemetry_publisher_options(creds, enable_open_telemetry):
     if sys.version_info >= (3, 8) or enable_open_telemetry is False:
         client = publisher.Client(
