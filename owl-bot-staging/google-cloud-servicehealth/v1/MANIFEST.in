@@ -1,0 +1,2 @@
+recursive-include google/cloud/servicehealth *.py
+recursive-include google/cloud/servicehealth_v1 *.py
