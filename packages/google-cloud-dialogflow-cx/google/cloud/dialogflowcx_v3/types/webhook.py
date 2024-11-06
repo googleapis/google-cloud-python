@@ -64,7 +64,7 @@ class Webhook(proto.Message):
             method.
             [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3.Webhooks.CreateWebhook]
             populates the name automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>``.
         display_name (str):
             Required. The human-readable name of the
             webhook, unique within the agent.
@@ -312,7 +312,7 @@ class Webhook(proto.Message):
                 Required. The name of `Service
                 Directory <https://cloud.google.com/service-directory>`__
                 service. Format:
-                ``projects/<Project ID>/locations/<Location ID>/namespaces/<Namespace ID>/services/<Service ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>``.
                 ``Location ID`` of the service directory must be the same as
                 the location of the agent.
             generic_web_service (google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService):
@@ -368,7 +368,7 @@ class ListWebhooksRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list all webhooks for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -427,7 +427,7 @@ class GetWebhookRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the webhook. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>``.
     """
 
     name: str = proto.Field(
@@ -443,7 +443,7 @@ class CreateWebhookRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create a webhook for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         webhook (google.cloud.dialogflowcx_v3.types.Webhook):
             Required. The webhook to create.
     """
@@ -491,7 +491,7 @@ class DeleteWebhookRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the webhook to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>``.
         force (bool):
             This field has no effect for webhook not being used. For
             webhooks that are used by pages/flows/transition route
@@ -547,7 +547,7 @@ class WebhookRequest(proto.Message):
             If an [intent][google.cloud.dialogflow.cx.v3.IntentInput]
             was provided as input, this field will contain a copy of the
             intent identifier. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
             This field is a member of `oneof`_ ``query``.
         transcript (str):
@@ -623,7 +623,7 @@ class WebhookRequest(proto.Message):
             last_matched_intent (str):
                 Always present. The unique identifier of the last matched
                 [intent][google.cloud.dialogflow.cx.v3.Intent]. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
             display_name (str):
                 Always present. The display name of the last matched
                 [intent][google.cloud.dialogflow.cx.v3.Intent].
@@ -689,7 +689,7 @@ class WebhookRequest(proto.Message):
         Attributes:
             score (float):
                 Sentiment score between -1.0 (negative
-                sentiment) and 1.0 (positive sentiment).
+                sentiment) and 1.0 (positive  sentiment).
             magnitude (float):
                 A non-negative number in the [0, +inf) range, which
                 represents the absolute magnitude of sentiment, regardless
@@ -809,12 +809,12 @@ class WebhookResponse(proto.Message):
             [QueryResult.webhook_payloads][google.cloud.dialogflow.cx.v3.QueryResult.webhook_payloads].
         target_page (str):
             The target page to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
             This field is a member of `oneof`_ ``transition``.
         target_flow (str):
             The target flow to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
             This field is a member of `oneof`_ ``transition``.
     """
@@ -905,7 +905,7 @@ class PageInfo(proto.Message):
             Ignored for
             [WebhookResponse][google.cloud.dialogflow.cx.v3.WebhookResponse].
             The unique identifier of the current page. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
         display_name (str):
             Always present for
             [WebhookRequest][google.cloud.dialogflow.cx.v3.WebhookRequest].
@@ -1061,9 +1061,9 @@ class SessionInfo(proto.Message):
             [session][google.cloud.dialogflow.cx.v3.DetectIntentRequest.session].
             This field can be used by the webhook to identify a session.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``
             if environment is specified.
         parameters (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Optional for

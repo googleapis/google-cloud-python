@@ -599,36 +599,6 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = TransitionRouteGroupsClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -638,13 +608,9 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or TransitionRouteGroupsClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
 
     @property
     def api_endpoint(self):
@@ -803,7 +769,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 Type[TransitionRouteGroupsTransport],
                 Callable[..., TransitionRouteGroupsTransport],
             ] = (
-                type(self).get_transport_class(transport)
+                TransitionRouteGroupsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., TransitionRouteGroupsTransport], transport)
             )
@@ -939,6 +905,8 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1486,11 +1454,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1543,11 +1507,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1603,11 +1563,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1657,11 +1613,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1714,11 +1666,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

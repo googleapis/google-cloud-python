@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,9 +52,10 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
+from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -47,16 +65,8 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.dialogflowcx_v3beta1.services.flows import (
     FlowsAsyncClient,
@@ -81,8 +91,22 @@ from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -282,86 +306,6 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         FlowsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
-
-
-@pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [
-        (FlowsClient, transports.FlowsGrpcTransport, "grpc"),
-        (FlowsClient, transports.FlowsRestTransport, "rest"),
-    ],
-)
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
-    )
-    assert client._validate_universe_domain() == True
-
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
-
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
-
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        transport = transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
-
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [
-        int(part) for part in google.auth.__version__.split(".")[0:2]
-    ]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(transport=transport_class(credentials=credentials))
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert (
-            str(excinfo.value)
-            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-        )
-
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [
-            int(part) for part in api_core_version.__version__.split(".")[0:2]
-        ]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(
-                client_options={"universe_domain": "bar.com"},
-                transport=transport_class(
-                    credentials=ga_credentials.AnonymousCredentials(),
-                ),
-            )
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert (
-                str(excinfo.value)
-                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-            )
-
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -1102,6 +1046,7 @@ def test_create_flow(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
         response = client.create_flow(request)
 
@@ -1117,25 +1062,7 @@ def test_create_flow(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
-
-
-def test_create_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.CreateFlowRequest()
+    assert response.locked is True
 
 
 def test_create_flow_non_empty_request_with_auto_populated_field():
@@ -1204,32 +1131,6 @@ def test_create_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_flow.Flow(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                transition_route_groups=["transition_route_groups_value"],
-            )
-        )
-        response = await client.create_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.CreateFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_flow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1237,7 +1138,7 @@ async def test_create_flow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1252,27 +1153,23 @@ async def test_create_flow_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.create_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.create_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.create_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1280,7 +1177,7 @@ async def test_create_flow_async(
     transport: str = "grpc_asyncio", request_type=gcdc_flow.CreateFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1297,6 +1194,7 @@ async def test_create_flow_async(
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.create_flow(request)
@@ -1313,6 +1211,7 @@ async def test_create_flow_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -1352,7 +1251,7 @@ def test_create_flow_field_headers():
 @pytest.mark.asyncio
 async def test_create_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1425,7 +1324,7 @@ def test_create_flow_flattened_error():
 @pytest.mark.asyncio
 async def test_create_flow_flattened_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1456,7 +1355,7 @@ async def test_create_flow_flattened_async():
 @pytest.mark.asyncio
 async def test_create_flow_flattened_error_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1500,25 +1399,6 @@ def test_delete_flow(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.DeleteFlowRequest()
 
 
 def test_delete_flow_non_empty_request_with_auto_populated_field():
@@ -1585,25 +1465,6 @@ def test_delete_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.DeleteFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_flow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1611,7 +1472,7 @@ async def test_delete_flow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1626,27 +1487,23 @@ async def test_delete_flow_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.delete_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.delete_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.delete_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1654,7 +1511,7 @@ async def test_delete_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.DeleteFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1715,7 +1572,7 @@ def test_delete_flow_field_headers():
 @pytest.mark.asyncio
 async def test_delete_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1783,7 +1640,7 @@ def test_delete_flow_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_flow_flattened_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1810,7 +1667,7 @@ async def test_delete_flow_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_flow_flattened_error_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1856,25 +1713,6 @@ def test_list_flows(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFlowsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_flows_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_flows()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ListFlowsRequest()
 
 
 def test_list_flows_non_empty_request_with_auto_populated_field():
@@ -1945,35 +1783,12 @@ def test_list_flows_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_flows_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            flow.ListFlowsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_flows()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ListFlowsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_flows_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1988,27 +1803,23 @@ async def test_list_flows_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.list_flows
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.list_flows(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.list_flows(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2016,7 +1827,7 @@ async def test_list_flows_async(
     transport: str = "grpc_asyncio", request_type=flow.ListFlowsRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2082,7 +1893,7 @@ def test_list_flows_field_headers():
 @pytest.mark.asyncio
 async def test_list_flows_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2152,7 +1963,7 @@ def test_list_flows_flattened_error():
 @pytest.mark.asyncio
 async def test_list_flows_flattened_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2181,7 +1992,7 @@ async def test_list_flows_flattened_async():
 @pytest.mark.asyncio
 async def test_list_flows_flattened_error_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2231,12 +2042,16 @@ def test_list_flows_pager(transport_name: str = "grpc"):
         )
 
         expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
         expected_metadata = tuple(expected_metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_flows(request={})
+        pager = client.list_flows(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
 
         results = list(pager)
         assert len(results) == 6
@@ -2287,7 +2102,7 @@ def test_list_flows_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_flows_async_pager():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2337,7 +2152,7 @@ async def test_list_flows_async_pager():
 @pytest.mark.asyncio
 async def test_list_flows_async_pages():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2408,6 +2223,7 @@ def test_get_flow(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
         response = client.get_flow(request)
 
@@ -2423,25 +2239,7 @@ def test_get_flow(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
-
-
-def test_get_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowRequest()
+    assert response.locked is True
 
 
 def test_get_flow_non_empty_request_with_auto_populated_field():
@@ -2510,38 +2308,12 @@ def test_get_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            flow.Flow(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                transition_route_groups=["transition_route_groups_value"],
-            )
-        )
-        response = await client.get_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_flow_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2556,27 +2328,23 @@ async def test_get_flow_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.get_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2584,7 +2352,7 @@ async def test_get_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.GetFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2601,6 +2369,7 @@ async def test_get_flow_async(
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.get_flow(request)
@@ -2617,6 +2386,7 @@ async def test_get_flow_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -2656,7 +2426,7 @@ def test_get_flow_field_headers():
 @pytest.mark.asyncio
 async def test_get_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2724,7 +2494,7 @@ def test_get_flow_flattened_error():
 @pytest.mark.asyncio
 async def test_get_flow_flattened_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2751,7 +2521,7 @@ async def test_get_flow_flattened_async():
 @pytest.mark.asyncio
 async def test_get_flow_flattened_error_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2788,6 +2558,7 @@ def test_update_flow(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             description="description_value",
             transition_route_groups=["transition_route_groups_value"],
+            locked=True,
         )
         response = client.update_flow(request)
 
@@ -2803,25 +2574,7 @@ def test_update_flow(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
-
-
-def test_update_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.UpdateFlowRequest()
+    assert response.locked is True
 
 
 def test_update_flow_non_empty_request_with_auto_populated_field():
@@ -2888,32 +2641,6 @@ def test_update_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_flow.Flow(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                transition_route_groups=["transition_route_groups_value"],
-            )
-        )
-        response = await client.update_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_flow.UpdateFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_flow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2921,7 +2648,7 @@ async def test_update_flow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2936,27 +2663,23 @@ async def test_update_flow_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.update_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.update_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.update_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -2964,7 +2687,7 @@ async def test_update_flow_async(
     transport: str = "grpc_asyncio", request_type=gcdc_flow.UpdateFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2981,6 +2704,7 @@ async def test_update_flow_async(
                 display_name="display_name_value",
                 description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
+                locked=True,
             )
         )
         response = await client.update_flow(request)
@@ -2997,6 +2721,7 @@ async def test_update_flow_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
 
 
 @pytest.mark.asyncio
@@ -3036,7 +2761,7 @@ def test_update_flow_field_headers():
 @pytest.mark.asyncio
 async def test_update_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3109,7 +2834,7 @@ def test_update_flow_flattened_error():
 @pytest.mark.asyncio
 async def test_update_flow_flattened_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3140,7 +2865,7 @@ async def test_update_flow_flattened_async():
 @pytest.mark.asyncio
 async def test_update_flow_flattened_error_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3184,25 +2909,6 @@ def test_train_flow(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_train_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.train_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.TrainFlowRequest()
 
 
 def test_train_flow_non_empty_request_with_auto_populated_field():
@@ -3261,8 +2967,9 @@ def test_train_flow_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.train_flow(request)
@@ -3273,33 +2980,12 @@ def test_train_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_train_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.train_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.TrainFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_train_flow_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3314,31 +3000,28 @@ async def test_train_flow_async_use_cached_wrapped_rpc(transport: str = "grpc_as
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.train_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.train_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.train_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -3346,7 +3029,7 @@ async def test_train_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.TrainFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3409,7 +3092,7 @@ def test_train_flow_field_headers():
 @pytest.mark.asyncio
 async def test_train_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3479,7 +3162,7 @@ def test_train_flow_flattened_error():
 @pytest.mark.asyncio
 async def test_train_flow_flattened_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3508,7 +3191,7 @@ async def test_train_flow_flattened_async():
 @pytest.mark.asyncio
 async def test_train_flow_flattened_error_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3554,25 +3237,6 @@ def test_validate_flow(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.FlowValidationResult)
     assert response.name == "name_value"
-
-
-def test_validate_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.validate_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ValidateFlowRequest()
 
 
 def test_validate_flow_non_empty_request_with_auto_populated_field():
@@ -3641,29 +3305,6 @@ def test_validate_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_validate_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            flow.FlowValidationResult(
-                name="name_value",
-            )
-        )
-        response = await client.validate_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ValidateFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_validate_flow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3671,7 +3312,7 @@ async def test_validate_flow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3686,27 +3327,23 @@ async def test_validate_flow_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.validate_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.validate_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.validate_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -3714,7 +3351,7 @@ async def test_validate_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.ValidateFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3780,7 +3417,7 @@ def test_validate_flow_field_headers():
 @pytest.mark.asyncio
 async def test_validate_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3845,27 +3482,6 @@ def test_get_flow_validation_result(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, flow.FlowValidationResult)
     assert response.name == "name_value"
-
-
-def test_get_flow_validation_result_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_flow_validation_result), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_flow_validation_result()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowValidationResultRequest()
 
 
 def test_get_flow_validation_result_non_empty_request_with_auto_populated_field():
@@ -3941,31 +3557,6 @@ def test_get_flow_validation_result_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_flow_validation_result_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_flow_validation_result), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            flow.FlowValidationResult(
-                name="name_value",
-            )
-        )
-        response = await client.get_flow_validation_result()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.GetFlowValidationResultRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_flow_validation_result_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3973,7 +3564,7 @@ async def test_get_flow_validation_result_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3988,27 +3579,23 @@ async def test_get_flow_validation_result_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.get_flow_validation_result
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.get_flow_validation_result(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.get_flow_validation_result(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4016,7 +3603,7 @@ async def test_get_flow_validation_result_async(
     transport: str = "grpc_asyncio", request_type=flow.GetFlowValidationResultRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4086,7 +3673,7 @@ def test_get_flow_validation_result_field_headers():
 @pytest.mark.asyncio
 async def test_get_flow_validation_result_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4160,7 +3747,7 @@ def test_get_flow_validation_result_flattened_error():
 @pytest.mark.asyncio
 async def test_get_flow_validation_result_flattened_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4191,7 +3778,7 @@ async def test_get_flow_validation_result_flattened_async():
 @pytest.mark.asyncio
 async def test_get_flow_validation_result_flattened_error_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4234,25 +3821,6 @@ def test_import_flow(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_import_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.import_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ImportFlowRequest()
 
 
 def test_import_flow_non_empty_request_with_auto_populated_field():
@@ -4313,8 +3881,9 @@ def test_import_flow_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.import_flow(request)
@@ -4325,27 +3894,6 @@ def test_import_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_import_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.import_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ImportFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_import_flow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4353,7 +3901,7 @@ async def test_import_flow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4368,31 +3916,28 @@ async def test_import_flow_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.import_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.import_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.import_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4400,7 +3945,7 @@ async def test_import_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.ImportFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4463,7 +4008,7 @@ def test_import_flow_field_headers():
 @pytest.mark.asyncio
 async def test_import_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4525,25 +4070,6 @@ def test_export_flow(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_export_flow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.export_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ExportFlowRequest()
-
-
 def test_export_flow_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4602,8 +4128,9 @@ def test_export_flow_use_cached_wrapped_rpc():
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         client.export_flow(request)
@@ -4614,27 +4141,6 @@ def test_export_flow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_flow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.export_flow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == flow.ExportFlowRequest()
-
-
-@pytest.mark.asyncio
 async def test_export_flow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4642,7 +4148,7 @@ async def test_export_flow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = FlowsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4657,31 +4163,28 @@ async def test_export_flow_async_use_cached_wrapped_rpc(
         )
 
         # Replace cached wrapped function with mock
-        class AwaitableMock(mock.AsyncMock):
-            def __await__(self):
-                self.await_count += 1
-                return iter([])
-
-        mock_object = AwaitableMock()
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
             client._client._transport.export_flow
-        ] = mock_object
+        ] = mock_rpc
 
         request = {}
         await client.export_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
         await client.export_flow(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -4689,7 +4192,7 @@ async def test_export_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.ExportFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4752,7 +4255,7 @@ def test_export_flow_field_headers():
 @pytest.mark.asyncio
 async def test_export_flow_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4779,260 +4282,6 @@ async def test_export_flow_field_headers_async():
         "x-goog-request-params",
         "name=name_value",
     ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcdc_flow.CreateFlowRequest,
-        dict,
-    ],
-)
-def test_create_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request_init["flow"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "transition_routes": [
-            {
-                "name": "name_value",
-                "description": "description_value",
-                "intent": "intent_value",
-                "condition": "condition_value",
-                "trigger_fulfillment": {
-                    "messages": [
-                        {
-                            "text": {
-                                "text": ["text_value1", "text_value2"],
-                                "allow_playback_interruption": True,
-                            },
-                            "payload": {"fields": {}},
-                            "conversation_success": {"metadata": {}},
-                            "output_audio_text": {
-                                "text": "text_value",
-                                "ssml": "ssml_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "live_agent_handoff": {"metadata": {}},
-                            "end_interaction": {},
-                            "play_audio": {
-                                "audio_uri": "audio_uri_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "mixed_audio": {
-                                "segments": [
-                                    {
-                                        "audio": b"audio_blob",
-                                        "uri": "uri_value",
-                                        "allow_playback_interruption": True,
-                                    }
-                                ]
-                            },
-                            "telephony_transfer_call": {
-                                "phone_number": "phone_number_value"
-                            },
-                            "knowledge_info_card": {},
-                            "tool_call": {
-                                "tool": "tool_value",
-                                "action": "action_value",
-                                "input_parameters": {},
-                            },
-                            "channel": "channel_value",
-                        }
-                    ],
-                    "webhook": "webhook_value",
-                    "return_partial_responses": True,
-                    "tag": "tag_value",
-                    "set_parameter_actions": [
-                        {
-                            "parameter": "parameter_value",
-                            "value": {
-                                "null_value": 0,
-                                "number_value": 0.1285,
-                                "string_value": "string_value_value",
-                                "bool_value": True,
-                                "struct_value": {},
-                                "list_value": {"values": {}},
-                            },
-                        }
-                    ],
-                    "conditional_cases": [
-                        {
-                            "cases": [
-                                {
-                                    "condition": "condition_value",
-                                    "case_content": [
-                                        {"message": {}, "additional_cases": {}}
-                                    ],
-                                }
-                            ]
-                        }
-                    ],
-                    "advanced_settings": {
-                        "audio_export_gcs_destination": {"uri": "uri_value"},
-                        "speech_settings": {
-                            "endpointer_sensitivity": 2402,
-                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
-                            "use_timeout_based_endpointing": True,
-                            "models": {},
-                        },
-                        "dtmf_settings": {
-                            "enabled": True,
-                            "max_digits": 1065,
-                            "finish_digit": "finish_digit_value",
-                            "interdigit_timeout_duration": {},
-                            "endpointing_timeout_duration": {},
-                        },
-                        "logging_settings": {
-                            "enable_stackdriver_logging": True,
-                            "enable_interaction_logging": True,
-                        },
-                    },
-                    "enable_generative_fallback": True,
-                },
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "event_handlers": [
-            {
-                "name": "name_value",
-                "event": "event_value",
-                "trigger_fulfillment": {},
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "transition_route_groups": [
-            "transition_route_groups_value1",
-            "transition_route_groups_value2",
-        ],
-        "nlu_settings": {
-            "model_type": 1,
-            "classification_threshold": 0.25520000000000004,
-            "model_training_mode": 1,
-        },
-        "advanced_settings": {},
-        "knowledge_connector_settings": {
-            "enabled": True,
-            "trigger_fulfillment": {},
-            "target_page": "target_page_value",
-            "target_flow": "target_flow_value",
-            "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
-            ],
-        },
-        "multi_language_settings": {
-            "enable_multi_language_detection": True,
-            "supported_response_language_codes": [
-                "supported_response_language_codes_value1",
-                "supported_response_language_codes_value2",
-            ],
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_flow.CreateFlowRequest.meta.fields["flow"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["flow"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["flow"][field])):
-                    del request_init["flow"][field][i][subfield]
-            else:
-                del request_init["flow"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcdc_flow.Flow(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            transition_route_groups=["transition_route_groups_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcdc_flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_flow.Flow)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
 def test_create_flow_rest_use_cached_wrapped_rpc():
@@ -5163,81 +4412,6 @@ def test_create_flow_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FlowsRestInterceptor, "post_create_flow"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_create_flow"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcdc_flow.CreateFlowRequest.pb(gcdc_flow.CreateFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gcdc_flow.Flow.to_json(gcdc_flow.Flow())
-
-        request = gcdc_flow.CreateFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcdc_flow.Flow()
-
-        client.create_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_flow_rest_bad_request(
-    transport: str = "rest", request_type=gcdc_flow.CreateFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_flow(request)
-
-
 def test_create_flow_rest_flattened():
     client = FlowsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5295,49 +4469,6 @@ def test_create_flow_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             flow=gcdc_flow.Flow(name="name_value"),
         )
-
-
-def test_create_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.DeleteFlowRequest,
-        dict,
-    ],
-)
-def test_delete_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_flow_rest_use_cached_wrapped_rpc():
@@ -5456,77 +4587,6 @@ def test_delete_flow_rest_unset_required_fields():
     assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_delete_flow"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = flow.DeleteFlowRequest.pb(flow.DeleteFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = flow.DeleteFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_flow_rest_bad_request(
-    transport: str = "rest", request_type=flow.DeleteFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_flow(request)
-
-
 def test_delete_flow_rest_flattened():
     client = FlowsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5582,52 +4642,6 @@ def test_delete_flow_rest_flattened_error(transport: str = "rest"):
             flow.DeleteFlowRequest(),
             name="name_value",
         )
-
-
-def test_delete_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.ListFlowsRequest,
-        dict,
-    ],
-)
-def test_list_flows_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = flow.ListFlowsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = flow.ListFlowsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_flows(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListFlowsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_flows_rest_use_cached_wrapped_rpc():
@@ -5764,83 +4778,6 @@ def test_list_flows_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_flows_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FlowsRestInterceptor, "post_list_flows"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_list_flows"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = flow.ListFlowsRequest.pb(flow.ListFlowsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = flow.ListFlowsResponse.to_json(
-            flow.ListFlowsResponse()
-        )
-
-        request = flow.ListFlowsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = flow.ListFlowsResponse()
-
-        client.list_flows(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_flows_rest_bad_request(
-    transport: str = "rest", request_type=flow.ListFlowsRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_flows(request)
-
-
 def test_list_flows_rest_flattened():
     client = FlowsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5957,54 +4894,6 @@ def test_list_flows_rest_pager(transport: str = "rest"):
         pages = list(client.list_flows(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.GetFlowRequest,
-        dict,
-    ],
-)
-def test_get_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = flow.Flow(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            transition_route_groups=["transition_route_groups_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, flow.Flow)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
 def test_get_flow_rest_use_cached_wrapped_rpc():
@@ -6126,83 +5015,6 @@ def test_get_flow_rest_unset_required_fields():
     assert set(unset_fields) == (set(("languageCode",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FlowsRestInterceptor, "post_get_flow"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_get_flow"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = flow.GetFlowRequest.pb(flow.GetFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = flow.Flow.to_json(flow.Flow())
-
-        request = flow.GetFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = flow.Flow()
-
-        client.get_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_flow_rest_bad_request(
-    transport: str = "rest", request_type=flow.GetFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_flow(request)
-
-
 def test_get_flow_rest_flattened():
     client = FlowsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6260,270 +5072,6 @@ def test_get_flow_rest_flattened_error(transport: str = "rest"):
             flow.GetFlowRequest(),
             name="name_value",
         )
-
-
-def test_get_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcdc_flow.UpdateFlowRequest,
-        dict,
-    ],
-)
-def test_update_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "flow": {
-            "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-        }
-    }
-    request_init["flow"] = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "transition_routes": [
-            {
-                "name": "name_value",
-                "description": "description_value",
-                "intent": "intent_value",
-                "condition": "condition_value",
-                "trigger_fulfillment": {
-                    "messages": [
-                        {
-                            "text": {
-                                "text": ["text_value1", "text_value2"],
-                                "allow_playback_interruption": True,
-                            },
-                            "payload": {"fields": {}},
-                            "conversation_success": {"metadata": {}},
-                            "output_audio_text": {
-                                "text": "text_value",
-                                "ssml": "ssml_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "live_agent_handoff": {"metadata": {}},
-                            "end_interaction": {},
-                            "play_audio": {
-                                "audio_uri": "audio_uri_value",
-                                "allow_playback_interruption": True,
-                            },
-                            "mixed_audio": {
-                                "segments": [
-                                    {
-                                        "audio": b"audio_blob",
-                                        "uri": "uri_value",
-                                        "allow_playback_interruption": True,
-                                    }
-                                ]
-                            },
-                            "telephony_transfer_call": {
-                                "phone_number": "phone_number_value"
-                            },
-                            "knowledge_info_card": {},
-                            "tool_call": {
-                                "tool": "tool_value",
-                                "action": "action_value",
-                                "input_parameters": {},
-                            },
-                            "channel": "channel_value",
-                        }
-                    ],
-                    "webhook": "webhook_value",
-                    "return_partial_responses": True,
-                    "tag": "tag_value",
-                    "set_parameter_actions": [
-                        {
-                            "parameter": "parameter_value",
-                            "value": {
-                                "null_value": 0,
-                                "number_value": 0.1285,
-                                "string_value": "string_value_value",
-                                "bool_value": True,
-                                "struct_value": {},
-                                "list_value": {"values": {}},
-                            },
-                        }
-                    ],
-                    "conditional_cases": [
-                        {
-                            "cases": [
-                                {
-                                    "condition": "condition_value",
-                                    "case_content": [
-                                        {"message": {}, "additional_cases": {}}
-                                    ],
-                                }
-                            ]
-                        }
-                    ],
-                    "advanced_settings": {
-                        "audio_export_gcs_destination": {"uri": "uri_value"},
-                        "speech_settings": {
-                            "endpointer_sensitivity": 2402,
-                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
-                            "use_timeout_based_endpointing": True,
-                            "models": {},
-                        },
-                        "dtmf_settings": {
-                            "enabled": True,
-                            "max_digits": 1065,
-                            "finish_digit": "finish_digit_value",
-                            "interdigit_timeout_duration": {},
-                            "endpointing_timeout_duration": {},
-                        },
-                        "logging_settings": {
-                            "enable_stackdriver_logging": True,
-                            "enable_interaction_logging": True,
-                        },
-                    },
-                    "enable_generative_fallback": True,
-                },
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "event_handlers": [
-            {
-                "name": "name_value",
-                "event": "event_value",
-                "trigger_fulfillment": {},
-                "target_page": "target_page_value",
-                "target_flow": "target_flow_value",
-            }
-        ],
-        "transition_route_groups": [
-            "transition_route_groups_value1",
-            "transition_route_groups_value2",
-        ],
-        "nlu_settings": {
-            "model_type": 1,
-            "classification_threshold": 0.25520000000000004,
-            "model_training_mode": 1,
-        },
-        "advanced_settings": {},
-        "knowledge_connector_settings": {
-            "enabled": True,
-            "trigger_fulfillment": {},
-            "target_page": "target_page_value",
-            "target_flow": "target_flow_value",
-            "data_store_connections": [
-                {"data_store_type": 1, "data_store": "data_store_value"}
-            ],
-        },
-        "multi_language_settings": {
-            "enable_multi_language_detection": True,
-            "supported_response_language_codes": [
-                "supported_response_language_codes_value1",
-                "supported_response_language_codes_value2",
-            ],
-        },
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcdc_flow.UpdateFlowRequest.meta.fields["flow"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["flow"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["flow"][field])):
-                    del request_init["flow"][field][i][subfield]
-            else:
-                del request_init["flow"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcdc_flow.Flow(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            transition_route_groups=["transition_route_groups_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcdc_flow.Flow.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_flow.Flow)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
 def test_update_flow_rest_use_cached_wrapped_rpc():
@@ -6654,85 +5202,6 @@ def test_update_flow_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FlowsRestInterceptor, "post_update_flow"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_update_flow"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcdc_flow.UpdateFlowRequest.pb(gcdc_flow.UpdateFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gcdc_flow.Flow.to_json(gcdc_flow.Flow())
-
-        request = gcdc_flow.UpdateFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcdc_flow.Flow()
-
-        client.update_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_flow_rest_bad_request(
-    transport: str = "rest", request_type=gcdc_flow.UpdateFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "flow": {
-            "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_flow(request)
-
-
 def test_update_flow_rest_flattened():
     client = FlowsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6794,49 +5263,6 @@ def test_update_flow_rest_flattened_error(transport: str = "rest"):
             flow=gcdc_flow.Flow(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.TrainFlowRequest,
-        dict,
-    ],
-)
-def test_train_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.train_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_train_flow_rest_use_cached_wrapped_rpc():
@@ -6958,87 +5384,6 @@ def test_train_flow_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_train_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.FlowsRestInterceptor, "post_train_flow"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_train_flow"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = flow.TrainFlowRequest.pb(flow.TrainFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = flow.TrainFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.train_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_train_flow_rest_bad_request(
-    transport: str = "rest", request_type=flow.TrainFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.train_flow(request)
-
-
 def test_train_flow_rest_flattened():
     client = FlowsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7094,54 +5439,6 @@ def test_train_flow_rest_flattened_error(transport: str = "rest"):
             flow.TrainFlowRequest(),
             name="name_value",
         )
-
-
-def test_train_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.ValidateFlowRequest,
-        dict,
-    ],
-)
-def test_validate_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = flow.FlowValidationResult(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = flow.FlowValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.validate_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, flow.FlowValidationResult)
-    assert response.name == "name_value"
 
 
 def test_validate_flow_rest_use_cached_wrapped_rpc():
@@ -7260,133 +5557,6 @@ def test_validate_flow_rest_unset_required_fields():
 
     unset_fields = transport.validate_flow._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_validate_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FlowsRestInterceptor, "post_validate_flow"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_validate_flow"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = flow.ValidateFlowRequest.pb(flow.ValidateFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = flow.FlowValidationResult.to_json(
-            flow.FlowValidationResult()
-        )
-
-        request = flow.ValidateFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = flow.FlowValidationResult()
-
-        client.validate_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_validate_flow_rest_bad_request(
-    transport: str = "rest", request_type=flow.ValidateFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.validate_flow(request)
-
-
-def test_validate_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.GetFlowValidationResultRequest,
-        dict,
-    ],
-)
-def test_get_flow_validation_result_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4/validationResult"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = flow.FlowValidationResult(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = flow.FlowValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_flow_validation_result(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, flow.FlowValidationResult)
-    assert response.name == "name_value"
 
 
 def test_get_flow_validation_result_rest_use_cached_wrapped_rpc():
@@ -7515,87 +5685,6 @@ def test_get_flow_validation_result_rest_unset_required_fields():
     assert set(unset_fields) == (set(("languageCode",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_flow_validation_result_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.FlowsRestInterceptor, "post_get_flow_validation_result"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_get_flow_validation_result"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = flow.GetFlowValidationResultRequest.pb(
-            flow.GetFlowValidationResultRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = flow.FlowValidationResult.to_json(
-            flow.FlowValidationResult()
-        )
-
-        request = flow.GetFlowValidationResultRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = flow.FlowValidationResult()
-
-        client.get_flow_validation_result(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_flow_validation_result_rest_bad_request(
-    transport: str = "rest", request_type=flow.GetFlowValidationResultRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4/validationResult"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_flow_validation_result(request)
-
-
 def test_get_flow_validation_result_rest_flattened():
     client = FlowsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7653,47 +5742,6 @@ def test_get_flow_validation_result_rest_flattened_error(transport: str = "rest"
             flow.GetFlowValidationResultRequest(),
             name="name_value",
         )
-
-
-def test_get_flow_validation_result_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.ImportFlowRequest,
-        dict,
-    ],
-)
-def test_import_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.import_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_import_flow_rest_use_cached_wrapped_rpc():
@@ -7815,128 +5863,6 @@ def test_import_flow_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_import_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.FlowsRestInterceptor, "post_import_flow"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_import_flow"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = flow.ImportFlowRequest.pb(flow.ImportFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = flow.ImportFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.import_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_import_flow_rest_bad_request(
-    transport: str = "rest", request_type=flow.ImportFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.import_flow(request)
-
-
-def test_import_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        flow.ExportFlowRequest,
-        dict,
-    ],
-)
-def test_export_flow_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.export_flow(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
 def test_export_flow_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8056,93 +5982,6 @@ def test_export_flow_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_flow_rest_interceptors(null_interceptor):
-    transport = transports.FlowsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
-    )
-    client = FlowsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.FlowsRestInterceptor, "post_export_flow"
-    ) as post, mock.patch.object(
-        transports.FlowsRestInterceptor, "pre_export_flow"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = flow.ExportFlowRequest.pb(flow.ExportFlowRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = flow.ExportFlowRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_flow(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_flow_rest_bad_request(
-    transport: str = "rest", request_type=flow.ExportFlowRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_flow(request)
-
-
-def test_export_flow_rest_error():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.FlowsGrpcTransport(
@@ -8235,18 +6074,2632 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = FlowsClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
+        call.return_value = gcdc_flow.Flow()
+        client.create_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcdc_flow.CreateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
+        call.return_value = None
+        client.delete_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.DeleteFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_flows_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
+        call.return_value = flow.ListFlowsResponse()
+        client.list_flows(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ListFlowsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
+        call.return_value = flow.Flow()
+        client.get_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.GetFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
+        call.return_value = gcdc_flow.Flow()
+        client.update_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcdc_flow.UpdateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_train_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.train_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.TrainFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_validate_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        call.return_value = flow.FlowValidationResult()
+        client.validate_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ValidateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_flow_validation_result_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        call.return_value = flow.FlowValidationResult()
+        client.get_flow_validation_result(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.GetFlowValidationResultRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ImportFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_flow_empty_call_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ExportFlowRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = FlowsAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_flow.Flow(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+                locked=True,
+            )
+        )
+        await client.create_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcdc_flow.CreateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.DeleteFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_flows_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.ListFlowsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_flows(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ListFlowsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.Flow(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+                locked=True,
+            )
+        )
+        await client.get_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.GetFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_flow.Flow(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+                locked=True,
+            )
+        )
+        await client.update_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcdc_flow.UpdateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_train_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.train_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.TrainFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_validate_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult(
+                name="name_value",
+            )
+        )
+        await client.validate_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ValidateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_flow_validation_result_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult(
+                name="name_value",
+            )
+        )
+        await client.get_flow_validation_result(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.GetFlowValidationResultRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_import_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.import_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ImportFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_flow_empty_call_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ExportFlowRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = FlowsClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_flow_rest_bad_request(request_type=gcdc_flow.CreateFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_flow(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        gcdc_flow.CreateFlowRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = FlowsClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request_init["flow"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "transition_routes": [
+            {
+                "name": "name_value",
+                "description": "description_value",
+                "intent": "intent_value",
+                "condition": "condition_value",
+                "trigger_fulfillment": {
+                    "messages": [
+                        {
+                            "text": {
+                                "text": ["text_value1", "text_value2"],
+                                "allow_playback_interruption": True,
+                            },
+                            "payload": {"fields": {}},
+                            "conversation_success": {"metadata": {}},
+                            "output_audio_text": {
+                                "text": "text_value",
+                                "ssml": "ssml_value",
+                                "allow_playback_interruption": True,
+                            },
+                            "live_agent_handoff": {"metadata": {}},
+                            "end_interaction": {},
+                            "play_audio": {
+                                "audio_uri": "audio_uri_value",
+                                "allow_playback_interruption": True,
+                            },
+                            "mixed_audio": {
+                                "segments": [
+                                    {
+                                        "audio": b"audio_blob",
+                                        "uri": "uri_value",
+                                        "allow_playback_interruption": True,
+                                    }
+                                ]
+                            },
+                            "telephony_transfer_call": {
+                                "phone_number": "phone_number_value"
+                            },
+                            "knowledge_info_card": {},
+                            "tool_call": {
+                                "tool": "tool_value",
+                                "action": "action_value",
+                                "input_parameters": {},
+                            },
+                            "channel": "channel_value",
+                        }
+                    ],
+                    "webhook": "webhook_value",
+                    "return_partial_responses": True,
+                    "tag": "tag_value",
+                    "set_parameter_actions": [
+                        {
+                            "parameter": "parameter_value",
+                            "value": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {},
+                                "list_value": {"values": {}},
+                            },
+                        }
+                    ],
+                    "conditional_cases": [
+                        {
+                            "cases": [
+                                {
+                                    "condition": "condition_value",
+                                    "case_content": [
+                                        {"message": {}, "additional_cases": {}}
+                                    ],
+                                }
+                            ]
+                        }
+                    ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "speech_settings": {
+                            "endpointer_sensitivity": 2402,
+                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                            "use_timeout_based_endpointing": True,
+                            "models": {},
+                        },
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                            "interdigit_timeout_duration": {},
+                            "endpointing_timeout_duration": {},
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                            "enable_consent_based_redaction": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
+                },
+                "target_page": "target_page_value",
+                "target_flow": "target_flow_value",
+            }
+        ],
+        "event_handlers": [
+            {
+                "name": "name_value",
+                "event": "event_value",
+                "trigger_fulfillment": {},
+                "target_page": "target_page_value",
+                "target_flow": "target_flow_value",
+                "target_playbook": "target_playbook_value",
+            }
+        ],
+        "transition_route_groups": [
+            "transition_route_groups_value1",
+            "transition_route_groups_value2",
+        ],
+        "nlu_settings": {
+            "model_type": 1,
+            "classification_threshold": 0.25520000000000004,
+            "model_training_mode": 1,
+        },
+        "advanced_settings": {},
+        "knowledge_connector_settings": {
+            "enabled": True,
+            "trigger_fulfillment": {},
+            "target_page": "target_page_value",
+            "target_flow": "target_flow_value",
+            "data_store_connections": [
+                {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
+        },
+        "multi_language_settings": {
+            "enable_multi_language_detection": True,
+            "supported_response_language_codes": [
+                "supported_response_language_codes_value1",
+                "supported_response_language_codes_value2",
+            ],
+        },
+        "locked": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_flow.CreateFlowRequest.meta.fields["flow"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["flow"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["flow"][field])):
+                    del request_init["flow"][field][i][subfield]
+            else:
+                del request_init["flow"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcdc_flow.Flow(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            transition_route_groups=["transition_route_groups_value"],
+            locked=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gcdc_flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_flow(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcdc_flow.Flow)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_create_flow"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_create_flow"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcdc_flow.CreateFlowRequest.pb(gcdc_flow.CreateFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gcdc_flow.Flow.to_json(gcdc_flow.Flow())
+        req.return_value.content = return_value
+
+        request = gcdc_flow.CreateFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcdc_flow.Flow()
+
+        client.create_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_flow_rest_bad_request(request_type=flow.DeleteFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_flow(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.DeleteFlowRequest,
+        dict,
+    ],
+)
+def test_delete_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_flow(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_delete_flow"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = flow.DeleteFlowRequest.pb(flow.DeleteFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = flow.DeleteFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_flows_rest_bad_request(request_type=flow.ListFlowsRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_flows(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ListFlowsRequest,
+        dict,
+    ],
+)
+def test_list_flows_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = flow.ListFlowsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = flow.ListFlowsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_flows(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFlowsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_flows_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_list_flows"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_list_flows"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = flow.ListFlowsRequest.pb(flow.ListFlowsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = flow.ListFlowsResponse.to_json(flow.ListFlowsResponse())
+        req.return_value.content = return_value
+
+        request = flow.ListFlowsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = flow.ListFlowsResponse()
+
+        client.list_flows(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_flow_rest_bad_request(request_type=flow.GetFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_flow(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.GetFlowRequest,
+        dict,
+    ],
+)
+def test_get_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = flow.Flow(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            transition_route_groups=["transition_route_groups_value"],
+            locked=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_flow(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, flow.Flow)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_get_flow"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_get_flow"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = flow.GetFlowRequest.pb(flow.GetFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = flow.Flow.to_json(flow.Flow())
+        req.return_value.content = return_value
+
+        request = flow.GetFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = flow.Flow()
+
+        client.get_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_flow_rest_bad_request(request_type=gcdc_flow.UpdateFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "flow": {
+            "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_flow(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_flow.UpdateFlowRequest,
+        dict,
+    ],
+)
+def test_update_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "flow": {
+            "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+        }
+    }
+    request_init["flow"] = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "transition_routes": [
+            {
+                "name": "name_value",
+                "description": "description_value",
+                "intent": "intent_value",
+                "condition": "condition_value",
+                "trigger_fulfillment": {
+                    "messages": [
+                        {
+                            "text": {
+                                "text": ["text_value1", "text_value2"],
+                                "allow_playback_interruption": True,
+                            },
+                            "payload": {"fields": {}},
+                            "conversation_success": {"metadata": {}},
+                            "output_audio_text": {
+                                "text": "text_value",
+                                "ssml": "ssml_value",
+                                "allow_playback_interruption": True,
+                            },
+                            "live_agent_handoff": {"metadata": {}},
+                            "end_interaction": {},
+                            "play_audio": {
+                                "audio_uri": "audio_uri_value",
+                                "allow_playback_interruption": True,
+                            },
+                            "mixed_audio": {
+                                "segments": [
+                                    {
+                                        "audio": b"audio_blob",
+                                        "uri": "uri_value",
+                                        "allow_playback_interruption": True,
+                                    }
+                                ]
+                            },
+                            "telephony_transfer_call": {
+                                "phone_number": "phone_number_value"
+                            },
+                            "knowledge_info_card": {},
+                            "tool_call": {
+                                "tool": "tool_value",
+                                "action": "action_value",
+                                "input_parameters": {},
+                            },
+                            "channel": "channel_value",
+                        }
+                    ],
+                    "webhook": "webhook_value",
+                    "return_partial_responses": True,
+                    "tag": "tag_value",
+                    "set_parameter_actions": [
+                        {
+                            "parameter": "parameter_value",
+                            "value": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {},
+                                "list_value": {"values": {}},
+                            },
+                        }
+                    ],
+                    "conditional_cases": [
+                        {
+                            "cases": [
+                                {
+                                    "condition": "condition_value",
+                                    "case_content": [
+                                        {"message": {}, "additional_cases": {}}
+                                    ],
+                                }
+                            ]
+                        }
+                    ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "speech_settings": {
+                            "endpointer_sensitivity": 2402,
+                            "no_speech_timeout": {"seconds": 751, "nanos": 543},
+                            "use_timeout_based_endpointing": True,
+                            "models": {},
+                        },
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                            "interdigit_timeout_duration": {},
+                            "endpointing_timeout_duration": {},
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                            "enable_consent_based_redaction": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
+                },
+                "target_page": "target_page_value",
+                "target_flow": "target_flow_value",
+            }
+        ],
+        "event_handlers": [
+            {
+                "name": "name_value",
+                "event": "event_value",
+                "trigger_fulfillment": {},
+                "target_page": "target_page_value",
+                "target_flow": "target_flow_value",
+                "target_playbook": "target_playbook_value",
+            }
+        ],
+        "transition_route_groups": [
+            "transition_route_groups_value1",
+            "transition_route_groups_value2",
+        ],
+        "nlu_settings": {
+            "model_type": 1,
+            "classification_threshold": 0.25520000000000004,
+            "model_training_mode": 1,
+        },
+        "advanced_settings": {},
+        "knowledge_connector_settings": {
+            "enabled": True,
+            "trigger_fulfillment": {},
+            "target_page": "target_page_value",
+            "target_flow": "target_flow_value",
+            "data_store_connections": [
+                {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
+        },
+        "multi_language_settings": {
+            "enable_multi_language_detection": True,
+            "supported_response_language_codes": [
+                "supported_response_language_codes_value1",
+                "supported_response_language_codes_value2",
+            ],
+        },
+        "locked": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_flow.UpdateFlowRequest.meta.fields["flow"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["flow"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["flow"][field])):
+                    del request_init["flow"][field][i][subfield]
+            else:
+                del request_init["flow"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcdc_flow.Flow(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            transition_route_groups=["transition_route_groups_value"],
+            locked=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gcdc_flow.Flow.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_flow(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcdc_flow.Flow)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.transition_route_groups == ["transition_route_groups_value"]
+    assert response.locked is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_update_flow"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_update_flow"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcdc_flow.UpdateFlowRequest.pb(gcdc_flow.UpdateFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gcdc_flow.Flow.to_json(gcdc_flow.Flow())
+        req.return_value.content = return_value
+
+        request = gcdc_flow.UpdateFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcdc_flow.Flow()
+
+        client.update_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_train_flow_rest_bad_request(request_type=flow.TrainFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.train_flow(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.TrainFlowRequest,
+        dict,
+    ],
+)
+def test_train_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.train_flow(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_train_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.FlowsRestInterceptor, "post_train_flow"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_train_flow"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = flow.TrainFlowRequest.pb(flow.TrainFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = flow.TrainFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.train_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_validate_flow_rest_bad_request(request_type=flow.ValidateFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.validate_flow(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ValidateFlowRequest,
+        dict,
+    ],
+)
+def test_validate_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = flow.FlowValidationResult(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = flow.FlowValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.validate_flow(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, flow.FlowValidationResult)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_validate_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_validate_flow"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_validate_flow"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = flow.ValidateFlowRequest.pb(flow.ValidateFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = flow.FlowValidationResult.to_json(flow.FlowValidationResult())
+        req.return_value.content = return_value
+
+        request = flow.ValidateFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = flow.FlowValidationResult()
+
+        client.validate_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_flow_validation_result_rest_bad_request(
+    request_type=flow.GetFlowValidationResultRequest,
+):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4/validationResult"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_flow_validation_result(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.GetFlowValidationResultRequest,
+        dict,
+    ],
+)
+def test_get_flow_validation_result_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4/validationResult"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = flow.FlowValidationResult(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = flow.FlowValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_flow_validation_result(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, flow.FlowValidationResult)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_flow_validation_result_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.FlowsRestInterceptor, "post_get_flow_validation_result"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_get_flow_validation_result"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = flow.GetFlowValidationResultRequest.pb(
+            flow.GetFlowValidationResultRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = flow.FlowValidationResult.to_json(flow.FlowValidationResult())
+        req.return_value.content = return_value
+
+        request = flow.GetFlowValidationResultRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = flow.FlowValidationResult()
+
+        client.get_flow_validation_result(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_flow_rest_bad_request(request_type=flow.ImportFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.import_flow(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ImportFlowRequest,
+        dict,
+    ],
+)
+def test_import_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/agents/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_flow(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.FlowsRestInterceptor, "post_import_flow"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_import_flow"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = flow.ImportFlowRequest.pb(flow.ImportFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = flow.ImportFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_flow_rest_bad_request(request_type=flow.ExportFlowRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_flow(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ExportFlowRequest,
+        dict,
+    ],
+)
+def test_export_flow_rest_call_success(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_flow(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_flow_rest_interceptors(null_interceptor):
+    transport = transports.FlowsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.FlowsRestInterceptor(),
+    )
+    client = FlowsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.FlowsRestInterceptor, "post_export_flow"
+    ) as post, mock.patch.object(
+        transports.FlowsRestInterceptor, "pre_export_flow"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = flow.ExportFlowRequest.pb(flow.ExportFlowRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = flow.ExportFlowRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_flow(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
+        client.create_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcdc_flow.CreateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
+        client.delete_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.DeleteFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_flows_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
+        client.list_flows(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ListFlowsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
+        client.get_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.GetFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
+        client.update_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcdc_flow.UpdateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_train_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
+        client.train_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.TrainFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_validate_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        client.validate_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ValidateFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_flow_validation_result_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        client.get_flow_validation_result(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.GetFlowValidationResultRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_flow), "__call__") as call:
+        client.import_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ImportFlowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_flow_empty_call_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_flow), "__call__") as call:
+        client.export_flow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = flow.ExportFlowRequest()
+
+        assert args[0] == request_msg
+
+
+def test_flows_rest_lro_client():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -8504,23 +8957,6 @@ def test_flows_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_flows_rest_lro_client():
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -8891,11 +9327,40 @@ def test_parse_page_path():
     assert expected == actual
 
 
-def test_tool_path():
+def test_playbook_path():
     project = "scallop"
     location = "abalone"
     agent = "squid"
-    tool = "clam"
+    playbook = "clam"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        playbook=playbook,
+    )
+    actual = FlowsClient.playbook_path(project, location, agent, playbook)
+    assert expected == actual
+
+
+def test_parse_playbook_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "agent": "oyster",
+        "playbook": "nudibranch",
+    }
+    path = FlowsClient.playbook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FlowsClient.parse_playbook_path(path)
+    assert expected == actual
+
+
+def test_tool_path():
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    tool = "nautilus"
     expected = (
         "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
             project=project,
@@ -8910,10 +9375,10 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "agent": "oyster",
-        "tool": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
+        "agent": "squid",
+        "tool": "clam",
     }
     path = FlowsClient.tool_path(**expected)
 
@@ -8923,11 +9388,11 @@ def test_parse_tool_path():
 
 
 def test_transition_route_group_path():
-    project = "cuttlefish"
-    location = "mussel"
-    agent = "winkle"
-    flow = "nautilus"
-    transition_route_group = "scallop"
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    flow = "nudibranch"
+    transition_route_group = "cuttlefish"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -8943,11 +9408,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "agent": "clam",
-        "flow": "whelk",
-        "transition_route_group": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "flow": "scallop",
+        "transition_route_group": "abalone",
     }
     path = FlowsClient.transition_route_group_path(**expected)
 
@@ -8957,10 +9422,10 @@ def test_parse_transition_route_group_path():
 
 
 def test_webhook_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    webhook = "mussel"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    webhook = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -8973,10 +9438,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "agent": "scallop",
-        "webhook": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "webhook": "mussel",
     }
     path = FlowsClient.webhook_path(**expected)
 
@@ -8986,7 +9451,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8996,7 +9461,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = FlowsClient.common_billing_account_path(**expected)
 
@@ -9006,7 +9471,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9016,7 +9481,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = FlowsClient.common_folder_path(**expected)
 
@@ -9026,7 +9491,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9036,7 +9501,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = FlowsClient.common_organization_path(**expected)
 
@@ -9046,7 +9511,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9056,7 +9521,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = FlowsClient.common_project_path(**expected)
 
@@ -9066,8 +9531,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9078,8 +9543,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = FlowsClient.common_location_path(**expected)
 
@@ -9105,306 +9570,6 @@ def test_client_with_default_client_info():
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
-
-
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
 
 
 def test_cancel_operation(transport: str = "grpc"):
@@ -9434,7 +9599,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9487,7 +9652,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9532,7 +9697,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -9573,7 +9738,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9628,7 +9793,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9675,7 +9840,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -9718,7 +9883,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9773,7 +9938,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9820,7 +9985,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -9863,7 +10028,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9918,7 +10083,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9965,7 +10130,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -10008,7 +10173,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10060,7 +10225,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials())
+    client = FlowsAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10106,7 +10271,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -10122,22 +10287,41 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = FlowsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = FlowsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

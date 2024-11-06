@@ -390,6 +390,8 @@ class Tool(proto.Message):
             tls_config (google.cloud.dialogflowcx_v3beta1.types.Tool.TLSConfig):
                 Optional. TLS configuration for the HTTPS
                 verification.
+            service_directory_config (google.cloud.dialogflowcx_v3beta1.types.Tool.ServiceDirectoryConfig):
+                Optional. Service Directory configuration.
         """
 
         text_schema: str = proto.Field(
@@ -406,6 +408,11 @@ class Tool(proto.Message):
             proto.MESSAGE,
             number=3,
             message="Tool.TLSConfig",
+        )
+        service_directory_config: "Tool.ServiceDirectoryConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Tool.ServiceDirectoryConfig",
         )
 
     class DataStoreTool(proto.Message):
@@ -686,6 +693,24 @@ class Tool(proto.Message):
             proto.MESSAGE,
             number=1,
             message="Tool.TLSConfig.CACert",
+        )
+
+    class ServiceDirectoryConfig(proto.Message):
+        r"""Configuration for tools using Service Directory.
+
+        Attributes:
+            service (str):
+                Required. The name of `Service
+                Directory <https://cloud.google.com/service-directory>`__
+                service. Format:
+                ``projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>``.
+                ``LocationID`` of the service directory must be the same as
+                the location of the agent.
+        """
+
+        service: str = proto.Field(
+            proto.STRING,
+            number=1,
         )
 
     name: str = proto.Field(

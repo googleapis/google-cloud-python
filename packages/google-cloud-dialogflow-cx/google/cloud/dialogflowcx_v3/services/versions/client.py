@@ -476,36 +476,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = VersionsClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -515,13 +485,9 @@ class VersionsClient(metaclass=VersionsClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or VersionsClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
 
     @property
     def api_endpoint(self):
@@ -735,7 +701,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
             parent (str):
                 Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow]
                 to list all versions for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -855,7 +821,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The name of the
                 [Version][google.cloud.dialogflow.cx.v3.Version].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -979,7 +945,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 to create an
                 [Version][google.cloud.dialogflow.cx.v3.Version] for.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1216,7 +1182,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The name of the
                 [Version][google.cloud.dialogflow.cx.v3.Version] to
                 delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1326,7 +1292,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 Required. The
                 [Version][google.cloud.dialogflow.cx.v3.Version] to be
                 loaded to draft flow. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1453,7 +1419,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 draft version of the specified flow.
 
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/ <Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``base_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
