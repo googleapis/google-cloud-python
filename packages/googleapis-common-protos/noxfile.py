@@ -64,24 +64,23 @@ def unit(session, repository, package, prerelease, protobuf_implementation, work
     # Pin mock due to https://github.com/googleapis/python-pubsub/issues/840
     session.install("mock==5.0.0", "pytest", "pytest-cov")
 
-    install_command = ["-e", f"{working_dir}/{downstream_dir}"]
     if prerelease:
+        session.install("-e", f"{working_dir}/{downstream_dir}")
         install_prerelease_dependencies(
             session,
             f"{working_dir}/{downstream_dir}/testing/constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
         )
-        # Use the `--no-deps` options to allow pre-release versions of dependencies to be installed
-        install_command.extend(["--no-deps"])
     else:
+        install_command = ["-e", f"{working_dir}/{downstream_dir}"]
         contraints_file = f"{CURRENT_DIRECTORY}/testing/constraints-{session.python}-{repository}.txt"
         if not Path(contraints_file).exists():
             contraints_file = f"{CURRENT_DIRECTORY}/testing/constraints-{session.python}.txt"
 
         install_command.extend(["-c", contraints_file])
 
-    # These *must* be the last 3 install commands to get the packages from source.
-    session.install(*install_command)
+        session.install(*install_command)
 
+    # These *must* be the last install commands to get the packages from source.
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
     # The 'cpp' implementation requires Protobuf<4.
     if protobuf_implementation == "cpp":
