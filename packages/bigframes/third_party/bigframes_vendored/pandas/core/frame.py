@@ -487,6 +487,19 @@ class DataFrame(generic.NDFrame):
             str:
                 The fully-qualified ID for the written table, in the form
                 ``project.dataset.tablename``.
+
+        Raises:
+            ValueError:
+                If an invalid value is provided for ``if_exists`` when ``destination_table``
+                is ``None``. ``None`` or ``replace`` are the only valid values for ``if_exists``.
+            ValueError:
+                If an invalid value is provided for ``destination_table`` that is
+                not one of ``datasetID.tableId`` or ``projectId.datasetId.tableId``.
+            ValueError:
+                If an invalid value is provided for ``if_exists`` that is not one of
+                ``fail``, ``replace``, or ``append``.
+
+
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -531,7 +544,13 @@ class DataFrame(generic.NDFrame):
                 If ``False``, they will not be written to the file.
 
         Returns:
-            None or bytes: bytes if no path argument is provided else None
+            None or bytes:
+                bytes if no path argument is provided else None
+
+        Raises:
+            ValueError:
+                If an invalid value provided for `compression` that is not one of
+                ``None``, ``snappy``, or ``gzip``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1140,9 +1159,11 @@ class DataFrame(generic.NDFrame):
                 Allow duplicate column labels to be created.
 
         Raises:
+            IndexError:
+                If ``column`` index is out of bounds with the total count of columns.
             ValueError:
-                If `column` is already contained in the DataFrame,
-                unless `allow_duplicates` is set to True.
+                If ``column`` is already contained in the DataFrame,
+                unless ``allow_duplicates`` is set to True.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1259,10 +1280,14 @@ class DataFrame(generic.NDFrame):
             level:
                 For MultiIndex, level from which the labels will be removed.
         Returns:
-            bigframes.pandas.DataFrame: DataFrame without the removed column labels.
+            bigframes.pandas.DataFrame:
+                DataFrame without the removed column labels.
 
         Raises:
             KeyError: If any of the labels is not found in the selected axis.
+            ValueError: If values for both ``labels`` and ``index``/``columns`` are provided.
+            ValueError: If a multi-index tuple is provided as ``level``.
+            ValueError: If either ``labels`` or ``index``/``columns`` is not provided.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1419,7 +1444,12 @@ class DataFrame(generic.NDFrame):
                 Delete columns to be used as the new index.
 
         Returns:
-            bigframes.pandas.DataFrame: Changed row labels.
+            bigframes.pandas.DataFrame:
+                Changed row labels.
+
+        Raises:
+            KeyError:
+                If key(s) are not in the columns.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1437,7 +1467,12 @@ class DataFrame(generic.NDFrame):
                 Where to reorder levels.
 
         Returns:
-            bigframes.pandas.DataFrame: DataFrame of rearranged index.
+            bigframes.pandas.DataFrame:
+                DataFrame of rearranged index.
+
+        Raises:
+            ValueError:
+                If columns are not multi-index.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1455,7 +1490,12 @@ class DataFrame(generic.NDFrame):
                 'columns' for column-wise.
 
         Returns:
-            bigframes.pandas.DataFrame: DataFrame with levels swapped in MultiIndex.
+            bigframes.pandas.DataFrame:
+                DataFrame with levels swapped in MultiIndex.
+
+        Raises:
+            ValueError:
+                If columns are not multi-index.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1474,7 +1514,12 @@ class DataFrame(generic.NDFrame):
                 * 0 or 'index': remove level(s) in column.
                 * 1 or 'columns': remove level(s) in row.
         Returns:
-            bigframes.pandas.DataFrame: DataFrame with requested index / column level(s) removed.
+            bigframes.pandas.DataFrame:
+                DataFrame with requested index / column level(s) removed.
+
+        Raises:
+            ValueError:
+                If columns are not multi-index
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1724,7 +1769,12 @@ class DataFrame(generic.NDFrame):
 
 
         Returns:
-            bigframes.pandas.DataFrame: DataFrame with NA entries dropped from it.
+            bigframes.pandas.DataFrame:
+                DataFrame with NA entries dropped from it.
+
+        Raises:
+            ValueError:
+                If ``how`` is not one of ``any`` or ``all``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1772,8 +1822,13 @@ class DataFrame(generic.NDFrame):
                 the column names, which must match.
 
         Returns:
-            bigframes.pandas.DataFrame: DataFrame of booleans showing whether each element
-            in the DataFrame is contained in values.
+            bigframes.pandas.DataFrame:
+                DataFrame of booleans showing whether each element
+                in the DataFrame is contained in values.
+
+        Raises:
+            TypeError:
+                If values provided are not list-like objects.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -2004,7 +2059,12 @@ class DataFrame(generic.NDFrame):
              if `first`; `last` puts NaNs at the end.
 
         Returns:
-            bigframes.pandas.DataFrame: DataFrame with sorted values.
+            bigframes.pandas.DataFrame:
+                DataFrame with sorted values.
+
+        Raises:
+            ValueError:
+                If value of ``na_position`` is not one of ``first`` or ``last``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -2014,7 +2074,14 @@ class DataFrame(generic.NDFrame):
         """Sort object by labels (along an axis).
 
         Returns:
-            bigframes.pandas.DataFrame: The original DataFrame sorted by the labels.
+            bigframes.pandas.DataFrame:
+                The original DataFrame sorted by the labels.
+
+        Raises:
+            ValueError:
+                If value of ``na_position`` is not one of ``first`` or ``last``.
+            ValueError:
+                If length of ``ascending`` dose not equal length of ``by``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3727,7 +3794,12 @@ class DataFrame(generic.NDFrame):
                 overwritten with NaNs.
 
         Returns:
-            bigframes.pandas.DataFrame: Combination of the provided DataFrames.
+            bigframes.pandas.DataFrame:
+                Combination of the provided DataFrames.
+
+        Raises:
+            ValueError:
+                If ``func`` return value is not Series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3813,8 +3885,17 @@ class DataFrame(generic.NDFrame):
                 If True, the resulting index will be labeled 0, 1, …, n - 1.
 
         Returns:
-            bigframes.pandas.DataFrame: Exploded lists to rows of the subset columns;
+            bigframes.pandas.DataFrame:
+                Exploded lists to rows of the subset columns;
                 index will be duplicated for these rows.
+
+        Raises:
+            ValueError:
+                * If columns of the frame are not unique.
+                * If specified columns to explode is empty list.
+                * If specified columns to explode have not matching count of elements rowwise in the frame.
+            KeyError:
+                If incorrect column names are provided
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -3929,6 +4010,10 @@ class DataFrame(generic.NDFrame):
 
         Returns:
             None: This method directly changes calling object.
+
+        Raises:
+            ValueError:
+              If a type of join other than ``left`` is provided as an argument.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4023,7 +4108,14 @@ class DataFrame(generic.NDFrame):
                 values will also be treated as the key in groups.
 
         Returns:
-            bigframes.core.groupby.SeriesGroupBy: A groupby object that contains information about the groups.
+            bigframes.core.groupby.SeriesGroupBy:
+                A groupby object that contains information about the groups.
+
+        Raises:
+            ValueError:
+                If both ``by`` and ``level`` are specified.
+            TypeError:
+                If one of ``by`` or `level`` is not specified.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4109,7 +4201,14 @@ class DataFrame(generic.NDFrame):
                 values, without passing them to func.
 
         Returns:
-            bigframes.pandas.DataFrame: Transformed DataFrame.
+            bigframes.pandas.DataFrame:
+                Transformed DataFrame.
+
+        Raises:
+            TypeError:
+                If value provided for ``func`` is not callable.
+            ValueError:
+                If value provided for ``na_action`` is not ``None`` or ``ignore``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4209,7 +4308,18 @@ class DataFrame(generic.NDFrame):
                 the order of the left keys.
 
         Returns:
-            bigframes.pandas.DataFrame: A dataframe containing columns from both the caller and `other`.
+            bigframes.pandas.DataFrame:
+                A dataframe containing columns from both the caller and `other`.
+
+        Raises:
+            ValueError:
+                If value for ``on`` is specified for cross join.
+            ValueError:
+                If join on columns does not match the index level of the other
+                DataFrame. Join on columns with multi-index is not supported.
+            ValueError:
+                If left index to join on does not have the same number of levels
+                as the right index.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4354,7 +4464,20 @@ class DataFrame(generic.NDFrame):
                 no suffix. At least one of the values must not be None.
 
         Returns:
-            bigframes.pandas.DataFrame: A DataFrame of the two merged objects.
+            bigframes.pandas.DataFrame:
+                A DataFrame of the two merged objects.
+
+        Raises:
+            ValueError:
+                If value for ``on`` is specified for cross join.
+            ValueError:
+                If ``on`` or ``left_on`` + ``right_on`` are not specified when ``on`` is ``None``.
+            ValueError:
+                If ``on`` and ``left_on`` + ``right_on`` are specified when ``on`` is not ``None``.
+            ValueError:
+                If no column with the provided label is found in ``self`` for left join.
+            ValueError:
+                If no column with the provided label is found in ``self`` for right join.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4469,6 +4592,16 @@ class DataFrame(generic.NDFrame):
         Returns:
             bigframes.pandas.DataFrame or bigframes.pandas.Series:
                 Result of applying ``func`` along the given axis of the DataFrame.
+
+        Raises:
+            ValueError:
+                If a remote function is not provided when ``axis=1`` is specified.
+            ValueError:
+                If number or input params in the remote function are not the same as
+                the number of columns in the dataframe.
+            ValueError:
+                If the dtypes of the columns in the dataframe are not compatible with
+                the data types of the remote function input params.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -5156,7 +5289,12 @@ class DataFrame(generic.NDFrame):
                   selecting more than `n` items.
 
         Returns:
-            bigframes.pandas.DataFrame: The first `n` rows ordered by the given columns in descending order.
+            bigframes.pandas.DataFrame:
+                The first `n` rows ordered by the given columns in descending order.
+
+        Raises:
+            ValueError:
+                If value of ``keep`` is not ``first``, ``last``, or ``all``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -5244,7 +5382,12 @@ class DataFrame(generic.NDFrame):
                   selecting more than `n` items.
 
         Returns:
-            bigframes.pandas.DataFrame: The first `n` rows ordered by the given columns in ascending order.
+            bigframes.pandas.DataFrame:
+                The first `n` rows ordered by the given columns in ascending order.
+
+        Raises:
+            ValueError:
+                If value of ``keep`` is not ``first``, ``last``, or ``all``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -5513,7 +5656,12 @@ class DataFrame(generic.NDFrame):
             [3 rows x 2 columns]
 
         Returns:
-            bigframes.pandas.DataFrame: Return cumulative sum of DataFrame.
+            bigframes.pandas.DataFrame:
+                Return cumulative sum of DataFrame.
+
+        Raises:
+            ValueError:
+                If values are not of numeric type.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -5545,7 +5693,12 @@ class DataFrame(generic.NDFrame):
             [3 rows x 2 columns]
 
         Returns:
-            bigframes.pandas.DataFrame: Return cumulative product of DataFrame.
+            bigframes.pandas.DataFrame:
+                Return cumulative product of DataFrame.
+
+        Raises:
+            ValueError:
+                If values are not of numeric type.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -5695,7 +5848,12 @@ class DataFrame(generic.NDFrame):
             [8 rows x 2 columns]
 
         Returns:
-            bigframes.pandas.DataFrame: Summary statistics of the Series or Dataframe provided.
+            bigframes.pandas.DataFrame:
+                Summary statistics of the Series or Dataframe provided.
+
+        Raises:
+            ValueError:
+                If unsupported ``include`` type is provided.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -6679,6 +6837,10 @@ class DataFrame(generic.NDFrame):
                 If `other` is a Series, return the matrix product between self and
                 other as a Series. If other is a DataFrame, return
                 the matrix product of self and other in a DataFrame.
+
+        Raises:
+            RuntimeError:
+                If unable to construct all columns.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

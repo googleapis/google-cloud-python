@@ -275,8 +275,13 @@ class NDFrame(indexing.IndexingMixin):
                 list-like.
 
         Returns:
-            None or str: If path_or_buf is None, returns the resulting json format as a
-            string. Otherwise returns None.
+            None or str:
+                If path_or_buf is None, returns the resulting json format as a
+                string. Otherwise returns None.
+
+        Raises:
+            ValueError:
+                If ``lines`` is True but ``records`` is not provided as value for ``orient``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -594,6 +599,10 @@ class NDFrame(indexing.IndexingMixin):
             bigframes.pandas.DataFrame or bigframes.pandas.Series:
                 A new object of same type as caller containing `n` items randomly
                 sampled from the caller object.
+
+        Raises:
+            ValueError:
+                If both ``n`` and ``frac`` are specified.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -908,6 +917,10 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             bigframes.pandas.DataFrame or bigframes.pandas.Series:
                 Same type as input object.
+
+        Raises:
+            ValueError:
+                If value provided is not exactly one of ``items``, ``like``, or ``regex``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
