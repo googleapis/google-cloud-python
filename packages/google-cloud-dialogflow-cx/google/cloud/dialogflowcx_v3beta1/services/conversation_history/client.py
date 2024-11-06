@@ -1100,7 +1100,7 @@ class ConversationHistoryClient(metaclass=ConversationHistoryClientMeta):
             parent (str):
                 Required. The agent to list all conversations for.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1219,7 +1219,7 @@ class ConversationHistoryClient(metaclass=ConversationHistoryClientMeta):
                 [Conversations.GetConversation][].
             name (str):
                 Required. The name of the conversation. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/conversations/<Conversation ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1319,7 +1319,7 @@ class ConversationHistoryClient(metaclass=ConversationHistoryClientMeta):
                 [Conversations.DeleteConversation][].
             name (str):
                 Required. The name of the conversation. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/conversations/<Conversation ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

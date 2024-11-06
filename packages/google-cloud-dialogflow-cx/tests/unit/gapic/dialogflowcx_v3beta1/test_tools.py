@@ -4652,8 +4652,10 @@ def test_create_tool_rest_call_success(request_type):
                     "client_id": "client_id_value",
                     "client_secret": "client_secret_value",
                     "token_endpoint": "token_endpoint_value",
+                    "scopes": ["scopes_value1", "scopes_value2"],
                 },
-                "service_agent_auth_config": {},
+                "service_agent_auth_config": {"service_agent_auth": 1},
+                "bearer_token_config": {"token": "token_value"},
             },
             "tls_config": {
                 "ca_certs": [
@@ -5228,8 +5230,10 @@ def test_update_tool_rest_call_success(request_type):
                     "client_id": "client_id_value",
                     "client_secret": "client_secret_value",
                     "token_endpoint": "token_endpoint_value",
+                    "scopes": ["scopes_value1", "scopes_value2"],
                 },
-                "service_agent_auth_config": {},
+                "service_agent_auth_config": {"service_agent_auth": 1},
+                "bearer_token_config": {"token": "token_value"},
             },
             "tls_config": {
                 "ca_certs": [

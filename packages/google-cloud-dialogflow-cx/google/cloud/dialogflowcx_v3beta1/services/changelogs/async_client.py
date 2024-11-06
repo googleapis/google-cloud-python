@@ -298,7 +298,7 @@ class ChangelogsAsyncClient:
                 [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3beta1.Changelogs.ListChangelogs].
             parent (:class:`str`):
                 Required. The agent containing the changelogs. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -418,7 +418,7 @@ class ChangelogsAsyncClient:
                 [Changelogs.GetChangelog][google.cloud.dialogflow.cx.v3beta1.Changelogs.GetChangelog].
             name (:class:`str`):
                 Required. The name of the changelog to get. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/changelogs/<Changelog ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

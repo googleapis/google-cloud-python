@@ -326,7 +326,7 @@ class EnvironmentsAsyncClient:
                 Required. The
                 [Agent][google.cloud.dialogflow.cx.v3beta1.Agent] to
                 list all environments for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -449,7 +449,7 @@ class EnvironmentsAsyncClient:
                 Required. The name of the
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -595,7 +595,7 @@ class EnvironmentsAsyncClient:
                 create an
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -882,7 +882,7 @@ class EnvironmentsAsyncClient:
                 Required. The name of the
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -984,7 +984,7 @@ class EnvironmentsAsyncClient:
             name (:class:`str`):
                 Required. Resource name of the environment to look up
                 the history for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1219,7 +1219,7 @@ class EnvironmentsAsyncClient:
                 [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3beta1.Environments.ListContinuousTestResults].
             parent (:class:`str`):
                 Required. The environment to list results for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

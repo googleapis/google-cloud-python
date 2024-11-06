@@ -306,7 +306,7 @@ class ToolsAsyncClient:
                 [Tools.CreateTool][google.cloud.dialogflow.cx.v3beta1.Tools.CreateTool].
             parent (:class:`str`):
                 Required. The agent to create a Tool for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -426,7 +426,7 @@ class ToolsAsyncClient:
                 [Tools.ListTools][google.cloud.dialogflow.cx.v3beta1.Tools.ListTools].
             parent (:class:`str`):
                 Required. The agent to list the Tools from. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -647,7 +647,7 @@ class ToolsAsyncClient:
                 [Tools.GetTool][google.cloud.dialogflow.cx.v3beta1.Tools.GetTool].
             name (:class:`str`):
                 Required. The name of the Tool. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -880,7 +880,7 @@ class ToolsAsyncClient:
                 [Tools.DeleteTool][google.cloud.dialogflow.cx.v3beta1.Tools.DeleteTool].
             name (:class:`str`):
                 Required. The name of the Tool to be deleted. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

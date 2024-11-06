@@ -772,7 +772,7 @@ class ExamplesClient(metaclass=ExamplesClientMeta):
                 [Examples.CreateExample][google.cloud.dialogflow.cx.v3beta1.Examples.CreateExample].
             parent (str):
                 Required. The playbook to create an example for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -883,7 +883,7 @@ class ExamplesClient(metaclass=ExamplesClientMeta):
                 [Examples.DeleteExample][google.cloud.dialogflow.cx.v3beta1.Examples.DeleteExample].
             name (str):
                 Required. The name of the example to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/examples/<Example ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -979,7 +979,7 @@ class ExamplesClient(metaclass=ExamplesClientMeta):
             parent (str):
                 Required. The playbook to list the examples from.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1096,7 +1096,7 @@ class ExamplesClient(metaclass=ExamplesClientMeta):
                 [Examples.GetExample][google.cloud.dialogflow.cx.v3beta1.Examples.GetExample].
             name (str):
                 Required. The name of the example. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/examples/<Example ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

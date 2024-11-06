@@ -57,13 +57,13 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.agents import pagers
+from google.cloud.dialogflowcx_v3beta1.types import audio_config, bigquery_export, flow
 from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
 )
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3beta1.types import audio_config, flow
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import safety_settings
 
@@ -357,6 +357,28 @@ class AgentsClient(metaclass=AgentsClientMeta):
         """Parses a playbook path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/playbooks/(?P<playbook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def secret_version_path(
+        project: str,
+        secret: str,
+        version: str,
+    ) -> str:
+        """Returns a fully-qualified secret_version string."""
+        return "projects/{project}/secrets/{secret}/versions/{version}".format(
+            project=project,
+            secret=secret,
+            version=version,
+        )
+
+    @staticmethod
+    def parse_secret_version_path(path: str) -> Dict[str, str]:
+        """Parses a secret_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)/versions/(?P<version>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -863,7 +885,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.ListAgents][google.cloud.dialogflow.cx.v3beta1.Agents.ListAgents].
             parent (str):
                 Required. The location to list all agents for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -980,7 +1002,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.GetAgent][google.cloud.dialogflow.cx.v3beta1.Agents.GetAgent].
             name (str):
                 Required. The name of the agent. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1108,7 +1130,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.CreateAgent][google.cloud.dialogflow.cx.v3beta1.Agents.CreateAgent].
             parent (str):
                 Required. The location to create a agent for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1365,7 +1387,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.DeleteAgent][google.cloud.dialogflow.cx.v3beta1.Agents.DeleteAgent].
             name (str):
                 Required. The name of the agent to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1774,7 +1796,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3beta1.Agents.GetAgentValidationResult].
             name (str):
                 Required. The agent name. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/validationResult``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1882,7 +1904,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 RPC.
             name (str):
                 Required. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

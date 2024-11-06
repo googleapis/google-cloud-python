@@ -74,12 +74,17 @@ from google.cloud.dialogflowcx_v3beta1.services.agents import (
     transports,
 )
 from google.cloud.dialogflowcx_v3beta1.types import (
+    audio_config,
+    bigquery_export,
+    flow,
+    gcs,
+)
+from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
 )
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3beta1.types import audio_config, flow, gcs
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import safety_settings
 
@@ -7675,10 +7680,19 @@ def test_create_agent_rest_call_success(request_type):
                 "branches": ["branches_value1", "branches_value2"],
             }
         },
+        "bigquery_export_settings": {
+            "enabled": True,
+            "bigquery_table": "bigquery_table_value",
+        },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
         "answer_feedback_settings": {"enable_answer_feedback": True},
         "personalization_settings": {"default_end_user_metadata": {"fields": {}}},
+        "client_certificate_settings": {
+            "ssl_certificate": "ssl_certificate_value",
+            "private_key": "private_key_value",
+            "passphrase": "passphrase_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7936,10 +7950,19 @@ def test_update_agent_rest_call_success(request_type):
                 "branches": ["branches_value1", "branches_value2"],
             }
         },
+        "bigquery_export_settings": {
+            "enabled": True,
+            "bigquery_table": "bigquery_table_value",
+        },
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
         "answer_feedback_settings": {"enable_answer_feedback": True},
         "personalization_settings": {"default_end_user_metadata": {"fields": {}}},
+        "client_certificate_settings": {
+            "ssl_certificate": "ssl_certificate_value",
+            "private_key": "private_key_value",
+            "passphrase": "passphrase_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8848,9 +8871,10 @@ def test_update_generative_settings_rest_call_success(request_type):
             ],
         },
         "generative_safety_settings": {
+            "default_banned_phrase_match_strategy": 1,
             "banned_phrases": [
                 {"text": "text_value", "language_code": "language_code_value"}
-            ]
+            ],
         },
         "knowledge_connector_settings": {
             "business": "business_value",
@@ -10266,10 +10290,36 @@ def test_parse_playbook_path():
     assert expected == actual
 
 
-def test_security_settings_path():
+def test_secret_version_path():
     project = "whelk"
-    location = "octopus"
-    security_settings = "oyster"
+    secret = "octopus"
+    version = "oyster"
+    expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
+        project=project,
+        secret=secret,
+        version=version,
+    )
+    actual = AgentsClient.secret_version_path(project, secret, version)
+    assert expected == actual
+
+
+def test_parse_secret_version_path():
+    expected = {
+        "project": "nudibranch",
+        "secret": "cuttlefish",
+        "version": "mussel",
+    }
+    path = AgentsClient.secret_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentsClient.parse_secret_version_path(path)
+    assert expected == actual
+
+
+def test_security_settings_path():
+    project = "winkle"
+    location = "nautilus"
+    security_settings = "scallop"
     expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
         project=project,
         location=location,
@@ -10281,9 +10331,9 @@ def test_security_settings_path():
 
 def test_parse_security_settings_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "security_settings": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "security_settings": "clam",
     }
     path = AgentsClient.security_settings_path(**expected)
 
@@ -10293,7 +10343,7 @@ def test_parse_security_settings_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -10303,7 +10353,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = AgentsClient.common_billing_account_path(**expected)
 
@@ -10313,7 +10363,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -10323,7 +10373,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = AgentsClient.common_folder_path(**expected)
 
@@ -10333,7 +10383,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -10343,7 +10393,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = AgentsClient.common_organization_path(**expected)
 
@@ -10353,7 +10403,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -10363,7 +10413,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = AgentsClient.common_project_path(**expected)
 
@@ -10373,8 +10423,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -10385,8 +10435,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = AgentsClient.common_location_path(**expected)
 

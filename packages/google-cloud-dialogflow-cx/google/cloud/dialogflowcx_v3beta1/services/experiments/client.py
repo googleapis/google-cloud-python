@@ -724,7 +724,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 Required. The
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 to list all environments for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -844,7 +844,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 Required. The name of the
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -959,7 +959,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 create an
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1186,7 +1186,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 Required. The name of the
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1284,7 +1284,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
             name (str):
                 Required. Resource name of the experiment to start.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1391,7 +1391,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
             name (str):
                 Required. Resource name of the experiment to stop.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

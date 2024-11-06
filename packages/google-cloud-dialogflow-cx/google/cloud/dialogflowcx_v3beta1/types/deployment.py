@@ -41,15 +41,14 @@ class Deployment(proto.Message):
     Attributes:
         name (str):
             The name of the deployment.
-            Format: projects/<Project
-            ID>/locations/<Location ID>/agents/<Agent
-            ID>/environments/<Environment
-            ID>/deployments/<Deployment ID>.
+            Format:
+
+            projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>.
         flow_version (str):
             The name of the flow version for this
-            deployment. Format: projects/<Project
-            ID>/locations/<Location ID>/agents/<Agent
-            ID>/flows/<Flow ID>/versions/<Verion ID>.
+            deployment. Format:
+
+            projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VerionID>.
         state (google.cloud.dialogflowcx_v3beta1.types.Deployment.State):
             The current state of the deployment.
         result (google.cloud.dialogflowcx_v3beta1.types.Deployment.Result):
@@ -84,13 +83,12 @@ class Deployment(proto.Message):
         Attributes:
             deployment_test_results (MutableSequence[str]):
                 Results of test cases running before the deployment. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
             experiment (str):
                 The name of the experiment triggered by this
-                deployment. Format: projects/<Project
-                ID>/locations/<Location ID>/agents/<Agent
-                ID>/environments/<Environment
-                ID>/experiments/<Experiment ID>.
+                deployment. Format:
+
+                projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>.
         """
 
         deployment_test_results: MutableSequence[str] = proto.RepeatedField(
@@ -141,7 +139,7 @@ class ListDeploymentsRequest(proto.Message):
             Required. The
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
             to list all environments for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
@@ -204,7 +202,7 @@ class GetDeploymentRequest(proto.Message):
             Required. The name of the
             [Deployment][google.cloud.dialogflow.cx.v3beta1.Deployment].
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/deployments/<Deployment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>``.
     """
 
     name: str = proto.Field(

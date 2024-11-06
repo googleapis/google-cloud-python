@@ -4514,6 +4514,12 @@ def test_create_generator_rest_call_success(request_type):
             "model": "model_value",
             "prompt_text": "prompt_text_value",
         },
+        "model_parameter": {
+            "temperature": 0.1198,
+            "max_decode_steps": 1687,
+            "top_p": 0.546,
+            "top_k": 541,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4719,6 +4725,12 @@ def test_update_generator_rest_call_success(request_type):
         "llm_model_settings": {
             "model": "model_value",
             "prompt_text": "prompt_text_value",
+        },
+        "model_parameter": {
+            "temperature": 0.1198,
+            "max_decode_steps": 1687,
+            "top_p": 0.546,
+            "top_k": 541,
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

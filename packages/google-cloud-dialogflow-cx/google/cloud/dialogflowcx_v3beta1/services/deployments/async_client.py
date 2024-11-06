@@ -311,7 +311,7 @@ class DeploymentsAsyncClient:
                 Required. The
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 to list all environments for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -434,7 +434,7 @@ class DeploymentsAsyncClient:
                 Required. The name of the
                 [Deployment][google.cloud.dialogflow.cx.v3beta1.Deployment].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/deployments/<Deployment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

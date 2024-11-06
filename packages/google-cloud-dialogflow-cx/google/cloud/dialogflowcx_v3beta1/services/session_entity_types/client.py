@@ -710,9 +710,9 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             parent (str):
                 Required. The session to list all session entity types
                 from. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment.
 
@@ -835,9 +835,9 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.GetSessionEntityType].
             name (str):
                 Required. The name of the session entity type. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment.
 
@@ -970,9 +970,9 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             parent (str):
                 Required. The session to create a session entity type
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment.
 
@@ -1116,9 +1116,9 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.UpdateSessionEntityType].
             session_entity_type (google.cloud.dialogflowcx_v3beta1.types.SessionEntityType):
                 Required. The session entity type to update. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment.
 
@@ -1253,9 +1253,9 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             name (str):
                 Required. The name of the session entity type to delete.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment.
 

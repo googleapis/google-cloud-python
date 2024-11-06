@@ -756,7 +756,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 Required. The location to create an
                 [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -878,7 +878,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.GetSecuritySettings].
             name (str):
                 Required. Resource name of the settings. Format:
-                ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<securitysettingsID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1119,7 +1119,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
             parent (str):
                 Required. The location to list all security settings
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1238,7 +1238,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 Required. The name of the
                 [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
                 to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

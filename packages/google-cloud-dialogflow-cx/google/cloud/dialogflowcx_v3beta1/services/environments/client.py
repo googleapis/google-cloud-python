@@ -848,7 +848,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 Required. The
                 [Agent][google.cloud.dialogflow.cx.v3beta1.Agent] to
                 list all environments for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -968,7 +968,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 Required. The name of the
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1111,7 +1111,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 create an
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1392,7 +1392,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 Required. The name of the
                 [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
                 to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1491,7 +1491,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             name (str):
                 Required. Resource name of the environment to look up
                 the history for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1723,7 +1723,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3beta1.Environments.ListContinuousTestResults].
             parent (str):
                 Required. The environment to list results for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

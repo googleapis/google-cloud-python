@@ -693,7 +693,7 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 [Generators.ListGenerators][google.cloud.dialogflow.cx.v3beta1.Generators.ListGenerators].
             parent (str):
                 Required. The agent to list all generators for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -810,7 +810,7 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 [Generators.GetGenerator][google.cloud.dialogflow.cx.v3beta1.Generators.GetGenerator].
             name (str):
                 Required. The name of the generator. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generators/<Generator ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -923,7 +923,7 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 [Generators.CreateGenerator][google.cloud.dialogflow.cx.v3beta1.Generators.CreateGenerator].
             parent (str):
                 Required. The agent to create a generator for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1156,7 +1156,7 @@ class GeneratorsClient(metaclass=GeneratorsClientMeta):
                 [Generators.DeleteGenerator][google.cloud.dialogflow.cx.v3beta1.Generators.DeleteGenerator].
             name (str):
                 Required. The name of the generator to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generators/<Generator ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
