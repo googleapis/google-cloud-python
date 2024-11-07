@@ -70,6 +70,12 @@ class FeatureFlags(proto.Message):
         client_side_metrics_enabled (bool):
             Notify the server that the client has client
             side metrics enabled.
+        traffic_director_enabled (bool):
+            Notify the server that the client using
+            Traffic Director endpoint.
+        direct_access_requested (bool):
+            Notify the server that the client explicitly
+            opted in for Direct Access.
     """
 
     reverse_scans: bool = proto.Field(
@@ -99,6 +105,14 @@ class FeatureFlags(proto.Message):
     client_side_metrics_enabled: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    traffic_director_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    direct_access_requested: bool = proto.Field(
+        proto.BOOL,
+        number=10,
     )
 
 

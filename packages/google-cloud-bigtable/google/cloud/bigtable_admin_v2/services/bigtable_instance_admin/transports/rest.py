@@ -16,28 +16,20 @@
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
-from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from google.api_core import operations_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin
@@ -47,16 +39,20 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from .base import (
-    BigtableInstanceAdminTransport,
-    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
-)
+
+from .rest_base import _BaseBigtableInstanceAdminRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=requests_version,
+    rest_version=f"requests@{requests_version}",
 )
 
 
@@ -699,8 +695,8 @@ class BigtableInstanceAdminRestStub:
     _interceptor: BigtableInstanceAdminRestInterceptor
 
 
-class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
-    """REST backend transport for BigtableInstanceAdmin.
+class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport):
+    """REST backend synchronous transport for BigtableInstanceAdmin.
 
     Service for creating, configuring, and deleting Cloud
     Bigtable Instances and Clusters. Provides access to the Instance
@@ -712,7 +708,6 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -766,21 +761,12 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -844,21 +830,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAppProfile(BigtableInstanceAdminRestStub):
+    class _CreateAppProfile(
+        _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAppProfile")
+            return hash("BigtableInstanceAdminRestTransport.CreateAppProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "appProfileId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -888,47 +888,36 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/instances/*}/appProfiles",
-                    "body": "app_profile",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_app_profile(
                 request, metadata
             )
-            pb_request = bigtable_instance_admin.CreateAppProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BigtableInstanceAdminRestTransport._CreateAppProfile._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -944,21 +933,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_create_app_profile(resp)
             return resp
 
-    class _CreateCluster(BigtableInstanceAdminRestStub):
+    class _CreateCluster(
+        _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateCluster")
+            return hash("BigtableInstanceAdminRestTransport.CreateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "clusterId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -988,45 +991,32 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/instances/*}/clusters",
-                    "body": "cluster",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            pb_request = bigtable_instance_admin.CreateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableInstanceAdminRestTransport._CreateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1040,19 +1030,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_create_cluster(resp)
             return resp
 
-    class _CreateInstance(BigtableInstanceAdminRestStub):
+    class _CreateInstance(
+        _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateInstance")
+            return hash("BigtableInstanceAdminRestTransport.CreateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1082,45 +1088,32 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/instances",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            pb_request = bigtable_instance_admin.CreateInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_instance(request, metadata)
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableInstanceAdminRestTransport._CreateInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1134,21 +1127,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_create_instance(resp)
             return resp
 
-    class _DeleteAppProfile(BigtableInstanceAdminRestStub):
+    class _DeleteAppProfile(
+        _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAppProfile")
+            return hash("BigtableInstanceAdminRestTransport.DeleteAppProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "ignoreWarnings": False,
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1171,40 +1177,31 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/instances/*/appProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_app_profile(
                 request, metadata
             )
-            pb_request = bigtable_instance_admin.DeleteAppProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BigtableInstanceAdminRestTransport._DeleteAppProfile._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1212,19 +1209,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteCluster(BigtableInstanceAdminRestStub):
+    class _DeleteCluster(
+        _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteCluster")
+            return hash("BigtableInstanceAdminRestTransport.DeleteCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1247,38 +1259,27 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/instances/*/clusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            pb_request = bigtable_instance_admin.DeleteClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._DeleteCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1286,19 +1287,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteInstance(BigtableInstanceAdminRestStub):
+    class _DeleteInstance(
+        _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteInstance")
+            return hash("BigtableInstanceAdminRestTransport.DeleteInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1321,38 +1337,27 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/instances/*}",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            pb_request = bigtable_instance_admin.DeleteInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._DeleteInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1360,19 +1365,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAppProfile(BigtableInstanceAdminRestStub):
+    class _GetAppProfile(
+        _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAppProfile")
+            return hash("BigtableInstanceAdminRestTransport.GetAppProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1402,38 +1422,27 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/instances/*/appProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_app_profile(request, metadata)
-            pb_request = bigtable_instance_admin.GetAppProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._GetAppProfile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1449,19 +1458,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_get_app_profile(resp)
             return resp
 
-    class _GetCluster(BigtableInstanceAdminRestStub):
+    class _GetCluster(
+        _BaseBigtableInstanceAdminRestTransport._BaseGetCluster,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("GetCluster")
+            return hash("BigtableInstanceAdminRestTransport.GetCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1492,38 +1516,27 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/instances/*/clusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            pb_request = bigtable_instance_admin.GetClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._GetCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1539,19 +1552,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_get_cluster(resp)
             return resp
 
-    class _GetIamPolicy(BigtableInstanceAdminRestStub):
+    class _GetIamPolicy(
+        _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("GetIamPolicy")
+            return hash("BigtableInstanceAdminRestTransport.GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1652,45 +1681,32 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{resource=projects/*/instances/*}:getIamPolicy",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableInstanceAdminRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1706,19 +1722,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
-    class _GetInstance(BigtableInstanceAdminRestStub):
+    class _GetInstance(
+        _BaseBigtableInstanceAdminRestTransport._BaseGetInstance,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("GetInstance")
+            return hash("BigtableInstanceAdminRestTransport.GetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1751,38 +1782,27 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/instances/*}",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            pb_request = bigtable_instance_admin.GetInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._GetInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1798,19 +1818,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_get_instance(resp)
             return resp
 
-    class _ListAppProfiles(BigtableInstanceAdminRestStub):
+    class _ListAppProfiles(
+        _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAppProfiles")
+            return hash("BigtableInstanceAdminRestTransport.ListAppProfiles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1839,40 +1874,31 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/instances/*}/appProfiles",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_app_profiles(
                 request, metadata
             )
-            pb_request = bigtable_instance_admin.ListAppProfilesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BigtableInstanceAdminRestTransport._ListAppProfiles._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1888,19 +1914,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_list_app_profiles(resp)
             return resp
 
-    class _ListClusters(BigtableInstanceAdminRestStub):
+    class _ListClusters(
+        _BaseBigtableInstanceAdminRestTransport._BaseListClusters,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("ListClusters")
+            return hash("BigtableInstanceAdminRestTransport.ListClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1929,38 +1970,27 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/instances/*}/clusters",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            pb_request = bigtable_instance_admin.ListClustersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._ListClusters._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1976,19 +2006,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_list_clusters(resp)
             return resp
 
-    class _ListHotTablets(BigtableInstanceAdminRestStub):
+    class _ListHotTablets(
+        _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("ListHotTablets")
+            return hash("BigtableInstanceAdminRestTransport.ListHotTablets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2017,40 +2062,29 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/instances/*/clusters/*}/hotTablets",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_hot_tablets(
                 request, metadata
             )
-            pb_request = bigtable_instance_admin.ListHotTabletsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._ListHotTablets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2066,19 +2100,34 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_list_hot_tablets(resp)
             return resp
 
-    class _ListInstances(BigtableInstanceAdminRestStub):
+    class _ListInstances(
+        _BaseBigtableInstanceAdminRestTransport._BaseListInstances,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("ListInstances")
+            return hash("BigtableInstanceAdminRestTransport.ListInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2107,38 +2156,27 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/instances",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            pb_request = bigtable_instance_admin.ListInstancesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableInstanceAdminRestTransport._ListInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2154,21 +2192,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_list_instances(resp)
             return resp
 
-    class _PartialUpdateCluster(BigtableInstanceAdminRestStub):
+    class _PartialUpdateCluster(
+        _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("PartialUpdateCluster")
+            return hash("BigtableInstanceAdminRestTransport.PartialUpdateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2198,47 +2250,36 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{cluster.name=projects/*/instances/*/clusters/*}",
-                    "body": "cluster",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_partial_update_cluster(
                 request, metadata
             )
-            pb_request = bigtable_instance_admin.PartialUpdateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BigtableInstanceAdminRestTransport._PartialUpdateCluster._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2252,21 +2293,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_partial_update_cluster(resp)
             return resp
 
-    class _PartialUpdateInstance(BigtableInstanceAdminRestStub):
+    class _PartialUpdateInstance(
+        _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("PartialUpdateInstance")
+            return hash("BigtableInstanceAdminRestTransport.PartialUpdateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2296,49 +2351,36 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{instance.name=projects/*/instances/*}",
-                    "body": "instance",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_partial_update_instance(
                 request, metadata
             )
-            pb_request = bigtable_instance_admin.PartialUpdateInstanceRequest.pb(
-                request
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BigtableInstanceAdminRestTransport._PartialUpdateInstance._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2352,19 +2394,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_partial_update_instance(resp)
             return resp
 
-    class _SetIamPolicy(BigtableInstanceAdminRestStub):
+    class _SetIamPolicy(
+        _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("SetIamPolicy")
+            return hash("BigtableInstanceAdminRestTransport.SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2465,45 +2523,32 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{resource=projects/*/instances/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableInstanceAdminRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2519,19 +2564,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
-    class _TestIamPermissions(BigtableInstanceAdminRestStub):
+    class _TestIamPermissions(
+        _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("TestIamPermissions")
+            return hash("BigtableInstanceAdminRestTransport.TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2557,47 +2618,36 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{resource=projects/*/instances/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BigtableInstanceAdminRestTransport._TestIamPermissions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2613,21 +2663,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
-    class _UpdateAppProfile(BigtableInstanceAdminRestStub):
+    class _UpdateAppProfile(
+        _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAppProfile")
+            return hash("BigtableInstanceAdminRestTransport.UpdateAppProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2657,47 +2721,36 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{app_profile.name=projects/*/instances/*/appProfiles/*}",
-                    "body": "app_profile",
-                },
-            ]
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_app_profile(
                 request, metadata
             )
-            pb_request = bigtable_instance_admin.UpdateAppProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BigtableInstanceAdminRestTransport._UpdateAppProfile._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2711,9 +2764,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_update_app_profile(resp)
             return resp
 
-    class _UpdateCluster(BigtableInstanceAdminRestStub):
+    class _UpdateCluster(
+        _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateCluster")
+            return hash("BigtableInstanceAdminRestTransport.UpdateCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2745,44 +2824,32 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v2/{name=projects/*/instances/*/clusters/*}",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            pb_request = instance.Cluster.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableInstanceAdminRestTransport._UpdateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2796,19 +2863,35 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
             resp = self._interceptor.post_update_cluster(resp)
             return resp
 
-    class _UpdateInstance(BigtableInstanceAdminRestStub):
+    class _UpdateInstance(
+        _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance,
+        BigtableInstanceAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateInstance")
+            return hash("BigtableInstanceAdminRestTransport.UpdateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2845,45 +2928,32 @@ class BigtableInstanceAdminRestTransport(BigtableInstanceAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v2/{name=projects/*/instances/*}",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            pb_request = instance.Instance.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_instance(request, metadata)
+            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableInstanceAdminRestTransport._UpdateInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
