@@ -57,9 +57,9 @@ class SessionEntityType(proto.Message):
         name (str):
             Required. The unique identifier of the session entity type.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
         entity_override_mode (google.cloud.dialogflowcx_v3beta1.types.SessionEntityType.EntityOverrideMode):
@@ -123,9 +123,9 @@ class ListSessionEntityTypesRequest(proto.Message):
         parent (str):
             Required. The session to list all session entity types from.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
         page_size (int):
@@ -187,9 +187,9 @@ class GetSessionEntityTypeRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the session entity type. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
     """
@@ -208,9 +208,9 @@ class CreateSessionEntityTypeRequest(proto.Message):
         parent (str):
             Required. The session to create a session entity type for.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
         session_entity_type (google.cloud.dialogflowcx_v3beta1.types.SessionEntityType):
@@ -235,9 +235,9 @@ class UpdateSessionEntityTypeRequest(proto.Message):
     Attributes:
         session_entity_type (google.cloud.dialogflowcx_v3beta1.types.SessionEntityType):
             Required. The session entity type to update. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -264,9 +264,9 @@ class DeleteSessionEntityTypeRequest(proto.Message):
         name (str):
             Required. The name of the session entity type to delete.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
     """

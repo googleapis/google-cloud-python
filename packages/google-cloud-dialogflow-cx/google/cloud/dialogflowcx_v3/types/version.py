@@ -48,7 +48,7 @@ class CreateVersionOperationMetadata(proto.Message):
     Attributes:
         version (str):
             Name of the created version. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
     """
 
     version: str = proto.Field(
@@ -62,9 +62,9 @@ class Version(proto.Message):
 
     Attributes:
         name (str):
-            Format: projects/<Project
-            ID>/locations/<Location ID>/agents/<Agent
-            ID>/flows/<Flow ID>/versions/<Version ID>.
+            Format:
+
+            projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>.
             Version ID is a self-increasing number generated
             by Dialogflow upon version creation.
         display_name (str):
@@ -142,7 +142,7 @@ class ListVersionsRequest(proto.Message):
         parent (str):
             Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow] to
             list all versions for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
@@ -204,7 +204,7 @@ class GetVersionRequest(proto.Message):
         name (str):
             Required. The name of the
             [Version][google.cloud.dialogflow.cx.v3.Version]. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
     """
 
     name: str = proto.Field(
@@ -222,7 +222,7 @@ class CreateVersionRequest(proto.Message):
             Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow] to
             create an [Version][google.cloud.dialogflow.cx.v3.Version]
             for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         version (google.cloud.dialogflowcx_v3.types.Version):
             Required. The version to create.
     """
@@ -272,7 +272,7 @@ class DeleteVersionRequest(proto.Message):
             Required. The name of the
             [Version][google.cloud.dialogflow.cx.v3.Version] to delete.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
     """
 
     name: str = proto.Field(
@@ -290,7 +290,7 @@ class LoadVersionRequest(proto.Message):
             Required. The
             [Version][google.cloud.dialogflow.cx.v3.Version] to be
             loaded to draft flow. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
         allow_override_agent_resources (bool):
             This field is used to prevent accidental overwrite of other
             agent resources, which can potentially impact other flow's
@@ -320,12 +320,12 @@ class CompareVersionsRequest(proto.Message):
             version of the specified flow.
 
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/ <Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
         target_version (str):
             Required. Name of the target flow version to compare with
             the base version. Use version ID ``0`` to indicate the draft
             version of the specified flow. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
         language_code (str):
             The language to compare the flow versions for.
 

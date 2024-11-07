@@ -2366,8 +2366,8 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUsablePager:
-        r"""Retrieves an aggregated list of all usable backend
-        services in the specified project.
+        r"""Retrieves a list of all usable backend services in
+        the specified project.
 
         .. code-block:: python
 

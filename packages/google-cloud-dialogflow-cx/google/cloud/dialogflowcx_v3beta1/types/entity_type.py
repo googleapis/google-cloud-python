@@ -80,7 +80,7 @@ class EntityType(proto.Message):
             The unique identifier of the entity type. Required for
             [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.UpdateEntityType].
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<Entity Type ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         display_name (str):
             Required. The human-readable name of the
             entity type, unique within the agent.
@@ -253,10 +253,10 @@ class ExportEntityTypesRequest(proto.Message):
         parent (str):
             Required. The name of the parent agent to export entity
             types. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         entity_types (MutableSequence[str]):
             Required. The name of the entity types to export. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<EntityType ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         entity_types_uri (str):
             Optional. The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -401,7 +401,7 @@ class ImportEntityTypesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to import the entity types into. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         entity_types_uri (str):
             The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -424,7 +424,7 @@ class ImportEntityTypesRequest(proto.Message):
             types.
         target_entity_type (str):
             Optional. The target entity type to import into. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entity_types/<EntityType ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entity_types/<EntityTypeID>``.
             If set, there should be only one entity type included in
             [entity_types][google.cloud.dialogflow.cx.v3beta1.ImportEntityTypesRequest.entity_types],
             of which the type should match the type of the target entity
@@ -501,7 +501,7 @@ class ImportEntityTypesResponse(proto.Message):
     Attributes:
         entity_types (MutableSequence[str]):
             The unique identifier of the imported entity types. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entity_types/<EntityType ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entity_types/<EntityTypeID>``.
         conflicting_resources (google.cloud.dialogflowcx_v3beta1.types.ImportEntityTypesResponse.ConflictingResources):
             Info which resources have conflicts when
             [REPORT_CONFLICT][ImportEntityTypesResponse.REPORT_CONFLICT]
@@ -556,7 +556,7 @@ class ListEntityTypesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list all entity types for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         language_code (str):
             The language to list entity types for. The following fields
             are language dependent:
@@ -632,7 +632,7 @@ class GetEntityTypeRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the entity type. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<Entity Type ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         language_code (str):
             The language to retrieve the entity type for. The following
             fields are language dependent:
@@ -665,7 +665,7 @@ class CreateEntityTypeRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create a entity type for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         entity_type (google.cloud.dialogflowcx_v3beta1.types.EntityType):
             Required. The entity type to create.
         language_code (str):
@@ -743,7 +743,7 @@ class DeleteEntityTypeRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the entity type to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<Entity Type ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
         force (bool):
             This field has no effect for entity type not being used. For
             entity types that are used by intents or pages:

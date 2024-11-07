@@ -47,7 +47,7 @@ class CreateToolRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create a Tool for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         tool (google.cloud.dialogflowcx_v3beta1.types.Tool):
             Required. The Tool to be created.
     """
@@ -70,7 +70,7 @@ class ListToolsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list the Tools from. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -129,7 +129,7 @@ class GetToolRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the Tool. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
     """
 
     name: str = proto.Field(
@@ -152,10 +152,10 @@ class ExportToolsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to export tools from. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         tools (MutableSequence[str]):
             Required. The name of the tools to export. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
         tools_uri (str):
             Optional. The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -290,7 +290,7 @@ class DeleteToolRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the Tool to be deleted. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
         force (bool):
             This field has no effect for Tools not being used. For Tools
             that are used:
@@ -328,7 +328,7 @@ class Tool(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the Tool. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
         display_name (str):
             Required. The human-readable name of the
             Tool, unique within an agent.
@@ -390,6 +390,8 @@ class Tool(proto.Message):
             tls_config (google.cloud.dialogflowcx_v3beta1.types.Tool.TLSConfig):
                 Optional. TLS configuration for the HTTPS
                 verification.
+            service_directory_config (google.cloud.dialogflowcx_v3beta1.types.Tool.ServiceDirectoryConfig):
+                Optional. Service Directory configuration.
         """
 
         text_schema: str = proto.Field(
@@ -406,6 +408,11 @@ class Tool(proto.Message):
             proto.MESSAGE,
             number=3,
             message="Tool.TLSConfig",
+        )
+        service_directory_config: "Tool.ServiceDirectoryConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Tool.ServiceDirectoryConfig",
         )
 
     class DataStoreTool(proto.Message):
@@ -509,6 +516,10 @@ class Tool(proto.Message):
                 auth.
 
                 This field is a member of `oneof`_ ``auth_config``.
+            bearer_token_config (google.cloud.dialogflowcx_v3beta1.types.Tool.Authentication.BearerTokenConfig):
+                Config for bearer token auth.
+
+                This field is a member of `oneof`_ ``auth_config``.
         """
 
         class RequestLocation(proto.Enum):
@@ -570,6 +581,8 @@ class Tool(proto.Message):
                 token_endpoint (str):
                     Required. The token endpoint in the OAuth
                     provider to exchange for an access token.
+                scopes (MutableSequence[str]):
+                    Optional. The OAuth scopes to grant.
             """
 
             class OauthGrantType(proto.Enum):
@@ -606,12 +619,69 @@ class Tool(proto.Message):
                 proto.STRING,
                 number=4,
             )
+            scopes: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=5,
+            )
 
         class ServiceAgentAuthConfig(proto.Message):
             r"""Config for auth using `Diglogflow service
             agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
 
+            Attributes:
+                service_agent_auth (google.cloud.dialogflowcx_v3beta1.types.Tool.Authentication.ServiceAgentAuthConfig.ServiceAgentAuth):
+                    Optional. Indicate the auth token type generated from the
+                    `Diglogflow service
+                    agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+                    The generated token is sent in the Authorization header.
             """
+
+            class ServiceAgentAuth(proto.Enum):
+                r"""Indicate the auth token type generated from the `Diglogflow service
+                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+
+                Values:
+                    SERVICE_AGENT_AUTH_UNSPECIFIED (0):
+                        Service agent auth type unspecified. Default to ID_TOKEN.
+                    ID_TOKEN (1):
+                        Use `ID
+                        token <https://cloud.google.com/docs/authentication/token-types#id>`__
+                        generated from service agent. This can be used to access
+                        Cloud Function and Cloud Run after you grant Invoker role to
+                        ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
+                    ACCESS_TOKEN (2):
+                        Use `access
+                        token <https://cloud.google.com/docs/authentication/token-types#access>`__
+                        generated from service agent. This can be used to access
+                        other Google Cloud APIs after you grant required roles to
+                        ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
+                """
+                SERVICE_AGENT_AUTH_UNSPECIFIED = 0
+                ID_TOKEN = 1
+                ACCESS_TOKEN = 2
+
+            service_agent_auth: "Tool.Authentication.ServiceAgentAuthConfig.ServiceAgentAuth" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Tool.Authentication.ServiceAgentAuthConfig.ServiceAgentAuth",
+            )
+
+        class BearerTokenConfig(proto.Message):
+            r"""Config for authentication using bearer token.
+
+            Attributes:
+                token (str):
+                    Required. The text token appended to the text ``Bearer`` to
+                    the request Authorization header. `Session parameters
+                    reference <https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>`__
+                    can be used to pass the token dynamically, e.g.
+                    ``$session.params.parameter-id``.
+            """
+
+            token: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
 
         api_key_config: "Tool.Authentication.ApiKeyConfig" = proto.Field(
             proto.MESSAGE,
@@ -632,6 +702,12 @@ class Tool(proto.Message):
                 oneof="auth_config",
                 message="Tool.Authentication.ServiceAgentAuthConfig",
             )
+        )
+        bearer_token_config: "Tool.Authentication.BearerTokenConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="auth_config",
+            message="Tool.Authentication.BearerTokenConfig",
         )
 
     class TLSConfig(proto.Message):
@@ -686,6 +762,24 @@ class Tool(proto.Message):
             proto.MESSAGE,
             number=1,
             message="Tool.TLSConfig.CACert",
+        )
+
+    class ServiceDirectoryConfig(proto.Message):
+        r"""Configuration for tools using Service Directory.
+
+        Attributes:
+            service (str):
+                Required. The name of `Service
+                Directory <https://cloud.google.com/service-directory>`__
+                service. Format:
+                ``projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>``.
+                ``LocationID`` of the service directory must be the same as
+                the location of the agent.
+        """
+
+        service: str = proto.Field(
+            proto.STRING,
+            number=1,
         )
 
     name: str = proto.Field(

@@ -86,6 +86,8 @@ class ParticipantsAsyncClient:
     parse_message_path = staticmethod(ParticipantsClient.parse_message_path)
     participant_path = staticmethod(ParticipantsClient.participant_path)
     parse_participant_path = staticmethod(ParticipantsClient.parse_participant_path)
+    phrase_set_path = staticmethod(ParticipantsClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(ParticipantsClient.parse_phrase_set_path)
     session_entity_type_path = staticmethod(ParticipantsClient.session_entity_type_path)
     parse_session_entity_type_path = staticmethod(
         ParticipantsClient.parse_session_entity_type_path
@@ -920,7 +922,7 @@ class ParticipantsAsyncClient:
 
                 # Initialize request argument(s)
                 audio_config = dialogflow_v2beta1.InputAudioConfig()
-                audio_config.audio_encoding = "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE"
+                audio_config.audio_encoding = "AUDIO_ENCODING_ALAW"
                 audio_config.sample_rate_hertz = 1817
                 audio_config.language_code = "language_code_value"
 
