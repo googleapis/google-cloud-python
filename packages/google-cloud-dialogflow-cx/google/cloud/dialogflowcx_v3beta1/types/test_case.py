@@ -97,7 +97,7 @@ class TestCase(proto.Message):
             The unique identifier of the test case.
             [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.CreateTestCase]
             will populate the name automatically. Otherwise use format:
-            ``projects/<Project ID>/locations/<LocationID>/agents/ <AgentID>/testCases/<TestCase ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
         tags (MutableSequence[str]):
             Tags are short descriptions that users may
             apply to test cases for organizational and
@@ -171,7 +171,7 @@ class TestCaseResult(proto.Message):
     Attributes:
         name (str):
             The resource name for the test case result. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/ <TestCase ID>/results/<TestCaseResult ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
         environment (str):
             Environment where the test was run. If not
             set, it indicates the draft environment.
@@ -219,23 +219,21 @@ class TestConfig(proto.Message):
             calculating differences.
         flow (str):
             Flow name to start the test case with. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
             Only one of ``flow`` and ``page`` should be set to indicate
-            the starting point of the test case. If both are set,
-            ``page`` takes precedence over ``flow``. If neither is set,
-            the test case will start with start page on the default
-            start flow.
+            the starting point of the test case. If neither is set, the
+            test case will start with start page on the default start
+            flow.
         page (str):
             The [page][google.cloud.dialogflow.cx.v3beta1.Page] to start
             the test case with. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
             Only one of ``flow`` and ``page`` should be set to indicate
-            the starting point of the test case. If both are set,
-            ``page`` takes precedence over ``flow``. If neither is set,
-            the test case will start with start page on the default
-            start flow.
+            the starting point of the test case. If neither is set, the
+            test case will start with start page on the default start
+            flow.
     """
 
     tracking_parameters: MutableSequence[str] = proto.RepeatedField(
@@ -691,7 +689,7 @@ class CalculateCoverageRequest(proto.Message):
     Attributes:
         agent (str):
             Required. The agent to calculate coverage for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         type_ (google.cloud.dialogflowcx_v3beta1.types.CalculateCoverageRequest.CoverageType):
             Required. The type of coverage requested.
     """
@@ -739,7 +737,7 @@ class CalculateCoverageResponse(proto.Message):
     Attributes:
         agent (str):
             The agent to calculate coverage for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intent_coverage (google.cloud.dialogflowcx_v3beta1.types.IntentCoverage):
             Intent coverage.
 
@@ -786,7 +784,7 @@ class ListTestCasesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list all pages for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20. Note that when
@@ -875,10 +873,10 @@ class BatchDeleteTestCasesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to delete test cases from. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         names (MutableSequence[str]):
             Required. Format of test case names:
-            ``projects/<Project ID>/locations/ <Location ID>/agents/<AgentID>/testCases/<TestCase ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
     parent: str = proto.Field(
@@ -898,7 +896,7 @@ class CreateTestCaseRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create the test case for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         test_case (google.cloud.dialogflowcx_v3beta1.types.TestCase):
             Required. The test case to create.
     """
@@ -949,7 +947,7 @@ class GetTestCaseRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the testcase. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
     name: str = proto.Field(
@@ -965,11 +963,11 @@ class RunTestCaseRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format of test case name to run:
-            ``projects/<Project ID>/locations/ <Location ID>/agents/<AgentID>/testCases/<TestCase ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
         environment (str):
             Optional. Environment name. If not set, draft environment is
             assumed. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
     """
 
     name: str = proto.Field(
@@ -1013,13 +1011,13 @@ class BatchRunTestCasesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Agent name. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/ <AgentID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         environment (str):
             Optional. If not set, draft environment is assumed. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         test_cases (MutableSequence[str]):
             Required. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
     parent: str = proto.Field(
@@ -1113,7 +1111,7 @@ class ImportTestCasesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to import test cases to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         gcs_uri (str):
             The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -1156,7 +1154,7 @@ class ImportTestCasesResponse(proto.Message):
     Attributes:
         names (MutableSequence[str]):
             The unique identifiers of the new test cases. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
     """
 
     names: MutableSequence[str] = proto.RepeatedField(
@@ -1214,7 +1212,7 @@ class ExportTestCasesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent where to export test cases from. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         gcs_uri (str):
             The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -1331,7 +1329,7 @@ class ListTestCaseResultsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The test case to list results for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ testCases/<TestCase ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
             Specify a ``-`` as a wildcard for TestCase ID to list
             results across multiple test cases.
         page_size (int):
@@ -1421,7 +1419,7 @@ class GetTestCaseResultRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the testcase. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
     """
 
     name: str = proto.Field(

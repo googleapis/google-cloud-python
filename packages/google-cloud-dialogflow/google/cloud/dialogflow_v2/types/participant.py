@@ -1861,6 +1861,8 @@ class KnowledgeAssistAnswer(proto.Message):
                         Text taken from that URI.
                     title (str):
                         Title of the document.
+                    metadata (google.protobuf.struct_pb2.Struct):
+                        Metadata of the document.
                 """
 
                 uri: str = proto.Field(
@@ -1874,6 +1876,11 @@ class KnowledgeAssistAnswer(proto.Message):
                 title: str = proto.Field(
                     proto.STRING,
                     number=4,
+                )
+                metadata: struct_pb2.Struct = proto.Field(
+                    proto.MESSAGE,
+                    number=5,
+                    message=struct_pb2.Struct,
                 )
 
             snippets: MutableSequence[
