@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -52,13 +51,13 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.agents import pagers
+from google.cloud.dialogflowcx_v3beta1.types import audio_config, bigquery_export, flow
 from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
 )
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3beta1.types import audio_config, flow
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import safety_settings
 
@@ -105,6 +104,8 @@ class AgentsAsyncClient:
     )
     playbook_path = staticmethod(AgentsClient.playbook_path)
     parse_playbook_path = staticmethod(AgentsClient.parse_playbook_path)
+    secret_version_path = staticmethod(AgentsClient.secret_version_path)
+    parse_secret_version_path = staticmethod(AgentsClient.parse_secret_version_path)
     security_settings_path = staticmethod(AgentsClient.security_settings_path)
     parse_security_settings_path = staticmethod(
         AgentsClient.parse_security_settings_path
@@ -221,9 +222,7 @@ class AgentsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(AgentsClient).get_transport_class, type(AgentsClient)
-    )
+    get_transport_class = AgentsClient.get_transport_class
 
     def __init__(
         self,
@@ -336,7 +335,7 @@ class AgentsAsyncClient:
                 [Agents.ListAgents][google.cloud.dialogflow.cx.v3beta1.Agents.ListAgents].
             parent (:class:`str`):
                 Required. The location to list all agents for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -405,6 +404,8 @@ class AgentsAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -454,7 +455,7 @@ class AgentsAsyncClient:
                 [Agents.GetAgent][google.cloud.dialogflow.cx.v3beta1.Agents.GetAgent].
             name (:class:`str`):
                 Required. The name of the agent. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -585,7 +586,7 @@ class AgentsAsyncClient:
                 [Agents.CreateAgent][google.cloud.dialogflow.cx.v3beta1.Agents.CreateAgent].
             parent (:class:`str`):
                 Required. The location to create a agent for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -848,7 +849,7 @@ class AgentsAsyncClient:
                 [Agents.DeleteAgent][google.cloud.dialogflow.cx.v3beta1.Agents.DeleteAgent].
             name (:class:`str`):
                 Required. The name of the agent to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1266,7 +1267,7 @@ class AgentsAsyncClient:
                 [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3beta1.Agents.GetAgentValidationResult].
             name (:class:`str`):
                 Required. The agent name. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/validationResult``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1375,7 +1376,7 @@ class AgentsAsyncClient:
                 RPC.
             name (:class:`str`):
                 Required. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1595,11 +1596,7 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1652,11 +1649,7 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1712,11 +1705,7 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1766,11 +1755,7 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1823,11 +1808,7 @@ class AgentsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

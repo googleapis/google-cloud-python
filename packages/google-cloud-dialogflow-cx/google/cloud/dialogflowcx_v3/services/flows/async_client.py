@@ -322,7 +322,7 @@ class FlowsAsyncClient:
                 [Flows.CreateFlow][google.cloud.dialogflow.cx.v3.Flows.CreateFlow].
             parent (:class:`str`):
                 Required. The agent to create a flow for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -453,7 +453,7 @@ class FlowsAsyncClient:
                 [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3.Flows.DeleteFlow].
             name (:class:`str`):
                 Required. The name of the flow to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -551,7 +551,7 @@ class FlowsAsyncClient:
                 [Flows.ListFlows][google.cloud.dialogflow.cx.v3.Flows.ListFlows].
             parent (:class:`str`):
                 Required. The agent containing the flows. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -671,7 +671,7 @@ class FlowsAsyncClient:
                 [Flows.GetFlow][google.cloud.dialogflow.cx.v3.Flows.GetFlow].
             name (:class:`str`):
                 Required. The name of the flow to get. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -960,7 +960,7 @@ class FlowsAsyncClient:
                 [Flows.TrainFlow][google.cloud.dialogflow.cx.v3.Flows.TrainFlow].
             name (:class:`str`):
                 Required. The flow to train. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1172,7 +1172,7 @@ class FlowsAsyncClient:
                 [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3.Flows.GetFlowValidationResult].
             name (:class:`str`):
                 Required. The flow name. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/validationResult``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

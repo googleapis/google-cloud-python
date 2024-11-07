@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -72,6 +71,8 @@ class ToolsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ToolsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ToolsClient._DEFAULT_UNIVERSE
 
+    service_path = staticmethod(ToolsClient.service_path)
+    parse_service_path = staticmethod(ToolsClient.parse_service_path)
     tool_path = staticmethod(ToolsClient.tool_path)
     parse_tool_path = staticmethod(ToolsClient.parse_tool_path)
     common_billing_account_path = staticmethod(ToolsClient.common_billing_account_path)
@@ -186,9 +187,7 @@ class ToolsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ToolsClient).get_transport_class, type(ToolsClient)
-    )
+    get_transport_class = ToolsClient.get_transport_class
 
     def __init__(
         self,
@@ -307,7 +306,7 @@ class ToolsAsyncClient:
                 [Tools.CreateTool][google.cloud.dialogflow.cx.v3beta1.Tools.CreateTool].
             parent (:class:`str`):
                 Required. The agent to create a Tool for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -427,7 +426,7 @@ class ToolsAsyncClient:
                 [Tools.ListTools][google.cloud.dialogflow.cx.v3beta1.Tools.ListTools].
             parent (:class:`str`):
                 Required. The agent to list the Tools from. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -496,6 +495,8 @@ class ToolsAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -646,7 +647,7 @@ class ToolsAsyncClient:
                 [Tools.GetTool][google.cloud.dialogflow.cx.v3beta1.Tools.GetTool].
             name (:class:`str`):
                 Required. The name of the Tool. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -879,7 +880,7 @@ class ToolsAsyncClient:
                 [Tools.DeleteTool][google.cloud.dialogflow.cx.v3beta1.Tools.DeleteTool].
             name (:class:`str`):
                 Required. The name of the Tool to be deleted. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -964,11 +965,7 @@ class ToolsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1021,11 +1018,7 @@ class ToolsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1081,11 +1074,7 @@ class ToolsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1135,11 +1124,7 @@ class ToolsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1192,11 +1177,7 @@ class ToolsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

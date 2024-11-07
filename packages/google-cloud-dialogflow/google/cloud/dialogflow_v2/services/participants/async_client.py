@@ -83,6 +83,8 @@ class ParticipantsAsyncClient:
     parse_message_path = staticmethod(ParticipantsClient.parse_message_path)
     participant_path = staticmethod(ParticipantsClient.participant_path)
     parse_participant_path = staticmethod(ParticipantsClient.parse_participant_path)
+    phrase_set_path = staticmethod(ParticipantsClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(ParticipantsClient.parse_phrase_set_path)
     session_entity_type_path = staticmethod(ParticipantsClient.session_entity_type_path)
     parse_session_entity_type_path = staticmethod(
         ParticipantsClient.parse_session_entity_type_path

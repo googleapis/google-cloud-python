@@ -191,6 +191,30 @@ class ToolsClient(metaclass=ToolsClientMeta):
         return self._transport
 
     @staticmethod
+    def service_path(
+        project: str,
+        location: str,
+        namespace: str,
+        service: str,
+    ) -> str:
+        """Returns a fully-qualified service string."""
+        return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+            project=project,
+            location=location,
+            namespace=namespace,
+            service=service,
+        )
+
+    @staticmethod
+    def parse_service_path(path: str) -> Dict[str, str]:
+        """Parses a service path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def tool_path(
         project: str,
         location: str,
@@ -470,36 +494,6 @@ class ToolsClient(metaclass=ToolsClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = ToolsClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -509,13 +503,9 @@ class ToolsClient(metaclass=ToolsClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or ToolsClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
 
     @property
     def api_endpoint(self):
@@ -666,7 +656,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
             transport_init: Union[
                 Type[ToolsTransport], Callable[..., ToolsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                ToolsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ToolsTransport], transport)
             )
@@ -734,7 +724,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
                 [Tools.CreateTool][google.cloud.dialogflow.cx.v3beta1.Tools.CreateTool].
             parent (str):
                 Required. The agent to create a Tool for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -851,7 +841,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
                 [Tools.ListTools][google.cloud.dialogflow.cx.v3beta1.Tools.ListTools].
             parent (str):
                 Required. The agent to list the Tools from. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -917,6 +907,8 @@ class ToolsClient(metaclass=ToolsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1065,7 +1057,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
                 [Tools.GetTool][google.cloud.dialogflow.cx.v3beta1.Tools.GetTool].
             name (str):
                 Required. The name of the Tool. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1294,7 +1286,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
                 [Tools.DeleteTool][google.cloud.dialogflow.cx.v3beta1.Tools.DeleteTool].
             name (str):
                 Required. The name of the Tool to be deleted. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1389,11 +1381,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1446,11 +1434,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1506,11 +1490,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1560,11 +1540,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1617,11 +1593,7 @@ class ToolsClient(metaclass=ToolsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
