@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.10.1...google-cloud-service-management-v1.11.0) (2024-11-07)
+
+
+### Features
+
+* [google-cloud-dialogflow-cx] add options of ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* [google-cloud-dialogflow-cx] add options of client_certificate_settings, bigquery_export_settings, bearer_token_config and boost_control_spec; add support of ALAW encoding ([#13249](https://github.com/googleapis/google-cloud-python/issues/13249)) ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* Add field protobuf_pythonic_types_enabled to message ExperimentalFeatures ([a6897e3](https://github.com/googleapis/google-cloud-python/commit/a6897e3f763e831a22602d1860f1810e9600e014))
+* add options of query_source, search_config and context_size ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* add SipTrunks service ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* added support for ALAW encoding ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+
+
+### Documentation
+
+* A comment for field `unit` in message `.google.api.QuotaLimit` is changed ([a6897e3](https://github.com/googleapis/google-cloud-python/commit/a6897e3f763e831a22602d1860f1810e9600e014))
+
 ## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.10.0...google-cloud-service-management-v1.10.1) (2024-10-31)
 
 
