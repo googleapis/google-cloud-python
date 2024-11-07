@@ -1,0 +1,12 @@
+[
+    {
+        "name": "rowindex",
+        "type": "INTEGER",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "json_col",
+        "type": "JSON",
+        "mode": "NULLABLE"
+    }
+]

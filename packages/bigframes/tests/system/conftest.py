@@ -298,6 +298,7 @@ def load_test_data_tables(
         ("nested", "nested_schema.json", "nested.jsonl"),
         ("nested_structs", "nested_structs_schema.json", "nested_structs.jsonl"),
         ("repeated", "repeated_schema.json", "repeated.jsonl"),
+        ("json", "json_schema.json", "json.jsonl"),
         ("penguins", "penguins_schema.json", "penguins.jsonl"),
         ("time_series", "time_series_schema.json", "time_series.jsonl"),
         ("hockey_players", "hockey_players.json", "hockey_players.jsonl"),
@@ -382,6 +383,11 @@ def nested_structs_table_id(test_data_tables) -> str:
 @pytest.fixture(scope="session")
 def repeated_table_id(test_data_tables) -> str:
     return test_data_tables["repeated"]
+
+
+@pytest.fixture(scope="session")
+def json_table_id(test_data_tables) -> str:
+    return test_data_tables["json"]
 
 
 @pytest.fixture(scope="session")
@@ -475,6 +481,25 @@ def repeated_pandas_df() -> pd.DataFrame:
 
     df = pd.read_json(
         DATA_DIR / "repeated.jsonl",
+        lines=True,
+    )
+    df = df.set_index("rowindex")
+    return df
+
+
+@pytest.fixture(scope="session")
+def json_df(
+    json_table_id: str, session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """Returns a DataFrame containing columns of JSON type."""
+    return session.read_gbq(json_table_id, index_col="rowindex")
+
+
+@pytest.fixture(scope="session")
+def json_pandas_df() -> pd.DataFrame:
+    """Returns a DataFrame containing columns of JSON type."""
+    df = pd.read_json(
+        DATA_DIR / "json.jsonl",
         lines=True,
     )
     df = df.set_index("rowindex")
