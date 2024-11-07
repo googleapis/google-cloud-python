@@ -681,7 +681,8 @@ class GlobalOrganizationOperationsClient(
                 the method description for details.
             operation (str):
                 Name of the Operations resource to
-                delete.
+                delete, or its unique numeric
+                identifier.
 
                 This corresponds to the ``operation`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -791,7 +792,8 @@ class GlobalOrganizationOperationsClient(
                 the method description for details.
             operation (str):
                 Name of the Operations resource to
-                return.
+                return, or its unique numeric
+                identifier.
 
                 This corresponds to the ``operation`` field
                 on the ``request`` instance; if ``request`` is provided, this

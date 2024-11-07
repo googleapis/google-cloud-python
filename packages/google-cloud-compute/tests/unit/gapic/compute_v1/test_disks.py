@@ -3360,7 +3360,7 @@ def test_insert_rest_flattened():
         mock_args = dict(
             project="project_value",
             zone="zone_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
         mock_args.update(sample_request)
 
@@ -3399,7 +3399,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             compute.InsertDiskRequest(),
             project="project_value",
             zone="zone_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
 
 
@@ -3568,7 +3568,7 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             zone="zone_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
         mock_args.update(sample_request)
 
@@ -3607,7 +3607,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             compute.InsertDiskRequest(),
             project="project_value",
             zone="zone_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
 
 
@@ -7011,7 +7011,7 @@ def test_update_rest_flattened():
             project="project_value",
             zone="zone_value",
             disk="disk_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
         mock_args.update(sample_request)
 
@@ -7051,7 +7051,7 @@ def test_update_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             disk="disk_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
 
 
@@ -7228,7 +7228,7 @@ def test_update_unary_rest_flattened():
             project="project_value",
             zone="zone_value",
             disk="disk_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
         mock_args.update(sample_request)
 
@@ -7268,7 +7268,7 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             disk="disk_value",
-            disk_resource=compute.Disk(architecture="architecture_value"),
+            disk_resource=compute.Disk(access_mode="access_mode_value"),
         )
 
 
@@ -8423,6 +8423,7 @@ def test_get_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Disk(
+            access_mode="access_mode_value",
             architecture="architecture_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
@@ -8478,6 +8479,7 @@ def test_get_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Disk)
+    assert response.access_mode == "access_mode_value"
     assert response.architecture == "architecture_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
@@ -8734,6 +8736,7 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["disk_resource"] = {
+        "access_mode": "access_mode_value",
         "architecture": "architecture_value",
         "async_primary_disk": {
             "consistency_group_policy": "consistency_group_policy_value",
@@ -9650,42 +9653,6 @@ def test_set_iam_policy_rest_call_success(request_type):
             "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
-            "rules": [
-                {
-                    "action": "action_value",
-                    "conditions": [
-                        {
-                            "iam": "iam_value",
-                            "op": "op_value",
-                            "svc": "svc_value",
-                            "sys": "sys_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
-                    "description": "description_value",
-                    "ins": ["ins_value1", "ins_value2"],
-                    "log_configs": [
-                        {
-                            "cloud_audit": {
-                                "authorization_logging_options": {
-                                    "permission_type": "permission_type_value"
-                                },
-                                "log_name": "log_name_value",
-                            },
-                            "counter": {
-                                "custom_fields": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "field": "field_value",
-                                "metric": "metric_value",
-                            },
-                            "data_access": {"log_mode": "log_mode_value"},
-                        }
-                    ],
-                    "not_ins": ["not_ins_value1", "not_ins_value2"],
-                    "permissions": ["permissions_value1", "permissions_value2"],
-                }
-            ],
             "version": 774,
         },
     }
@@ -10962,6 +10929,7 @@ def test_update_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "disk": "sample3"}
     request_init["disk_resource"] = {
+        "access_mode": "access_mode_value",
         "architecture": "architecture_value",
         "async_primary_disk": {
             "consistency_group_policy": "consistency_group_policy_value",
