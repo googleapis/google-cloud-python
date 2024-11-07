@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.2.1...google-shopping-merchant-accounts-v0.2.2) (2024-11-07)
+
+
+### Features
+
+* [google-cloud-dialogflow-cx] add options of ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* [google-cloud-dialogflow-cx] add options of client_certificate_settings, bigquery_export_settings, bearer_token_config and boost_control_spec; add support of ALAW encoding ([#13249](https://github.com/googleapis/google-cloud-python/issues/13249)) ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* add options of query_source, search_config and context_size ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* add SipTrunks service ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* added support for ALAW encoding ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13247](https://github.com/googleapis/google-cloud-python/issues/13247)) ([5adc8b7](https://github.com/googleapis/google-cloud-python/commit/5adc8b7d2cc8ab9707ab5a65f15270c125cee051))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.2.0...google-shopping-merchant-accounts-v0.2.1) (2024-10-24)
 
 
