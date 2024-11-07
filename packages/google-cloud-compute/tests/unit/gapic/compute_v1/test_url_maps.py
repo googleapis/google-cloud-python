@@ -4296,6 +4296,19 @@ def test_insert_rest_call_success(request_type):
     request_init = {"project": "sample1"}
     request_init["url_map_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
+        "default_custom_error_response_policy": {
+            "error_response_rules": [
+                {
+                    "match_response_codes": [
+                        "match_response_codes_value1",
+                        "match_response_codes_value2",
+                    ],
+                    "override_response_code": 2344,
+                    "path": "path_value",
+                }
+            ],
+            "error_service": "error_service_value",
+        },
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
@@ -4382,6 +4395,7 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "path_matchers": [
             {
+                "default_custom_error_response_policy": {},
                 "default_route_action": {},
                 "default_service": "default_service_value",
                 "default_url_redirect": {},
@@ -4390,6 +4404,7 @@ def test_insert_rest_call_success(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
+                        "custom_error_response_policy": {},
                         "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
@@ -4398,6 +4413,7 @@ def test_insert_rest_call_success(request_type):
                 ],
                 "route_rules": [
                     {
+                        "custom_error_response_policy": {},
                         "description": "description_value",
                         "header_action": {},
                         "match_rules": [
@@ -5046,6 +5062,19 @@ def test_patch_rest_call_success(request_type):
     request_init = {"project": "sample1", "url_map": "sample2"}
     request_init["url_map_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
+        "default_custom_error_response_policy": {
+            "error_response_rules": [
+                {
+                    "match_response_codes": [
+                        "match_response_codes_value1",
+                        "match_response_codes_value2",
+                    ],
+                    "override_response_code": 2344,
+                    "path": "path_value",
+                }
+            ],
+            "error_service": "error_service_value",
+        },
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
@@ -5132,6 +5161,7 @@ def test_patch_rest_call_success(request_type):
         "name": "name_value",
         "path_matchers": [
             {
+                "default_custom_error_response_policy": {},
                 "default_route_action": {},
                 "default_service": "default_service_value",
                 "default_url_redirect": {},
@@ -5140,6 +5170,7 @@ def test_patch_rest_call_success(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
+                        "custom_error_response_policy": {},
                         "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
@@ -5148,6 +5179,7 @@ def test_patch_rest_call_success(request_type):
                 ],
                 "route_rules": [
                     {
+                        "custom_error_response_policy": {},
                         "description": "description_value",
                         "header_action": {},
                         "match_rules": [
@@ -5439,6 +5471,19 @@ def test_update_rest_call_success(request_type):
     request_init = {"project": "sample1", "url_map": "sample2"}
     request_init["url_map_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
+        "default_custom_error_response_policy": {
+            "error_response_rules": [
+                {
+                    "match_response_codes": [
+                        "match_response_codes_value1",
+                        "match_response_codes_value2",
+                    ],
+                    "override_response_code": 2344,
+                    "path": "path_value",
+                }
+            ],
+            "error_service": "error_service_value",
+        },
         "default_route_action": {
             "cors_policy": {
                 "allow_credentials": True,
@@ -5525,6 +5570,7 @@ def test_update_rest_call_success(request_type):
         "name": "name_value",
         "path_matchers": [
             {
+                "default_custom_error_response_policy": {},
                 "default_route_action": {},
                 "default_service": "default_service_value",
                 "default_url_redirect": {},
@@ -5533,6 +5579,7 @@ def test_update_rest_call_success(request_type):
                 "name": "name_value",
                 "path_rules": [
                     {
+                        "custom_error_response_policy": {},
                         "paths": ["paths_value1", "paths_value2"],
                         "route_action": {},
                         "service": "service_value",
@@ -5541,6 +5588,7 @@ def test_update_rest_call_success(request_type):
                 ],
                 "route_rules": [
                     {
+                        "custom_error_response_policy": {},
                         "description": "description_value",
                         "header_action": {},
                         "match_rules": [
@@ -5837,6 +5885,19 @@ def test_validate_rest_call_success(request_type):
         ],
         "resource": {
             "creation_timestamp": "creation_timestamp_value",
+            "default_custom_error_response_policy": {
+                "error_response_rules": [
+                    {
+                        "match_response_codes": [
+                            "match_response_codes_value1",
+                            "match_response_codes_value2",
+                        ],
+                        "override_response_code": 2344,
+                        "path": "path_value",
+                    }
+                ],
+                "error_service": "error_service_value",
+            },
             "default_route_action": {
                 "cors_policy": {
                     "allow_credentials": True,
@@ -5926,6 +5987,7 @@ def test_validate_rest_call_success(request_type):
             "name": "name_value",
             "path_matchers": [
                 {
+                    "default_custom_error_response_policy": {},
                     "default_route_action": {},
                     "default_service": "default_service_value",
                     "default_url_redirect": {},
@@ -5934,6 +5996,7 @@ def test_validate_rest_call_success(request_type):
                     "name": "name_value",
                     "path_rules": [
                         {
+                            "custom_error_response_policy": {},
                             "paths": ["paths_value1", "paths_value2"],
                             "route_action": {},
                             "service": "service_value",
@@ -5942,6 +6005,7 @@ def test_validate_rest_call_success(request_type):
                     ],
                     "route_rules": [
                         {
+                            "custom_error_response_policy": {},
                             "description": "description_value",
                             "header_action": {},
                             "match_rules": [

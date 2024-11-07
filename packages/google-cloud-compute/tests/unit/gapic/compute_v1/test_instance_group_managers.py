@@ -10437,6 +10437,8 @@ def test_get_rest_call_success(request_type):
             list_managed_instances_results="list_managed_instances_results_value",
             name="name_value",
             region="region_value",
+            satisfies_pzi=True,
+            satisfies_pzs=True,
             self_link="self_link_value",
             target_pools=["target_pools_value"],
             target_size=1185,
@@ -10470,6 +10472,8 @@ def test_get_rest_call_success(request_type):
     )
     assert response.name == "name_value"
     assert response.region == "region_value"
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.target_pools == ["target_pools_value"]
     assert response.target_size == 1185
@@ -10601,6 +10605,7 @@ def test_insert_rest_call_success(request_type):
         },
         "fingerprint": "fingerprint_value",
         "id": 205,
+        "instance_flexibility_policy": {"instance_selections": {}},
         "instance_group": "instance_group_value",
         "instance_lifecycle_policy": {
             "default_action_on_failure": "default_action_on_failure_value",
@@ -10612,6 +10617,8 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
+        "satisfies_pzi": True,
+        "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stateful_policy": {
             "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
@@ -11439,6 +11446,7 @@ def test_patch_rest_call_success(request_type):
         },
         "fingerprint": "fingerprint_value",
         "id": 205,
+        "instance_flexibility_policy": {"instance_selections": {}},
         "instance_group": "instance_group_value",
         "instance_lifecycle_policy": {
             "default_action_on_failure": "default_action_on_failure_value",
@@ -11450,6 +11458,8 @@ def test_patch_rest_call_success(request_type):
         "name": "name_value",
         "named_ports": [{"name": "name_value", "port": 453}],
         "region": "region_value",
+        "satisfies_pzi": True,
+        "satisfies_pzs": True,
         "self_link": "self_link_value",
         "stateful_policy": {
             "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}

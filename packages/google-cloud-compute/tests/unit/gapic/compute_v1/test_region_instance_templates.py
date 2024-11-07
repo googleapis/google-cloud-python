@@ -2678,11 +2678,16 @@ def test_insert_rest_call_success(request_type):
             "advanced_machine_features": {
                 "enable_nested_virtualization": True,
                 "enable_uefi_networking": True,
+                "performance_monitoring_unit": "performance_monitoring_unit_value",
                 "threads_per_core": 1689,
+                "turbo_mode": "turbo_mode_value",
                 "visible_core_count": 1918,
             },
             "can_ip_forward": True,
-            "confidential_instance_config": {"enable_confidential_compute": True},
+            "confidential_instance_config": {
+                "confidential_instance_type": "confidential_instance_type_value",
+                "enable_confidential_compute": True,
+            },
             "description": "description_value",
             "disks": [
                 {
@@ -2814,9 +2819,11 @@ def test_insert_rest_call_success(request_type):
             ],
             "scheduling": {
                 "automatic_restart": True,
+                "availability_domain": 2002,
                 "instance_termination_action": "instance_termination_action_value",
                 "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
                 "location_hint": "location_hint_value",
+                "max_run_duration": {},
                 "min_node_cpus": 1379,
                 "node_affinities": [
                     {
@@ -2826,8 +2833,10 @@ def test_insert_rest_call_success(request_type):
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
+                "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
                 "provisioning_model": "provisioning_model_value",
+                "termination_time": "termination_time_value",
             },
             "service_accounts": [
                 {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}

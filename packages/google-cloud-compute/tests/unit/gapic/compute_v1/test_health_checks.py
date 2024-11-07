@@ -3594,6 +3594,7 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             region="region_value",
             self_link="self_link_value",
+            source_regions=["source_regions_value"],
             timeout_sec=1185,
             type_="type__value",
             unhealthy_threshold=2046,
@@ -3621,6 +3622,7 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
+    assert response.source_regions == ["source_regions_value"]
     assert response.timeout_sec == 1185
     assert response.type_ == "type__value"
     assert response.unhealthy_threshold == 2046
@@ -3760,6 +3762,7 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "region": "region_value",
         "self_link": "self_link_value",
+        "source_regions": ["source_regions_value1", "source_regions_value2"],
         "ssl_health_check": {
             "port": 453,
             "port_name": "port_name_value",
@@ -4175,6 +4178,7 @@ def test_patch_rest_call_success(request_type):
         "name": "name_value",
         "region": "region_value",
         "self_link": "self_link_value",
+        "source_regions": ["source_regions_value1", "source_regions_value2"],
         "ssl_health_check": {
             "port": 453,
             "port_name": "port_name_value",
@@ -4467,6 +4471,7 @@ def test_update_rest_call_success(request_type):
         "name": "name_value",
         "region": "region_value",
         "self_link": "self_link_value",
+        "source_regions": ["source_regions_value1", "source_regions_value2"],
         "ssl_health_check": {
             "port": 453,
             "port_name": "port_name_value",

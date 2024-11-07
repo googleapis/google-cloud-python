@@ -6792,6 +6792,7 @@ def test_get_rest_call_success(request_type):
             fingerprint="fingerprint_value",
             health_checks=["health_checks_value"],
             id=205,
+            ip_address_selection_policy="ip_address_selection_policy_value",
             kind="kind_value",
             load_balancing_scheme="load_balancing_scheme_value",
             locality_lb_policy="locality_lb_policy_value",
@@ -6833,6 +6834,7 @@ def test_get_rest_call_success(request_type):
     assert response.fingerprint == "fingerprint_value"
     assert response.health_checks == ["health_checks_value"]
     assert response.id == 205
+    assert response.ip_address_selection_policy == "ip_address_selection_policy_value"
     assert response.kind == "kind_value"
     assert response.load_balancing_scheme == "load_balancing_scheme_value"
     assert response.locality_lb_policy == "locality_lb_policy_value"
@@ -7368,6 +7370,7 @@ def test_insert_rest_call_success(request_type):
             "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
         },
         "id": 205,
+        "ip_address_selection_policy": "ip_address_selection_policy_value",
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
         "locality_lb_policies": [
@@ -7422,6 +7425,11 @@ def test_insert_rest_call_success(request_type):
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
         "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
+        "strong_session_affinity_cookie": {
+            "name": "name_value",
+            "path": "path_value",
+            "ttl": {},
+        },
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
         "used_by": [{"reference": "reference_value"}],
@@ -8012,6 +8020,7 @@ def test_patch_rest_call_success(request_type):
             "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
         },
         "id": 205,
+        "ip_address_selection_policy": "ip_address_selection_policy_value",
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
         "locality_lb_policies": [
@@ -8066,6 +8075,11 @@ def test_patch_rest_call_success(request_type):
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
         "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
+        "strong_session_affinity_cookie": {
+            "name": "name_value",
+            "path": "path_value",
+            "ttl": {},
+        },
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
         "used_by": [{"reference": "reference_value"}],
@@ -8579,42 +8593,6 @@ def test_set_iam_policy_rest_call_success(request_type):
             "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
-            "rules": [
-                {
-                    "action": "action_value",
-                    "conditions": [
-                        {
-                            "iam": "iam_value",
-                            "op": "op_value",
-                            "svc": "svc_value",
-                            "sys": "sys_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
-                    "description": "description_value",
-                    "ins": ["ins_value1", "ins_value2"],
-                    "log_configs": [
-                        {
-                            "cloud_audit": {
-                                "authorization_logging_options": {
-                                    "permission_type": "permission_type_value"
-                                },
-                                "log_name": "log_name_value",
-                            },
-                            "counter": {
-                                "custom_fields": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "field": "field_value",
-                                "metric": "metric_value",
-                            },
-                            "data_access": {"log_mode": "log_mode_value"},
-                        }
-                    ],
-                    "not_ins": ["not_ins_value1", "not_ins_value2"],
-                    "permissions": ["permissions_value1", "permissions_value2"],
-                }
-            ],
             "version": 774,
         },
     }
@@ -9358,6 +9336,7 @@ def test_update_rest_call_success(request_type):
             "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
         },
         "id": 205,
+        "ip_address_selection_policy": "ip_address_selection_policy_value",
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
         "locality_lb_policies": [
@@ -9412,6 +9391,11 @@ def test_update_rest_call_success(request_type):
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
         "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
+        "strong_session_affinity_cookie": {
+            "name": "name_value",
+            "path": "path_value",
+            "ttl": {},
+        },
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
         "used_by": [{"reference": "reference_value"}],

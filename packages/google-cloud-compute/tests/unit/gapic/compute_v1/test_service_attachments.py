@@ -4023,6 +4023,7 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             nat_subnets=["nat_subnets_value"],
             producer_forwarding_rule="producer_forwarding_rule_value",
+            propagated_connection_limit=2868,
             reconcile_connections=True,
             region="region_value",
             self_link="self_link_value",
@@ -4054,6 +4055,7 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.nat_subnets == ["nat_subnets_value"]
     assert response.producer_forwarding_rule == "producer_forwarding_rule_value"
+    assert response.propagated_connection_limit == 2868
     assert response.reconcile_connections is True
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
@@ -4280,6 +4282,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
+                "propagated_connection_count": 2878,
                 "psc_connection_id": 1793,
                 "status": "status_value",
             }
@@ -4306,6 +4309,7 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
+        "propagated_connection_limit": 2868,
         "psc_service_attachment_id": {"high": 416, "low": 338},
         "reconcile_connections": True,
         "region": "region_value",
@@ -4682,6 +4686,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
+                "propagated_connection_count": 2878,
                 "psc_connection_id": 1793,
                 "status": "status_value",
             }
@@ -4708,6 +4713,7 @@ def test_patch_rest_call_success(request_type):
         "name": "name_value",
         "nat_subnets": ["nat_subnets_value1", "nat_subnets_value2"],
         "producer_forwarding_rule": "producer_forwarding_rule_value",
+        "propagated_connection_limit": 2868,
         "psc_service_attachment_id": {"high": 416, "low": 338},
         "reconcile_connections": True,
         "region": "region_value",
@@ -4986,42 +4992,6 @@ def test_set_iam_policy_rest_call_success(request_type):
             "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
-            "rules": [
-                {
-                    "action": "action_value",
-                    "conditions": [
-                        {
-                            "iam": "iam_value",
-                            "op": "op_value",
-                            "svc": "svc_value",
-                            "sys": "sys_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
-                    "description": "description_value",
-                    "ins": ["ins_value1", "ins_value2"],
-                    "log_configs": [
-                        {
-                            "cloud_audit": {
-                                "authorization_logging_options": {
-                                    "permission_type": "permission_type_value"
-                                },
-                                "log_name": "log_name_value",
-                            },
-                            "counter": {
-                                "custom_fields": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "field": "field_value",
-                                "metric": "metric_value",
-                            },
-                            "data_access": {"log_mode": "log_mode_value"},
-                        }
-                    ],
-                    "not_ins": ["not_ins_value1", "not_ins_value2"],
-                    "permissions": ["permissions_value1", "permissions_value2"],
-                }
-            ],
             "version": 774,
         },
     }
