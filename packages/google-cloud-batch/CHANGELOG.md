@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.17.32](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.31...google-cloud-batch-v0.17.32) (2024-11-07)
+
+
+### Features
+
+* [google-cloud-dialogflow-cx] add options of ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* [google-cloud-dialogflow-cx] add options of client_certificate_settings, bigquery_export_settings, bearer_token_config and boost_control_spec; add support of ALAW encoding ([#13249](https://github.com/googleapis/google-cloud-python/issues/13249)) ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* add options of query_source, search_config and context_size ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* add SipTrunks service ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* added support for ALAW encoding ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+
 ## [0.17.31](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.30...google-cloud-batch-v0.17.31) (2024-10-31)
 
 
