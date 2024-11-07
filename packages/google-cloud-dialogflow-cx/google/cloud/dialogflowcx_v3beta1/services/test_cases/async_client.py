@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -86,6 +85,8 @@ class TestCasesAsyncClient:
     parse_intent_path = staticmethod(TestCasesClient.parse_intent_path)
     page_path = staticmethod(TestCasesClient.page_path)
     parse_page_path = staticmethod(TestCasesClient.parse_page_path)
+    playbook_path = staticmethod(TestCasesClient.playbook_path)
+    parse_playbook_path = staticmethod(TestCasesClient.parse_playbook_path)
     test_case_path = staticmethod(TestCasesClient.test_case_path)
     parse_test_case_path = staticmethod(TestCasesClient.parse_test_case_path)
     test_case_result_path = staticmethod(TestCasesClient.test_case_result_path)
@@ -218,9 +219,7 @@ class TestCasesAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(TestCasesClient).get_transport_class, type(TestCasesClient)
-    )
+    get_transport_class = TestCasesClient.get_transport_class
 
     def __init__(
         self,
@@ -332,7 +331,7 @@ class TestCasesAsyncClient:
                 [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCases].
             parent (:class:`str`):
                 Required. The agent to list all pages for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -401,6 +400,8 @@ class TestCasesAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -448,7 +449,7 @@ class TestCasesAsyncClient:
                 [TestCases.BatchDeleteTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchDeleteTestCases].
             parent (:class:`str`):
                 Required. The agent to delete test cases from. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -545,7 +546,7 @@ class TestCasesAsyncClient:
                 [TestCases.GetTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCase].
             name (:class:`str`):
                 Required. The name of the testcase. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -654,7 +655,7 @@ class TestCasesAsyncClient:
                 [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.CreateTestCase].
             parent (:class:`str`):
                 Required. The agent to create the test case for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1414,7 +1415,7 @@ class TestCasesAsyncClient:
                 [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCaseResults].
             parent (:class:`str`):
                 Required. The test case to list results for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ testCases/<TestCase ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
                 Specify a ``-`` as a wildcard for TestCase ID to list
                 results across multiple test cases.
 
@@ -1485,6 +1486,8 @@ class TestCasesAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1534,7 +1537,7 @@ class TestCasesAsyncClient:
                 [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCaseResult].
             name (:class:`str`):
                 Required. The name of the testcase. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1628,11 +1631,7 @@ class TestCasesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1685,11 +1684,7 @@ class TestCasesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1745,11 +1740,7 @@ class TestCasesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1799,11 +1790,7 @@ class TestCasesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1856,11 +1843,7 @@ class TestCasesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
