@@ -89,11 +89,8 @@ def test_enable_trace_call(setup, setup_optin):
     extra_attributes = {
         "attribute1": "value1",
     }
-    expected_attributes = {
-        "rpc.service": "CloudStorage",
-        "rpc.system": "http",
-        "user_agent.original": f"gcloud-python/{__version__}",
-    }
+    expected_attributes = _opentelemetry_tracing._default_attributes.copy()
+    expected_attributes.update(_opentelemetry_tracing._cloud_trace_adoption_attrs)
     expected_attributes.update(extra_attributes)
 
     with _opentelemetry_tracing.create_trace_span(
@@ -114,11 +111,8 @@ def test_enable_trace_error(setup, setup_optin):
     extra_attributes = {
         "attribute1": "value1",
     }
-    expected_attributes = {
-        "rpc.service": "CloudStorage",
-        "rpc.system": "http",
-        "user_agent.original": f"gcloud-python/{__version__}",
-    }
+    expected_attributes = _opentelemetry_tracing._default_attributes.copy()
+    expected_attributes.update(_opentelemetry_tracing._cloud_trace_adoption_attrs)
     expected_attributes.update(extra_attributes)
 
     with pytest.raises(GoogleAPICallError):
@@ -157,6 +151,7 @@ def test_get_final_attributes(setup, setup_optin):
         "connect_timeout,read_timeout": (100, 100),
         "retry": f"multiplier{retry_obj._multiplier}/deadline{retry_obj._deadline}/max{retry_obj._maximum}/initial{retry_obj._initial}/predicate{retry_obj._predicate}",
     }
+    expected_attributes.update(_opentelemetry_tracing._cloud_trace_adoption_attrs)
 
     with mock.patch("google.cloud.storage.client.Client") as test_client:
         test_client.project = "test_project"
@@ -185,12 +180,12 @@ def test_set_conditional_retry_attr(setup, setup_optin):
         retry_policy, conditional_predicate, required_kwargs
     )
 
-    expected_attributes = {
-        "rpc.service": "CloudStorage",
-        "rpc.system": "http",
-        "user_agent.original": f"gcloud-python/{__version__}",
+    retry_attrs = {
         "retry": f"multiplier{retry_policy._multiplier}/deadline{retry_policy._deadline}/max{retry_policy._maximum}/initial{retry_policy._initial}/predicate{conditional_predicate}",
     }
+    expected_attributes = _opentelemetry_tracing._default_attributes.copy()
+    expected_attributes.update(_opentelemetry_tracing._cloud_trace_adoption_attrs)
+    expected_attributes.update(retry_attrs)
 
     with _opentelemetry_tracing.create_trace_span(
         test_span_name,

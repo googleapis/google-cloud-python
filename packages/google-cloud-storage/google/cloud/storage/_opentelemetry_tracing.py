@@ -54,6 +54,12 @@ _default_attributes = {
     "user_agent.original": f"gcloud-python/{__version__}",
 }
 
+_cloud_trace_adoption_attrs = {
+    "gcp.client.service": "storage",
+    "gcp.client.version": __version__,
+    "gcp.client.repo": "googleapis/python-storage",
+}
+
 
 @contextmanager
 def create_trace_span(name, attributes=None, client=None, api_request=None, retry=None):
@@ -79,6 +85,7 @@ def create_trace_span(name, attributes=None, client=None, api_request=None, retr
 
 def _get_final_attributes(attributes=None, client=None, api_request=None, retry=None):
     collected_attr = _default_attributes.copy()
+    collected_attr.update(_cloud_trace_adoption_attrs)
     if api_request:
         collected_attr.update(_set_api_request_attr(api_request, client))
     if isinstance(retry, api_retry.Retry):
