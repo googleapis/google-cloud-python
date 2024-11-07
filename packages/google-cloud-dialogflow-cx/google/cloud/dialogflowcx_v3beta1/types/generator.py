@@ -49,7 +49,7 @@ class Generator(proto.Message):
             [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3beta1.Generators.UpdateGenerator]
             method. [Generators.CreateGenerate][] populates the name
             automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generators/<Generator ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
         display_name (str):
             Required. The human-readable name of the
             generator, unique within the agent. The prompt
@@ -65,6 +65,9 @@ class Generator(proto.Message):
             prompt text.
         llm_model_settings (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings):
             The LLM model settings.
+        model_parameter (google.cloud.dialogflowcx_v3beta1.types.Generator.ModelParameter):
+            Parameters passed to the LLM to configure its
+            behavior.
     """
 
     class Placeholder(proto.Message):
@@ -85,6 +88,63 @@ class Generator(proto.Message):
         name: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+
+    class ModelParameter(proto.Message):
+        r"""Parameters to be passed to the LLM. If not set, default
+        values will be used.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            temperature (float):
+                The temperature used for sampling. Temperature sampling
+                occurs after both topP and topK have been applied. Valid
+                range: [0.0, 1.0] Low temperature = less random. High
+                temperature = more random.
+
+                This field is a member of `oneof`_ ``_temperature``.
+            max_decode_steps (int):
+                The maximum number of tokens to generate.
+
+                This field is a member of `oneof`_ ``_max_decode_steps``.
+            top_p (float):
+                If set, only the tokens comprising the top top_p probability
+                mass are considered. If both top_p and top_k are set, top_p
+                will be used for further refining candidates selected with
+                top_k. Valid range: (0.0, 1.0]. Small topP = less random.
+                Large topP = more random.
+
+                This field is a member of `oneof`_ ``_top_p``.
+            top_k (int):
+                If set, the sampling process in each step is limited to the
+                top_k tokens with highest probabilities. Valid range: [1,
+                40] or 1000+. Small topK = less random. Large topK = more
+                random.
+
+                This field is a member of `oneof`_ ``_top_k``.
+        """
+
+        temperature: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+            optional=True,
+        )
+        max_decode_steps: int = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
+        )
+        top_p: float = proto.Field(
+            proto.FLOAT,
+            number=3,
+            optional=True,
+        )
+        top_k: int = proto.Field(
+            proto.INT32,
+            number=4,
+            optional=True,
         )
 
     name: str = proto.Field(
@@ -110,6 +170,11 @@ class Generator(proto.Message):
         number=9,
         message=generative_settings.LlmModelSettings,
     )
+    model_parameter: ModelParameter = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=ModelParameter,
+    )
 
 
 class Phrase(proto.Message):
@@ -134,7 +199,7 @@ class ListGeneratorsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list all generators for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         language_code (str):
             The language to list generators for.
         page_size (int):
@@ -199,7 +264,7 @@ class GetGeneratorRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the generator. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generators/<Generator ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
         language_code (str):
             The language to list generators for.
     """
@@ -221,7 +286,7 @@ class CreateGeneratorRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create a generator for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         generator (google.cloud.dialogflowcx_v3beta1.types.Generator):
             Required. The generator to create.
         language_code (str):
@@ -284,7 +349,7 @@ class DeleteGeneratorRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the generator to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generators/<Generator ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
         force (bool):
             This field has no effect for generators not being used. For
             generators that are used by pages/flows/transition route

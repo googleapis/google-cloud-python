@@ -6141,6 +6141,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
                                 "drop_ivr_messages": True,
                             },
                             "sections": {"section_types": [1]},
+                            "context_size": 1311,
                         },
                         "conversation_model_config": {
                             "model": "model_value",
@@ -6174,6 +6175,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
         "stt_config": {
             "speech_model_variant": 1,
             "model": "model_value",
+            "phrase_sets": ["phrase_sets_value1", "phrase_sets_value2"],
             "audio_encoding": 1,
             "sample_rate_hertz": 1817,
             "language_code": "language_code_value",
@@ -6450,6 +6452,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
                                 "drop_ivr_messages": True,
                             },
                             "sections": {"section_types": [1]},
+                            "context_size": 1311,
                         },
                         "conversation_model_config": {
                             "model": "model_value",
@@ -6483,6 +6486,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
         "stt_config": {
             "speech_model_variant": 1,
             "model": "model_value",
+            "phrase_sets": ["phrase_sets_value1", "phrase_sets_value2"],
             "audio_encoding": 1,
             "sample_rate_hertz": 1817,
             "language_code": "language_code_value",
@@ -8169,8 +8173,34 @@ def test_parse_knowledge_base_path():
     assert expected == actual
 
 
+def test_phrase_set_path():
+    project = "scallop"
+    location = "abalone"
+    phrase_set = "squid"
+    expected = "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
+        project=project,
+        location=location,
+        phrase_set=phrase_set,
+    )
+    actual = ConversationProfilesClient.phrase_set_path(project, location, phrase_set)
+    assert expected == actual
+
+
+def test_parse_phrase_set_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "phrase_set": "octopus",
+    }
+    path = ConversationProfilesClient.phrase_set_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationProfilesClient.parse_phrase_set_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8180,7 +8210,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = ConversationProfilesClient.common_billing_account_path(**expected)
 
@@ -8190,7 +8220,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8200,7 +8230,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "mussel",
     }
     path = ConversationProfilesClient.common_folder_path(**expected)
 
@@ -8210,7 +8240,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8220,7 +8250,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nautilus",
     }
     path = ConversationProfilesClient.common_organization_path(**expected)
 
@@ -8230,7 +8260,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8240,7 +8270,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "abalone",
     }
     path = ConversationProfilesClient.common_project_path(**expected)
 
@@ -8250,8 +8280,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8262,8 +8292,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = ConversationProfilesClient.common_location_path(**expected)
 

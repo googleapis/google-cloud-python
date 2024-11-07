@@ -45,6 +45,7 @@ from .audio_config import (
     TextToSpeechSettings,
     VoiceSelectionParams,
 )
+from .bigquery_export import BigQueryExportSettings
 from .changelog import (
     Changelog,
     GetChangelogRequest,
@@ -381,6 +382,7 @@ __all__ = (
     "OutputAudioEncoding",
     "SpeechModelVariant",
     "SsmlVoiceGender",
+    "BigQueryExportSettings",
     "Changelog",
     "GetChangelogRequest",
     "ListChangelogsRequest",

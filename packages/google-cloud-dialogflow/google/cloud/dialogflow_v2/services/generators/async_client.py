@@ -320,10 +320,10 @@ class GeneratorsAsyncClient:
                 name.
 
                 The generator ID must be compliant with the regression
-                fomula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters
+                formula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters
                 length in range of [3,64]. If the field is not provided,
                 an Id will be auto-generated. If the field is provided,
-                the caller is resposible for
+                the caller is responsible for
 
                 1. the uniqueness of the ID, otherwise the request will
                    be rejected.
@@ -436,7 +436,7 @@ class GeneratorsAsyncClient:
             name (:class:`str`):
                 Required. The generator resource name to retrieve.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>``/generators/\`
+                ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

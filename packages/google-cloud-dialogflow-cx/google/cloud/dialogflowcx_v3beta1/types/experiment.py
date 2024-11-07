@@ -48,10 +48,9 @@ class Experiment(proto.Message):
     Attributes:
         name (str):
             The name of the experiment.
-            Format: projects/<Project
-            ID>/locations/<Location ID>/agents/<Agent
-            ID>/environments/<Environment
-            ID>/experiments/<Experiment ID>..
+            Format:
+
+            projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>.
         display_name (str):
             Required. The human-readable name of the
             experiment (unique in an environment). Limit of
@@ -314,7 +313,7 @@ class Experiment(proto.Message):
                     The name of the flow
                     [Version][google.cloud.dialogflow.cx.v3beta1.Version].
                     Format:
-                    ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                    ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
                 metrics (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Experiment.Result.Metric]):
                     The metrics and corresponding confidence
                     intervals in the inference result.
@@ -437,7 +436,7 @@ class VersionVariants(proto.Message):
         Attributes:
             version (str):
                 The name of the flow version. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
             traffic_allocation (float):
                 Percentage of the traffic which should be
                 routed to this version of flow. Traffic
@@ -599,7 +598,7 @@ class ListExperimentsRequest(proto.Message):
             Required. The
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
             to list all environments for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
@@ -662,7 +661,7 @@ class GetExperimentRequest(proto.Message):
             Required. The name of the
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 
     name: str = proto.Field(
@@ -682,7 +681,7 @@ class CreateExperimentRequest(proto.Message):
             an
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
             for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         experiment (google.cloud.dialogflowcx_v3beta1.types.Experiment):
             Required. The experiment to create.
     """
@@ -731,7 +730,7 @@ class DeleteExperimentRequest(proto.Message):
             Required. The name of the
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
             to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 
     name: str = proto.Field(
@@ -747,7 +746,7 @@ class StartExperimentRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the experiment to start. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 
     name: str = proto.Field(
@@ -763,7 +762,7 @@ class StopExperimentRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the experiment to stop. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>``.
     """
 
     name: str = proto.Field(
