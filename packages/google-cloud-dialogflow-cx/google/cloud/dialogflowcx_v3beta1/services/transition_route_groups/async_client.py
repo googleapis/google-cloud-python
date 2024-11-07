@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -213,10 +212,7 @@ class TransitionRouteGroupsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(TransitionRouteGroupsClient).get_transport_class,
-        type(TransitionRouteGroupsClient),
-    )
+    get_transport_class = TransitionRouteGroupsClient.get_transport_class
 
     def __init__(
         self,
@@ -336,7 +332,7 @@ class TransitionRouteGroupsAsyncClient:
             parent (:class:`str`):
                 Required. The flow to list all transition route groups
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
                 or \`projects//locations//agents/.
 
                 This corresponds to the ``parent`` field
@@ -408,6 +404,8 @@ class TransitionRouteGroupsAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -462,9 +460,9 @@ class TransitionRouteGroupsAsyncClient:
                 Required. The name of the
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -591,9 +589,9 @@ class TransitionRouteGroupsAsyncClient:
                 Required. The flow to create an
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``
                 for agent-level groups.
 
                 This corresponds to the ``parent`` field
@@ -857,9 +855,9 @@ class TransitionRouteGroupsAsyncClient:
                 Required. The name of the
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -946,11 +944,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1003,11 +997,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1063,11 +1053,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1117,11 +1103,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1174,11 +1156,7 @@ class TransitionRouteGroupsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

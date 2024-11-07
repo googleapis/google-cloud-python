@@ -100,6 +100,8 @@ class AgentsAsyncClient:
     parse_flow_validation_result_path = staticmethod(
         AgentsClient.parse_flow_validation_result_path
     )
+    secret_version_path = staticmethod(AgentsClient.secret_version_path)
+    parse_secret_version_path = staticmethod(AgentsClient.parse_secret_version_path)
     security_settings_path = staticmethod(AgentsClient.security_settings_path)
     parse_security_settings_path = staticmethod(
         AgentsClient.parse_security_settings_path
@@ -329,7 +331,7 @@ class AgentsAsyncClient:
                 [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
             parent (:class:`str`):
                 Required. The location to list all agents for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -449,7 +451,7 @@ class AgentsAsyncClient:
                 [Agents.GetAgent][google.cloud.dialogflow.cx.v3.Agents.GetAgent].
             name (:class:`str`):
                 Required. The name of the agent. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -579,7 +581,7 @@ class AgentsAsyncClient:
                 [Agents.CreateAgent][google.cloud.dialogflow.cx.v3.Agents.CreateAgent].
             parent (:class:`str`):
                 Required. The location to create a agent for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -841,7 +843,7 @@ class AgentsAsyncClient:
                 [Agents.DeleteAgent][google.cloud.dialogflow.cx.v3.Agents.DeleteAgent].
             name (:class:`str`):
                 Required. The name of the agent to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1259,7 +1261,7 @@ class AgentsAsyncClient:
                 [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
             name (:class:`str`):
                 Required. The agent name. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/validationResult``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1368,7 +1370,7 @@ class AgentsAsyncClient:
                 RPC.
             name (:class:`str`):
                 Required. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

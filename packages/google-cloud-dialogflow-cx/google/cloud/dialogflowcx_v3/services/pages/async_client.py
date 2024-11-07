@@ -306,7 +306,7 @@ class PagesAsyncClient:
                 [Pages.ListPages][google.cloud.dialogflow.cx.v3.Pages.ListPages].
             parent (:class:`str`):
                 Required. The flow to list all pages for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -426,7 +426,7 @@ class PagesAsyncClient:
                 [Pages.GetPage][google.cloud.dialogflow.cx.v3.Pages.GetPage].
             name (:class:`str`):
                 Required. The name of the page. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -559,7 +559,7 @@ class PagesAsyncClient:
                 [Pages.CreatePage][google.cloud.dialogflow.cx.v3.Pages.CreatePage].
             parent (:class:`str`):
                 Required. The flow to create a page for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -837,7 +837,7 @@ class PagesAsyncClient:
                 [Pages.DeletePage][google.cloud.dialogflow.cx.v3.Pages.DeletePage].
             name (:class:`str`):
                 Required. The name of the page to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/Flows/<flow ID>/pages/<Page ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/Flows/<flowID>/pages/<PageID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

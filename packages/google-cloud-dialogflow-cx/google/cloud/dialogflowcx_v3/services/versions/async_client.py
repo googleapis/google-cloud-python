@@ -305,7 +305,7 @@ class VersionsAsyncClient:
             parent (:class:`str`):
                 Required. The [Flow][google.cloud.dialogflow.cx.v3.Flow]
                 to list all versions for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -428,7 +428,7 @@ class VersionsAsyncClient:
                 Required. The name of the
                 [Version][google.cloud.dialogflow.cx.v3.Version].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -555,7 +555,7 @@ class VersionsAsyncClient:
                 to create an
                 [Version][google.cloud.dialogflow.cx.v3.Version] for.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -798,7 +798,7 @@ class VersionsAsyncClient:
                 Required. The name of the
                 [Version][google.cloud.dialogflow.cx.v3.Version] to
                 delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -911,7 +911,7 @@ class VersionsAsyncClient:
                 Required. The
                 [Version][google.cloud.dialogflow.cx.v3.Version] to be
                 loaded to draft flow. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1041,7 +1041,7 @@ class VersionsAsyncClient:
                 draft version of the specified flow.
 
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/ <Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
                 This corresponds to the ``base_version`` field
                 on the ``request`` instance; if ``request`` is provided, this

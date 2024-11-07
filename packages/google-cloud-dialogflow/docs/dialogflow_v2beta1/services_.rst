@@ -19,4 +19,5 @@ Services for Google Cloud Dialogflow v2beta1 API
     participants
     session_entity_types
     sessions
+    sip_trunks
     versions

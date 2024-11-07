@@ -318,6 +318,28 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def phrase_set_path(
+        project: str,
+        location: str,
+        phrase_set: str,
+    ) -> str:
+        """Returns a fully-qualified phrase_set string."""
+        return "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
+            project=project,
+            location=location,
+            phrase_set=phrase_set,
+        )
+
+    @staticmethod
+    def parse_phrase_set_path(path: str) -> Dict[str, str]:
+        """Parses a phrase_set path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/phraseSets/(?P<phrase_set>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def session_entity_type_path(
         project: str,
         session: str,
@@ -595,36 +617,6 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = ParticipantsClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -634,13 +626,9 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or ParticipantsClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
 
     @property
     def api_endpoint(self):
@@ -1435,7 +1423,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
                 # Initialize request argument(s)
                 audio_config = dialogflow_v2beta1.InputAudioConfig()
-                audio_config.audio_encoding = "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE"
+                audio_config.audio_encoding = "AUDIO_ENCODING_ALAW"
                 audio_config.sample_rate_hertz = 1817
                 audio_config.language_code = "language_code_value"
 

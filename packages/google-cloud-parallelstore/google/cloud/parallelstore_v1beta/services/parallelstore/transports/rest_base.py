@@ -522,7 +522,6 @@ class _BaseParallelstoreRestTransport(ParallelstoreTransport):
                 {
                     "method": "post",
                     "uri": "/v1beta/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
                 },
             ]
             return http_options
@@ -532,11 +531,6 @@ class _BaseParallelstoreRestTransport(ParallelstoreTransport):
             request_kwargs = json_format.MessageToDict(request)
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
             return transcoded_request
-
-        @staticmethod
-        def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request["body"])
-            return body
 
         @staticmethod
         def _get_query_params_json(transcoded_request):

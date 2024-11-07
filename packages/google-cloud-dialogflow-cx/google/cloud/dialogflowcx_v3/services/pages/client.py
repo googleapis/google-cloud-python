@@ -591,36 +591,6 @@ class PagesClient(metaclass=PagesClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = PagesClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -630,13 +600,9 @@ class PagesClient(metaclass=PagesClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or PagesClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
 
     @property
     def api_endpoint(self):
@@ -848,7 +814,7 @@ class PagesClient(metaclass=PagesClientMeta):
                 [Pages.ListPages][google.cloud.dialogflow.cx.v3.Pages.ListPages].
             parent (str):
                 Required. The flow to list all pages for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -965,7 +931,7 @@ class PagesClient(metaclass=PagesClientMeta):
                 [Pages.GetPage][google.cloud.dialogflow.cx.v3.Pages.GetPage].
             name (str):
                 Required. The name of the page. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1097,7 +1063,7 @@ class PagesClient(metaclass=PagesClientMeta):
                 [Pages.CreatePage][google.cloud.dialogflow.cx.v3.Pages.CreatePage].
             parent (str):
                 Required. The flow to create a page for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1369,7 +1335,7 @@ class PagesClient(metaclass=PagesClientMeta):
                 [Pages.DeletePage][google.cloud.dialogflow.cx.v3.Pages.DeletePage].
             name (str):
                 Required. The name of the page to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/Flows/<flow ID>/pages/<Page ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/Flows/<flowID>/pages/<PageID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

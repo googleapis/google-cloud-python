@@ -2520,6 +2520,9 @@ class TranslateTextGlossaryConfig(proto.Message):
         ignore_case (bool):
             Optional. Indicates match is case insensitive. The default
             value is ``false`` if missing.
+        contextual_translation_enabled (bool):
+            Optional. If set to true, the glossary will
+            be used for contextual translation.
     """
 
     glossary: str = proto.Field(
@@ -2529,6 +2532,10 @@ class TranslateTextGlossaryConfig(proto.Message):
     ignore_case: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    contextual_translation_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
