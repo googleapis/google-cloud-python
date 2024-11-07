@@ -25,6 +25,7 @@ from bigframes.bigquery._operations.array import (
 from bigframes.bigquery._operations.json import (
     json_extract,
     json_extract_array,
+    json_extract_string_array,
     json_set,
 )
 from bigframes.bigquery._operations.search import create_vector_index, vector_search
@@ -37,6 +38,7 @@ __all__ = [
     "json_set",
     "json_extract",
     "json_extract_array",
+    "json_extract_string_array",
     "approx_top_count",
     "struct",
     "create_vector_index",

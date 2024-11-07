@@ -25,7 +25,6 @@ import pandas as pd
 from pandas.tseries.offsets import DateOffset
 import pyarrow as pa
 
-import bigframes.dtypes
 import bigframes.dtypes as dtypes
 import bigframes.operations.type as op_typing
 
@@ -526,6 +525,13 @@ class RemoteFunctionOp(UnaryOp):
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
         if hasattr(self.func, "output_dtype"):
+            if dtypes.is_array_like(self.func.output_dtype):
+                # TODO(b/284515241): remove this special handling to support
+                # array output types once BQ remote functions support ARRAY.
+                # Until then, use json serialized strings at the remote function
+                # level, and parse that to the intended output type at the
+                # bigframes level.
+                return dtypes.STRING_DTYPE
             return self.func.output_dtype
         else:
             raise AttributeError("output_dtype not defined")
@@ -548,9 +554,9 @@ class ToDatetimeOp(UnaryOp):
 
     def output_type(self, *input_types):
         if input_types[0] not in (
-            bigframes.dtypes.FLOAT_DTYPE,
-            bigframes.dtypes.INT_DTYPE,
-            bigframes.dtypes.STRING_DTYPE,
+            dtypes.FLOAT_DTYPE,
+            dtypes.INT_DTYPE,
+            dtypes.STRING_DTYPE,
         ):
             raise TypeError("expected string or numeric input")
         return pd.ArrowDtype(pa.timestamp("us", tz=None))
@@ -565,9 +571,9 @@ class ToTimestampOp(UnaryOp):
     def output_type(self, *input_types):
         # Must be numeric or string
         if input_types[0] not in (
-            bigframes.dtypes.FLOAT_DTYPE,
-            bigframes.dtypes.INT_DTYPE,
-            bigframes.dtypes.STRING_DTYPE,
+            dtypes.FLOAT_DTYPE,
+            dtypes.INT_DTYPE,
+            dtypes.STRING_DTYPE,
         ):
             raise TypeError("expected string or numeric input")
         return pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
@@ -685,6 +691,23 @@ class JSONExtract(UnaryOp):
 @dataclasses.dataclass(frozen=True)
 class JSONExtractArray(UnaryOp):
     name: typing.ClassVar[str] = "json_extract_array"
+    json_path: str
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if not dtypes.is_json_like(input_type):
+            raise TypeError(
+                "Input type must be an valid JSON object or JSON-formatted string type."
+                + f" Received type: {input_type}"
+            )
+        return pd.ArrowDtype(
+            pa.list_(dtypes.bigframes_dtype_to_arrow_dtype(dtypes.STRING_DTYPE))
+        )
+
+
+@dataclasses.dataclass(frozen=True)
+class JSONExtractStringArray(UnaryOp):
+    name: typing.ClassVar[str] = "json_extract_string_array"
     json_path: str
 
     def output_type(self, *input_types):
