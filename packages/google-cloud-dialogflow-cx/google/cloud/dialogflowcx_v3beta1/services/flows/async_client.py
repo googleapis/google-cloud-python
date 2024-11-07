@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -87,6 +86,8 @@ class FlowsAsyncClient:
     parse_intent_path = staticmethod(FlowsClient.parse_intent_path)
     page_path = staticmethod(FlowsClient.page_path)
     parse_page_path = staticmethod(FlowsClient.parse_page_path)
+    playbook_path = staticmethod(FlowsClient.playbook_path)
+    parse_playbook_path = staticmethod(FlowsClient.parse_playbook_path)
     tool_path = staticmethod(FlowsClient.tool_path)
     parse_tool_path = staticmethod(FlowsClient.parse_tool_path)
     transition_route_group_path = staticmethod(FlowsClient.transition_route_group_path)
@@ -207,9 +208,7 @@ class FlowsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(FlowsClient).get_transport_class, type(FlowsClient)
-    )
+    get_transport_class = FlowsClient.get_transport_class
 
     def __init__(
         self,
@@ -329,7 +328,7 @@ class FlowsAsyncClient:
                 [Flows.CreateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.CreateFlow].
             parent (:class:`str`):
                 Required. The agent to create a flow for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -460,7 +459,7 @@ class FlowsAsyncClient:
                 [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3beta1.Flows.DeleteFlow].
             name (:class:`str`):
                 Required. The name of the flow to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -558,7 +557,7 @@ class FlowsAsyncClient:
                 [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
             parent (:class:`str`):
                 Required. The agent containing the flows. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -627,6 +626,8 @@ class FlowsAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -676,7 +677,7 @@ class FlowsAsyncClient:
                 [Flows.GetFlow][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlow].
             name (:class:`str`):
                 Required. The name of the flow to get. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -965,7 +966,7 @@ class FlowsAsyncClient:
                 [Flows.TrainFlow][google.cloud.dialogflow.cx.v3beta1.Flows.TrainFlow].
             name (:class:`str`):
                 Required. The flow to train. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1177,7 +1178,7 @@ class FlowsAsyncClient:
                 [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
             name (:class:`str`):
                 Required. The flow name. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/validationResult``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1496,11 +1497,7 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1553,11 +1550,7 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1613,11 +1606,7 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1667,11 +1656,7 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1724,11 +1709,7 @@ class FlowsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

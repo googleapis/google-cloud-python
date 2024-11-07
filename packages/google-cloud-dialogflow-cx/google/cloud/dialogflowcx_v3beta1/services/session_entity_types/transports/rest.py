@@ -16,29 +16,19 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.dialogflowcx_v3beta1.types import (
     session_entity_type as gcdc_session_entity_type,
@@ -46,12 +36,18 @@ from google.cloud.dialogflowcx_v3beta1.types import (
 from google.cloud.dialogflowcx_v3beta1.types import session_entity_type
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import SessionEntityTypesTransport
+from .rest_base import _BaseSessionEntityTypesRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=requests_version,
+    rest_version=f"requests@{requests_version}",
 )
 
 
@@ -349,8 +345,8 @@ class SessionEntityTypesRestStub:
     _interceptor: SessionEntityTypesRestInterceptor
 
 
-class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
-    """REST backend transport for SessionEntityTypes.
+class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
+    """REST backend synchronous transport for SessionEntityTypes.
 
     Service for managing
     [SessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityType].
@@ -360,7 +356,6 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -414,21 +409,12 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -439,19 +425,35 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
         self._interceptor = interceptor or SessionEntityTypesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateSessionEntityType(SessionEntityTypesRestStub):
+    class _CreateSessionEntityType(
+        _BaseSessionEntityTypesRestTransport._BaseCreateSessionEntityType,
+        SessionEntityTypesRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateSessionEntityType")
+            return hash("SessionEntityTypesRestTransport.CreateSessionEntityType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -496,54 +498,36 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*/sessions/*}/entityTypes",
-                    "body": "session_entity_type",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*/environments/*/sessions/*}/entityTypes",
-                    "body": "session_entity_type",
-                },
-            ]
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseCreateSessionEntityType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_session_entity_type(
                 request, metadata
             )
-            pb_request = gcdc_session_entity_type.CreateSessionEntityTypeRequest.pb(
-                request
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseCreateSessionEntityType._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSessionEntityTypesRestTransport._BaseCreateSessionEntityType._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSessionEntityTypesRestTransport._BaseCreateSessionEntityType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                SessionEntityTypesRestTransport._CreateSessionEntityType._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -559,19 +543,34 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             resp = self._interceptor.post_create_session_entity_type(resp)
             return resp
 
-    class _DeleteSessionEntityType(SessionEntityTypesRestStub):
+    class _DeleteSessionEntityType(
+        _BaseSessionEntityTypesRestTransport._BaseDeleteSessionEntityType,
+        SessionEntityTypesRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteSessionEntityType")
+            return hash("SessionEntityTypesRestTransport.DeleteSessionEntityType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -595,44 +594,31 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/sessions/*/entityTypes/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/environments/*/sessions/*/entityTypes/*}",
-                },
-            ]
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseDeleteSessionEntityType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_session_entity_type(
                 request, metadata
             )
-            pb_request = session_entity_type.DeleteSessionEntityTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseDeleteSessionEntityType._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSessionEntityTypesRestTransport._BaseDeleteSessionEntityType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SessionEntityTypesRestTransport._DeleteSessionEntityType._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -640,19 +626,34 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetSessionEntityType(SessionEntityTypesRestStub):
+    class _GetSessionEntityType(
+        _BaseSessionEntityTypesRestTransport._BaseGetSessionEntityType,
+        SessionEntityTypesRestStub,
+    ):
         def __hash__(self):
-            return hash("GetSessionEntityType")
+            return hash("SessionEntityTypesRestTransport.GetSessionEntityType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -696,44 +697,31 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/sessions/*/entityTypes/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*/locations/*/agents/*/environments/*/sessions/*/entityTypes/*}",
-                },
-            ]
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseGetSessionEntityType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_session_entity_type(
                 request, metadata
             )
-            pb_request = session_entity_type.GetSessionEntityTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseGetSessionEntityType._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSessionEntityTypesRestTransport._BaseGetSessionEntityType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SessionEntityTypesRestTransport._GetSessionEntityType._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -749,19 +737,34 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             resp = self._interceptor.post_get_session_entity_type(resp)
             return resp
 
-    class _ListSessionEntityTypes(SessionEntityTypesRestStub):
+    class _ListSessionEntityTypes(
+        _BaseSessionEntityTypesRestTransport._BaseListSessionEntityTypes,
+        SessionEntityTypesRestStub,
+    ):
         def __hash__(self):
-            return hash("ListSessionEntityTypes")
+            return hash("SessionEntityTypesRestTransport.ListSessionEntityTypes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -790,44 +793,31 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*/sessions/*}/entityTypes",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{parent=projects/*/locations/*/agents/*/environments/*/sessions/*}/entityTypes",
-                },
-            ]
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseListSessionEntityTypes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_session_entity_types(
                 request, metadata
             )
-            pb_request = session_entity_type.ListSessionEntityTypesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseListSessionEntityTypes._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSessionEntityTypesRestTransport._BaseListSessionEntityTypes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SessionEntityTypesRestTransport._ListSessionEntityTypes._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -843,19 +833,35 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             resp = self._interceptor.post_list_session_entity_types(resp)
             return resp
 
-    class _UpdateSessionEntityType(SessionEntityTypesRestStub):
+    class _UpdateSessionEntityType(
+        _BaseSessionEntityTypesRestTransport._BaseUpdateSessionEntityType,
+        SessionEntityTypesRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateSessionEntityType")
+            return hash("SessionEntityTypesRestTransport.UpdateSessionEntityType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -900,54 +906,36 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v3beta1/{session_entity_type.name=projects/*/locations/*/agents/*/sessions/*/entityTypes/*}",
-                    "body": "session_entity_type",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v3beta1/{session_entity_type.name=projects/*/locations/*/agents/*/environments/*/sessions/*/entityTypes/*}",
-                    "body": "session_entity_type",
-                },
-            ]
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseUpdateSessionEntityType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_session_entity_type(
                 request, metadata
             )
-            pb_request = gcdc_session_entity_type.UpdateSessionEntityTypeRequest.pb(
-                request
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseUpdateSessionEntityType._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSessionEntityTypesRestTransport._BaseUpdateSessionEntityType._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSessionEntityTypesRestTransport._BaseUpdateSessionEntityType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                SessionEntityTypesRestTransport._UpdateSessionEntityType._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1021,7 +1009,35 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(SessionEntityTypesRestStub):
+    class _GetLocation(
+        _BaseSessionEntityTypesRestTransport._BaseGetLocation,
+        SessionEntityTypesRestStub,
+    ):
+        def __hash__(self):
+            return hash("SessionEntityTypesRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -1045,32 +1061,27 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSessionEntityTypesRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SessionEntityTypesRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1078,8 +1089,9 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -1087,7 +1099,35 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(SessionEntityTypesRestStub):
+    class _ListLocations(
+        _BaseSessionEntityTypesRestTransport._BaseListLocations,
+        SessionEntityTypesRestStub,
+    ):
+        def __hash__(self):
+            return hash("SessionEntityTypesRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -1111,32 +1151,27 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSessionEntityTypesRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SessionEntityTypesRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1144,8 +1179,9 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -1153,7 +1189,35 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(SessionEntityTypesRestStub):
+    class _CancelOperation(
+        _BaseSessionEntityTypesRestTransport._BaseCancelOperation,
+        SessionEntityTypesRestStub,
+    ):
+        def __hash__(self):
+            return hash("SessionEntityTypesRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1174,38 +1238,29 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v3beta1/{name=projects/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-            ]
-
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSessionEntityTypesRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SessionEntityTypesRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1219,7 +1274,35 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(SessionEntityTypesRestStub):
+    class _GetOperation(
+        _BaseSessionEntityTypesRestTransport._BaseGetOperation,
+        SessionEntityTypesRestStub,
+    ):
+        def __hash__(self):
+            return hash("SessionEntityTypesRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1243,36 +1326,27 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSessionEntityTypesRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SessionEntityTypesRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1280,8 +1354,9 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -1289,7 +1364,35 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(SessionEntityTypesRestStub):
+    class _ListOperations(
+        _BaseSessionEntityTypesRestTransport._BaseListOperations,
+        SessionEntityTypesRestStub,
+    ):
+        def __hash__(self):
+            return hash("SessionEntityTypesRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1313,36 +1416,27 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v3beta1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseSessionEntityTypesRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSessionEntityTypesRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSessionEntityTypesRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SessionEntityTypesRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1350,8 +1444,9 @@ class SessionEntityTypesRestTransport(SessionEntityTypesTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

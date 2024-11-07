@@ -43,6 +43,7 @@ from .services.session_entity_types import (
     SessionEntityTypesClient,
 )
 from .services.sessions import SessionsAsyncClient, SessionsClient
+from .services.sip_trunks import SipTrunksAsyncClient, SipTrunksClient
 from .services.versions import VersionsAsyncClient, VersionsClient
 from .types.agent import (
     Agent,
@@ -308,6 +309,16 @@ from .types.session_entity_type import (
     SessionEntityType,
     UpdateSessionEntityTypeRequest,
 )
+from .types.sip_trunk import (
+    Connection,
+    CreateSipTrunkRequest,
+    DeleteSipTrunkRequest,
+    GetSipTrunkRequest,
+    ListSipTrunksRequest,
+    ListSipTrunksResponse,
+    SipTrunk,
+    UpdateSipTrunkRequest,
+)
 from .types.validation_result import ValidationError, ValidationResult
 from .types.version import (
     CreateVersionRequest,
@@ -337,6 +348,7 @@ __all__ = (
     "ParticipantsAsyncClient",
     "SessionEntityTypesAsyncClient",
     "SessionsAsyncClient",
+    "SipTrunksAsyncClient",
     "VersionsAsyncClient",
     "Agent",
     "AgentAssistantFeedback",
@@ -372,6 +384,7 @@ __all__ = (
     "CompileSuggestionRequest",
     "CompileSuggestionResponse",
     "CompleteConversationRequest",
+    "Connection",
     "Context",
     "ContextsClient",
     "Conversation",
@@ -393,6 +406,7 @@ __all__ = (
     "CreateMessageRequest",
     "CreateParticipantRequest",
     "CreateSessionEntityTypeRequest",
+    "CreateSipTrunkRequest",
     "CreateVersionRequest",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
@@ -405,6 +419,7 @@ __all__ = (
     "DeleteIntentRequest",
     "DeleteKnowledgeBaseRequest",
     "DeleteSessionEntityTypeRequest",
+    "DeleteSipTrunkRequest",
     "DeleteVersionRequest",
     "DetectIntentRequest",
     "DetectIntentResponse",
@@ -454,6 +469,7 @@ __all__ = (
     "GetKnowledgeBaseRequest",
     "GetParticipantRequest",
     "GetSessionEntityTypeRequest",
+    "GetSipTrunkRequest",
     "GetValidationResultRequest",
     "GetVersionRequest",
     "HumanAgentAssistantConfig",
@@ -506,6 +522,8 @@ __all__ = (
     "ListParticipantsResponse",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",
+    "ListSipTrunksRequest",
+    "ListSipTrunksResponse",
     "ListSuggestionsRequest",
     "ListSuggestionsResponse",
     "ListVersionsRequest",
@@ -541,6 +559,8 @@ __all__ = (
     "SetAgentRequest",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipTrunk",
+    "SipTrunksClient",
     "SmartReplyAnswer",
     "SpeechContext",
     "SpeechModelVariant",
@@ -591,6 +611,7 @@ __all__ = (
     "UpdateKnowledgeBaseRequest",
     "UpdateParticipantRequest",
     "UpdateSessionEntityTypeRequest",
+    "UpdateSipTrunkRequest",
     "UpdateVersionRequest",
     "ValidationError",
     "ValidationResult",

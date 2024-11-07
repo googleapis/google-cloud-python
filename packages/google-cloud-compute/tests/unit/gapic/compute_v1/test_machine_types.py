@@ -1871,6 +1871,7 @@ def test_get_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.MachineType(
+            architecture="architecture_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             guest_cpus=1090,
@@ -1899,6 +1900,7 @@ def test_get_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.MachineType)
+    assert response.architecture == "architecture_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.guest_cpus == 1090

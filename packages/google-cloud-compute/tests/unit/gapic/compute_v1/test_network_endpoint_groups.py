@@ -4193,9 +4193,11 @@ def test_attach_network_endpoints_rest_call_success(request_type):
         "network_endpoints": [
             {
                 "annotations": {},
+                "client_destination_port": 2468,
                 "fqdn": "fqdn_value",
                 "instance": "instance_value",
                 "ip_address": "ip_address_value",
+                "ipv6_address": "ipv6_address_value",
                 "port": 453,
             }
         ]
@@ -4624,9 +4626,11 @@ def test_detach_network_endpoints_rest_call_success(request_type):
         "network_endpoints": [
             {
                 "annotations": {},
+                "client_destination_port": 2468,
                 "fqdn": "fqdn_value",
                 "instance": "instance_value",
                 "ip_address": "ip_address_value",
+                "ipv6_address": "ipv6_address_value",
                 "port": 453,
             }
         ]
@@ -5050,6 +5054,7 @@ def test_insert_rest_call_success(request_type):
         "network_endpoint_type": "network_endpoint_type_value",
         "psc_data": {
             "consumer_psc_address": "consumer_psc_address_value",
+            "producer_port": 1416,
             "psc_connection_id": 1793,
             "psc_connection_status": "psc_connection_status_value",
         },
