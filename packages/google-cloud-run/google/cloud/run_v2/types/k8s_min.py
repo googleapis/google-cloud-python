@@ -223,14 +223,10 @@ class EnvVar(proto.Message):
             Required. Name of the environment variable.
             Must not exceed 32768 characters.
         value (str):
-            Variable references $(VAR_NAME) are expanded using the
-            previous defined environment variables in the container and
-            any route environment variables. If a variable cannot be
-            resolved, the reference in the input string will be
-            unchanged. The $(VAR_NAME) syntax can be escaped with a
-            double $$, ie: $$(VAR_NAME). Escaped references will never
-            be expanded, regardless of whether the variable exists or
-            not. Defaults to "", and the maximum length is 32768 bytes.
+            Literal value of the environment variable.
+            Defaults to "", and the maximum length is 32768
+            bytes. Variable references are not supported in
+            Cloud Run.
 
             This field is a member of `oneof`_ ``values``.
         value_source (google.cloud.run_v2.types.EnvVarSource):
@@ -652,6 +648,10 @@ class GCSVolumeSource(proto.Message):
         read_only (bool):
             If true, the volume will be mounted as read
             only for all mounts.
+        mount_options (MutableSequence[str]):
+            A list of additional flags to pass to the
+            gcsfuse CLI. Options should be specified without
+            the leading "--".
     """
 
     bucket: str = proto.Field(
@@ -661,6 +661,10 @@ class GCSVolumeSource(proto.Message):
     read_only: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    mount_options: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -3851,6 +3851,7 @@ def test_get_rest_call_success(request_type):
             server_tls_policy="server_tls_policy_value",
             ssl_certificates=["ssl_certificates_value"],
             ssl_policy="ssl_policy_value",
+            tls_early_data="tls_early_data_value",
             url_map="url_map_value",
         )
 
@@ -3883,6 +3884,7 @@ def test_get_rest_call_success(request_type):
     assert response.server_tls_policy == "server_tls_policy_value"
     assert response.ssl_certificates == ["ssl_certificates_value"]
     assert response.ssl_policy == "ssl_policy_value"
+    assert response.tls_early_data == "tls_early_data_value"
     assert response.url_map == "url_map_value"
 
 
@@ -3997,6 +3999,7 @@ def test_insert_rest_call_success(request_type):
         "server_tls_policy": "server_tls_policy_value",
         "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"],
         "ssl_policy": "ssl_policy_value",
+        "tls_early_data": "tls_early_data_value",
         "url_map": "url_map_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -4385,6 +4388,7 @@ def test_patch_rest_call_success(request_type):
         "server_tls_policy": "server_tls_policy_value",
         "ssl_certificates": ["ssl_certificates_value1", "ssl_certificates_value2"],
         "ssl_policy": "ssl_policy_value",
+        "tls_early_data": "tls_early_data_value",
         "url_map": "url_map_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

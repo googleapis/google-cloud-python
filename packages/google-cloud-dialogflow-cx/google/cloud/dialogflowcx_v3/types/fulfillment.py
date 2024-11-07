@@ -60,7 +60,7 @@ class Fulfillment(proto.Message):
             to the user.
         webhook (str):
             The webhook to call. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>``.
         return_partial_responses (bool):
             Whether Dialogflow should return currently
             queued fulfillment response messages in

@@ -196,9 +196,9 @@ class DetectIntentRequest(proto.Message):
         session (str):
             Required. The name of the session this query is sent to.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment. It's up to the API caller to choose an
             appropriate ``Session ID``. It can be a random number or
@@ -364,9 +364,9 @@ class StreamingDetectIntentRequest(proto.Message):
     Attributes:
         session (str):
             The name of the session this query is sent to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment. It's up to the API caller to choose an
             appropriate ``Session ID``. It can be a random number or
@@ -864,7 +864,7 @@ class QueryParameters(proto.Message):
             [page][google.cloud.dialogflow.cx.v3beta1.Page] to override
             the [current page][QueryResult.current_page] in the session.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
             If ``current_page`` is specified, the previous state of the
             session will be ignored by Dialogflow, including the
@@ -898,7 +898,7 @@ class QueryParameters(proto.Message):
             "X-Forwarded-For", etc.
         flow_versions (MutableSequence[str]):
             A list of flow versions to override for the request. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
 
             If version 1 of flow X is included in this list, the traffic
             of flow X will go through version 1 regardless of the
@@ -911,7 +911,7 @@ class QueryParameters(proto.Message):
             session. Otherwise, an error will be thrown.
 
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
         llm_model_settings (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings):
             Optional. Use the specified LLM model
             settings for processing the request.
@@ -1119,7 +1119,129 @@ class BoostSpec(proto.Message):
 
                 Setting to 0.0 means no boost applied. The boosting
                 condition is ignored.
+            boost_control_spec (google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec):
+                Optional. Complex specification for custom
+                ranking based on customer defined attribute
+                value.
         """
+
+        class BoostControlSpec(proto.Message):
+            r"""Specification for custom ranking based on customer specified
+            attribute value. It provides more controls for customized
+            ranking than the simple (condition, boost) combination above.
+
+            Attributes:
+                field_name (str):
+                    Optional. The name of the field whose value
+                    will be used to determine the boost amount.
+                attribute_type (google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
+                    Optional. The attribute type to be used to determine the
+                    boost amount. The attribute value can be derived from the
+                    field value of the specified field_name. In the case of
+                    numerical it is straightforward i.e. attribute_value =
+                    numerical_field_value. In the case of freshness however,
+                    attribute_value = (time.now() - datetime_field_value).
+                interpolation_type (google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
+                    Optional. The interpolation type to be
+                    applied to connect the control points listed
+                    below.
+                control_points (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
+                    Optional. The control points used to define the curve. The
+                    monotonic function (defined through the interpolation_type
+                    above) passes through the control points listed here.
+            """
+
+            class AttributeType(proto.Enum):
+                r"""The attribute(or function) for which the custom ranking is to
+                be applied.
+
+                Values:
+                    ATTRIBUTE_TYPE_UNSPECIFIED (0):
+                        Unspecified AttributeType.
+                    NUMERICAL (1):
+                        The value of the numerical field will be used to dynamically
+                        update the boost amount. In this case, the attribute_value
+                        (the x value) of the control point will be the actual value
+                        of the numerical field for which the boost_amount is
+                        specified.
+                    FRESHNESS (2):
+                        For the freshness use case the attribute value will be the
+                        duration between the current time and the date in the
+                        datetime field specified. The value must be formatted as an
+                        XSD ``dayTimeDuration`` value (a restricted subset of an ISO
+                        8601 duration value). The pattern for this is:
+                        ``[nD][T[nH][nM][nS]]``. E.g. ``5D``, ``3DT12H30M``,
+                        ``T24H``.
+                """
+                ATTRIBUTE_TYPE_UNSPECIFIED = 0
+                NUMERICAL = 1
+                FRESHNESS = 2
+
+            class InterpolationType(proto.Enum):
+                r"""The interpolation type to be applied. Default will be linear
+                (Piecewise Linear).
+
+                Values:
+                    INTERPOLATION_TYPE_UNSPECIFIED (0):
+                        Interpolation type is unspecified. In this
+                        case, it defaults to Linear.
+                    LINEAR (1):
+                        Piecewise linear interpolation will be
+                        applied.
+                """
+                INTERPOLATION_TYPE_UNSPECIFIED = 0
+                LINEAR = 1
+
+            class ControlPoint(proto.Message):
+                r"""The control points used to define the curve. The curve
+                defined through these control points can only be monotonically
+                increasing or decreasing(constant values are acceptable).
+
+                Attributes:
+                    attribute_value (str):
+                        Optional. Can be one of:
+
+                        1. The numerical field value.
+                        2. The duration spec for freshness: The value must be
+                           formatted as an XSD ``dayTimeDuration`` value (a
+                           restricted subset of an ISO 8601 duration value). The
+                           pattern for this is: ``[nD][T[nH][nM][nS]]``.
+                    boost_amount (float):
+                        Optional. The value between -1 to 1 by which to boost the
+                        score if the attribute_value evaluates to the value
+                        specified above.
+                """
+
+                attribute_value: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                boost_amount: float = proto.Field(
+                    proto.FLOAT,
+                    number=2,
+                )
+
+            field_name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            attribute_type: "BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType",
+            )
+            interpolation_type: "BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType" = proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType",
+            )
+            control_points: MutableSequence[
+                "BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint",
+            )
 
         condition: str = proto.Field(
             proto.STRING,
@@ -1128,6 +1250,13 @@ class BoostSpec(proto.Message):
         boost: float = proto.Field(
             proto.FLOAT,
             number=2,
+        )
+        boost_control_spec: "BoostSpec.ConditionBoostSpec.BoostControlSpec" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="BoostSpec.ConditionBoostSpec.BoostControlSpec",
+            )
         )
 
     condition_boost_specs: MutableSequence[ConditionBoostSpec] = proto.RepeatedField(
@@ -1335,7 +1464,7 @@ class QueryResult(proto.Message):
             [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
             provided as input, this field will contain a copy of the
             intent identifier. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
             This field is a member of `oneof`_ ``query``.
         transcript (str):
@@ -1482,9 +1611,9 @@ class QueryResult(proto.Message):
         data_store_connection_signals (google.cloud.dialogflowcx_v3beta1.types.DataStoreConnectionSignals):
             Optional. Data store connection feature output signals.
             Filled only when data stores are involved in serving the
-            query and DetectIntentRequest.populate
-            data_store_connection_quality_signals is set to true in the
-            request.
+            query and
+            DetectIntentRequest.populate_data_store_connection_signals
+            is set to true in the request.
     """
 
     text: str = proto.Field(
@@ -1635,7 +1764,7 @@ class IntentInput(proto.Message):
     Attributes:
         intent (str):
             Required. The unique identifier of the intent. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
     """
 
     intent: str = proto.Field(
@@ -1782,6 +1911,9 @@ class Match(proto.Message):
                 Indicates an empty query.
             EVENT (6):
                 The query directly triggered an event.
+            KNOWLEDGE_CONNECTOR (8):
+                The query was matched to a Knowledge
+                Connector answer.
             PLAYBOOK (9):
                 The query was handled by a
                 [``Playbook``][google.cloud.dialogflow.cx.v3beta1.Playbook].
@@ -1793,6 +1925,7 @@ class Match(proto.Message):
         NO_MATCH = 4
         NO_INPUT = 5
         EVENT = 6
+        KNOWLEDGE_CONNECTOR = 8
         PLAYBOOK = 9
 
     intent: gcdc_intent.Intent = proto.Field(
@@ -1831,9 +1964,9 @@ class MatchIntentRequest(proto.Message):
         session (str):
             Required. The name of the session this query is sent to.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment. It's up to the API caller to choose an
             appropriate ``Session ID``. It can be a random number or
@@ -1893,7 +2026,7 @@ class MatchIntentResponse(proto.Message):
             [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
             provided as input, this field will contain a copy of the
             intent identifier. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
             This field is a member of `oneof`_ ``query``.
         transcript (str):

@@ -541,7 +541,6 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                     {
                         "method": "post",
                         "uri": "/v1beta/{name=projects/*/locations/*/operations/*}:cancel",
-                        "body": "*",
                     },
                 ],
                 "google.longrunning.Operations.DeleteOperation": [
@@ -1510,7 +1509,6 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
             )
             return response
 
@@ -1544,10 +1542,6 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 http_options, request
             )
 
-            body = _BaseParallelstoreRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
             # Jsonify the query params
             query_params = _BaseParallelstoreRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
@@ -1561,7 +1555,6 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 self._session,
                 timeout,
                 transcoded_request,
-                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

@@ -42,7 +42,7 @@ class GetConversationRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the conversation. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/conversations/<Conversation ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>``.
     """
 
     name: str = proto.Field(
@@ -57,7 +57,7 @@ class DeleteConversationRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the conversation. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/conversations/<Conversation ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>``.
     """
 
     name: str = proto.Field(
@@ -72,7 +72,7 @@ class ListConversationsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list all conversations for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         filter (str):
             Optional. The filter string. Supports filter by create_time,
             metrics.has_end_interaction, metrics.has_live_agent_handoff,
@@ -153,7 +153,7 @@ class Conversation(proto.Message):
             conversation ID is reused, interactions happened later than
             48 hours of the conversation's create time will be ignored.
             Format:
-            ``projects/<ProjectID>/locations/<Location ID>/agents/<Agent ID>/conversations/<Conversation ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>``
         type_ (google.cloud.dialogflowcx_v3beta1.types.Conversation.Type):
             The type of the conversation.
         language_code (str):

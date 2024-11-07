@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -216,10 +215,7 @@ class SecuritySettingsServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(SecuritySettingsServiceClient).get_transport_class,
-        type(SecuritySettingsServiceClient),
-    )
+    get_transport_class = SecuritySettingsServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -344,7 +340,7 @@ class SecuritySettingsServiceAsyncClient:
                 Required. The location to create an
                 [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -469,7 +465,7 @@ class SecuritySettingsServiceAsyncClient:
                 [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.GetSecuritySettings].
             name (:class:`str`):
                 Required. Resource name of the settings. Format:
-                ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<securitysettingsID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -716,7 +712,7 @@ class SecuritySettingsServiceAsyncClient:
             parent (:class:`str`):
                 Required. The location to list all security settings
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -785,6 +781,8 @@ class SecuritySettingsServiceAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -836,7 +834,7 @@ class SecuritySettingsServiceAsyncClient:
                 Required. The name of the
                 [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
                 to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -921,11 +919,7 @@ class SecuritySettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -978,11 +972,7 @@ class SecuritySettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1038,11 +1028,7 @@ class SecuritySettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1092,11 +1078,7 @@ class SecuritySettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1149,11 +1131,7 @@ class SecuritySettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

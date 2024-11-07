@@ -38,7 +38,7 @@ class ListChangelogsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent containing the changelogs. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         filter (str):
             The filter string. Supports filter by user_email, resource,
             type and create_time. Some examples:
@@ -120,7 +120,7 @@ class GetChangelogRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the changelog to get. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/changelogs/<Changelog ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>``.
     """
 
     name: str = proto.Field(
@@ -135,7 +135,7 @@ class Changelog(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the changelog. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/changelogs/<Changelog ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>``.
         user_email (str):
             Email address of the authenticated user.
         display_name (str):
