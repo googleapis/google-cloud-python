@@ -335,15 +335,31 @@ class BigtableAsyncClient:
             self._client._transport.read_rows
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
-        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata(
-                    (("table_name", request.table_name),)
-                ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.table_name)
+        if regex_match and regex_match.group("table_name"):
+            header_params["table_name"] = regex_match.group("table_name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        routing_param_regex = re.compile(
+            "^(?P<authorized_view_name>projects/[^/]+/instances/[^/]+/tables/[^/]+/authorizedViews/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.authorized_view_name)
+        if regex_match and regex_match.group("authorized_view_name"):
+            header_params["authorized_view_name"] = regex_match.group(
+                "authorized_view_name"
             )
+
+        if header_params:
+            metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -438,15 +454,31 @@ class BigtableAsyncClient:
             self._client._transport.sample_row_keys
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
-        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata(
-                    (("table_name", request.table_name),)
-                ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.table_name)
+        if regex_match and regex_match.group("table_name"):
+            header_params["table_name"] = regex_match.group("table_name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        routing_param_regex = re.compile(
+            "^(?P<authorized_view_name>projects/[^/]+/instances/[^/]+/tables/[^/]+/authorizedViews/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.authorized_view_name)
+        if regex_match and regex_match.group("authorized_view_name"):
+            header_params["authorized_view_name"] = regex_match.group(
+                "authorized_view_name"
             )
+
+        if header_params:
+            metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -562,15 +594,31 @@ class BigtableAsyncClient:
             self._client._transport.mutate_row
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
-        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata(
-                    (("table_name", request.table_name),)
-                ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.table_name)
+        if regex_match and regex_match.group("table_name"):
+            header_params["table_name"] = regex_match.group("table_name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        routing_param_regex = re.compile(
+            "^(?P<authorized_view_name>projects/[^/]+/instances/[^/]+/tables/[^/]+/authorizedViews/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.authorized_view_name)
+        if regex_match and regex_match.group("authorized_view_name"):
+            header_params["authorized_view_name"] = regex_match.group(
+                "authorized_view_name"
             )
+
+        if header_params:
+            metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -680,15 +728,31 @@ class BigtableAsyncClient:
             self._client._transport.mutate_rows
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
-        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata(
-                    (("table_name", request.table_name),)
-                ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.table_name)
+        if regex_match and regex_match.group("table_name"):
+            header_params["table_name"] = regex_match.group("table_name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        routing_param_regex = re.compile(
+            "^(?P<authorized_view_name>projects/[^/]+/instances/[^/]+/tables/[^/]+/authorizedViews/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.authorized_view_name)
+        if regex_match and regex_match.group("authorized_view_name"):
+            header_params["authorized_view_name"] = regex_match.group(
+                "authorized_view_name"
             )
+
+        if header_params:
+            metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -841,15 +905,31 @@ class BigtableAsyncClient:
             self._client._transport.check_and_mutate_row
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
-        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata(
-                    (("table_name", request.table_name),)
-                ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.table_name)
+        if regex_match and regex_match.group("table_name"):
+            header_params["table_name"] = regex_match.group("table_name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        routing_param_regex = re.compile(
+            "^(?P<authorized_view_name>projects/[^/]+/instances/[^/]+/tables/[^/]+/authorizedViews/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.authorized_view_name)
+        if regex_match and regex_match.group("authorized_view_name"):
+            header_params["authorized_view_name"] = regex_match.group(
+                "authorized_view_name"
             )
+
+        if header_params:
+            metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -941,13 +1021,20 @@ class BigtableAsyncClient:
             self._client._transport.ping_and_warm
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<name>projects/[^/]+/instances/[^/]+)$")
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("name"):
+            header_params["name"] = regex_match.group("name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        if header_params:
+            metadata = tuple(metadata)
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-            )
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1069,15 +1156,31 @@ class BigtableAsyncClient:
             self._client._transport.read_modify_write_row
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
-        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata(
-                    (("table_name", request.table_name),)
-                ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.table_name)
+        if regex_match and regex_match.group("table_name"):
+            header_params["table_name"] = regex_match.group("table_name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        routing_param_regex = re.compile(
+            "^(?P<authorized_view_name>projects/[^/]+/instances/[^/]+/tables/[^/]+/authorizedViews/[^/]+)$"
+        )
+        regex_match = routing_param_regex.match(request.authorized_view_name)
+        if regex_match and regex_match.group("authorized_view_name"):
+            header_params["authorized_view_name"] = regex_match.group(
+                "authorized_view_name"
             )
+
+        if header_params:
+            metadata = tuple(metadata)
+        if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1390,15 +1493,20 @@ class BigtableAsyncClient:
             self._client._transport.execute_query
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata)
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<name>projects/[^/]+/instances/[^/]+)$")
+        regex_match = routing_param_regex.match(request.instance_name)
+        if regex_match and regex_match.group("name"):
+            header_params["name"] = regex_match.group("name")
+
+        if request.app_profile_id:
+            header_params["app_profile_id"] = request.app_profile_id
+
+        if header_params:
+            metadata = tuple(metadata)
         if all(m[0] != gapic_v1.routing_header.ROUTING_METADATA_KEY for m in metadata):
-            metadata += (
-                gapic_v1.routing_header.to_grpc_metadata(
-                    (("instance_name", request.instance_name),)
-                ),
-            )
+            metadata += (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

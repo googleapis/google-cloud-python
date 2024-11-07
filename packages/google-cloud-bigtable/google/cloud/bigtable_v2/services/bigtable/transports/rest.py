@@ -16,22 +16,26 @@
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
-from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
+
 from requests import __version__ as requests_version
 import dataclasses
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+
+
+from google.cloud.bigtable_v2.types import bigtable
+
+
+from .rest_base import _BaseBigtableRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -39,15 +43,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
-from google.cloud.bigtable_v2.types import bigtable
-
-from .base import BigtableTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-
-
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=requests_version,
+    rest_version=f"requests@{requests_version}",
 )
 
 
@@ -382,8 +381,8 @@ class BigtableRestStub:
     _interceptor: BigtableRestInterceptor
 
 
-class BigtableRestTransport(BigtableTransport):
-    """REST backend transport for Bigtable.
+class BigtableRestTransport(_BaseBigtableRestTransport):
+    """REST backend synchronous transport for Bigtable.
 
     Service for reading from and writing to existing Bigtable
     tables.
@@ -393,7 +392,6 @@ class BigtableRestTransport(BigtableTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -447,21 +445,12 @@ class BigtableRestTransport(BigtableTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -472,19 +461,34 @@ class BigtableRestTransport(BigtableTransport):
         self._interceptor = interceptor or BigtableRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CheckAndMutateRow(BigtableRestStub):
+    class _CheckAndMutateRow(
+        _BaseBigtableRestTransport._BaseCheckAndMutateRow, BigtableRestStub
+    ):
         def __hash__(self):
-            return hash("CheckAndMutateRow")
+            return hash("BigtableRestTransport.CheckAndMutateRow")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -513,52 +517,34 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:checkAndMutateRow",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBigtableRestTransport._BaseCheckAndMutateRow._get_http_options()
+            )
             request, metadata = self._interceptor.pre_check_and_mutate_row(
                 request, metadata
             )
-            pb_request = bigtable.CheckAndMutateRowRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBigtableRestTransport._BaseCheckAndMutateRow._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBigtableRestTransport._BaseCheckAndMutateRow._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableRestTransport._BaseCheckAndMutateRow._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._CheckAndMutateRow._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -574,19 +560,33 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_check_and_mutate_row(resp)
             return resp
 
-    class _ExecuteQuery(BigtableRestStub):
+    class _ExecuteQuery(_BaseBigtableRestTransport._BaseExecuteQuery, BigtableRestStub):
         def __hash__(self):
-            return hash("ExecuteQuery")
+            return hash("BigtableRestTransport.ExecuteQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
 
         def __call__(
             self,
@@ -615,45 +615,36 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{instance_name=projects/*/instances/*}:executeQuery",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_execute_query(request, metadata)
-            pb_request = bigtable.ExecuteQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableRestTransport._BaseExecuteQuery._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_execute_query(request, metadata)
+            transcoded_request = (
+                _BaseBigtableRestTransport._BaseExecuteQuery._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseBigtableRestTransport._BaseExecuteQuery._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseBigtableRestTransport._BaseExecuteQuery._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._ExecuteQuery._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -668,19 +659,36 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_execute_query(resp)
             return resp
 
-    class _GenerateInitialChangeStreamPartitions(BigtableRestStub):
+    class _GenerateInitialChangeStreamPartitions(
+        _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions,
+        BigtableRestStub,
+    ):
         def __hash__(self):
-            return hash("GenerateInitialChangeStreamPartitions")
+            return hash("BigtableRestTransport.GenerateInitialChangeStreamPartitions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
 
         def __call__(
             self,
@@ -714,52 +722,37 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:generateInitialChangeStreamPartitions",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_generate_initial_change_stream_partitions(
                 request, metadata
             )
-            pb_request = bigtable.GenerateInitialChangeStreamPartitionsRequest.pb(
-                request
+            transcoded_request = _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableRestTransport._BaseGenerateInitialChangeStreamPartitions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._GenerateInitialChangeStreamPartitions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -776,19 +769,32 @@ class BigtableRestTransport(BigtableTransport):
             )
             return resp
 
-    class _MutateRow(BigtableRestStub):
+    class _MutateRow(_BaseBigtableRestTransport._BaseMutateRow, BigtableRestStub):
         def __hash__(self):
-            return hash("MutateRow")
+            return hash("BigtableRestTransport.MutateRow")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -817,50 +823,34 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:mutateRow",
-                    "body": "*",
-                },
-            ]
+            http_options = _BaseBigtableRestTransport._BaseMutateRow._get_http_options()
             request, metadata = self._interceptor.pre_mutate_row(request, metadata)
-            pb_request = bigtable.MutateRowRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseBigtableRestTransport._BaseMutateRow._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseBigtableRestTransport._BaseMutateRow._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseBigtableRestTransport._BaseMutateRow._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._MutateRow._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -876,19 +866,33 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_mutate_row(resp)
             return resp
 
-    class _MutateRows(BigtableRestStub):
+    class _MutateRows(_BaseBigtableRestTransport._BaseMutateRows, BigtableRestStub):
         def __hash__(self):
-            return hash("MutateRows")
+            return hash("BigtableRestTransport.MutateRows")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
 
         def __call__(
             self,
@@ -917,50 +921,36 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:mutateRows",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_mutate_rows(request, metadata)
-            pb_request = bigtable.MutateRowsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableRestTransport._BaseMutateRows._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_mutate_rows(request, metadata)
+            transcoded_request = (
+                _BaseBigtableRestTransport._BaseMutateRows._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseBigtableRestTransport._BaseMutateRows._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseBigtableRestTransport._BaseMutateRows._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._MutateRows._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -975,19 +965,32 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_mutate_rows(resp)
             return resp
 
-    class _PingAndWarm(BigtableRestStub):
+    class _PingAndWarm(_BaseBigtableRestTransport._BasePingAndWarm, BigtableRestStub):
         def __hash__(self):
-            return hash("PingAndWarm")
+            return hash("BigtableRestTransport.PingAndWarm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1017,45 +1020,36 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/instances/*}:ping",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_ping_and_warm(request, metadata)
-            pb_request = bigtable.PingAndWarmRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBigtableRestTransport._BasePingAndWarm._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_ping_and_warm(request, metadata)
+            transcoded_request = (
+                _BaseBigtableRestTransport._BasePingAndWarm._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseBigtableRestTransport._BasePingAndWarm._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseBigtableRestTransport._BasePingAndWarm._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._PingAndWarm._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1071,19 +1065,35 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_ping_and_warm(resp)
             return resp
 
-    class _ReadChangeStream(BigtableRestStub):
+    class _ReadChangeStream(
+        _BaseBigtableRestTransport._BaseReadChangeStream, BigtableRestStub
+    ):
         def __hash__(self):
-            return hash("ReadChangeStream")
+            return hash("BigtableRestTransport.ReadChangeStream")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
 
         def __call__(
             self,
@@ -1114,47 +1124,38 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:readChangeStream",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBigtableRestTransport._BaseReadChangeStream._get_http_options()
+            )
             request, metadata = self._interceptor.pre_read_change_stream(
                 request, metadata
             )
-            pb_request = bigtable.ReadChangeStreamRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBigtableRestTransport._BaseReadChangeStream._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseBigtableRestTransport._BaseReadChangeStream._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseBigtableRestTransport._BaseReadChangeStream._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._ReadChangeStream._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1169,19 +1170,34 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_read_change_stream(resp)
             return resp
 
-    class _ReadModifyWriteRow(BigtableRestStub):
+    class _ReadModifyWriteRow(
+        _BaseBigtableRestTransport._BaseReadModifyWriteRow, BigtableRestStub
+    ):
         def __hash__(self):
-            return hash("ReadModifyWriteRow")
+            return hash("BigtableRestTransport.ReadModifyWriteRow")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1210,52 +1226,34 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:readModifyWriteRow",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBigtableRestTransport._BaseReadModifyWriteRow._get_http_options()
+            )
             request, metadata = self._interceptor.pre_read_modify_write_row(
                 request, metadata
             )
-            pb_request = bigtable.ReadModifyWriteRowRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBigtableRestTransport._BaseReadModifyWriteRow._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBigtableRestTransport._BaseReadModifyWriteRow._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBigtableRestTransport._BaseReadModifyWriteRow._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._ReadModifyWriteRow._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1271,9 +1269,33 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_read_modify_write_row(resp)
             return resp
 
-    class _ReadRows(BigtableRestStub):
+    class _ReadRows(_BaseBigtableRestTransport._BaseReadRows, BigtableRestStub):
         def __hash__(self):
-            return hash("ReadRows")
+            return hash("BigtableRestTransport.ReadRows")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
 
         def __call__(
             self,
@@ -1302,49 +1324,34 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:readRows",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:readRows",
-                    "body": "*",
-                },
-            ]
+            http_options = _BaseBigtableRestTransport._BaseReadRows._get_http_options()
             request, metadata = self._interceptor.pre_read_rows(request, metadata)
-            pb_request = bigtable.ReadRowsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseBigtableRestTransport._BaseReadRows._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseBigtableRestTransport._BaseReadRows._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseBigtableRestTransport._BaseReadRows._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BigtableRestTransport._ReadRows._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1357,9 +1364,34 @@ class BigtableRestTransport(BigtableTransport):
             resp = self._interceptor.post_read_rows(resp)
             return resp
 
-    class _SampleRowKeys(BigtableRestStub):
+    class _SampleRowKeys(
+        _BaseBigtableRestTransport._BaseSampleRowKeys, BigtableRestStub
+    ):
         def __hash__(self):
-            return hash("SampleRowKeys")
+            return hash("BigtableRestTransport.SampleRowKeys")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                stream=True,
+            )
+            return response
 
         def __call__(
             self,
@@ -1388,41 +1420,31 @@ class BigtableRestTransport(BigtableTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{authorized_view_name=projects/*/instances/*/tables/*/authorizedViews/*}:sampleRowKeys",
-                },
-            ]
+            http_options = (
+                _BaseBigtableRestTransport._BaseSampleRowKeys._get_http_options()
+            )
             request, metadata = self._interceptor.pre_sample_row_keys(request, metadata)
-            pb_request = bigtable.SampleRowKeysRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseBigtableRestTransport._BaseSampleRowKeys._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseBigtableRestTransport._BaseSampleRowKeys._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BigtableRestTransport._SampleRowKeys._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

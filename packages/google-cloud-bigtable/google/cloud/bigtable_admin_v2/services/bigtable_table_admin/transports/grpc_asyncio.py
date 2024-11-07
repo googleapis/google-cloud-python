@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -239,6 +240,9 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1188,17 +1192,17 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_table: gapic_v1.method_async.wrap_method(
+            self.create_table: self._wrap_method(
                 self.create_table,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_table_from_snapshot: gapic_v1.method_async.wrap_method(
+            self.create_table_from_snapshot: self._wrap_method(
                 self.create_table_from_snapshot,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_tables: gapic_v1.method_async.wrap_method(
+            self.list_tables: self._wrap_method(
                 self.list_tables,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1213,7 +1217,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_table: gapic_v1.method_async.wrap_method(
+            self.get_table: self._wrap_method(
                 self.get_table,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1228,57 +1232,57 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_table: gapic_v1.method_async.wrap_method(
+            self.update_table: self._wrap_method(
                 self.update_table,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_table: gapic_v1.method_async.wrap_method(
+            self.delete_table: self._wrap_method(
                 self.delete_table,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.undelete_table: gapic_v1.method_async.wrap_method(
+            self.undelete_table: self._wrap_method(
                 self.undelete_table,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_authorized_view: gapic_v1.method_async.wrap_method(
+            self.create_authorized_view: self._wrap_method(
                 self.create_authorized_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_authorized_views: gapic_v1.method_async.wrap_method(
+            self.list_authorized_views: self._wrap_method(
                 self.list_authorized_views,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_authorized_view: gapic_v1.method_async.wrap_method(
+            self.get_authorized_view: self._wrap_method(
                 self.get_authorized_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_authorized_view: gapic_v1.method_async.wrap_method(
+            self.update_authorized_view: self._wrap_method(
                 self.update_authorized_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_authorized_view: gapic_v1.method_async.wrap_method(
+            self.delete_authorized_view: self._wrap_method(
                 self.delete_authorized_view,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.modify_column_families: gapic_v1.method_async.wrap_method(
+            self.modify_column_families: self._wrap_method(
                 self.modify_column_families,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.drop_row_range: gapic_v1.method_async.wrap_method(
+            self.drop_row_range: self._wrap_method(
                 self.drop_row_range,
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
-            self.generate_consistency_token: gapic_v1.method_async.wrap_method(
+            self.generate_consistency_token: self._wrap_method(
                 self.generate_consistency_token,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1293,7 +1297,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.check_consistency: gapic_v1.method_async.wrap_method(
+            self.check_consistency: self._wrap_method(
                 self.check_consistency,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1308,12 +1312,12 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.snapshot_table: gapic_v1.method_async.wrap_method(
+            self.snapshot_table: self._wrap_method(
                 self.snapshot_table,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_snapshot: gapic_v1.method_async.wrap_method(
+            self.get_snapshot: self._wrap_method(
                 self.get_snapshot,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1328,7 +1332,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_snapshots: gapic_v1.method_async.wrap_method(
+            self.list_snapshots: self._wrap_method(
                 self.list_snapshots,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1343,17 +1347,17 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_snapshot: gapic_v1.method_async.wrap_method(
+            self.delete_snapshot: self._wrap_method(
                 self.delete_snapshot,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_backup: gapic_v1.method_async.wrap_method(
+            self.create_backup: self._wrap_method(
                 self.create_backup,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_backup: gapic_v1.method_async.wrap_method(
+            self.get_backup: self._wrap_method(
                 self.get_backup,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1368,17 +1372,17 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_backup: gapic_v1.method_async.wrap_method(
+            self.update_backup: self._wrap_method(
                 self.update_backup,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_backup: gapic_v1.method_async.wrap_method(
+            self.delete_backup: self._wrap_method(
                 self.delete_backup,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_backups: gapic_v1.method_async.wrap_method(
+            self.list_backups: self._wrap_method(
                 self.list_backups,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1393,17 +1397,17 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.restore_table: gapic_v1.method_async.wrap_method(
+            self.restore_table: self._wrap_method(
                 self.restore_table,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.copy_backup: gapic_v1.method_async.wrap_method(
+            self.copy_backup: self._wrap_method(
                 self.copy_backup,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1418,12 +1422,12 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1440,8 +1444,17 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("BigtableTableAdminGrpcAsyncIOTransport",)

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -228,6 +229,9 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -551,17 +555,17 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.read_rows: gapic_v1.method_async.wrap_method(
+            self.read_rows: self._wrap_method(
                 self.read_rows,
                 default_timeout=43200.0,
                 client_info=client_info,
             ),
-            self.sample_row_keys: gapic_v1.method_async.wrap_method(
+            self.sample_row_keys: self._wrap_method(
                 self.sample_row_keys,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.mutate_row: gapic_v1.method_async.wrap_method(
+            self.mutate_row: self._wrap_method(
                 self.mutate_row,
                 default_retry=retries.AsyncRetry(
                     initial=0.01,
@@ -576,45 +580,54 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.mutate_rows: gapic_v1.method_async.wrap_method(
+            self.mutate_rows: self._wrap_method(
                 self.mutate_rows,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.check_and_mutate_row: gapic_v1.method_async.wrap_method(
+            self.check_and_mutate_row: self._wrap_method(
                 self.check_and_mutate_row,
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.ping_and_warm: gapic_v1.method_async.wrap_method(
+            self.ping_and_warm: self._wrap_method(
                 self.ping_and_warm,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.read_modify_write_row: gapic_v1.method_async.wrap_method(
+            self.read_modify_write_row: self._wrap_method(
                 self.read_modify_write_row,
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.generate_initial_change_stream_partitions: gapic_v1.method_async.wrap_method(
+            self.generate_initial_change_stream_partitions: self._wrap_method(
                 self.generate_initial_change_stream_partitions,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.read_change_stream: gapic_v1.method_async.wrap_method(
+            self.read_change_stream: self._wrap_method(
                 self.read_change_stream,
                 default_timeout=43200.0,
                 client_info=client_info,
             ),
-            self.execute_query: gapic_v1.method_async.wrap_method(
+            self.execute_query: self._wrap_method(
                 self.execute_query,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("BigtableGrpcAsyncIOTransport",)

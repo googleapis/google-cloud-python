@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 import math
@@ -36,6 +36,13 @@ from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -76,8 +83,22 @@ from google.type import expr_pb2  # type: ignore
 import google.auth
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -330,86 +351,6 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         BigtableTableAdminClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
-
-
-@pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [
-        (BigtableTableAdminClient, transports.BigtableTableAdminGrpcTransport, "grpc"),
-        (BigtableTableAdminClient, transports.BigtableTableAdminRestTransport, "rest"),
-    ],
-)
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
-    )
-    assert client._validate_universe_domain() == True
-
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
-
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
-
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        transport = transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
-
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [
-        int(part) for part in google.auth.__version__.split(".")[0:2]
-    ]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(transport=transport_class(credentials=credentials))
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert (
-            str(excinfo.value)
-            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-        )
-
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [
-            int(part) for part in api_core_version.__version__.split(".")[0:2]
-        ]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(
-                client_options={"universe_domain": "bar.com"},
-                transport=transport_class(
-                    credentials=ga_credentials.AnonymousCredentials(),
-                ),
-            )
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert (
-                str(excinfo.value)
-                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-            )
-
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -1230,25 +1171,6 @@ def test_create_table(request_type, transport: str = "grpc"):
     assert response.deletion_protection is True
 
 
-def test_create_table_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_table), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateTableRequest()
-
-
 def test_create_table_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1315,31 +1237,6 @@ def test_create_table_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_table_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_table), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gba_table.Table(
-                name="name_value",
-                granularity=gba_table.Table.TimestampGranularity.MILLIS,
-                deletion_protection=True,
-            )
-        )
-        response = await client.create_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateTableRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_table_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1347,7 +1244,7 @@ async def test_create_table_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1387,7 +1284,7 @@ async def test_create_table_async(
     request_type=bigtable_table_admin.CreateTableRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1457,7 +1354,7 @@ def test_create_table_field_headers():
 @pytest.mark.asyncio
 async def test_create_table_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1535,7 +1432,7 @@ def test_create_table_flattened_error():
 @pytest.mark.asyncio
 async def test_create_table_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1570,7 +1467,7 @@ async def test_create_table_flattened_async():
 @pytest.mark.asyncio
 async def test_create_table_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1617,27 +1514,6 @@ def test_create_table_from_snapshot(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_table_from_snapshot_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_table_from_snapshot), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_table_from_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateTableFromSnapshotRequest()
 
 
 def test_create_table_from_snapshot_non_empty_request_with_auto_populated_field():
@@ -1720,29 +1596,6 @@ def test_create_table_from_snapshot_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_table_from_snapshot_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_table_from_snapshot), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_table_from_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateTableFromSnapshotRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_table_from_snapshot_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1750,7 +1603,7 @@ async def test_create_table_from_snapshot_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1795,7 +1648,7 @@ async def test_create_table_from_snapshot_async(
     request_type=bigtable_table_admin.CreateTableFromSnapshotRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1862,7 +1715,7 @@ def test_create_table_from_snapshot_field_headers():
 @pytest.mark.asyncio
 async def test_create_table_from_snapshot_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1946,7 +1799,7 @@ def test_create_table_from_snapshot_flattened_error():
 @pytest.mark.asyncio
 async def test_create_table_from_snapshot_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1985,7 +1838,7 @@ async def test_create_table_from_snapshot_flattened_async():
 @pytest.mark.asyncio
 async def test_create_table_from_snapshot_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2033,25 +1886,6 @@ def test_list_tables(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_tables_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_tables()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListTablesRequest()
 
 
 def test_list_tables_non_empty_request_with_auto_populated_field():
@@ -2120,29 +1954,6 @@ def test_list_tables_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_tables_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            bigtable_table_admin.ListTablesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_tables()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListTablesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_tables_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2150,7 +1961,7 @@ async def test_list_tables_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2189,7 +2000,7 @@ async def test_list_tables_async(
     transport: str = "grpc_asyncio", request_type=bigtable_table_admin.ListTablesRequest
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2255,7 +2066,7 @@ def test_list_tables_field_headers():
 @pytest.mark.asyncio
 async def test_list_tables_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2325,7 +2136,7 @@ def test_list_tables_flattened_error():
 @pytest.mark.asyncio
 async def test_list_tables_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2354,7 +2165,7 @@ async def test_list_tables_flattened_async():
 @pytest.mark.asyncio
 async def test_list_tables_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2464,7 +2275,7 @@ def test_list_tables_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_tables_async_pager():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2514,7 +2325,7 @@ async def test_list_tables_async_pager():
 @pytest.mark.asyncio
 async def test_list_tables_async_pages():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2600,25 +2411,6 @@ def test_get_table(request_type, transport: str = "grpc"):
     assert response.deletion_protection is True
 
 
-def test_get_table_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetTableRequest()
-
-
 def test_get_table_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2683,37 +2475,12 @@ def test_get_table_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_table_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            table.Table(
-                name="name_value",
-                granularity=table.Table.TimestampGranularity.MILLIS,
-                deletion_protection=True,
-            )
-        )
-        response = await client.get_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetTableRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_table_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2752,7 +2519,7 @@ async def test_get_table_async(
     transport: str = "grpc_asyncio", request_type=bigtable_table_admin.GetTableRequest
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2822,7 +2589,7 @@ def test_get_table_field_headers():
 @pytest.mark.asyncio
 async def test_get_table_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2890,7 +2657,7 @@ def test_get_table_flattened_error():
 @pytest.mark.asyncio
 async def test_get_table_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2917,7 +2684,7 @@ async def test_get_table_flattened_async():
 @pytest.mark.asyncio
 async def test_get_table_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2960,25 +2727,6 @@ def test_update_table(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_table_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_table), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UpdateTableRequest()
 
 
 def test_update_table_non_empty_request_with_auto_populated_field():
@@ -3046,27 +2794,6 @@ def test_update_table_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_table_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_table), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UpdateTableRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_table_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3074,7 +2801,7 @@ async def test_update_table_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3119,7 +2846,7 @@ async def test_update_table_async(
     request_type=bigtable_table_admin.UpdateTableRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3182,7 +2909,7 @@ def test_update_table_field_headers():
 @pytest.mark.asyncio
 async def test_update_table_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3257,7 +2984,7 @@ def test_update_table_flattened_error():
 @pytest.mark.asyncio
 async def test_update_table_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3290,7 +3017,7 @@ async def test_update_table_flattened_async():
 @pytest.mark.asyncio
 async def test_update_table_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3334,25 +3061,6 @@ def test_delete_table(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_table_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteTableRequest()
 
 
 def test_delete_table_non_empty_request_with_auto_populated_field():
@@ -3419,25 +3127,6 @@ def test_delete_table_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_table_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteTableRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_table_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3445,7 +3134,7 @@ async def test_delete_table_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3485,7 +3174,7 @@ async def test_delete_table_async(
     request_type=bigtable_table_admin.DeleteTableRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3546,7 +3235,7 @@ def test_delete_table_field_headers():
 @pytest.mark.asyncio
 async def test_delete_table_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3614,7 +3303,7 @@ def test_delete_table_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_table_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3641,7 +3330,7 @@ async def test_delete_table_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_table_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3684,25 +3373,6 @@ def test_undelete_table(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_undelete_table_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.undelete_table), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.undelete_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UndeleteTableRequest()
 
 
 def test_undelete_table_non_empty_request_with_auto_populated_field():
@@ -3774,27 +3444,6 @@ def test_undelete_table_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_undelete_table_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.undelete_table), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.undelete_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UndeleteTableRequest()
-
-
-@pytest.mark.asyncio
 async def test_undelete_table_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3802,7 +3451,7 @@ async def test_undelete_table_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3847,7 +3496,7 @@ async def test_undelete_table_async(
     request_type=bigtable_table_admin.UndeleteTableRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3910,7 +3559,7 @@ def test_undelete_table_field_headers():
 @pytest.mark.asyncio
 async def test_undelete_table_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3980,7 +3629,7 @@ def test_undelete_table_flattened_error():
 @pytest.mark.asyncio
 async def test_undelete_table_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4009,7 +3658,7 @@ async def test_undelete_table_flattened_async():
 @pytest.mark.asyncio
 async def test_undelete_table_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4054,27 +3703,6 @@ def test_create_authorized_view(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_authorized_view_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_authorized_view), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateAuthorizedViewRequest()
 
 
 def test_create_authorized_view_non_empty_request_with_auto_populated_field():
@@ -4155,29 +3783,6 @@ def test_create_authorized_view_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_authorized_view_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_authorized_view), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateAuthorizedViewRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_authorized_view_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4185,7 +3790,7 @@ async def test_create_authorized_view_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4230,7 +3835,7 @@ async def test_create_authorized_view_async(
     request_type=bigtable_table_admin.CreateAuthorizedViewRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4297,7 +3902,7 @@ def test_create_authorized_view_field_headers():
 @pytest.mark.asyncio
 async def test_create_authorized_view_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4381,7 +3986,7 @@ def test_create_authorized_view_flattened_error():
 @pytest.mark.asyncio
 async def test_create_authorized_view_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4420,7 +4025,7 @@ async def test_create_authorized_view_flattened_async():
 @pytest.mark.asyncio
 async def test_create_authorized_view_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4470,27 +4075,6 @@ def test_list_authorized_views(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAuthorizedViewsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_authorized_views_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_authorized_views), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_authorized_views()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListAuthorizedViewsRequest()
 
 
 def test_list_authorized_views_non_empty_request_with_auto_populated_field():
@@ -4566,31 +4150,6 @@ def test_list_authorized_views_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_authorized_views_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_authorized_views), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            bigtable_table_admin.ListAuthorizedViewsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_authorized_views()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListAuthorizedViewsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_authorized_views_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4598,7 +4157,7 @@ async def test_list_authorized_views_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4638,7 +4197,7 @@ async def test_list_authorized_views_async(
     request_type=bigtable_table_admin.ListAuthorizedViewsRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4708,7 +4267,7 @@ def test_list_authorized_views_field_headers():
 @pytest.mark.asyncio
 async def test_list_authorized_views_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4782,7 +4341,7 @@ def test_list_authorized_views_flattened_error():
 @pytest.mark.asyncio
 async def test_list_authorized_views_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4813,7 +4372,7 @@ async def test_list_authorized_views_flattened_async():
 @pytest.mark.asyncio
 async def test_list_authorized_views_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4927,7 +4486,7 @@ def test_list_authorized_views_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_authorized_views_async_pager():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4979,7 +4538,7 @@ async def test_list_authorized_views_async_pager():
 @pytest.mark.asyncio
 async def test_list_authorized_views_async_pages():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5069,27 +4628,6 @@ def test_get_authorized_view(request_type, transport: str = "grpc"):
     assert response.deletion_protection is True
 
 
-def test_get_authorized_view_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_authorized_view), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetAuthorizedViewRequest()
-
-
 def test_get_authorized_view_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5160,33 +4698,6 @@ def test_get_authorized_view_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_authorized_view_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_authorized_view), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            table.AuthorizedView(
-                name="name_value",
-                etag="etag_value",
-                deletion_protection=True,
-            )
-        )
-        response = await client.get_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetAuthorizedViewRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_authorized_view_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5194,7 +4705,7 @@ async def test_get_authorized_view_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5234,7 +4745,7 @@ async def test_get_authorized_view_async(
     request_type=bigtable_table_admin.GetAuthorizedViewRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5308,7 +4819,7 @@ def test_get_authorized_view_field_headers():
 @pytest.mark.asyncio
 async def test_get_authorized_view_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5382,7 +4893,7 @@ def test_get_authorized_view_flattened_error():
 @pytest.mark.asyncio
 async def test_get_authorized_view_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5413,7 +4924,7 @@ async def test_get_authorized_view_flattened_async():
 @pytest.mark.asyncio
 async def test_get_authorized_view_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5458,27 +4969,6 @@ def test_update_authorized_view(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_authorized_view_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_authorized_view), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UpdateAuthorizedViewRequest()
 
 
 def test_update_authorized_view_non_empty_request_with_auto_populated_field():
@@ -5553,29 +5043,6 @@ def test_update_authorized_view_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_authorized_view_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_authorized_view), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UpdateAuthorizedViewRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_authorized_view_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5583,7 +5050,7 @@ async def test_update_authorized_view_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5628,7 +5095,7 @@ async def test_update_authorized_view_async(
     request_type=bigtable_table_admin.UpdateAuthorizedViewRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5695,7 +5162,7 @@ def test_update_authorized_view_field_headers():
 @pytest.mark.asyncio
 async def test_update_authorized_view_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5774,7 +5241,7 @@ def test_update_authorized_view_flattened_error():
 @pytest.mark.asyncio
 async def test_update_authorized_view_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5809,7 +5276,7 @@ async def test_update_authorized_view_flattened_async():
 @pytest.mark.asyncio
 async def test_update_authorized_view_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5855,27 +5322,6 @@ def test_delete_authorized_view(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_authorized_view_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_authorized_view), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteAuthorizedViewRequest()
 
 
 def test_delete_authorized_view_non_empty_request_with_auto_populated_field():
@@ -5951,27 +5397,6 @@ def test_delete_authorized_view_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_authorized_view_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_authorized_view), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_authorized_view()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteAuthorizedViewRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_authorized_view_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5979,7 +5404,7 @@ async def test_delete_authorized_view_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6019,7 +5444,7 @@ async def test_delete_authorized_view_async(
     request_type=bigtable_table_admin.DeleteAuthorizedViewRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6084,7 +5509,7 @@ def test_delete_authorized_view_field_headers():
 @pytest.mark.asyncio
 async def test_delete_authorized_view_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6156,7 +5581,7 @@ def test_delete_authorized_view_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_authorized_view_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6185,7 +5610,7 @@ async def test_delete_authorized_view_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_authorized_view_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6237,27 +5662,6 @@ def test_modify_column_families(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.granularity == table.Table.TimestampGranularity.MILLIS
     assert response.deletion_protection is True
-
-
-def test_modify_column_families_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.modify_column_families), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.modify_column_families()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ModifyColumnFamiliesRequest()
 
 
 def test_modify_column_families_non_empty_request_with_auto_populated_field():
@@ -6331,33 +5735,6 @@ def test_modify_column_families_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_modify_column_families_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.modify_column_families), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            table.Table(
-                name="name_value",
-                granularity=table.Table.TimestampGranularity.MILLIS,
-                deletion_protection=True,
-            )
-        )
-        response = await client.modify_column_families()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ModifyColumnFamiliesRequest()
-
-
-@pytest.mark.asyncio
 async def test_modify_column_families_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6365,7 +5742,7 @@ async def test_modify_column_families_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6405,7 +5782,7 @@ async def test_modify_column_families_async(
     request_type=bigtable_table_admin.ModifyColumnFamiliesRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6479,7 +5856,7 @@ def test_modify_column_families_field_headers():
 @pytest.mark.asyncio
 async def test_modify_column_families_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6566,7 +5943,7 @@ def test_modify_column_families_flattened_error():
 @pytest.mark.asyncio
 async def test_modify_column_families_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6605,7 +5982,7 @@ async def test_modify_column_families_flattened_async():
 @pytest.mark.asyncio
 async def test_modify_column_families_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6653,25 +6030,6 @@ def test_drop_row_range(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_drop_row_range_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.drop_row_range), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.drop_row_range()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DropRowRangeRequest()
 
 
 def test_drop_row_range_non_empty_request_with_auto_populated_field():
@@ -6738,25 +6096,6 @@ def test_drop_row_range_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_drop_row_range_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.drop_row_range), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.drop_row_range()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DropRowRangeRequest()
-
-
-@pytest.mark.asyncio
 async def test_drop_row_range_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6764,7 +6103,7 @@ async def test_drop_row_range_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6804,7 +6143,7 @@ async def test_drop_row_range_async(
     request_type=bigtable_table_admin.DropRowRangeRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6865,7 +6204,7 @@ def test_drop_row_range_field_headers():
 @pytest.mark.asyncio
 async def test_drop_row_range_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6928,27 +6267,6 @@ def test_generate_consistency_token(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable_table_admin.GenerateConsistencyTokenResponse)
     assert response.consistency_token == "consistency_token_value"
-
-
-def test_generate_consistency_token_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_consistency_token), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.generate_consistency_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GenerateConsistencyTokenRequest()
 
 
 def test_generate_consistency_token_non_empty_request_with_auto_populated_field():
@@ -7022,31 +6340,6 @@ def test_generate_consistency_token_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_consistency_token_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_consistency_token), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            bigtable_table_admin.GenerateConsistencyTokenResponse(
-                consistency_token="consistency_token_value",
-            )
-        )
-        response = await client.generate_consistency_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GenerateConsistencyTokenRequest()
-
-
-@pytest.mark.asyncio
 async def test_generate_consistency_token_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7054,7 +6347,7 @@ async def test_generate_consistency_token_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7094,7 +6387,7 @@ async def test_generate_consistency_token_async(
     request_type=bigtable_table_admin.GenerateConsistencyTokenRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7164,7 +6457,7 @@ def test_generate_consistency_token_field_headers():
 @pytest.mark.asyncio
 async def test_generate_consistency_token_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7238,7 +6531,7 @@ def test_generate_consistency_token_flattened_error():
 @pytest.mark.asyncio
 async def test_generate_consistency_token_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7269,7 +6562,7 @@ async def test_generate_consistency_token_flattened_async():
 @pytest.mark.asyncio
 async def test_generate_consistency_token_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7317,27 +6610,6 @@ def test_check_consistency(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable_table_admin.CheckConsistencyResponse)
     assert response.consistent is True
-
-
-def test_check_consistency_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_consistency), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.check_consistency()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CheckConsistencyRequest()
 
 
 def test_check_consistency_non_empty_request_with_auto_populated_field():
@@ -7410,31 +6682,6 @@ def test_check_consistency_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_check_consistency_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.check_consistency), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            bigtable_table_admin.CheckConsistencyResponse(
-                consistent=True,
-            )
-        )
-        response = await client.check_consistency()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CheckConsistencyRequest()
-
-
-@pytest.mark.asyncio
 async def test_check_consistency_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7442,7 +6689,7 @@ async def test_check_consistency_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7482,7 +6729,7 @@ async def test_check_consistency_async(
     request_type=bigtable_table_admin.CheckConsistencyRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7552,7 +6799,7 @@ def test_check_consistency_field_headers():
 @pytest.mark.asyncio
 async def test_check_consistency_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7631,7 +6878,7 @@ def test_check_consistency_flattened_error():
 @pytest.mark.asyncio
 async def test_check_consistency_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7666,7 +6913,7 @@ async def test_check_consistency_flattened_async():
 @pytest.mark.asyncio
 async def test_check_consistency_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7710,25 +6957,6 @@ def test_snapshot_table(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_snapshot_table_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.snapshot_table), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.snapshot_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.SnapshotTableRequest()
 
 
 def test_snapshot_table_non_empty_request_with_auto_populated_field():
@@ -7806,27 +7034,6 @@ def test_snapshot_table_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_snapshot_table_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.snapshot_table), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.snapshot_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.SnapshotTableRequest()
-
-
-@pytest.mark.asyncio
 async def test_snapshot_table_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7834,7 +7041,7 @@ async def test_snapshot_table_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7879,7 +7086,7 @@ async def test_snapshot_table_async(
     request_type=bigtable_table_admin.SnapshotTableRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7942,7 +7149,7 @@ def test_snapshot_table_field_headers():
 @pytest.mark.asyncio
 async def test_snapshot_table_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8027,7 +7234,7 @@ def test_snapshot_table_flattened_error():
 @pytest.mark.asyncio
 async def test_snapshot_table_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8068,7 +7275,7 @@ async def test_snapshot_table_flattened_async():
 @pytest.mark.asyncio
 async def test_snapshot_table_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8123,25 +7330,6 @@ def test_get_snapshot(request_type, transport: str = "grpc"):
     assert response.data_size_bytes == 1594
     assert response.state == table.Snapshot.State.READY
     assert response.description == "description_value"
-
-
-def test_get_snapshot_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetSnapshotRequest()
 
 
 def test_get_snapshot_non_empty_request_with_auto_populated_field():
@@ -8208,32 +7396,6 @@ def test_get_snapshot_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_snapshot_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            table.Snapshot(
-                name="name_value",
-                data_size_bytes=1594,
-                state=table.Snapshot.State.READY,
-                description="description_value",
-            )
-        )
-        response = await client.get_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetSnapshotRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_snapshot_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8241,7 +7403,7 @@ async def test_get_snapshot_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8281,7 +7443,7 @@ async def test_get_snapshot_async(
     request_type=bigtable_table_admin.GetSnapshotRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8353,7 +7515,7 @@ def test_get_snapshot_field_headers():
 @pytest.mark.asyncio
 async def test_get_snapshot_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8421,7 +7583,7 @@ def test_get_snapshot_flattened_error():
 @pytest.mark.asyncio
 async def test_get_snapshot_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8448,7 +7610,7 @@ async def test_get_snapshot_flattened_async():
 @pytest.mark.asyncio
 async def test_get_snapshot_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8494,25 +7656,6 @@ def test_list_snapshots(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSnapshotsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_snapshots_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_snapshots()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListSnapshotsRequest()
 
 
 def test_list_snapshots_non_empty_request_with_auto_populated_field():
@@ -8581,29 +7724,6 @@ def test_list_snapshots_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_snapshots_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            bigtable_table_admin.ListSnapshotsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_snapshots()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListSnapshotsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_snapshots_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8611,7 +7731,7 @@ async def test_list_snapshots_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8651,7 +7771,7 @@ async def test_list_snapshots_async(
     request_type=bigtable_table_admin.ListSnapshotsRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8717,7 +7837,7 @@ def test_list_snapshots_field_headers():
 @pytest.mark.asyncio
 async def test_list_snapshots_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8787,7 +7907,7 @@ def test_list_snapshots_flattened_error():
 @pytest.mark.asyncio
 async def test_list_snapshots_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8816,7 +7936,7 @@ async def test_list_snapshots_flattened_async():
 @pytest.mark.asyncio
 async def test_list_snapshots_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8926,7 +8046,7 @@ def test_list_snapshots_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_snapshots_async_pager():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8976,7 +8096,7 @@ async def test_list_snapshots_async_pager():
 @pytest.mark.asyncio
 async def test_list_snapshots_async_pages():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9055,25 +8175,6 @@ def test_delete_snapshot(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_snapshot_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteSnapshotRequest()
-
-
 def test_delete_snapshot_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -9138,25 +8239,6 @@ def test_delete_snapshot_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_snapshot_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_snapshot()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteSnapshotRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_snapshot_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9164,7 +8246,7 @@ async def test_delete_snapshot_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9204,7 +8286,7 @@ async def test_delete_snapshot_async(
     request_type=bigtable_table_admin.DeleteSnapshotRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9265,7 +8347,7 @@ def test_delete_snapshot_field_headers():
 @pytest.mark.asyncio
 async def test_delete_snapshot_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9333,7 +8415,7 @@ def test_delete_snapshot_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_snapshot_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9360,7 +8442,7 @@ async def test_delete_snapshot_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_snapshot_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9403,25 +8485,6 @@ def test_create_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateBackupRequest()
 
 
 def test_create_backup_non_empty_request_with_auto_populated_field():
@@ -9495,27 +8558,6 @@ def test_create_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CreateBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9523,7 +8565,7 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9568,7 +8610,7 @@ async def test_create_backup_async(
     request_type=bigtable_table_admin.CreateBackupRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9631,7 +8673,7 @@ def test_create_backup_field_headers():
 @pytest.mark.asyncio
 async def test_create_backup_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9711,7 +8753,7 @@ def test_create_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_create_backup_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9748,7 +8790,7 @@ async def test_create_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_create_backup_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9806,25 +8848,6 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
     assert response.backup_type == table.Backup.BackupType.STANDARD
-
-
-def test_get_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetBackupRequest()
 
 
 def test_get_backup_non_empty_request_with_auto_populated_field():
@@ -9891,40 +8914,12 @@ def test_get_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            table.Backup(
-                name="name_value",
-                source_table="source_table_value",
-                source_backup="source_backup_value",
-                size_bytes=1089,
-                state=table.Backup.State.CREATING,
-                backup_type=table.Backup.BackupType.STANDARD,
-            )
-        )
-        response = await client.get_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.GetBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9963,7 +8958,7 @@ async def test_get_backup_async(
     transport: str = "grpc_asyncio", request_type=bigtable_table_admin.GetBackupRequest
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10039,7 +9034,7 @@ def test_get_backup_field_headers():
 @pytest.mark.asyncio
 async def test_get_backup_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10107,7 +9102,7 @@ def test_get_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_get_backup_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10134,7 +9129,7 @@ async def test_get_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_get_backup_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10190,25 +9185,6 @@ def test_update_backup(request_type, transport: str = "grpc"):
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
     assert response.backup_type == table.Backup.BackupType.STANDARD
-
-
-def test_update_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UpdateBackupRequest()
 
 
 def test_update_backup_non_empty_request_with_auto_populated_field():
@@ -10271,34 +9247,6 @@ def test_update_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            table.Backup(
-                name="name_value",
-                source_table="source_table_value",
-                source_backup="source_backup_value",
-                size_bytes=1089,
-                state=table.Backup.State.CREATING,
-                backup_type=table.Backup.BackupType.STANDARD,
-            )
-        )
-        response = await client.update_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.UpdateBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10306,7 +9254,7 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10346,7 +9294,7 @@ async def test_update_backup_async(
     request_type=bigtable_table_admin.UpdateBackupRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10422,7 +9370,7 @@ def test_update_backup_field_headers():
 @pytest.mark.asyncio
 async def test_update_backup_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10495,7 +9443,7 @@ def test_update_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_update_backup_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10526,7 +9474,7 @@ async def test_update_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_update_backup_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10570,25 +9518,6 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteBackupRequest()
 
 
 def test_delete_backup_non_empty_request_with_auto_populated_field():
@@ -10655,25 +9584,6 @@ def test_delete_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.DeleteBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10681,7 +9591,7 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10721,7 +9631,7 @@ async def test_delete_backup_async(
     request_type=bigtable_table_admin.DeleteBackupRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10782,7 +9692,7 @@ def test_delete_backup_field_headers():
 @pytest.mark.asyncio
 async def test_delete_backup_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10850,7 +9760,7 @@ def test_delete_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_backup_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10877,7 +9787,7 @@ async def test_delete_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_backup_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10923,25 +9833,6 @@ def test_list_backups(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_backups_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_backups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListBackupsRequest()
 
 
 def test_list_backups_non_empty_request_with_auto_populated_field():
@@ -11014,29 +9905,6 @@ def test_list_backups_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_backups_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            bigtable_table_admin.ListBackupsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_backups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.ListBackupsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_backups_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11044,7 +9912,7 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11084,7 +9952,7 @@ async def test_list_backups_async(
     request_type=bigtable_table_admin.ListBackupsRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11150,7 +10018,7 @@ def test_list_backups_field_headers():
 @pytest.mark.asyncio
 async def test_list_backups_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11220,7 +10088,7 @@ def test_list_backups_flattened_error():
 @pytest.mark.asyncio
 async def test_list_backups_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11249,7 +10117,7 @@ async def test_list_backups_flattened_async():
 @pytest.mark.asyncio
 async def test_list_backups_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11359,7 +10227,7 @@ def test_list_backups_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_backups_async_pager():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11409,7 +10277,7 @@ async def test_list_backups_async_pager():
 @pytest.mark.asyncio
 async def test_list_backups_async_pages():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11488,25 +10356,6 @@ def test_restore_table(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_restore_table_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.restore_table), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.restore_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.RestoreTableRequest()
-
-
 def test_restore_table_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -11580,27 +10429,6 @@ def test_restore_table_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_restore_table_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.restore_table), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.restore_table()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.RestoreTableRequest()
-
-
-@pytest.mark.asyncio
 async def test_restore_table_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11608,7 +10436,7 @@ async def test_restore_table_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11653,7 +10481,7 @@ async def test_restore_table_async(
     request_type=bigtable_table_admin.RestoreTableRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11716,7 +10544,7 @@ def test_restore_table_field_headers():
 @pytest.mark.asyncio
 async def test_restore_table_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11776,25 +10604,6 @@ def test_copy_backup(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_copy_backup_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.copy_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CopyBackupRequest()
 
 
 def test_copy_backup_non_empty_request_with_auto_populated_field():
@@ -11870,27 +10679,6 @@ def test_copy_backup_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_copy_backup_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.copy_backup()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == bigtable_table_admin.CopyBackupRequest()
-
-
-@pytest.mark.asyncio
 async def test_copy_backup_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11898,7 +10686,7 @@ async def test_copy_backup_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11942,7 +10730,7 @@ async def test_copy_backup_async(
     transport: str = "grpc_asyncio", request_type=bigtable_table_admin.CopyBackupRequest
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12005,7 +10793,7 @@ def test_copy_backup_field_headers():
 @pytest.mark.asyncio
 async def test_copy_backup_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12090,7 +10878,7 @@ def test_copy_backup_flattened_error():
 @pytest.mark.asyncio
 async def test_copy_backup_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12131,7 +10919,7 @@ async def test_copy_backup_flattened_async():
 @pytest.mark.asyncio
 async def test_copy_backup_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12182,25 +10970,6 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_get_iam_policy_non_empty_request_with_auto_populated_field():
@@ -12267,30 +11036,6 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12298,7 +11043,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12337,7 +11082,7 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12405,7 +11150,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12490,7 +11235,7 @@ def test_get_iam_policy_flattened_error():
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12517,7 +11262,7 @@ async def test_get_iam_policy_flattened_async():
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12565,25 +11310,6 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_set_iam_policy_non_empty_request_with_auto_populated_field():
@@ -12650,30 +11376,6 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12681,7 +11383,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12720,7 +11422,7 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12788,7 +11490,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12874,7 +11576,7 @@ def test_set_iam_policy_flattened_error():
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12901,7 +11603,7 @@ async def test_set_iam_policy_flattened_async():
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12949,27 +11651,6 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
@@ -13042,31 +11723,6 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse(
-                permissions=["permissions_value"],
-            )
-        )
-        response = await client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13074,7 +11730,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BigtableTableAdminAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13114,7 +11770,7 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13184,7 +11840,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13282,7 +11938,7 @@ def test_test_iam_permissions_flattened_error():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13317,7 +11973,7 @@ async def test_test_iam_permissions_flattened_async():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_error_async():
     client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13328,50 +11984,6 @@ async def test_test_iam_permissions_flattened_error_async():
             resource="resource_value",
             permissions=["permissions_value"],
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.CreateTableRequest,
-        dict,
-    ],
-)
-def test_create_table_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gba_table.Table(
-            name="name_value",
-            granularity=gba_table.Table.TimestampGranularity.MILLIS,
-            deletion_protection=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gba_table.Table.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_table(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gba_table.Table)
-    assert response.name == "name_value"
-    assert response.granularity == gba_table.Table.TimestampGranularity.MILLIS
-    assert response.deletion_protection is True
 
 
 def test_create_table_rest_use_cached_wrapped_rpc():
@@ -13507,85 +12119,6 @@ def test_create_table_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_table_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_table"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.CreateTableRequest.pb(
-            bigtable_table_admin.CreateTableRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gba_table.Table.to_json(gba_table.Table())
-
-        request = bigtable_table_admin.CreateTableRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gba_table.Table()
-
-        client.create_table(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_table_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.CreateTableRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_table(request)
-
-
 def test_create_table_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13644,47 +12177,6 @@ def test_create_table_rest_flattened_error(transport: str = "rest"):
             table_id="table_id_value",
             table=gba_table.Table(name="name_value"),
         )
-
-
-def test_create_table_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.CreateTableFromSnapshotRequest,
-        dict,
-    ],
-)
-def test_create_table_from_snapshot_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_table_from_snapshot(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_table_from_snapshot_rest_use_cached_wrapped_rpc():
@@ -13830,90 +12322,6 @@ def test_create_table_from_snapshot_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_table_from_snapshot_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_table_from_snapshot"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_table_from_snapshot"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.CreateTableFromSnapshotRequest.pb(
-            bigtable_table_admin.CreateTableFromSnapshotRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.CreateTableFromSnapshotRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_table_from_snapshot(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_table_from_snapshot_rest_bad_request(
-    transport: str = "rest",
-    request_type=bigtable_table_admin.CreateTableFromSnapshotRequest,
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_table_from_snapshot(request)
-
-
 def test_create_table_from_snapshot_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13971,52 +12379,6 @@ def test_create_table_from_snapshot_rest_flattened_error(transport: str = "rest"
             table_id="table_id_value",
             source_snapshot="source_snapshot_value",
         )
-
-
-def test_create_table_from_snapshot_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.ListTablesRequest,
-        dict,
-    ],
-)
-def test_list_tables_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = bigtable_table_admin.ListTablesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = bigtable_table_admin.ListTablesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_tables(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListTablesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_tables_rest_use_cached_wrapped_rpc():
@@ -14155,87 +12517,6 @@ def test_list_tables_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_tables_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_tables"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_tables"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.ListTablesRequest.pb(
-            bigtable_table_admin.ListTablesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = bigtable_table_admin.ListTablesResponse.to_json(
-            bigtable_table_admin.ListTablesResponse()
-        )
-
-        request = bigtable_table_admin.ListTablesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = bigtable_table_admin.ListTablesResponse()
-
-        client.list_tables(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_tables_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.ListTablesRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_tables(request)
-
-
 def test_list_tables_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14353,50 +12634,6 @@ def test_list_tables_rest_pager(transport: str = "rest"):
         pages = list(client.list_tables(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.GetTableRequest,
-        dict,
-    ],
-)
-def test_get_table_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = table.Table(
-            name="name_value",
-            granularity=table.Table.TimestampGranularity.MILLIS,
-            deletion_protection=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = table.Table.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_table(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, table.Table)
-    assert response.name == "name_value"
-    assert response.granularity == table.Table.TimestampGranularity.MILLIS
-    assert response.deletion_protection is True
 
 
 def test_get_table_rest_use_cached_wrapped_rpc():
@@ -14520,85 +12757,6 @@ def test_get_table_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_table_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_table"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.GetTableRequest.pb(
-            bigtable_table_admin.GetTableRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = table.Table.to_json(table.Table())
-
-        request = bigtable_table_admin.GetTableRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = table.Table()
-
-        client.get_table(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_table_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.GetTableRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_table(request)
-
-
 def test_get_table_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14653,135 +12811,6 @@ def test_get_table_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.GetTableRequest(),
             name="name_value",
         )
-
-
-def test_get_table_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.UpdateTableRequest,
-        dict,
-    ],
-)
-def test_update_table_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "table": {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    }
-    request_init["table"] = {
-        "name": "projects/sample1/instances/sample2/tables/sample3",
-        "cluster_states": {},
-        "column_families": {},
-        "granularity": 1,
-        "restore_info": {
-            "source_type": 1,
-            "backup_info": {
-                "backup": "backup_value",
-                "start_time": {"seconds": 751, "nanos": 543},
-                "end_time": {},
-                "source_table": "source_table_value",
-                "source_backup": "source_backup_value",
-            },
-        },
-        "change_stream_config": {"retention_period": {"seconds": 751, "nanos": 543}},
-        "deletion_protection": True,
-        "automated_backup_policy": {"retention_period": {}, "frequency": {}},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = bigtable_table_admin.UpdateTableRequest.meta.fields["table"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["table"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["table"][field])):
-                    del request_init["table"][field][i][subfield]
-            else:
-                del request_init["table"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_table(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_table_rest_use_cached_wrapped_rpc():
@@ -14910,91 +12939,6 @@ def test_update_table_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_table_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_update_table"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.UpdateTableRequest.pb(
-            bigtable_table_admin.UpdateTableRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.UpdateTableRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_table(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_table_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.UpdateTableRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "table": {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_table(request)
-
-
 def test_update_table_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15052,47 +12996,6 @@ def test_update_table_rest_flattened_error(transport: str = "rest"):
             table=gba_table.Table(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_table_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.DeleteTableRequest,
-        dict,
-    ],
-)
-def test_delete_table_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_table(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_table_rest_use_cached_wrapped_rpc():
@@ -15211,79 +13114,6 @@ def test_delete_table_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_table_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_table"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = bigtable_table_admin.DeleteTableRequest.pb(
-            bigtable_table_admin.DeleteTableRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = bigtable_table_admin.DeleteTableRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_table(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_table_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.DeleteTableRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_table(request)
-
-
 def test_delete_table_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15336,47 +13166,6 @@ def test_delete_table_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.DeleteTableRequest(),
             name="name_value",
         )
-
-
-def test_delete_table_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.UndeleteTableRequest,
-        dict,
-    ],
-)
-def test_undelete_table_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.undelete_table(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_undelete_table_rest_use_cached_wrapped_rpc():
@@ -15500,89 +13289,6 @@ def test_undelete_table_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_undelete_table_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_undelete_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_undelete_table"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.UndeleteTableRequest.pb(
-            bigtable_table_admin.UndeleteTableRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.UndeleteTableRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.undelete_table(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_undelete_table_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.UndeleteTableRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.undelete_table(request)
-
-
 def test_undelete_table_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15636,125 +13342,6 @@ def test_undelete_table_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.UndeleteTableRequest(),
             name="name_value",
         )
-
-
-def test_undelete_table_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.CreateAuthorizedViewRequest,
-        dict,
-    ],
-)
-def test_create_authorized_view_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
-    request_init["authorized_view"] = {
-        "name": "name_value",
-        "subset_view": {
-            "row_prefixes": [b"row_prefixes_blob1", b"row_prefixes_blob2"],
-            "family_subsets": {},
-        },
-        "etag": "etag_value",
-        "deletion_protection": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = bigtable_table_admin.CreateAuthorizedViewRequest.meta.fields[
-        "authorized_view"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["authorized_view"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["authorized_view"][field])):
-                    del request_init["authorized_view"][field][i][subfield]
-            else:
-                del request_init["authorized_view"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_authorized_view(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_authorized_view_rest_use_cached_wrapped_rpc():
@@ -15907,90 +13494,6 @@ def test_create_authorized_view_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_authorized_view_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_authorized_view"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_authorized_view"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.CreateAuthorizedViewRequest.pb(
-            bigtable_table_admin.CreateAuthorizedViewRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.CreateAuthorizedViewRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_authorized_view(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_authorized_view_rest_bad_request(
-    transport: str = "rest",
-    request_type=bigtable_table_admin.CreateAuthorizedViewRequest,
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_authorized_view(request)
-
-
 def test_create_authorized_view_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16048,52 +13551,6 @@ def test_create_authorized_view_rest_flattened_error(transport: str = "rest"):
             authorized_view=table.AuthorizedView(name="name_value"),
             authorized_view_id="authorized_view_id_value",
         )
-
-
-def test_create_authorized_view_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.ListAuthorizedViewsRequest,
-        dict,
-    ],
-)
-def test_list_authorized_views_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = bigtable_table_admin.ListAuthorizedViewsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = bigtable_table_admin.ListAuthorizedViewsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_authorized_views(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAuthorizedViewsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_authorized_views_rest_use_cached_wrapped_rpc():
@@ -16239,90 +13696,6 @@ def test_list_authorized_views_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_authorized_views_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_authorized_views"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_authorized_views"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.ListAuthorizedViewsRequest.pb(
-            bigtable_table_admin.ListAuthorizedViewsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            bigtable_table_admin.ListAuthorizedViewsResponse.to_json(
-                bigtable_table_admin.ListAuthorizedViewsResponse()
-            )
-        )
-
-        request = bigtable_table_admin.ListAuthorizedViewsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = bigtable_table_admin.ListAuthorizedViewsResponse()
-
-        client.list_authorized_views(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_authorized_views_rest_bad_request(
-    transport: str = "rest",
-    request_type=bigtable_table_admin.ListAuthorizedViewsRequest,
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_authorized_views(request)
-
-
 def test_list_authorized_views_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16442,52 +13815,6 @@ def test_list_authorized_views_rest_pager(transport: str = "rest"):
         pages = list(client.list_authorized_views(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.GetAuthorizedViewRequest,
-        dict,
-    ],
-)
-def test_get_authorized_view_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = table.AuthorizedView(
-            name="name_value",
-            etag="etag_value",
-            deletion_protection=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = table.AuthorizedView.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_authorized_view(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, table.AuthorizedView)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
-    assert response.deletion_protection is True
 
 
 def test_get_authorized_view_rest_use_cached_wrapped_rpc():
@@ -16615,87 +13942,6 @@ def test_get_authorized_view_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_authorized_view_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_authorized_view"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_authorized_view"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.GetAuthorizedViewRequest.pb(
-            bigtable_table_admin.GetAuthorizedViewRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = table.AuthorizedView.to_json(table.AuthorizedView())
-
-        request = bigtable_table_admin.GetAuthorizedViewRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = table.AuthorizedView()
-
-        client.get_authorized_view(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_authorized_view_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.GetAuthorizedViewRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_authorized_view(request)
-
-
 def test_get_authorized_view_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16753,129 +13999,6 @@ def test_get_authorized_view_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.GetAuthorizedViewRequest(),
             name="name_value",
         )
-
-
-def test_get_authorized_view_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.UpdateAuthorizedViewRequest,
-        dict,
-    ],
-)
-def test_update_authorized_view_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "authorized_view": {
-            "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-        }
-    }
-    request_init["authorized_view"] = {
-        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
-        "subset_view": {
-            "row_prefixes": [b"row_prefixes_blob1", b"row_prefixes_blob2"],
-            "family_subsets": {},
-        },
-        "etag": "etag_value",
-        "deletion_protection": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = bigtable_table_admin.UpdateAuthorizedViewRequest.meta.fields[
-        "authorized_view"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["authorized_view"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["authorized_view"][field])):
-                    del request_init["authorized_view"][field][i][subfield]
-            else:
-                del request_init["authorized_view"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_authorized_view(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_authorized_view_rest_use_cached_wrapped_rpc():
@@ -17014,94 +14137,6 @@ def test_update_authorized_view_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_authorized_view_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_authorized_view"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_update_authorized_view"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.UpdateAuthorizedViewRequest.pb(
-            bigtable_table_admin.UpdateAuthorizedViewRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.UpdateAuthorizedViewRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_authorized_view(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_authorized_view_rest_bad_request(
-    transport: str = "rest",
-    request_type=bigtable_table_admin.UpdateAuthorizedViewRequest,
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "authorized_view": {
-            "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_authorized_view(request)
-
-
 def test_update_authorized_view_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17161,49 +14196,6 @@ def test_update_authorized_view_rest_flattened_error(transport: str = "rest"):
             authorized_view=table.AuthorizedView(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_authorized_view_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.DeleteAuthorizedViewRequest,
-        dict,
-    ],
-)
-def test_delete_authorized_view_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_authorized_view(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_authorized_view_rest_use_cached_wrapped_rpc():
@@ -17329,82 +14321,6 @@ def test_delete_authorized_view_rest_unset_required_fields():
     assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_authorized_view_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_authorized_view"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = bigtable_table_admin.DeleteAuthorizedViewRequest.pb(
-            bigtable_table_admin.DeleteAuthorizedViewRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = bigtable_table_admin.DeleteAuthorizedViewRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_authorized_view(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_authorized_view_rest_bad_request(
-    transport: str = "rest",
-    request_type=bigtable_table_admin.DeleteAuthorizedViewRequest,
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_authorized_view(request)
-
-
 def test_delete_authorized_view_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17460,56 +14376,6 @@ def test_delete_authorized_view_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.DeleteAuthorizedViewRequest(),
             name="name_value",
         )
-
-
-def test_delete_authorized_view_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.ModifyColumnFamiliesRequest,
-        dict,
-    ],
-)
-def test_modify_column_families_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = table.Table(
-            name="name_value",
-            granularity=table.Table.TimestampGranularity.MILLIS,
-            deletion_protection=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = table.Table.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.modify_column_families(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, table.Table)
-    assert response.name == "name_value"
-    assert response.granularity == table.Table.TimestampGranularity.MILLIS
-    assert response.deletion_protection is True
 
 
 def test_modify_column_families_rest_use_cached_wrapped_rpc():
@@ -17645,86 +14511,6 @@ def test_modify_column_families_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_modify_column_families_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_modify_column_families"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_modify_column_families"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.ModifyColumnFamiliesRequest.pb(
-            bigtable_table_admin.ModifyColumnFamiliesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = table.Table.to_json(table.Table())
-
-        request = bigtable_table_admin.ModifyColumnFamiliesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = table.Table()
-
-        client.modify_column_families(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_modify_column_families_rest_bad_request(
-    transport: str = "rest",
-    request_type=bigtable_table_admin.ModifyColumnFamiliesRequest,
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.modify_column_families(request)
-
-
 def test_modify_column_families_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17790,47 +14576,6 @@ def test_modify_column_families_rest_flattened_error(transport: str = "rest"):
                 )
             ],
         )
-
-
-def test_modify_column_families_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.DropRowRangeRequest,
-        dict,
-    ],
-)
-def test_drop_row_range_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.drop_row_range(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_drop_row_range_rest_use_cached_wrapped_rpc():
@@ -17948,127 +14693,6 @@ def test_drop_row_range_rest_unset_required_fields():
 
     unset_fields = transport.drop_row_range._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_drop_row_range_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_drop_row_range"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = bigtable_table_admin.DropRowRangeRequest.pb(
-            bigtable_table_admin.DropRowRangeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = bigtable_table_admin.DropRowRangeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.drop_row_range(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_drop_row_range_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.DropRowRangeRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.drop_row_range(request)
-
-
-def test_drop_row_range_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.GenerateConsistencyTokenRequest,
-        dict,
-    ],
-)
-def test_generate_consistency_token_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = bigtable_table_admin.GenerateConsistencyTokenResponse(
-            consistency_token="consistency_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = bigtable_table_admin.GenerateConsistencyTokenResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.generate_consistency_token(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, bigtable_table_admin.GenerateConsistencyTokenResponse)
-    assert response.consistency_token == "consistency_token_value"
 
 
 def test_generate_consistency_token_rest_use_cached_wrapped_rpc():
@@ -18198,90 +14822,6 @@ def test_generate_consistency_token_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_consistency_token_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_generate_consistency_token"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_generate_consistency_token"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.GenerateConsistencyTokenRequest.pb(
-            bigtable_table_admin.GenerateConsistencyTokenRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            bigtable_table_admin.GenerateConsistencyTokenResponse.to_json(
-                bigtable_table_admin.GenerateConsistencyTokenResponse()
-            )
-        )
-
-        request = bigtable_table_admin.GenerateConsistencyTokenRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = bigtable_table_admin.GenerateConsistencyTokenResponse()
-
-        client.generate_consistency_token(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_consistency_token_rest_bad_request(
-    transport: str = "rest",
-    request_type=bigtable_table_admin.GenerateConsistencyTokenRequest,
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_consistency_token(request)
-
-
 def test_generate_consistency_token_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18339,52 +14879,6 @@ def test_generate_consistency_token_rest_flattened_error(transport: str = "rest"
             bigtable_table_admin.GenerateConsistencyTokenRequest(),
             name="name_value",
         )
-
-
-def test_generate_consistency_token_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.CheckConsistencyRequest,
-        dict,
-    ],
-)
-def test_check_consistency_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = bigtable_table_admin.CheckConsistencyResponse(
-            consistent=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = bigtable_table_admin.CheckConsistencyResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.check_consistency(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, bigtable_table_admin.CheckConsistencyResponse)
-    assert response.consistent is True
 
 
 def test_check_consistency_rest_use_cached_wrapped_rpc():
@@ -18523,89 +15017,6 @@ def test_check_consistency_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_check_consistency_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_check_consistency"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_check_consistency"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.CheckConsistencyRequest.pb(
-            bigtable_table_admin.CheckConsistencyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            bigtable_table_admin.CheckConsistencyResponse.to_json(
-                bigtable_table_admin.CheckConsistencyResponse()
-            )
-        )
-
-        request = bigtable_table_admin.CheckConsistencyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = bigtable_table_admin.CheckConsistencyResponse()
-
-        client.check_consistency(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_check_consistency_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.CheckConsistencyRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.check_consistency(request)
-
-
 def test_check_consistency_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18663,47 +15074,6 @@ def test_check_consistency_rest_flattened_error(transport: str = "rest"):
             name="name_value",
             consistency_token="consistency_token_value",
         )
-
-
-def test_check_consistency_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.SnapshotTableRequest,
-        dict,
-    ],
-)
-def test_snapshot_table_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.snapshot_table(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_snapshot_table_rest_use_cached_wrapped_rpc():
@@ -18844,89 +15214,6 @@ def test_snapshot_table_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_snapshot_table_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_snapshot_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_snapshot_table"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.SnapshotTableRequest.pb(
-            bigtable_table_admin.SnapshotTableRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.SnapshotTableRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.snapshot_table(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_snapshot_table_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.SnapshotTableRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.snapshot_table(request)
-
-
 def test_snapshot_table_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18986,60 +15273,6 @@ def test_snapshot_table_rest_flattened_error(transport: str = "rest"):
             snapshot_id="snapshot_id_value",
             description="description_value",
         )
-
-
-def test_snapshot_table_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.GetSnapshotRequest,
-        dict,
-    ],
-)
-def test_get_snapshot_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = table.Snapshot(
-            name="name_value",
-            data_size_bytes=1594,
-            state=table.Snapshot.State.READY,
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = table.Snapshot.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_snapshot(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, table.Snapshot)
-    assert response.name == "name_value"
-    assert response.data_size_bytes == 1594
-    assert response.state == table.Snapshot.State.READY
-    assert response.description == "description_value"
 
 
 def test_get_snapshot_rest_use_cached_wrapped_rpc():
@@ -19161,87 +15394,6 @@ def test_get_snapshot_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_snapshot_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_snapshot"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_snapshot"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.GetSnapshotRequest.pb(
-            bigtable_table_admin.GetSnapshotRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = table.Snapshot.to_json(table.Snapshot())
-
-        request = bigtable_table_admin.GetSnapshotRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = table.Snapshot()
-
-        client.get_snapshot(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_snapshot_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.GetSnapshotRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_snapshot(request)
-
-
 def test_get_snapshot_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19299,52 +15451,6 @@ def test_get_snapshot_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.GetSnapshotRequest(),
             name="name_value",
         )
-
-
-def test_get_snapshot_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.ListSnapshotsRequest,
-        dict,
-    ],
-)
-def test_list_snapshots_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = bigtable_table_admin.ListSnapshotsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = bigtable_table_admin.ListSnapshotsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_snapshots(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSnapshotsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_snapshots_rest_use_cached_wrapped_rpc():
@@ -19481,87 +15587,6 @@ def test_list_snapshots_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_snapshots_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_snapshots"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_snapshots"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.ListSnapshotsRequest.pb(
-            bigtable_table_admin.ListSnapshotsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = bigtable_table_admin.ListSnapshotsResponse.to_json(
-            bigtable_table_admin.ListSnapshotsResponse()
-        )
-
-        request = bigtable_table_admin.ListSnapshotsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = bigtable_table_admin.ListSnapshotsResponse()
-
-        client.list_snapshots(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_snapshots_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.ListSnapshotsRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_snapshots(request)
-
-
 def test_list_snapshots_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19686,43 +15711,6 @@ def test_list_snapshots_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.DeleteSnapshotRequest,
-        dict,
-    ],
-)
-def test_delete_snapshot_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_snapshot(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
 def test_delete_snapshot_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -19839,81 +15827,6 @@ def test_delete_snapshot_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_snapshot_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_snapshot"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = bigtable_table_admin.DeleteSnapshotRequest.pb(
-            bigtable_table_admin.DeleteSnapshotRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = bigtable_table_admin.DeleteSnapshotRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_snapshot(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_snapshot_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.DeleteSnapshotRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_snapshot(request)
-
-
 def test_delete_snapshot_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19969,140 +15882,6 @@ def test_delete_snapshot_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.DeleteSnapshotRequest(),
             name="name_value",
         )
-
-
-def test_delete_snapshot_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.CreateBackupRequest,
-        dict,
-    ],
-)
-def test_create_backup_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request_init["backup"] = {
-        "name": "name_value",
-        "source_table": "source_table_value",
-        "source_backup": "source_backup_value",
-        "expire_time": {"seconds": 751, "nanos": 543},
-        "start_time": {},
-        "end_time": {},
-        "size_bytes": 1089,
-        "state": 1,
-        "encryption_info": {
-            "encryption_type": 1,
-            "encryption_status": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "kms_key_version": "kms_key_version_value",
-        },
-        "backup_type": 1,
-        "hot_to_standard_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = bigtable_table_admin.CreateBackupRequest.meta.fields["backup"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["backup"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["backup"][field])):
-                    del request_init["backup"][field][i][subfield]
-            else:
-                del request_init["backup"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_backup_rest_use_cached_wrapped_rpc():
@@ -20250,89 +16029,6 @@ def test_create_backup_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_backup_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_create_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_create_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.CreateBackupRequest.pb(
-            bigtable_table_admin.CreateBackupRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.CreateBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_backup_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.CreateBackupRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_backup(request)
-
-
 def test_create_backup_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20392,64 +16088,6 @@ def test_create_backup_rest_flattened_error(transport: str = "rest"):
             backup_id="backup_id_value",
             backup=table.Backup(name="name_value"),
         )
-
-
-def test_create_backup_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.GetBackupRequest,
-        dict,
-    ],
-)
-def test_get_backup_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = table.Backup(
-            name="name_value",
-            source_table="source_table_value",
-            source_backup="source_backup_value",
-            size_bytes=1089,
-            state=table.Backup.State.CREATING,
-            backup_type=table.Backup.BackupType.STANDARD,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = table.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, table.Backup)
-    assert response.name == "name_value"
-    assert response.source_table == "source_table_value"
-    assert response.source_backup == "source_backup_value"
-    assert response.size_bytes == 1089
-    assert response.state == table.Backup.State.CREATING
-    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 def test_get_backup_rest_use_cached_wrapped_rpc():
@@ -20571,87 +16209,6 @@ def test_get_backup_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_backup_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.GetBackupRequest.pb(
-            bigtable_table_admin.GetBackupRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = table.Backup.to_json(table.Backup())
-
-        request = bigtable_table_admin.GetBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = table.Backup()
-
-        client.get_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_backup_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.GetBackupRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_backup(request)
-
-
 def test_get_backup_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20709,159 +16266,6 @@ def test_get_backup_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.GetBackupRequest(),
             name="name_value",
         )
-
-
-def test_get_backup_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.UpdateBackupRequest,
-        dict,
-    ],
-)
-def test_update_backup_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "backup": {
-            "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
-        }
-    }
-    request_init["backup"] = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4",
-        "source_table": "source_table_value",
-        "source_backup": "source_backup_value",
-        "expire_time": {"seconds": 751, "nanos": 543},
-        "start_time": {},
-        "end_time": {},
-        "size_bytes": 1089,
-        "state": 1,
-        "encryption_info": {
-            "encryption_type": 1,
-            "encryption_status": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "kms_key_version": "kms_key_version_value",
-        },
-        "backup_type": 1,
-        "hot_to_standard_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = bigtable_table_admin.UpdateBackupRequest.meta.fields["backup"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["backup"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["backup"][field])):
-                    del request_init["backup"][field][i][subfield]
-            else:
-                del request_init["backup"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = table.Backup(
-            name="name_value",
-            source_table="source_table_value",
-            source_backup="source_backup_value",
-            size_bytes=1089,
-            state=table.Backup.State.CREATING,
-            backup_type=table.Backup.BackupType.STANDARD,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = table.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, table.Backup)
-    assert response.name == "name_value"
-    assert response.source_table == "source_table_value"
-    assert response.source_backup == "source_backup_value"
-    assert response.size_bytes == 1089
-    assert response.state == table.Backup.State.CREATING
-    assert response.backup_type == table.Backup.BackupType.STANDARD
 
 
 def test_update_backup_rest_use_cached_wrapped_rpc():
@@ -20989,89 +16393,6 @@ def test_update_backup_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_backup_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_update_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_update_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.UpdateBackupRequest.pb(
-            bigtable_table_admin.UpdateBackupRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = table.Backup.to_json(table.Backup())
-
-        request = bigtable_table_admin.UpdateBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = table.Backup()
-
-        client.update_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_backup_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.UpdateBackupRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "backup": {
-            "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_backup(request)
-
-
 def test_update_backup_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21133,49 +16454,6 @@ def test_update_backup_rest_flattened_error(transport: str = "rest"):
             backup=table.Backup(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_backup_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.DeleteBackupRequest,
-        dict,
-    ],
-)
-def test_delete_backup_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_backup_rest_use_cached_wrapped_rpc():
@@ -21294,81 +16572,6 @@ def test_delete_backup_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_backup_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_delete_backup"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = bigtable_table_admin.DeleteBackupRequest.pb(
-            bigtable_table_admin.DeleteBackupRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = bigtable_table_admin.DeleteBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_backup_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.DeleteBackupRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_backup(request)
-
-
 def test_delete_backup_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21424,52 +16627,6 @@ def test_delete_backup_rest_flattened_error(transport: str = "rest"):
             bigtable_table_admin.DeleteBackupRequest(),
             name="name_value",
         )
-
-
-def test_delete_backup_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.ListBackupsRequest,
-        dict,
-    ],
-)
-def test_list_backups_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = bigtable_table_admin.ListBackupsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = bigtable_table_admin.ListBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_backups(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBackupsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_backups_rest_use_cached_wrapped_rpc():
@@ -21610,87 +16767,6 @@ def test_list_backups_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_backups_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_list_backups"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.ListBackupsRequest.pb(
-            bigtable_table_admin.ListBackupsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = bigtable_table_admin.ListBackupsResponse.to_json(
-            bigtable_table_admin.ListBackupsResponse()
-        )
-
-        request = bigtable_table_admin.ListBackupsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = bigtable_table_admin.ListBackupsResponse()
-
-        client.list_backups(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_backups_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.ListBackupsRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_backups(request)
-
-
 def test_list_backups_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21813,41 +16889,6 @@ def test_list_backups_rest_pager(transport: str = "rest"):
         pages = list(client.list_backups(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.RestoreTableRequest,
-        dict,
-    ],
-)
-def test_restore_table_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.restore_table(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_restore_table_rest_use_cached_wrapped_rpc():
@@ -21981,130 +17022,6 @@ def test_restore_table_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_restore_table_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_restore_table"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_restore_table"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.RestoreTableRequest.pb(
-            bigtable_table_admin.RestoreTableRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.RestoreTableRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.restore_table(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_restore_table_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.RestoreTableRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.restore_table(request)
-
-
-def test_restore_table_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        bigtable_table_admin.CopyBackupRequest,
-        dict,
-    ],
-)
-def test_copy_backup_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.copy_backup(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_copy_backup_rest_use_cached_wrapped_rpc():
@@ -22246,89 +17163,6 @@ def test_copy_backup_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_copy_backup_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_copy_backup"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_copy_backup"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = bigtable_table_admin.CopyBackupRequest.pb(
-            bigtable_table_admin.CopyBackupRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = bigtable_table_admin.CopyBackupRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.copy_backup(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_copy_backup_rest_bad_request(
-    transport: str = "rest", request_type=bigtable_table_admin.CopyBackupRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.copy_backup(request)
-
-
 def test_copy_backup_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22390,52 +17224,6 @@ def test_copy_backup_rest_flattened_error(transport: str = "rest"):
             source_backup="source_backup_value",
             expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
-
-
-def test_copy_backup_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
 
 
 def test_get_iam_policy_rest_use_cached_wrapped_rpc():
@@ -22556,83 +17344,6 @@ def test_get_iam_policy_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("resource",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.GetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
-
-        request = iam_policy_pb2.GetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-
-        client.get_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
-
 def test_get_iam_policy_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22688,52 +17399,6 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
             iam_policy_pb2.GetIamPolicyRequest(),
             resource="resource_value",
         )
-
-
-def test_get_iam_policy_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.set_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
 
 
 def test_set_iam_policy_rest_use_cached_wrapped_rpc():
@@ -22862,83 +17527,6 @@ def test_set_iam_policy_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_set_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.SetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
-
-        request = iam_policy_pb2.SetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-
-        client.set_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_set_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_iam_policy(request)
-
-
 def test_set_iam_policy_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22994,50 +17582,6 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
             iam_policy_pb2.SetIamPolicyRequest(),
             resource="resource_value",
         )
-
-
-def test_set_iam_policy_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions_rest(request_type):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = iam_policy_pb2.TestIamPermissionsResponse(
-            permissions=["permissions_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.test_iam_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-    assert response.permissions == ["permissions_value"]
 
 
 def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
@@ -23174,85 +17718,6 @@ def test_test_iam_permissions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_test_iam_permissions_rest_interceptors(null_interceptor):
-    transport = transports.BigtableTableAdminRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BigtableTableAdminRestInterceptor(),
-    )
-    client = BigtableTableAdminClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.BigtableTableAdminRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
-
-        request = iam_policy_pb2.TestIamPermissionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        client.test_iam_permissions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_test_iam_permissions_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
-
-
 def test_test_iam_permissions_rest_flattened():
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23310,12 +17775,6 @@ def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
             resource="resource_value",
             permissions=["permissions_value"],
         )
-
-
-def test_test_iam_permissions_rest_error():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -23410,18 +17869,6134 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = BigtableTableAdminClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_table_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_table), "__call__") as call:
+        call.return_value = gba_table.Table()
+        client.create_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_table_from_snapshot_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_table_from_snapshot), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_table_from_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateTableFromSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_tables_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
+        call.return_value = bigtable_table_admin.ListTablesResponse()
+        client.list_tables(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListTablesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_table_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
+        call.return_value = table.Table()
+        client.get_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_table_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_table), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_table_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
+        call.return_value = None
+        client.delete_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_undelete_table_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_table), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.undelete_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UndeleteTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_authorized_view_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_authorized_view), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_authorized_views_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_authorized_views), "__call__"
+    ) as call:
+        call.return_value = bigtable_table_admin.ListAuthorizedViewsResponse()
+        client.list_authorized_views(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListAuthorizedViewsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_authorized_view_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_authorized_view), "__call__"
+    ) as call:
+        call.return_value = table.AuthorizedView()
+        client.get_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_authorized_view_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_authorized_view), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_authorized_view_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_authorized_view), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_modify_column_families_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_column_families), "__call__"
+    ) as call:
+        call.return_value = table.Table()
+        client.modify_column_families(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ModifyColumnFamiliesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_drop_row_range_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.drop_row_range), "__call__") as call:
+        call.return_value = None
+        client.drop_row_range(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DropRowRangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_consistency_token_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_consistency_token), "__call__"
+    ) as call:
+        call.return_value = bigtable_table_admin.GenerateConsistencyTokenResponse()
+        client.generate_consistency_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GenerateConsistencyTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_check_consistency_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_consistency), "__call__"
+    ) as call:
+        call.return_value = bigtable_table_admin.CheckConsistencyResponse()
+        client.check_consistency(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CheckConsistencyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_snapshot_table_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.snapshot_table), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.snapshot_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.SnapshotTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_snapshot_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        call.return_value = table.Snapshot()
+        client.get_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_snapshots_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        call.return_value = bigtable_table_admin.ListSnapshotsResponse()
+        client.list_snapshots(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListSnapshotsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_snapshot_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        call.return_value = None
+        client.delete_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        call.return_value = table.Backup()
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_backup_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        call.return_value = table.Backup()
+        client.update_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        call.return_value = None
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        call.return_value = bigtable_table_admin.ListBackupsResponse()
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_restore_table_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_table), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.restore_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.RestoreTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_copy_backup_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.copy_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CopyBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = BigtableTableAdminAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_table_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gba_table.Table(
+                name="name_value",
+                granularity=gba_table.Table.TimestampGranularity.MILLIS,
+                deletion_protection=True,
+            )
+        )
+        await client.create_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_table_from_snapshot_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_table_from_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_table_from_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateTableFromSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_tables_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_table_admin.ListTablesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_tables(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListTablesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_table_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            table.Table(
+                name="name_value",
+                granularity=table.Table.TimestampGranularity.MILLIS,
+                deletion_protection=True,
+            )
+        )
+        await client.get_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_table_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_table_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_undelete_table_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.undelete_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UndeleteTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_authorized_view_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_authorized_view), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_authorized_views_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_authorized_views), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_table_admin.ListAuthorizedViewsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_authorized_views(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListAuthorizedViewsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_authorized_view_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_authorized_view), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            table.AuthorizedView(
+                name="name_value",
+                etag="etag_value",
+                deletion_protection=True,
+            )
+        )
+        await client.get_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_authorized_view_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_authorized_view), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_authorized_view_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_authorized_view), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_modify_column_families_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_column_families), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            table.Table(
+                name="name_value",
+                granularity=table.Table.TimestampGranularity.MILLIS,
+                deletion_protection=True,
+            )
+        )
+        await client.modify_column_families(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ModifyColumnFamiliesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_drop_row_range_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.drop_row_range), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.drop_row_range(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DropRowRangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_generate_consistency_token_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_consistency_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_table_admin.GenerateConsistencyTokenResponse(
+                consistency_token="consistency_token_value",
+            )
+        )
+        await client.generate_consistency_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GenerateConsistencyTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_check_consistency_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_consistency), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_table_admin.CheckConsistencyResponse(
+                consistent=True,
+            )
+        )
+        await client.check_consistency(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CheckConsistencyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_snapshot_table_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.snapshot_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.snapshot_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.SnapshotTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_snapshot_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            table.Snapshot(
+                name="name_value",
+                data_size_bytes=1594,
+                state=table.Snapshot.State.READY,
+                description="description_value",
+            )
+        )
+        await client.get_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_snapshots_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_table_admin.ListSnapshotsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_snapshots(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListSnapshotsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_snapshot_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_backup_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_backup_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            table.Backup(
+                name="name_value",
+                source_table="source_table_value",
+                source_backup="source_backup_value",
+                size_bytes=1089,
+                state=table.Backup.State.CREATING,
+                backup_type=table.Backup.BackupType.STANDARD,
+            )
+        )
+        await client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_backup_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            table.Backup(
+                name="name_value",
+                source_table="source_table_value",
+                source_backup="source_backup_value",
+                size_bytes=1089,
+                state=table.Backup.State.CREATING,
+                backup_type=table.Backup.BackupType.STANDARD,
+            )
+        )
+        await client.update_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_backup_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_backups_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            bigtable_table_admin.ListBackupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_restore_table_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_table), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.restore_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.RestoreTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_copy_backup_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.copy_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CopyBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_iam_policy_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_set_iam_policy_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_test_iam_permissions_empty_call_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+        await client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = BigtableTableAdminClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_table_rest_bad_request(
+    request_type=bigtable_table_admin.CreateTableRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_table(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        bigtable_table_admin.CreateTableRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = BigtableTableAdminClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_table_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gba_table.Table(
+            name="name_value",
+            granularity=gba_table.Table.TimestampGranularity.MILLIS,
+            deletion_protection=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gba_table.Table.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_table(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gba_table.Table)
+    assert response.name == "name_value"
+    assert response.granularity == gba_table.Table.TimestampGranularity.MILLIS
+    assert response.deletion_protection is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_table_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_create_table"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_create_table"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.CreateTableRequest.pb(
+            bigtable_table_admin.CreateTableRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gba_table.Table.to_json(gba_table.Table())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.CreateTableRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gba_table.Table()
+
+        client.create_table(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_table_from_snapshot_rest_bad_request(
+    request_type=bigtable_table_admin.CreateTableFromSnapshotRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_table_from_snapshot(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.CreateTableFromSnapshotRequest,
+        dict,
+    ],
+)
+def test_create_table_from_snapshot_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_table_from_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_table_from_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_create_table_from_snapshot"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_create_table_from_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.CreateTableFromSnapshotRequest.pb(
+            bigtable_table_admin.CreateTableFromSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.CreateTableFromSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_table_from_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_tables_rest_bad_request(
+    request_type=bigtable_table_admin.ListTablesRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_tables(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.ListTablesRequest,
+        dict,
+    ],
+)
+def test_list_tables_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = bigtable_table_admin.ListTablesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = bigtable_table_admin.ListTablesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_tables(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTablesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_tables_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_list_tables"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_list_tables"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.ListTablesRequest.pb(
+            bigtable_table_admin.ListTablesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = bigtable_table_admin.ListTablesResponse.to_json(
+            bigtable_table_admin.ListTablesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.ListTablesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = bigtable_table_admin.ListTablesResponse()
+
+        client.list_tables(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_table_rest_bad_request(request_type=bigtable_table_admin.GetTableRequest):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_table(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.GetTableRequest,
+        dict,
+    ],
+)
+def test_get_table_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = table.Table(
+            name="name_value",
+            granularity=table.Table.TimestampGranularity.MILLIS,
+            deletion_protection=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = table.Table.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_table(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, table.Table)
+    assert response.name == "name_value"
+    assert response.granularity == table.Table.TimestampGranularity.MILLIS
+    assert response.deletion_protection is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_table_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_get_table"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_get_table"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.GetTableRequest.pb(
+            bigtable_table_admin.GetTableRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = table.Table.to_json(table.Table())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.GetTableRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = table.Table()
+
+        client.get_table(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_table_rest_bad_request(
+    request_type=bigtable_table_admin.UpdateTableRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "table": {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_table(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.UpdateTableRequest,
+        dict,
+    ],
+)
+def test_update_table_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "table": {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    }
+    request_init["table"] = {
+        "name": "projects/sample1/instances/sample2/tables/sample3",
+        "cluster_states": {},
+        "column_families": {},
+        "granularity": 1,
+        "restore_info": {
+            "source_type": 1,
+            "backup_info": {
+                "backup": "backup_value",
+                "start_time": {"seconds": 751, "nanos": 543},
+                "end_time": {},
+                "source_table": "source_table_value",
+                "source_backup": "source_backup_value",
+            },
+        },
+        "change_stream_config": {"retention_period": {"seconds": 751, "nanos": 543}},
+        "deletion_protection": True,
+        "automated_backup_policy": {"retention_period": {}, "frequency": {}},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = bigtable_table_admin.UpdateTableRequest.meta.fields["table"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["table"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["table"][field])):
+                    del request_init["table"][field][i][subfield]
+            else:
+                del request_init["table"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_table(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_table_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_update_table"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_update_table"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.UpdateTableRequest.pb(
+            bigtable_table_admin.UpdateTableRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.UpdateTableRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_table(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_table_rest_bad_request(
+    request_type=bigtable_table_admin.DeleteTableRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_table(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.DeleteTableRequest,
+        dict,
+    ],
+)
+def test_delete_table_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_table(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_table_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_delete_table"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = bigtable_table_admin.DeleteTableRequest.pb(
+            bigtable_table_admin.DeleteTableRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = bigtable_table_admin.DeleteTableRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_table(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_undelete_table_rest_bad_request(
+    request_type=bigtable_table_admin.UndeleteTableRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.undelete_table(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.UndeleteTableRequest,
+        dict,
+    ],
+)
+def test_undelete_table_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.undelete_table(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_undelete_table_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_undelete_table"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_undelete_table"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.UndeleteTableRequest.pb(
+            bigtable_table_admin.UndeleteTableRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.UndeleteTableRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.undelete_table(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_authorized_view_rest_bad_request(
+    request_type=bigtable_table_admin.CreateAuthorizedViewRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_authorized_view(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.CreateAuthorizedViewRequest,
+        dict,
+    ],
+)
+def test_create_authorized_view_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
+    request_init["authorized_view"] = {
+        "name": "name_value",
+        "subset_view": {
+            "row_prefixes": [b"row_prefixes_blob1", b"row_prefixes_blob2"],
+            "family_subsets": {},
+        },
+        "etag": "etag_value",
+        "deletion_protection": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = bigtable_table_admin.CreateAuthorizedViewRequest.meta.fields[
+        "authorized_view"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["authorized_view"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["authorized_view"][field])):
+                    del request_init["authorized_view"][field][i][subfield]
+            else:
+                del request_init["authorized_view"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_authorized_view(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_authorized_view_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_create_authorized_view"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_create_authorized_view"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.CreateAuthorizedViewRequest.pb(
+            bigtable_table_admin.CreateAuthorizedViewRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.CreateAuthorizedViewRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_authorized_view(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_authorized_views_rest_bad_request(
+    request_type=bigtable_table_admin.ListAuthorizedViewsRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_authorized_views(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.ListAuthorizedViewsRequest,
+        dict,
+    ],
+)
+def test_list_authorized_views_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = bigtable_table_admin.ListAuthorizedViewsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = bigtable_table_admin.ListAuthorizedViewsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_authorized_views(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAuthorizedViewsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_authorized_views_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_list_authorized_views"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_list_authorized_views"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.ListAuthorizedViewsRequest.pb(
+            bigtable_table_admin.ListAuthorizedViewsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = bigtable_table_admin.ListAuthorizedViewsResponse.to_json(
+            bigtable_table_admin.ListAuthorizedViewsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.ListAuthorizedViewsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = bigtable_table_admin.ListAuthorizedViewsResponse()
+
+        client.list_authorized_views(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_authorized_view_rest_bad_request(
+    request_type=bigtable_table_admin.GetAuthorizedViewRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_authorized_view(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.GetAuthorizedViewRequest,
+        dict,
+    ],
+)
+def test_get_authorized_view_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = table.AuthorizedView(
+            name="name_value",
+            etag="etag_value",
+            deletion_protection=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = table.AuthorizedView.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_authorized_view(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, table.AuthorizedView)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+    assert response.deletion_protection is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_authorized_view_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_get_authorized_view"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_get_authorized_view"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.GetAuthorizedViewRequest.pb(
+            bigtable_table_admin.GetAuthorizedViewRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = table.AuthorizedView.to_json(table.AuthorizedView())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.GetAuthorizedViewRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = table.AuthorizedView()
+
+        client.get_authorized_view(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_authorized_view_rest_bad_request(
+    request_type=bigtable_table_admin.UpdateAuthorizedViewRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "authorized_view": {
+            "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_authorized_view(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.UpdateAuthorizedViewRequest,
+        dict,
+    ],
+)
+def test_update_authorized_view_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "authorized_view": {
+            "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+        }
+    }
+    request_init["authorized_view"] = {
+        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
+        "subset_view": {
+            "row_prefixes": [b"row_prefixes_blob1", b"row_prefixes_blob2"],
+            "family_subsets": {},
+        },
+        "etag": "etag_value",
+        "deletion_protection": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = bigtable_table_admin.UpdateAuthorizedViewRequest.meta.fields[
+        "authorized_view"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["authorized_view"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["authorized_view"][field])):
+                    del request_init["authorized_view"][field][i][subfield]
+            else:
+                del request_init["authorized_view"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_authorized_view(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_authorized_view_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_update_authorized_view"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_update_authorized_view"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.UpdateAuthorizedViewRequest.pb(
+            bigtable_table_admin.UpdateAuthorizedViewRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.UpdateAuthorizedViewRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_authorized_view(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_authorized_view_rest_bad_request(
+    request_type=bigtable_table_admin.DeleteAuthorizedViewRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_authorized_view(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.DeleteAuthorizedViewRequest,
+        dict,
+    ],
+)
+def test_delete_authorized_view_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_authorized_view(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_authorized_view_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_delete_authorized_view"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = bigtable_table_admin.DeleteAuthorizedViewRequest.pb(
+            bigtable_table_admin.DeleteAuthorizedViewRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = bigtable_table_admin.DeleteAuthorizedViewRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_authorized_view(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_modify_column_families_rest_bad_request(
+    request_type=bigtable_table_admin.ModifyColumnFamiliesRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.modify_column_families(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.ModifyColumnFamiliesRequest,
+        dict,
+    ],
+)
+def test_modify_column_families_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = table.Table(
+            name="name_value",
+            granularity=table.Table.TimestampGranularity.MILLIS,
+            deletion_protection=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = table.Table.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.modify_column_families(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, table.Table)
+    assert response.name == "name_value"
+    assert response.granularity == table.Table.TimestampGranularity.MILLIS
+    assert response.deletion_protection is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_modify_column_families_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_modify_column_families"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_modify_column_families"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.ModifyColumnFamiliesRequest.pb(
+            bigtable_table_admin.ModifyColumnFamiliesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = table.Table.to_json(table.Table())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.ModifyColumnFamiliesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = table.Table()
+
+        client.modify_column_families(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_drop_row_range_rest_bad_request(
+    request_type=bigtable_table_admin.DropRowRangeRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.drop_row_range(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.DropRowRangeRequest,
+        dict,
+    ],
+)
+def test_drop_row_range_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.drop_row_range(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_drop_row_range_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_drop_row_range"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = bigtable_table_admin.DropRowRangeRequest.pb(
+            bigtable_table_admin.DropRowRangeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = bigtable_table_admin.DropRowRangeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.drop_row_range(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_generate_consistency_token_rest_bad_request(
+    request_type=bigtable_table_admin.GenerateConsistencyTokenRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_consistency_token(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.GenerateConsistencyTokenRequest,
+        dict,
+    ],
+)
+def test_generate_consistency_token_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = bigtable_table_admin.GenerateConsistencyTokenResponse(
+            consistency_token="consistency_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = bigtable_table_admin.GenerateConsistencyTokenResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_consistency_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigtable_table_admin.GenerateConsistencyTokenResponse)
+    assert response.consistency_token == "consistency_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_consistency_token_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_generate_consistency_token"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_generate_consistency_token"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.GenerateConsistencyTokenRequest.pb(
+            bigtable_table_admin.GenerateConsistencyTokenRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = bigtable_table_admin.GenerateConsistencyTokenResponse.to_json(
+            bigtable_table_admin.GenerateConsistencyTokenResponse()
+        )
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.GenerateConsistencyTokenRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = bigtable_table_admin.GenerateConsistencyTokenResponse()
+
+        client.generate_consistency_token(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_check_consistency_rest_bad_request(
+    request_type=bigtable_table_admin.CheckConsistencyRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.check_consistency(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.CheckConsistencyRequest,
+        dict,
+    ],
+)
+def test_check_consistency_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = bigtable_table_admin.CheckConsistencyResponse(
+            consistent=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = bigtable_table_admin.CheckConsistencyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.check_consistency(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, bigtable_table_admin.CheckConsistencyResponse)
+    assert response.consistent is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_check_consistency_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_check_consistency"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_check_consistency"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.CheckConsistencyRequest.pb(
+            bigtable_table_admin.CheckConsistencyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = bigtable_table_admin.CheckConsistencyResponse.to_json(
+            bigtable_table_admin.CheckConsistencyResponse()
+        )
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.CheckConsistencyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = bigtable_table_admin.CheckConsistencyResponse()
+
+        client.check_consistency(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_snapshot_table_rest_bad_request(
+    request_type=bigtable_table_admin.SnapshotTableRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.snapshot_table(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.SnapshotTableRequest,
+        dict,
+    ],
+)
+def test_snapshot_table_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.snapshot_table(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_snapshot_table_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_snapshot_table"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_snapshot_table"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.SnapshotTableRequest.pb(
+            bigtable_table_admin.SnapshotTableRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.SnapshotTableRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.snapshot_table(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_snapshot_rest_bad_request(
+    request_type=bigtable_table_admin.GetSnapshotRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_snapshot(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.GetSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_snapshot_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = table.Snapshot(
+            name="name_value",
+            data_size_bytes=1594,
+            state=table.Snapshot.State.READY,
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = table.Snapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, table.Snapshot)
+    assert response.name == "name_value"
+    assert response.data_size_bytes == 1594
+    assert response.state == table.Snapshot.State.READY
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_get_snapshot"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_get_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.GetSnapshotRequest.pb(
+            bigtable_table_admin.GetSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = table.Snapshot.to_json(table.Snapshot())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.GetSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = table.Snapshot()
+
+        client.get_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_snapshots_rest_bad_request(
+    request_type=bigtable_table_admin.ListSnapshotsRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_snapshots(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.ListSnapshotsRequest,
+        dict,
+    ],
+)
+def test_list_snapshots_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = bigtable_table_admin.ListSnapshotsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = bigtable_table_admin.ListSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_snapshots(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSnapshotsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_snapshots_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_list_snapshots"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_list_snapshots"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.ListSnapshotsRequest.pb(
+            bigtable_table_admin.ListSnapshotsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = bigtable_table_admin.ListSnapshotsResponse.to_json(
+            bigtable_table_admin.ListSnapshotsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.ListSnapshotsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = bigtable_table_admin.ListSnapshotsResponse()
+
+        client.list_snapshots(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_snapshot_rest_bad_request(
+    request_type=bigtable_table_admin.DeleteSnapshotRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_snapshot(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.DeleteSnapshotRequest,
+        dict,
+    ],
+)
+def test_delete_snapshot_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_delete_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = bigtable_table_admin.DeleteSnapshotRequest.pb(
+            bigtable_table_admin.DeleteSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = bigtable_table_admin.DeleteSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_backup_rest_bad_request(
+    request_type=bigtable_table_admin.CreateBackupRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.CreateBackupRequest,
+        dict,
+    ],
+)
+def test_create_backup_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request_init["backup"] = {
+        "name": "name_value",
+        "source_table": "source_table_value",
+        "source_backup": "source_backup_value",
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "start_time": {},
+        "end_time": {},
+        "size_bytes": 1089,
+        "state": 1,
+        "encryption_info": {
+            "encryption_type": 1,
+            "encryption_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "kms_key_version": "kms_key_version_value",
+        },
+        "backup_type": 1,
+        "hot_to_standard_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = bigtable_table_admin.CreateBackupRequest.meta.fields["backup"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup"][field])):
+                    del request_init["backup"][field][i][subfield]
+            else:
+                del request_init["backup"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_backup(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_backup_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_create_backup"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_create_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.CreateBackupRequest.pb(
+            bigtable_table_admin.CreateBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.CreateBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_rest_bad_request(
+    request_type=bigtable_table_admin.GetBackupRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.GetBackupRequest,
+        dict,
+    ],
+)
+def test_get_backup_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = table.Backup(
+            name="name_value",
+            source_table="source_table_value",
+            source_backup="source_backup_value",
+            size_bytes=1089,
+            state=table.Backup.State.CREATING,
+            backup_type=table.Backup.BackupType.STANDARD,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = table.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, table.Backup)
+    assert response.name == "name_value"
+    assert response.source_table == "source_table_value"
+    assert response.source_backup == "source_backup_value"
+    assert response.size_bytes == 1089
+    assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_get_backup"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_get_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.GetBackupRequest.pb(
+            bigtable_table_admin.GetBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = table.Backup.to_json(table.Backup())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.GetBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = table.Backup()
+
+        client.get_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_backup_rest_bad_request(
+    request_type=bigtable_table_admin.UpdateBackupRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": {
+            "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.UpdateBackupRequest,
+        dict,
+    ],
+)
+def test_update_backup_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "backup": {
+            "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
+        }
+    }
+    request_init["backup"] = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4",
+        "source_table": "source_table_value",
+        "source_backup": "source_backup_value",
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "start_time": {},
+        "end_time": {},
+        "size_bytes": 1089,
+        "state": 1,
+        "encryption_info": {
+            "encryption_type": 1,
+            "encryption_status": {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            },
+            "kms_key_version": "kms_key_version_value",
+        },
+        "backup_type": 1,
+        "hot_to_standard_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = bigtable_table_admin.UpdateBackupRequest.meta.fields["backup"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["backup"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup"][field])):
+                    del request_init["backup"][field][i][subfield]
+            else:
+                del request_init["backup"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = table.Backup(
+            name="name_value",
+            source_table="source_table_value",
+            source_backup="source_backup_value",
+            size_bytes=1089,
+            state=table.Backup.State.CREATING,
+            backup_type=table.Backup.BackupType.STANDARD,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = table.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, table.Backup)
+    assert response.name == "name_value"
+    assert response.source_table == "source_table_value"
+    assert response.source_backup == "source_backup_value"
+    assert response.size_bytes == 1089
+    assert response.state == table.Backup.State.CREATING
+    assert response.backup_type == table.Backup.BackupType.STANDARD
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_backup_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_update_backup"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_update_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.UpdateBackupRequest.pb(
+            bigtable_table_admin.UpdateBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = table.Backup.to_json(table.Backup())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.UpdateBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = table.Backup()
+
+        client.update_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_backup_rest_bad_request(
+    request_type=bigtable_table_admin.DeleteBackupRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.DeleteBackupRequest,
+        dict,
+    ],
+)
+def test_delete_backup_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/instances/sample2/clusters/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_backup_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_delete_backup"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = bigtable_table_admin.DeleteBackupRequest.pb(
+            bigtable_table_admin.DeleteBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = bigtable_table_admin.DeleteBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_backups_rest_bad_request(
+    request_type=bigtable_table_admin.ListBackupsRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_backups(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.ListBackupsRequest,
+        dict,
+    ],
+)
+def test_list_backups_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = bigtable_table_admin.ListBackupsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = bigtable_table_admin.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_backups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backups_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_list_backups"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_list_backups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.ListBackupsRequest.pb(
+            bigtable_table_admin.ListBackupsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = bigtable_table_admin.ListBackupsResponse.to_json(
+            bigtable_table_admin.ListBackupsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.ListBackupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = bigtable_table_admin.ListBackupsResponse()
+
+        client.list_backups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_restore_table_rest_bad_request(
+    request_type=bigtable_table_admin.RestoreTableRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.restore_table(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.RestoreTableRequest,
+        dict,
+    ],
+)
+def test_restore_table_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.restore_table(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_restore_table_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_restore_table"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_restore_table"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.RestoreTableRequest.pb(
+            bigtable_table_admin.RestoreTableRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.RestoreTableRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.restore_table(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_copy_backup_rest_bad_request(
+    request_type=bigtable_table_admin.CopyBackupRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.copy_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        bigtable_table_admin.CopyBackupRequest,
+        dict,
+    ],
+)
+def test_copy_backup_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/instances/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.copy_backup(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_copy_backup_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_copy_backup"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_copy_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = bigtable_table_admin.CopyBackupRequest.pb(
+            bigtable_table_admin.CopyBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = bigtable_table_admin.CopyBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.copy_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.GetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(policy_pb2.Policy())
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.SetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(policy_pb2.Policy())
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest_call_success(request_type):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/instances/sample2/tables/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.BigtableTableAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BigtableTableAdminRestInterceptor(),
+    )
+    client = BigtableTableAdminClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.BigtableTableAdminRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_table_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_table), "__call__") as call:
+        client.create_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_table_from_snapshot_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_table_from_snapshot), "__call__"
+    ) as call:
+        client.create_table_from_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateTableFromSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_tables_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
+        client.list_tables(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListTablesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_table_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_table), "__call__") as call:
+        client.get_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_table_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_table), "__call__") as call:
+        client.update_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_table_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_table), "__call__") as call:
+        client.delete_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_undelete_table_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_table), "__call__") as call:
+        client.undelete_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UndeleteTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_authorized_view_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_authorized_view), "__call__"
+    ) as call:
+        client.create_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_authorized_views_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_authorized_views), "__call__"
+    ) as call:
+        client.list_authorized_views(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListAuthorizedViewsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_authorized_view_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_authorized_view), "__call__"
+    ) as call:
+        client.get_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_authorized_view_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_authorized_view), "__call__"
+    ) as call:
+        client.update_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_authorized_view_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_authorized_view), "__call__"
+    ) as call:
+        client.delete_authorized_view(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteAuthorizedViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_modify_column_families_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_column_families), "__call__"
+    ) as call:
+        client.modify_column_families(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ModifyColumnFamiliesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_drop_row_range_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.drop_row_range), "__call__") as call:
+        client.drop_row_range(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DropRowRangeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_consistency_token_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_consistency_token), "__call__"
+    ) as call:
+        client.generate_consistency_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GenerateConsistencyTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_check_consistency_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_consistency), "__call__"
+    ) as call:
+        client.check_consistency(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CheckConsistencyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_snapshot_table_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.snapshot_table), "__call__") as call:
+        client.snapshot_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.SnapshotTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_snapshot_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        client.get_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_snapshots_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        client.list_snapshots(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListSnapshotsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_snapshot_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        client.delete_snapshot(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteSnapshotRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_backup_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        client.create_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CreateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_backup_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        client.update_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.UpdateBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_restore_table_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.restore_table), "__call__") as call:
+        client.restore_table(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.RestoreTableRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_copy_backup_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.copy_backup), "__call__") as call:
+        client.copy_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = bigtable_table_admin.CopyBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_bigtable_table_admin_rest_lro_client():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -23715,23 +24290,6 @@ def test_bigtable_table_admin_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_bigtable_table_admin_rest_lro_client():
-    client = BigtableTableAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -24375,36 +24933,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = BigtableTableAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = BigtableTableAdminAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = BigtableTableAdminClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
