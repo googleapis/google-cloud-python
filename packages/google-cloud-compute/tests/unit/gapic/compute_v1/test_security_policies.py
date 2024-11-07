@@ -5945,7 +5945,17 @@ def test_insert_rest_call_success(request_type):
                         "auto_deploy_expiration_sec": 2785,
                         "auto_deploy_impacted_baseline_threshold": 0.4121,
                         "auto_deploy_load_threshold": 0.2768,
+                        "detection_absolute_qps": 0.23520000000000002,
+                        "detection_load_threshold": 0.2538,
+                        "detection_relative_to_baseline_qps": 0.36010000000000003,
                         "name": "name_value",
+                        "traffic_granularity_configs": [
+                            {
+                                "enable_each_unique_value": True,
+                                "type_": "type__value",
+                                "value": "value_value",
+                            }
+                        ],
                     }
                 ],
             }
@@ -6578,7 +6588,17 @@ def test_patch_rest_call_success(request_type):
                         "auto_deploy_expiration_sec": 2785,
                         "auto_deploy_impacted_baseline_threshold": 0.4121,
                         "auto_deploy_load_threshold": 0.2768,
+                        "detection_absolute_qps": 0.23520000000000002,
+                        "detection_load_threshold": 0.2538,
+                        "detection_relative_to_baseline_qps": 0.36010000000000003,
                         "name": "name_value",
+                        "traffic_granularity_configs": [
+                            {
+                                "enable_each_unique_value": True,
+                                "type_": "type__value",
+                                "value": "value_value",
+                            }
+                        ],
                     }
                 ],
             }

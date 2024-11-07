@@ -5785,6 +5785,7 @@ def test_insert_rest_call_success(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "self_link": "self_link_value",
+        "used_by": [{"reference": "reference_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6180,6 +6181,7 @@ def test_patch_rest_call_success(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "self_link": "self_link_value",
+        "used_by": [{"reference": "reference_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6690,42 +6692,6 @@ def test_set_iam_policy_rest_call_success(request_type):
             "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
-            "rules": [
-                {
-                    "action": "action_value",
-                    "conditions": [
-                        {
-                            "iam": "iam_value",
-                            "op": "op_value",
-                            "svc": "svc_value",
-                            "sys": "sys_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
-                    "description": "description_value",
-                    "ins": ["ins_value1", "ins_value2"],
-                    "log_configs": [
-                        {
-                            "cloud_audit": {
-                                "authorization_logging_options": {
-                                    "permission_type": "permission_type_value"
-                                },
-                                "log_name": "log_name_value",
-                            },
-                            "counter": {
-                                "custom_fields": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "field": "field_value",
-                                "metric": "metric_value",
-                            },
-                            "data_access": {"log_mode": "log_mode_value"},
-                        }
-                    ],
-                    "not_ins": ["not_ins_value1", "not_ins_value2"],
-                    "permissions": ["permissions_value1", "permissions_value2"],
-                }
-            ],
             "version": 774,
         },
     }
@@ -7165,6 +7131,7 @@ def test_update_rest_call_success(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "self_link": "self_link_value",
+        "used_by": [{"reference": "reference_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
