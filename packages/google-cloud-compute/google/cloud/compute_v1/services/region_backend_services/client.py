@@ -1797,8 +1797,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUsablePager:
-        r"""Retrieves an aggregated list of all usable backend
-        services in the specified project in the given region.
+        r"""Retrieves a list of all usable backend services in
+        the specified project in the given region.
 
         .. code-block:: python
 
