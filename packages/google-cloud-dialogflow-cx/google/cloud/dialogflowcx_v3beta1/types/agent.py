@@ -21,13 +21,13 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import audio_config, bigquery_export, flow
 from google.cloud.dialogflowcx_v3beta1.types import (
     advanced_settings as gcdc_advanced_settings,
 )
 from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
 )
-from google.cloud.dialogflowcx_v3beta1.types import audio_config, flow
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
@@ -96,7 +96,7 @@ class Agent(proto.Message):
             method.
             [Agents.CreateAgent][google.cloud.dialogflow.cx.v3beta1.Agents.CreateAgent]
             populates the name automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         display_name (str):
             Required. The human-readable name of the
             agent, unique within the location.
@@ -130,7 +130,7 @@ class Agent(proto.Message):
             Name of the start flow in this agent. A start flow will be
             automatically created when the agent is created, and can
             only be deleted by deleting the agent. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
             Currently only the default start flow with id
             "00000000-0000-0000-0000-000000000000" is allowed.
 
@@ -139,7 +139,7 @@ class Agent(proto.Message):
             Name of the start playbook in this agent. A start playbook
             will be automatically created when the agent is created, and
             can only be deleted by deleting the agent. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
             Currently only the default playbook with id
             "00000000-0000-0000-0000-000000000000" is allowed.
 
@@ -148,7 +148,7 @@ class Agent(proto.Message):
             Name of the
             [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
             reference for the agent. Format:
-            ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
         enable_stackdriver_logging (bool):
             Indicates if stackdriver logging is enabled for the agent.
             Please use
@@ -173,6 +173,13 @@ class Agent(proto.Message):
             level.
         git_integration_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.GitIntegrationSettings):
             Git integration settings for this agent.
+        bigquery_export_settings (google.cloud.dialogflowcx_v3beta1.types.BigQueryExportSettings):
+            Optional. The BigQuery export settings for this agent. The
+            conversation data will be exported to BigQuery tables if it
+            is enabled. By default, BigQuery export settings will not be
+            exported with agent. You need to set
+            [include_bigquery_export_settings][google.cloud.dialogflow.cx.v3beta1.ExportAgentRequest.include_bigquery_export_settings]
+            to include it in the exported agent.
         text_to_speech_settings (google.cloud.dialogflowcx_v3beta1.types.TextToSpeechSettings):
             Settings on instructing the speech
             synthesizer on how to generate the output audio
@@ -187,6 +194,9 @@ class Agent(proto.Message):
         personalization_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.PersonalizationSettings):
             Optional. Settings for end user
             personalization.
+        client_certificate_settings (google.cloud.dialogflowcx_v3beta1.types.Agent.ClientCertificateSettings):
+            Optional. Settings for custom client
+            certificates.
     """
 
     class GitIntegrationSettings(proto.Message):
@@ -303,6 +313,39 @@ class Agent(proto.Message):
             message=struct_pb2.Struct,
         )
 
+    class ClientCertificateSettings(proto.Message):
+        r"""Settings for custom client certificates.
+
+        Attributes:
+            ssl_certificate (str):
+                Required. The ssl certificate encoded in PEM
+                format. This string must include the begin
+                header and end footer lines.
+            private_key (str):
+                Required. The name of the SecretManager secret version
+                resource storing the private key encoded in PEM format.
+                Format:
+                ``projects/{project}/secrets/{secret}/versions/{version}``
+            passphrase (str):
+                Optional. The name of the SecretManager secret version
+                resource storing the passphrase. 'passphrase' should be left
+                unset if the private key is not encrypted. Format:
+                ``projects/{project}/secrets/{secret}/versions/{version}``
+        """
+
+        ssl_certificate: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        private_key: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        passphrase: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -376,6 +419,11 @@ class Agent(proto.Message):
         number=30,
         message=GitIntegrationSettings,
     )
+    bigquery_export_settings: bigquery_export.BigQueryExportSettings = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message=bigquery_export.BigQueryExportSettings,
+    )
     text_to_speech_settings: audio_config.TextToSpeechSettings = proto.Field(
         proto.MESSAGE,
         number=31,
@@ -397,6 +445,11 @@ class Agent(proto.Message):
         number=42,
         message=PersonalizationSettings,
     )
+    client_certificate_settings: ClientCertificateSettings = proto.Field(
+        proto.MESSAGE,
+        number=43,
+        message=ClientCertificateSettings,
+    )
 
 
 class ListAgentsRequest(proto.Message):
@@ -406,7 +459,7 @@ class ListAgentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The location to list all agents for. Format:
-            ``projects/<Project ID>/locations/<Location ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -465,7 +518,7 @@ class GetAgentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the agent. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
     """
 
     name: str = proto.Field(
@@ -481,7 +534,7 @@ class CreateAgentRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The location to create a agent for. Format:
-            ``projects/<Project ID>/locations/<Location ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>``.
         agent (google.cloud.dialogflowcx_v3beta1.types.Agent):
             Required. The agent to create.
     """
@@ -529,7 +582,7 @@ class DeleteAgentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the agent to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
     """
 
     name: str = proto.Field(
@@ -545,7 +598,7 @@ class ExportAgentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the agent to export. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         agent_uri (str):
             Optional. The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -564,7 +617,7 @@ class ExportAgentRequest(proto.Message):
         environment (str):
             Optional. Environment name. If not set, draft environment is
             assumed. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         git_destination (google.cloud.dialogflowcx_v3beta1.types.ExportAgentRequest.GitDestination):
             Optional. The Git branch to export the agent
             to.
@@ -700,7 +753,7 @@ class RestoreAgentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the agent to restore into. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         agent_uri (str):
             The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -792,7 +845,7 @@ class ValidateAgentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The agent to validate. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         language_code (str):
             If not specified, the agent's default
             language is used.
@@ -815,7 +868,7 @@ class GetAgentValidationResultRequest(proto.Message):
     Attributes:
         name (str):
             Required. The agent name. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/validationResult``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult``.
         language_code (str):
             If not specified, the agent's default
             language is used.
@@ -839,7 +892,7 @@ class AgentValidationResult(proto.Message):
         name (str):
             The unique identifier of the agent validation result.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/validationResult``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult``.
         flow_validation_results (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.FlowValidationResult]):
             Contains all flow validation results.
     """
@@ -865,7 +918,7 @@ class GetGenerativeSettingsRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
         language_code (str):
             Required. Language code of the generative
             settings.

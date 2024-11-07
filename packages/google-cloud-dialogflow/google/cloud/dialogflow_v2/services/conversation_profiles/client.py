@@ -340,6 +340,28 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def phrase_set_path(
+        project: str,
+        location: str,
+        phrase_set: str,
+    ) -> str:
+        """Returns a fully-qualified phrase_set string."""
+        return "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
+            project=project,
+            location=location,
+            phrase_set=phrase_set,
+        )
+
+    @staticmethod
+    def parse_phrase_set_path(path: str) -> Dict[str, str]:
+        """Parses a phrase_set path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/phraseSets/(?P<phrase_set>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:

@@ -151,6 +151,9 @@ class AudioEncoding(proto.Enum):
             5574. In other words, each RTP header is replaced with a
             single byte containing the block length. Only Speex wideband
             is supported. ``sample_rate_hertz`` must be 16000.
+        AUDIO_ENCODING_ALAW (8):
+            8-bit samples that compand 13-bit audio
+            samples using G.711 PCMU/a-law.
     """
     AUDIO_ENCODING_UNSPECIFIED = 0
     AUDIO_ENCODING_LINEAR_16 = 1
@@ -160,6 +163,7 @@ class AudioEncoding(proto.Enum):
     AUDIO_ENCODING_AMR_WB = 5
     AUDIO_ENCODING_OGG_OPUS = 6
     AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
+    AUDIO_ENCODING_ALAW = 8
 
 
 class SpeechModelVariant(proto.Enum):
@@ -260,6 +264,9 @@ class OutputAudioEncoding(proto.Enum):
         OUTPUT_AUDIO_ENCODING_MULAW (5):
             8-bit samples that compand 14-bit audio
             samples using G.711 PCMU/mu-law.
+        OUTPUT_AUDIO_ENCODING_ALAW (6):
+            8-bit samples that compand 13-bit audio
+            samples using G.711 PCMU/a-law.
     """
     OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
     OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
@@ -267,6 +274,7 @@ class OutputAudioEncoding(proto.Enum):
     OUTPUT_AUDIO_ENCODING_MP3_64_KBPS = 4
     OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
     OUTPUT_AUDIO_ENCODING_MULAW = 5
+    OUTPUT_AUDIO_ENCODING_ALAW = 6
 
 
 class SpeechContext(proto.Message):
@@ -506,6 +514,9 @@ class InputAudioConfig(proto.Message):
             If set, use this no-speech timeout when the
             agent does not provide a no-speech timeout
             itself.
+        phrase_sets (MutableSequence[str]):
+            A collection of phrase set resources to use
+            for speech adaptation.
         opt_out_conformer_model_migration (bool):
             If ``true``, the request will opt out for STT conformer
             model migration. This field will be deprecated once force
@@ -570,6 +581,10 @@ class InputAudioConfig(proto.Message):
         proto.MESSAGE,
         number=18,
         message=duration_pb2.Duration,
+    )
+    phrase_sets: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=20,
     )
     opt_out_conformer_model_migration: bool = proto.Field(
         proto.BOOL,
@@ -762,6 +777,9 @@ class SpeechToTextConfig(proto.Message):
             Leave this field unspecified to use `Agent Speech
             settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__
             for model selection.
+        phrase_sets (MutableSequence[str]):
+            List of names of Cloud Speech phrase sets
+            that are used for transcription.
         audio_encoding (google.cloud.dialogflow_v2beta1.types.AudioEncoding):
             Audio encoding of the audio content to
             process.
@@ -799,6 +817,10 @@ class SpeechToTextConfig(proto.Message):
     model: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    phrase_sets: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
     audio_encoding: "AudioEncoding" = proto.Field(
         proto.ENUM,

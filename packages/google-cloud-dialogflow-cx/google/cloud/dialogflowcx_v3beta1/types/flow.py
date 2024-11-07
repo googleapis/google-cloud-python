@@ -69,7 +69,9 @@ class NluSettings(proto.Message):
             value, then a no-match event will be triggered.
             The score values range from 0.0 (completely
             uncertain) to 1.0 (completely certain). If set
-            to 0.0, the default of 0.3 is used.
+            to 0.0, the default of 0.3 is used. You can set
+            a separate classification threshold for the flow
+            in each language enabled for the agent.
         model_training_mode (google.cloud.dialogflowcx_v3beta1.types.NluSettings.ModelTrainingMode):
             Indicates NLU model training mode.
     """
@@ -146,7 +148,7 @@ class Flow(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the flow. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         display_name (str):
             Required. The human-readable name of the
             flow.
@@ -199,9 +201,9 @@ class Flow(proto.Message):
                groups defined in the page have higher priority than
                those defined in the flow.
 
-            Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            Format:\ ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``
             for agent-level groups.
         nlu_settings (google.cloud.dialogflowcx_v3beta1.types.NluSettings):
             NLU related settings of the flow.
@@ -215,6 +217,10 @@ class Flow(proto.Message):
         multi_language_settings (google.cloud.dialogflowcx_v3beta1.types.Flow.MultiLanguageSettings):
             Optional. Multi-lingual agent settings for
             this flow.
+        locked (bool):
+            Indicates whether the flow is locked for
+            changes. If the flow is locked, modifications to
+            the flow will be rejected.
     """
 
     class MultiLanguageSettings(proto.Message):
@@ -292,6 +298,10 @@ class Flow(proto.Message):
         number=28,
         message=MultiLanguageSettings,
     )
+    locked: bool = proto.Field(
+        proto.BOOL,
+        number=30,
+    )
 
 
 class CreateFlowRequest(proto.Message):
@@ -301,7 +311,7 @@ class CreateFlowRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create a flow for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         flow (google.cloud.dialogflowcx_v3beta1.types.Flow):
             Required. The flow to create.
         language_code (str):
@@ -341,7 +351,7 @@ class DeleteFlowRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the flow to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         force (bool):
             This field has no effect for flows with no incoming
             transitions. For flows with incoming transitions:
@@ -373,7 +383,7 @@ class ListFlowsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent containing the flows. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -450,7 +460,7 @@ class GetFlowRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the flow to get. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         language_code (str):
             The language to retrieve the flow for. The following fields
             are language dependent:
@@ -526,7 +536,7 @@ class TrainFlowRequest(proto.Message):
     Attributes:
         name (str):
             Required. The flow to train. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
     """
 
     name: str = proto.Field(
@@ -542,7 +552,7 @@ class ValidateFlowRequest(proto.Message):
     Attributes:
         name (str):
             Required. The flow to validate. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         language_code (str):
             If not specified, the agent's default
             language is used.
@@ -565,7 +575,7 @@ class GetFlowValidationResultRequest(proto.Message):
     Attributes:
         name (str):
             Required. The flow name. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/validationResult``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult``.
         language_code (str):
             If not specified, the agent's default
             language is used.
@@ -588,7 +598,7 @@ class FlowValidationResult(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the flow validation result. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/validationResult``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult``.
         validation_messages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ValidationMessage]):
             Contains all validation messages.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -627,7 +637,7 @@ class ImportFlowRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to import the flow into. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         flow_uri (str):
             The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -727,7 +737,7 @@ class ImportFlowResponse(proto.Message):
     Attributes:
         flow (str):
             The unique identifier of the new flow. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
     """
 
     flow: str = proto.Field(
@@ -743,7 +753,7 @@ class ExportFlowRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the flow to export. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         flow_uri (str):
             Optional. The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
