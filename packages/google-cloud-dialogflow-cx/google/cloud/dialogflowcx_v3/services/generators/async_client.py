@@ -300,7 +300,7 @@ class GeneratorsAsyncClient:
                 [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
             parent (:class:`str`):
                 Required. The agent to list all generators for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -420,7 +420,7 @@ class GeneratorsAsyncClient:
                 [Generators.GetGenerator][google.cloud.dialogflow.cx.v3.Generators.GetGenerator].
             name (:class:`str`):
                 Required. The name of the generator. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generators/<Generator ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -536,7 +536,7 @@ class GeneratorsAsyncClient:
                 [Generators.CreateGenerator][google.cloud.dialogflow.cx.v3.Generators.CreateGenerator].
             parent (:class:`str`):
                 Required. The agent to create a generator for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -775,7 +775,7 @@ class GeneratorsAsyncClient:
                 [Generators.DeleteGenerator][google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator].
             name (:class:`str`):
                 Required. The name of the generator to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generators/<Generator ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -2772,6 +2772,7 @@ def test_get_rest_call_success(request_type):
             auto_renew=True,
             category="category_value",
             creation_timestamp="creation_timestamp_value",
+            custom_end_timestamp="custom_end_timestamp_value",
             description="description_value",
             end_timestamp="end_timestamp_value",
             existing_reservations=["existing_reservations_value"],
@@ -2805,6 +2806,7 @@ def test_get_rest_call_success(request_type):
     assert response.auto_renew is True
     assert response.category == "category_value"
     assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.custom_end_timestamp == "custom_end_timestamp_value"
     assert response.description == "description_value"
     assert response.end_timestamp == "end_timestamp_value"
     assert response.existing_reservations == ["existing_reservations_value"]
@@ -2918,6 +2920,7 @@ def test_insert_rest_call_success(request_type):
         "auto_renew": True,
         "category": "category_value",
         "creation_timestamp": "creation_timestamp_value",
+        "custom_end_timestamp": "custom_end_timestamp_value",
         "description": "description_value",
         "end_timestamp": "end_timestamp_value",
         "existing_reservations": [
@@ -2993,6 +2996,9 @@ def test_insert_rest_call_success(request_type):
                 "zone": "zone_value",
             }
         ],
+        "resource_status": {
+            "custom_term_eligibility_end_timestamp": "custom_term_eligibility_end_timestamp_value"
+        },
         "resources": [
             {
                 "accelerator_type": "accelerator_type_value",
@@ -3362,6 +3368,7 @@ def test_update_rest_call_success(request_type):
         "auto_renew": True,
         "category": "category_value",
         "creation_timestamp": "creation_timestamp_value",
+        "custom_end_timestamp": "custom_end_timestamp_value",
         "description": "description_value",
         "end_timestamp": "end_timestamp_value",
         "existing_reservations": [
@@ -3437,6 +3444,9 @@ def test_update_rest_call_success(request_type):
                 "zone": "zone_value",
             }
         ],
+        "resource_status": {
+            "custom_term_eligibility_end_timestamp": "custom_term_eligibility_end_timestamp_value"
+        },
         "resources": [
             {
                 "accelerator_type": "accelerator_type_value",

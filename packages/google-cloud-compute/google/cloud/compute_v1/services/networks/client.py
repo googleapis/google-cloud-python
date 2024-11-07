@@ -1901,8 +1901,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Patches the specified network with the data included
-        in the request. Only the following fields can be
-        modified: routingConfig.routingMode.
+        in the request. Only routingConfig can be modified.
 
         .. code-block:: python
 
@@ -2026,8 +2025,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified network with the data included
-        in the request. Only the following fields can be
-        modified: routingConfig.routingMode.
+        in the request. Only routingConfig can be modified.
 
         .. code-block:: python
 

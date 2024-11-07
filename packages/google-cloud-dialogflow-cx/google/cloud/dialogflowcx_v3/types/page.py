@@ -72,7 +72,7 @@ class Page(proto.Message):
             method.
             [Pages.CreatePage][google.cloud.dialogflow.cx.v3.Pages.CreatePage]
             populates the name automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
         display_name (str):
             Required. The human-readable name of the
             page, unique within the flow.
@@ -103,9 +103,9 @@ class Page(proto.Message):
                the same intent, then the first group in the ordered list
                takes precedence.
 
-            Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            Format:\ ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``
             for agent-level groups.
         transition_routes (MutableSequence[google.cloud.dialogflowcx_v3.types.TransitionRoute]):
             A list of transitions for the transition rules of this page.
@@ -219,11 +219,11 @@ class Form(proto.Message):
                 form filling concludes.
             entity_type (str):
                 Required. The entity type of the parameter. Format:
-                ``projects/-/locations/-/agents/-/entityTypes/<System Entity Type ID>``
+                ``projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>``
                 for system entity types (for example,
                 ``projects/-/locations/-/agents/-/entityTypes/sys.date``),
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<Entity Type ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``
                 for developer entity types.
             is_list (bool):
                 Indicates whether the parameter represents a
@@ -394,12 +394,12 @@ class EventHandler(proto.Message):
             fulfillment for a handler handling webhooks.
         target_page (str):
             The target page to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
             This field is a member of `oneof`_ ``target``.
         target_flow (str):
             The target flow to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
             This field is a member of `oneof`_ ``target``.
     """
@@ -465,7 +465,7 @@ class TransitionRoute(proto.Message):
         intent (str):
             The unique identifier of an
             [Intent][google.cloud.dialogflow.cx.v3.Intent]. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
             Indicates that the transition can only happen when the given
             intent is matched. At least one of ``intent`` or
             ``condition`` must be specified. When both ``intent`` and
@@ -490,12 +490,12 @@ class TransitionRoute(proto.Message):
             executed first.
         target_page (str):
             The target page to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
             This field is a member of `oneof`_ ``target``.
         target_flow (str):
             The target flow to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
             This field is a member of `oneof`_ ``target``.
     """
@@ -540,7 +540,7 @@ class ListPagesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The flow to list all pages for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         language_code (str):
             The language to list pages for. The following fields are
             language dependent:
@@ -629,7 +629,7 @@ class GetPageRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the page. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
         language_code (str):
             The language to retrieve the page for. The following fields
             are language dependent:
@@ -675,7 +675,7 @@ class CreatePageRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The flow to create a page for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         page (google.cloud.dialogflowcx_v3.types.Page):
             Required. The page to create.
         language_code (str):
@@ -781,7 +781,7 @@ class DeletePageRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the page to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/Flows/<flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/Flows/<flowID>/pages/<PageID>``.
         force (bool):
             This field has no effect for pages with no incoming
             transitions. For pages with incoming transitions:
@@ -833,12 +833,12 @@ class KnowledgeConnectorSettings(proto.Message):
             fulfillment.
         target_page (str):
             The target page to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>``.
 
             This field is a member of `oneof`_ ``target``.
         target_flow (str):
             The target flow to transition to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
             This field is a member of `oneof`_ ``target``.
         data_store_connections (MutableSequence[google.cloud.dialogflowcx_v3.types.DataStoreConnection]):

@@ -1779,6 +1779,100 @@
         }
       }
     },
+    "SipTrunks": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SipTrunksClient",
+          "rpcs": {
+            "CreateSipTrunk": {
+              "methods": [
+                "create_sip_trunk"
+              ]
+            },
+            "DeleteSipTrunk": {
+              "methods": [
+                "delete_sip_trunk"
+              ]
+            },
+            "GetSipTrunk": {
+              "methods": [
+                "get_sip_trunk"
+              ]
+            },
+            "ListSipTrunks": {
+              "methods": [
+                "list_sip_trunks"
+              ]
+            },
+            "UpdateSipTrunk": {
+              "methods": [
+                "update_sip_trunk"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SipTrunksAsyncClient",
+          "rpcs": {
+            "CreateSipTrunk": {
+              "methods": [
+                "create_sip_trunk"
+              ]
+            },
+            "DeleteSipTrunk": {
+              "methods": [
+                "delete_sip_trunk"
+              ]
+            },
+            "GetSipTrunk": {
+              "methods": [
+                "get_sip_trunk"
+              ]
+            },
+            "ListSipTrunks": {
+              "methods": [
+                "list_sip_trunks"
+              ]
+            },
+            "UpdateSipTrunk": {
+              "methods": [
+                "update_sip_trunk"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SipTrunksClient",
+          "rpcs": {
+            "CreateSipTrunk": {
+              "methods": [
+                "create_sip_trunk"
+              ]
+            },
+            "DeleteSipTrunk": {
+              "methods": [
+                "delete_sip_trunk"
+              ]
+            },
+            "GetSipTrunk": {
+              "methods": [
+                "get_sip_trunk"
+              ]
+            },
+            "ListSipTrunks": {
+              "methods": [
+                "list_sip_trunks"
+              ]
+            },
+            "UpdateSipTrunk": {
+              "methods": [
+                "update_sip_trunk"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Versions": {
       "clients": {
         "grpc": {
