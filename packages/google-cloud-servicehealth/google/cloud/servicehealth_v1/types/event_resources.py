@@ -731,7 +731,7 @@ class Asset(proto.Message):
 
 
 class ListEventsRequest(proto.Message):
-    r"""
+    r"""Message for requesting list of events.
 
     Attributes:
         parent (str):
@@ -765,7 +765,8 @@ class ListEventsRequest(proto.Message):
             -  field=value for ``category`` and ``state``\
             -  field <, >, <=, or >= value for ``update_time`` Examples:
                ``category=INCIDENT``,
-               ``update_time>=2000-01-01T11:30:00-04:00``
+               ``update_time>="2000-01-01T11:30:00-04:00"``,
+               ``event_impacts.product.product_name:"Eventarc"``
 
             .. raw:: html
 
@@ -778,7 +779,8 @@ class ListEventsRequest(proto.Message):
             you can include AND and OR expressions explicitly.
 
             Filter is supported for the following fields: ``category``,
-            ``state``, ``update_time``
+            ``state``, ``update_time``,
+            ``event_impacts.product.product_name``
         view (google.cloud.servicehealth_v1.types.EventView):
             Optional. Event fields to include in
             response.
@@ -808,7 +810,7 @@ class ListEventsRequest(proto.Message):
 
 
 class ListEventsResponse(proto.Message):
-    r"""
+    r"""Message for response to listing events.
 
     Attributes:
         events (MutableSequence[google.cloud.servicehealth_v1.types.Event]):
@@ -845,7 +847,7 @@ class ListEventsResponse(proto.Message):
 
 
 class GetEventRequest(proto.Message):
-    r"""Message for getting an event
+    r"""Message for getting an event.
 
     Attributes:
         name (str):
@@ -865,7 +867,7 @@ class GetEventRequest(proto.Message):
 
 
 class ListOrganizationEventsRequest(proto.Message):
-    r"""
+    r"""Message for requesting list of organization events.
 
     Attributes:
         parent (str):
@@ -906,7 +908,7 @@ class ListOrganizationEventsRequest(proto.Message):
             -  field <, >, <=, or >= value for ``update_time``
 
             Examples: ``category=INCIDENT``,
-            ``update_time>=2000-01-01T11:30:00-04:00``
+            ``update_time>="2000-01-01T11:30:00-04:00"``
 
             Multiple filter queries are space-separated. Example:
             ``category=INCIDENT state=ACTIVE``.
@@ -945,7 +947,7 @@ class ListOrganizationEventsRequest(proto.Message):
 
 
 class ListOrganizationEventsResponse(proto.Message):
-    r"""
+    r"""Message for response to listing organization events.
 
     Attributes:
         organization_events (MutableSequence[google.cloud.servicehealth_v1.types.OrganizationEvent]):
@@ -983,7 +985,7 @@ class ListOrganizationEventsResponse(proto.Message):
 
 
 class GetOrganizationEventRequest(proto.Message):
-    r"""
+    r"""Message for getting an organization event.
 
     Attributes:
         name (str):
@@ -1005,7 +1007,7 @@ class GetOrganizationEventRequest(proto.Message):
 
 
 class ListOrganizationImpactsRequest(proto.Message):
-    r"""Message for requesting list of OrganizationImpacts
+    r"""Message for requesting list of organization impacts.
 
     Attributes:
         parent (str):
@@ -1077,7 +1079,7 @@ class ListOrganizationImpactsRequest(proto.Message):
 
 
 class ListOrganizationImpactsResponse(proto.Message):
-    r"""
+    r"""Message for response to listing organization impacts.
 
     Attributes:
         organization_impacts (MutableSequence[google.cloud.servicehealth_v1.types.OrganizationImpact]):
@@ -1116,7 +1118,7 @@ class ListOrganizationImpactsResponse(proto.Message):
 
 
 class GetOrganizationImpactRequest(proto.Message):
-    r"""
+    r"""Message for getting an organization impact.
 
     Attributes:
         name (str):
