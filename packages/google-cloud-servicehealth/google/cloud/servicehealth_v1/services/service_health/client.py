@@ -508,36 +508,6 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = ServiceHealthClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -547,13 +517,9 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or ServiceHealthClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
 
     @property
     def api_endpoint(self):
@@ -764,7 +730,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.ListEventsRequest, dict]):
-                The request object.
+                The request object. Message for requesting list of
+                events.
             parent (str):
                 Required. Parent value using the form
                 ``projects/{project_id}/locations/{location}/events``.
@@ -786,6 +753,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Returns:
             google.cloud.servicehealth_v1.services.service_health.pagers.ListEventsPager:
+                Message for response to listing
+                events.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -885,7 +854,7 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.GetEventRequest, dict]):
-                The request object. Message for getting an event
+                The request object. Message for getting an event.
             name (str):
                 Required. Unique name of the event in this scope
                 including project and location using the form
@@ -1000,7 +969,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.ListOrganizationEventsRequest, dict]):
-                The request object.
+                The request object. Message for requesting list of
+                organization events.
             parent (str):
                 Required. Parent value using the form
                 ``organizations/{organization_id}/locations/{location}/organizationEvents``.
@@ -1024,6 +994,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Returns:
             google.cloud.servicehealth_v1.services.service_health.pagers.ListOrganizationEventsPager:
+                Message for response to listing
+                organization events.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1125,7 +1097,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.GetOrganizationEventRequest, dict]):
-                The request object.
+                The request object. Message for getting an organization
+                event.
             name (str):
                 Required. Unique name of the event in this scope
                 including organization and event ID using the form
@@ -1242,7 +1215,7 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
         Args:
             request (Union[google.cloud.servicehealth_v1.types.ListOrganizationImpactsRequest, dict]):
                 The request object. Message for requesting list of
-                OrganizationImpacts
+                organization impacts.
             parent (str):
                 Required. Parent value using the form
                 ``organizations/{organization_id}/locations/{location}/organizationImpacts``.
@@ -1263,6 +1236,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Returns:
             google.cloud.servicehealth_v1.services.service_health.pagers.ListOrganizationImpactsPager:
+                Message for response to listing
+                organization impacts.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1367,7 +1342,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.GetOrganizationImpactRequest, dict]):
-                The request object.
+                The request object. Message for getting an organization
+                impact.
             name (str):
                 Required. Name of the resource using the form
                 ``organizations/{organization_id}/locations/global/organizationImpacts/{organization_impact_id}``.
