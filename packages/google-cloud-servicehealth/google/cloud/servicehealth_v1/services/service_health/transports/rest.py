@@ -429,7 +429,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Args:
                 request (~.event_resources.GetEventRequest):
-                    The request object. Message for getting an event
+                    The request object. Message for getting an event.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -526,7 +526,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Args:
                 request (~.event_resources.GetOrganizationEventRequest):
-                    The request object.
+                    The request object. Message for getting an organization
+                event.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -622,7 +623,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Args:
                 request (~.event_resources.GetOrganizationImpactRequest):
-                    The request object.
+                    The request object. Message for getting an organization
+                impact.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -716,7 +718,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Args:
                 request (~.event_resources.ListEventsRequest):
-                    The request object.
+                    The request object. Message for requesting list of
+                events.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -725,6 +728,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Returns:
                 ~.event_resources.ListEventsResponse:
+                    Message for response to listing
+                events.
 
             """
 
@@ -809,7 +814,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Args:
                 request (~.event_resources.ListOrganizationEventsRequest):
-                    The request object.
+                    The request object. Message for requesting list of
+                organization events.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -818,6 +824,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Returns:
                 ~.event_resources.ListOrganizationEventsResponse:
+                    Message for response to listing
+                organization events.
 
             """
 
@@ -901,7 +909,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             Args:
                 request (~.event_resources.ListOrganizationImpactsRequest):
                     The request object. Message for requesting list of
-                OrganizationImpacts
+                organization impacts.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -910,6 +918,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             Returns:
                 ~.event_resources.ListOrganizationImpactsResponse:
+                    Message for response to listing
+                organization impacts.
 
             """
 
