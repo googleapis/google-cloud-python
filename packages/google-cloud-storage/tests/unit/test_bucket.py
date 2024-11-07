@@ -1018,24 +1018,18 @@ class Test_Bucket(unittest.TestCase):
             _target_object=blob,
         )
 
-    def test_get_blob_hit_w_gen_soft_deleted_restore_token(self):
+    def test_get_blob_hit_w_generation_w_soft_deleted(self):
         from google.cloud.storage.blob import Blob
 
         name = "name"
         blob_name = "blob-name"
         generation = 1512565576797178
-        restore_token = "88ba0d97-639e-5902"
         api_response = {"name": blob_name, "generation": generation}
         client = mock.Mock(spec=["_get_resource"])
         client._get_resource.return_value = api_response
         bucket = self._make_one(client, name=name)
 
-        blob = bucket.get_blob(
-            blob_name,
-            generation=generation,
-            soft_deleted=True,
-            restore_token=restore_token,
-        )
+        blob = bucket.get_blob(blob_name, generation=generation, soft_deleted=True)
 
         self.assertIsInstance(blob, Blob)
         self.assertIs(blob.bucket, bucket)
@@ -1047,7 +1041,6 @@ class Test_Bucket(unittest.TestCase):
             "generation": generation,
             "projection": "noAcl",
             "softDeleted": True,
-            "restoreToken": restore_token,
         }
         expected_headers = {}
         client._get_resource.assert_called_once_with(
@@ -4224,10 +4217,8 @@ class Test_Bucket(unittest.TestCase):
         user_project = "user-project-123"
         bucket_name = "restore_bucket"
         blob_name = "restore_blob"
-        new_generation = 987655
         generation = 123456
-        restore_token = "88ba0d97-639e-5902"
-        api_response = {"name": blob_name, "generation": new_generation}
+        api_response = {"name": blob_name, "generation": generation}
         client = mock.Mock(spec=["_post_resource"])
         client._post_resource.return_value = api_response
         bucket = self._make_one(
@@ -4242,8 +4233,6 @@ class Test_Bucket(unittest.TestCase):
         restored_blob = bucket.restore_blob(
             blob_name,
             client=client,
-            generation=generation,
-            restore_token=restore_token,
             if_generation_match=if_generation_match,
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
@@ -4256,8 +4245,6 @@ class Test_Bucket(unittest.TestCase):
         expected_path = f"/b/{bucket_name}/o/{blob_name}/restore"
         expected_data = None
         expected_query_params = {
-            "generation": generation,
-            "restoreToken": restore_token,
             "userProject": user_project,
             "projection": projection,
             "ifGenerationMatch": if_generation_match,

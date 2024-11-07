@@ -1232,7 +1232,7 @@ def test_soft_delete_policy(
     assert restored_blob.generation != gen
 
     # Patch the soft delete policy on an existing bucket.
-    new_duration_secs = 0
+    new_duration_secs = 10 * 86400
     bucket.soft_delete_policy.retention_duration_seconds = new_duration_secs
     bucket.patch()
     assert bucket.soft_delete_policy.retention_duration_seconds == new_duration_secs
@@ -1265,55 +1265,3 @@ def test_new_bucket_with_hierarchical_namespace(
     bucket = storage_client.create_bucket(bucket_obj)
     buckets_to_delete.append(bucket)
     assert bucket.hierarchical_namespace_enabled is True
-
-
-def test_restore_token(
-    storage_client,
-    buckets_to_delete,
-    blobs_to_delete,
-):
-    # Create HNS bucket with soft delete policy.
-    duration_secs = 7 * 86400
-    bucket = storage_client.bucket(_helpers.unique_name("w-soft-delete"))
-    bucket.hierarchical_namespace_enabled = True
-    bucket.iam_configuration.uniform_bucket_level_access_enabled = True
-    bucket.soft_delete_policy.retention_duration_seconds = duration_secs
-    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket)
-    buckets_to_delete.append(bucket)
-
-    # Insert an object and delete it to enter soft-deleted state.
-    payload = b"DEADBEEF"
-    blob_name = _helpers.unique_name("soft-delete")
-    blob = bucket.blob(blob_name)
-    blob.upload_from_string(payload)
-    # blob = bucket.get_blob(blob_name)
-    gen = blob.generation
-    blob.delete()
-
-    # Get the soft-deleted object and restore token.
-    blob = bucket.get_blob(blob_name, generation=gen, soft_deleted=True)
-    restore_token = blob.restore_token
-
-    # List and get soft-deleted object that includes restore token.
-    all_blobs = list(bucket.list_blobs(soft_deleted=True))
-    assert all_blobs[0].restore_token is not None
-    blob_w_restore_token = bucket.get_blob(
-        blob_name, generation=gen, soft_deleted=True, restore_token=restore_token
-    )
-    assert blob_w_restore_token.soft_delete_time is not None
-    assert blob_w_restore_token.hard_delete_time is not None
-    assert blob_w_restore_token.restore_token is not None
-
-    # Restore the soft-deleted object using the restore token.
-    restored_blob = bucket.restore_blob(
-        blob_name, generation=gen, restore_token=restore_token
-    )
-    blobs_to_delete.append(restored_blob)
-    assert restored_blob.exists() is True
-    assert restored_blob.generation != gen
-
-    # Patch the soft delete policy on the bucket.
-    new_duration_secs = 0
-    bucket.soft_delete_policy.retention_duration_seconds = new_duration_secs
-    bucket.patch()
-    assert bucket.soft_delete_policy.retention_duration_seconds == new_duration_secs

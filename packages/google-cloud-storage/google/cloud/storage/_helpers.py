@@ -226,7 +226,6 @@ class _PropertyMixin(object):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
         soft_deleted=None,
-        restore_token=None,
     ):
         """Reload properties from Cloud Storage.
 
@@ -279,13 +278,6 @@ class _PropertyMixin(object):
             the object metadata if the object exists and is in a soft-deleted state.
             :attr:`generation` is required to be set on the blob if ``soft_deleted`` is set to True.
             See: https://cloud.google.com/storage/docs/soft-delete
-
-        :type restore_token: str
-        :param restore_token:
-            (Optional) The restore_token is required to retrieve a soft-deleted object only if
-            its name and generation value do not uniquely identify it, and hierarchical namespace
-            is enabled on the bucket. Otherwise, this parameter is optional.
-            See: https://cloud.google.com/storage/docs/json_api/v1/objects/get
         """
         client = self._require_client(client)
         query_params = self._query_params
@@ -304,8 +296,6 @@ class _PropertyMixin(object):
             # Soft delete reload requires a generation, even for targets
             # that don't include them in default query params (buckets).
             query_params["generation"] = self.generation
-        if restore_token is not None:
-            query_params["restoreToken"] = restore_token
         headers = self._encryption_headers()
         _add_etag_match_headers(
             headers, if_etag_match=if_etag_match, if_etag_not_match=if_etag_not_match
