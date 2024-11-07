@@ -20305,11 +20305,16 @@ def test_bulk_insert_rest_call_success(request_type):
             "advanced_machine_features": {
                 "enable_nested_virtualization": True,
                 "enable_uefi_networking": True,
+                "performance_monitoring_unit": "performance_monitoring_unit_value",
                 "threads_per_core": 1689,
+                "turbo_mode": "turbo_mode_value",
                 "visible_core_count": 1918,
             },
             "can_ip_forward": True,
-            "confidential_instance_config": {"enable_confidential_compute": True},
+            "confidential_instance_config": {
+                "confidential_instance_type": "confidential_instance_type_value",
+                "enable_confidential_compute": True,
+            },
             "description": "description_value",
             "disks": [
                 {
@@ -20441,9 +20446,11 @@ def test_bulk_insert_rest_call_success(request_type):
             ],
             "scheduling": {
                 "automatic_restart": True,
+                "availability_domain": 2002,
                 "instance_termination_action": "instance_termination_action_value",
                 "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
                 "location_hint": "location_hint_value",
+                "max_run_duration": {},
                 "min_node_cpus": 1379,
                 "node_affinities": [
                     {
@@ -20453,8 +20460,10 @@ def test_bulk_insert_rest_call_success(request_type):
                     }
                 ],
                 "on_host_maintenance": "on_host_maintenance_value",
+                "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
                 "provisioning_model": "provisioning_model_value",
+                "termination_time": "termination_time_value",
             },
             "service_accounts": [
                 {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
@@ -22075,11 +22084,16 @@ def test_insert_rest_call_success(request_type):
         "advanced_machine_features": {
             "enable_nested_virtualization": True,
             "enable_uefi_networking": True,
+            "performance_monitoring_unit": "performance_monitoring_unit_value",
             "threads_per_core": 1689,
+            "turbo_mode": "turbo_mode_value",
             "visible_core_count": 1918,
         },
         "can_ip_forward": True,
-        "confidential_instance_config": {"enable_confidential_compute": True},
+        "confidential_instance_config": {
+            "confidential_instance_type": "confidential_instance_type_value",
+            "enable_confidential_compute": True,
+        },
         "cpu_platform": "cpu_platform_value",
         "creation_timestamp": "creation_timestamp_value",
         "deletion_protection": True,
@@ -22216,6 +22230,7 @@ def test_insert_rest_call_success(request_type):
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
         "resource_status": {
             "physical_host": "physical_host_value",
+            "scheduling": {"availability_domain": 2002},
             "upcoming_maintenance": {
                 "can_reschedule": True,
                 "latest_window_start_time": "latest_window_start_time_value",
@@ -22229,9 +22244,11 @@ def test_insert_rest_call_success(request_type):
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
+            "availability_domain": 2002,
             "instance_termination_action": "instance_termination_action_value",
             "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
+            "max_run_duration": {},
             "min_node_cpus": 1379,
             "node_affinities": [
                 {
@@ -22241,8 +22258,10 @@ def test_insert_rest_call_success(request_type):
                 }
             ],
             "on_host_maintenance": "on_host_maintenance_value",
+            "on_instance_stop_action": {"discard_local_ssd": True},
             "preemptible": True,
             "provisioning_model": "provisioning_model_value",
+            "termination_time": "termination_time_value",
         },
         "self_link": "self_link_value",
         "service_accounts": [
@@ -23918,42 +23937,6 @@ def test_set_iam_policy_rest_call_success(request_type):
             "bindings": {},
             "etag": "etag_value",
             "iam_owned": True,
-            "rules": [
-                {
-                    "action": "action_value",
-                    "conditions": [
-                        {
-                            "iam": "iam_value",
-                            "op": "op_value",
-                            "svc": "svc_value",
-                            "sys": "sys_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
-                    "description": "description_value",
-                    "ins": ["ins_value1", "ins_value2"],
-                    "log_configs": [
-                        {
-                            "cloud_audit": {
-                                "authorization_logging_options": {
-                                    "permission_type": "permission_type_value"
-                                },
-                                "log_name": "log_name_value",
-                            },
-                            "counter": {
-                                "custom_fields": [
-                                    {"name": "name_value", "value": "value_value"}
-                                ],
-                                "field": "field_value",
-                                "metric": "metric_value",
-                            },
-                            "data_access": {"log_mode": "log_mode_value"},
-                        }
-                    ],
-                    "not_ins": ["not_ins_value1", "not_ins_value2"],
-                    "permissions": ["permissions_value1", "permissions_value2"],
-                }
-            ],
             "version": 774,
         },
     }
@@ -25590,9 +25573,11 @@ def test_set_scheduling_rest_call_success(request_type):
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
     request_init["scheduling_resource"] = {
         "automatic_restart": True,
+        "availability_domain": 2002,
         "instance_termination_action": "instance_termination_action_value",
         "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
         "location_hint": "location_hint_value",
+        "max_run_duration": {},
         "min_node_cpus": 1379,
         "node_affinities": [
             {
@@ -25602,8 +25587,10 @@ def test_set_scheduling_rest_call_success(request_type):
             }
         ],
         "on_host_maintenance": "on_host_maintenance_value",
+        "on_instance_stop_action": {"discard_local_ssd": True},
         "preemptible": True,
         "provisioning_model": "provisioning_model_value",
+        "termination_time": "termination_time_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -27874,11 +27861,16 @@ def test_update_rest_call_success(request_type):
         "advanced_machine_features": {
             "enable_nested_virtualization": True,
             "enable_uefi_networking": True,
+            "performance_monitoring_unit": "performance_monitoring_unit_value",
             "threads_per_core": 1689,
+            "turbo_mode": "turbo_mode_value",
             "visible_core_count": 1918,
         },
         "can_ip_forward": True,
-        "confidential_instance_config": {"enable_confidential_compute": True},
+        "confidential_instance_config": {
+            "confidential_instance_type": "confidential_instance_type_value",
+            "enable_confidential_compute": True,
+        },
         "cpu_platform": "cpu_platform_value",
         "creation_timestamp": "creation_timestamp_value",
         "deletion_protection": True,
@@ -28015,6 +28007,7 @@ def test_update_rest_call_success(request_type):
         "resource_policies": ["resource_policies_value1", "resource_policies_value2"],
         "resource_status": {
             "physical_host": "physical_host_value",
+            "scheduling": {"availability_domain": 2002},
             "upcoming_maintenance": {
                 "can_reschedule": True,
                 "latest_window_start_time": "latest_window_start_time_value",
@@ -28028,9 +28021,11 @@ def test_update_rest_call_success(request_type):
         "satisfies_pzs": True,
         "scheduling": {
             "automatic_restart": True,
+            "availability_domain": 2002,
             "instance_termination_action": "instance_termination_action_value",
             "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
+            "max_run_duration": {},
             "min_node_cpus": 1379,
             "node_affinities": [
                 {
@@ -28040,8 +28035,10 @@ def test_update_rest_call_success(request_type):
                 }
             ],
             "on_host_maintenance": "on_host_maintenance_value",
+            "on_instance_stop_action": {"discard_local_ssd": True},
             "preemptible": True,
             "provisioning_model": "provisioning_model_value",
+            "termination_time": "termination_time_value",
         },
         "self_link": "self_link_value",
         "service_accounts": [

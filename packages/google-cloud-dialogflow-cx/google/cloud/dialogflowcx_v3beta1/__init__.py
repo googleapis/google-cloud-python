@@ -83,6 +83,7 @@ from .types.audio_config import (
     TextToSpeechSettings,
     VoiceSelectionParams,
 )
+from .types.bigquery_export import BigQueryExportSettings
 from .types.changelog import (
     Changelog,
     GetChangelogRequest,
@@ -426,6 +427,7 @@ __all__ = (
     "BatchRunTestCasesMetadata",
     "BatchRunTestCasesRequest",
     "BatchRunTestCasesResponse",
+    "BigQueryExportSettings",
     "BoostSpec",
     "BoostSpecs",
     "CalculateCoverageRequest",

@@ -31,9 +31,31 @@ class SafetySettings(proto.Message):
     r"""Settings for Generative Safety.
 
     Attributes:
+        default_banned_phrase_match_strategy (google.cloud.dialogflowcx_v3beta1.types.SafetySettings.PhraseMatchStrategy):
+            Optional. Default phrase match strategy for
+            banned phrases.
         banned_phrases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.SafetySettings.Phrase]):
             Banned phrases for generated text.
     """
+
+    class PhraseMatchStrategy(proto.Enum):
+        r"""Strategy for matching phrases.
+
+        Values:
+            PHRASE_MATCH_STRATEGY_UNSPECIFIED (0):
+                Unspecified, defaults to PARTIAL_MATCH.
+            PARTIAL_MATCH (1):
+                Text that contains the phrase as a substring
+                will be matched, e.g. "foo" will match
+                "afoobar".
+            WORD_MATCH (2):
+                Text that contains the tokenized words of the
+                phrase will be matched, e.g. "foo" will match "a
+                foo bar" and "foo bar", but not "foobar".
+        """
+        PHRASE_MATCH_STRATEGY_UNSPECIFIED = 0
+        PARTIAL_MATCH = 1
+        WORD_MATCH = 2
 
     class Phrase(proto.Message):
         r"""Text input which can be used for prompt or banned phrases.
@@ -55,6 +77,11 @@ class SafetySettings(proto.Message):
             number=2,
         )
 
+    default_banned_phrase_match_strategy: PhraseMatchStrategy = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=PhraseMatchStrategy,
+    )
     banned_phrases: MutableSequence[Phrase] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,

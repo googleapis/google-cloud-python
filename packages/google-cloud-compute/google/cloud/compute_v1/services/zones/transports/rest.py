@@ -262,7 +262,7 @@ class ZonesRestTransport(_BaseZonesRestTransport):
                     Represents a Zone resource. A zone is
                 a deployment area. These deployment
                 areas are subsets of a region. For
-                example the zone us-east1-a is located
+                example the zone us-east1-b is located
                 in the us-east1 region. For more
                 information, read Regions and Zones.
 
