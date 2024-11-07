@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.27.0](https://github.com/googleapis/python-bigquery/compare/v3.26.0...v3.27.0) (2024-11-01)
+
+
+### Features
+
+* Updates to allow users to set max_stream_count ([#2039](https://github.com/googleapis/python-bigquery/issues/2039)) ([7372ad6](https://github.com/googleapis/python-bigquery/commit/7372ad659fd3316a602e90f224e9a3304d4c1419))
+
 ## [3.26.0](https://github.com/googleapis/python-bigquery/compare/v3.25.0...v3.26.0) (2024-09-25)
 
 
