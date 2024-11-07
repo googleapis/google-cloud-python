@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.4...google-cloud-visionai-v0.1.5) (2024-11-07)
+
+
+### Features
+
+* [google-cloud-dialogflow-cx] add options of ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* [google-cloud-dialogflow-cx] add options of client_certificate_settings, bigquery_export_settings, bearer_token_config and boost_control_spec; add support of ALAW encoding ([#13249](https://github.com/googleapis/google-cloud-python/issues/13249)) ([41289c8](https://github.com/googleapis/google-cloud-python/commit/41289c8b72acd46066ab50fa638ca345070f42c3))
+* add options of query_source, search_config and context_size ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* add SipTrunks service ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+* added support for ALAW encoding ([3dc80cc](https://github.com/googleapis/google-cloud-python/commit/3dc80ccd2bca36687aa3ea4cfe0855a690c69baa))
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13246](https://github.com/googleapis/google-cloud-python/issues/13246)) ([bcad563](https://github.com/googleapis/google-cloud-python/commit/bcad563acea541bb51f9fbd005f18e9f32e381f0))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.3...google-cloud-visionai-v0.1.4) (2024-10-24)
 
 
