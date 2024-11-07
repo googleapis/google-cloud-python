@@ -327,7 +327,7 @@ class TestCasesAsyncClient:
                 [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3.TestCases.ListTestCases].
             parent (:class:`str`):
                 Required. The agent to list all pages for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -445,7 +445,7 @@ class TestCasesAsyncClient:
                 [TestCases.BatchDeleteTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchDeleteTestCases].
             parent (:class:`str`):
                 Required. The agent to delete test cases from. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -542,7 +542,7 @@ class TestCasesAsyncClient:
                 [TestCases.GetTestCase][google.cloud.dialogflow.cx.v3.TestCases.GetTestCase].
             name (:class:`str`):
                 Required. The name of the testcase. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -651,7 +651,7 @@ class TestCasesAsyncClient:
                 [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3.TestCases.CreateTestCase].
             parent (:class:`str`):
                 Required. The agent to create the test case for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1411,7 +1411,7 @@ class TestCasesAsyncClient:
                 [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
             parent (:class:`str`):
                 Required. The test case to list results for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ testCases/<TestCase ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``.
                 Specify a ``-`` as a wildcard for TestCase ID to list
                 results across multiple test cases.
 
@@ -1533,7 +1533,7 @@ class TestCasesAsyncClient:
                 [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3.TestCases.GetTestCaseResult].
             name (:class:`str`):
                 Required. The name of the testcase. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

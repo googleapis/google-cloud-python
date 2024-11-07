@@ -62,7 +62,7 @@ class Environment(proto.Message):
     Attributes:
         name (str):
             The name of the environment. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         display_name (str):
             Required. The human-readable name of the
             environment (unique in an agent). Limit of 64
@@ -92,9 +92,13 @@ class Environment(proto.Message):
 
         Attributes:
             version (str):
-                Required. Format: projects/<Project
-                ID>/locations/<Location ID>/agents/<Agent
-                ID>/flows/<Flow ID>/versions/<Version ID>.
+                Required. Both flow and playbook versions are
+                supported. Format for flow version:
+
+                projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>.
+                Format for playbook version:
+
+                projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>.
         """
 
         version: str = proto.Field(
@@ -109,7 +113,7 @@ class Environment(proto.Message):
             test_cases (MutableSequence[str]):
                 A list of test case names to run. They should be under the
                 same agent. Format of each test case name:
-                ``projects/<Project ID>/locations/ <Location ID>/agents/<AgentID>/testCases/<TestCase ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>``
             enable_continuous_run (bool):
                 Whether to run test cases in
                 [TestCasesConfig.test_cases][google.cloud.dialogflow.cx.v3beta1.Environment.TestCasesConfig.test_cases]
@@ -196,7 +200,7 @@ class ListEnvironmentsRequest(proto.Message):
             Required. The
             [Agent][google.cloud.dialogflow.cx.v3beta1.Agent] to list
             all environments for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
@@ -259,7 +263,7 @@ class GetEnvironmentRequest(proto.Message):
             Required. The name of the
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
     """
 
     name: str = proto.Field(
@@ -279,7 +283,7 @@ class CreateEnvironmentRequest(proto.Message):
             an
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
             for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         environment (google.cloud.dialogflowcx_v3beta1.types.Environment):
             Required. The environment to create.
     """
@@ -328,7 +332,7 @@ class DeleteEnvironmentRequest(proto.Message):
             Required. The name of the
             [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
             to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
     """
 
     name: str = proto.Field(
@@ -345,7 +349,7 @@ class LookupEnvironmentHistoryRequest(proto.Message):
         name (str):
             Required. Resource name of the environment to look up the
             history for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -405,7 +409,7 @@ class ContinuousTestResult(proto.Message):
     Attributes:
         name (str):
             The resource name for the continuous test result. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/continuousTestResults/<ContinuousTestResult ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/continuousTestResults/<ContinuousTestResultID>``.
         result (google.cloud.dialogflowcx_v3beta1.types.ContinuousTestResult.AggregatedTestResult):
             The result of this continuous test run, i.e.
             whether all the tests in this continuous test
@@ -460,7 +464,7 @@ class RunContinuousTestRequest(proto.Message):
     Attributes:
         environment (str):
             Required. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
     """
 
     environment: str = proto.Field(
@@ -509,7 +513,7 @@ class ListContinuousTestResultsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The environment to list results for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -568,10 +572,10 @@ class DeployFlowRequest(proto.Message):
     Attributes:
         environment (str):
             Required. The environment to deploy the flow to. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>``.
         flow_version (str):
             Required. The flow version to deploy. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ flows/<Flow ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>``.
     """
 
     environment: str = proto.Field(
@@ -594,7 +598,7 @@ class DeployFlowResponse(proto.Message):
             deployed.
         deployment (str):
             The name of the flow version deployment. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>/deployments/<Deployment ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>``.
     """
 
     environment: "Environment" = proto.Field(

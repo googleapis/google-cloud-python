@@ -41,7 +41,7 @@ class GetSecuritySettingsRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the settings. Format:
-            ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<securitysettingsID>``.
     """
 
     name: str = proto.Field(
@@ -82,7 +82,7 @@ class ListSecuritySettingsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The location to list all security settings for.
-            Format: ``projects/<Project ID>/locations/<Location ID>``.
+            Format: ``projects/<ProjectID>/locations/<LocationID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
@@ -140,7 +140,7 @@ class CreateSecuritySettingsRequest(proto.Message):
             Required. The location to create an
             [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
             for. Format:
-            ``projects/<Project ID>/locations/<Location ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>``.
         security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
             Required. The security settings to create.
     """
@@ -164,7 +164,7 @@ class DeleteSecuritySettingsRequest(proto.Message):
             Required. The name of the
             [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
             to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
     """
 
     name: str = proto.Field(
@@ -193,7 +193,7 @@ class SecuritySettings(proto.Message):
             method.
             [SecuritySettingsService.CreateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.CreateSecuritySettings]
             populates the name automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>``.
         display_name (str):
             Required. The human-readable name of the
             security settings, unique within the location.
@@ -216,9 +216,9 @@ class SecuritySettings(proto.Message):
             If empty, we use the default DLP inspect config.
 
             The template name will have one of the following formats:
-            ``projects/<Project ID>/locations/<Location ID>/inspectTemplates/<Template ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/inspectTemplates/<TemplateID>``
             OR
-            ``organizations/<Organization ID>/locations/<Location ID>/inspectTemplates/<Template ID>``
+            ``organizations/<OrganizationID>/locations/<LocationID>/inspectTemplates/<TemplateID>``
 
             Note: ``inspect_template`` must be located in the same
             region as the ``SecuritySettings``.
@@ -237,9 +237,9 @@ class SecuritySettings(proto.Message):
             ``[redacted]`` text.
 
             The template name will have one of the following formats:
-            ``projects/<Project ID>/locations/<Location ID>/deidentifyTemplates/<Template ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>``
             OR
-            ``organizations/<Organization ID>/locations/<Location ID>/deidentifyTemplates/<Template ID>``
+            ``organizations/<OrganizationID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>``
 
             Note: ``deidentify_template`` must be located in the same
             region as the ``SecuritySettings``.

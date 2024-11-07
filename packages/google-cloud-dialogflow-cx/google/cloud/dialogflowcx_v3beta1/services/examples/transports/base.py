@@ -88,6 +88,8 @@ class ExamplesTransport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        if not hasattr(self, "_ignore_credentials"):
+            self._ignore_credentials: bool = False
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -100,7 +102,7 @@ class ExamplesTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-        elif credentials is None:
+        elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
@@ -155,6 +157,31 @@ class ExamplesTransport(abc.ABC):
             ),
             self.update_example: gapic_v1.method.wrap_method(
                 self.update_example,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: gapic_v1.method.wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: gapic_v1.method.wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: gapic_v1.method.wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),

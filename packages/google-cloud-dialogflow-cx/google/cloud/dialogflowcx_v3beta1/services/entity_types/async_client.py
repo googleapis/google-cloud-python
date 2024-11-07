@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -192,9 +191,7 @@ class EntityTypesAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(EntityTypesClient).get_transport_class, type(EntityTypesClient)
-    )
+    get_transport_class = EntityTypesClient.get_transport_class
 
     def __init__(
         self,
@@ -305,7 +302,7 @@ class EntityTypesAsyncClient:
                 [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.GetEntityType].
             name (:class:`str`):
                 Required. The name of the entity type. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<Entity Type ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -449,7 +446,7 @@ class EntityTypesAsyncClient:
                 [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.CreateEntityType].
             parent (:class:`str`):
                 Required. The agent to create a entity type for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -751,7 +748,7 @@ class EntityTypesAsyncClient:
                 [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.DeleteEntityType].
             name (:class:`str`):
                 Required. The name of the entity type to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<Entity Type ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -851,7 +848,7 @@ class EntityTypesAsyncClient:
             parent (:class:`str`):
                 Required. The agent to list all entity types for.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -920,6 +917,8 @@ class EntityTypesAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1157,11 +1156,7 @@ class EntityTypesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1214,11 +1209,7 @@ class EntityTypesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1274,11 +1265,7 @@ class EntityTypesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1328,11 +1315,7 @@ class EntityTypesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1385,11 +1368,7 @@ class EntityTypesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -78,6 +78,8 @@ class SessionsAsyncClient:
     parse_context_path = staticmethod(SessionsClient.parse_context_path)
     intent_path = staticmethod(SessionsClient.intent_path)
     parse_intent_path = staticmethod(SessionsClient.parse_intent_path)
+    phrase_set_path = staticmethod(SessionsClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(SessionsClient.parse_phrase_set_path)
     session_path = staticmethod(SessionsClient.session_path)
     parse_session_path = staticmethod(SessionsClient.parse_session_path)
     session_entity_type_path = staticmethod(SessionsClient.session_entity_type_path)

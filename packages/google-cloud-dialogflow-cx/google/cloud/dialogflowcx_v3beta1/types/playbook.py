@@ -54,7 +54,7 @@ class CreatePlaybookRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create a playbook for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         playbook (google.cloud.dialogflowcx_v3beta1.types.Playbook):
             Required. The playbook to create.
     """
@@ -77,7 +77,7 @@ class DeletePlaybookRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the playbook to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
     """
 
     name: str = proto.Field(
@@ -93,7 +93,7 @@ class ListPlaybooksRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list playbooks from. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -152,7 +152,7 @@ class GetPlaybookRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the playbook. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
     """
 
     name: str = proto.Field(
@@ -201,7 +201,7 @@ class Playbook(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the playbook. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
         display_name (str):
             Required. The human-readable name of the
             playbook, unique within an agent.
@@ -356,7 +356,7 @@ class CreatePlaybookVersionRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The playbook to create a version for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
         playbook_version (google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion):
             Required. The playbook version to create.
     """
@@ -379,7 +379,7 @@ class PlaybookVersion(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the playbook version. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>``.
         description (str):
             Optional. The description of the playbook
             version.
@@ -427,7 +427,7 @@ class GetPlaybookVersionRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the playbook version. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>``.
     """
 
     name: str = proto.Field(
@@ -443,7 +443,7 @@ class ListPlaybookVersionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The playbook to list versions for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
         page_size (int):
             Optional. The maximum number of items to
             return in a single page. By default 100 and at
@@ -505,7 +505,7 @@ class DeletePlaybookVersionRequest(proto.Message):
         name (str):
             Required. The name of the playbook version to delete.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/versions/<Version ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>``.
     """
 
     name: str = proto.Field(
