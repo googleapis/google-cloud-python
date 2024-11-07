@@ -79,10 +79,10 @@ class CreateGeneratorRequest(proto.Message):
             the final component of the generator's resource name.
 
             The generator ID must be compliant with the regression
-            fomula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters length
-            in range of [3,64]. If the field is not provided, an Id will
-            be auto-generated. If the field is provided, the caller is
-            resposible for
+            formula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters
+            length in range of [3,64]. If the field is not provided, an
+            Id will be auto-generated. If the field is provided, the
+            caller is responsible for
 
             1. the uniqueness of the ID, otherwise the request will be
                rejected.
@@ -309,7 +309,6 @@ class SummarizationSectionList(proto.Message):
 class FewShotExample(proto.Message):
     r"""Providing examples in the generator (i.e. building a few-shot
     generator) helps convey the desired format of the LLM response.
-    NEXT_ID: 10
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -551,7 +550,7 @@ class Generator(proto.Message):
             Optional. Human readable description of the
             generator.
         summarization_context (google.cloud.dialogflow_v2beta1.types.SummarizationContext):
-            Input of prebuilt Summarization feature.
+            Input of Summarization feature.
 
             This field is a member of `oneof`_ ``context``.
         inference_parameter (google.cloud.dialogflow_v2beta1.types.InferenceParameter):

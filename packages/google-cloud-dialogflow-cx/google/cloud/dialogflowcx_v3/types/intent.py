@@ -77,7 +77,7 @@ class Intent(proto.Message):
             method.
             [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent]
             populates the name automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         display_name (str):
             Required. The human-readable name of the
             intent, unique within the agent.
@@ -214,11 +214,11 @@ class Intent(proto.Message):
                 [parts][google.cloud.dialogflow.cx.v3.Intent.TrainingPhrase.Part].
             entity_type (str):
                 Required. The entity type of the parameter. Format:
-                ``projects/-/locations/-/agents/-/entityTypes/<System Entity Type ID>``
+                ``projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>``
                 for system entity types (for example,
                 ``projects/-/locations/-/agents/-/entityTypes/sys.date``),
                 or
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<Entity Type ID>``
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>``
                 for developer entity types.
             is_list (bool):
                 Indicates whether the parameter represents a
@@ -294,7 +294,7 @@ class ListIntentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list all intents for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         language_code (str):
             The language to list intents for. The following fields are
             language dependent:
@@ -376,7 +376,7 @@ class GetIntentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the intent. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         language_code (str):
             The language to retrieve the intent for. The following
             fields are language dependent:
@@ -407,7 +407,7 @@ class CreateIntentRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to create an intent for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intent (google.cloud.dialogflowcx_v3.types.Intent):
             Required. The intent to create.
         language_code (str):
@@ -483,7 +483,7 @@ class DeleteIntentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the intent to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
     """
 
     name: str = proto.Field(
@@ -506,7 +506,7 @@ class ImportIntentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to import the intents into. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intents_uri (str):
             The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
@@ -597,7 +597,7 @@ class ImportIntentsResponse(proto.Message):
     Attributes:
         intents (MutableSequence[str]):
             The unique identifier of the imported intents. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         conflicting_resources (google.cloud.dialogflowcx_v3.types.ImportIntentsResponse.ConflictingResources):
             Info which resources have conflicts when
             [REPORT_CONFLICT][ImportIntentsResponse.REPORT_CONFLICT]
@@ -659,10 +659,10 @@ class ExportIntentsRequest(proto.Message):
         parent (str):
             Required. The name of the parent agent to export intents.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         intents (MutableSequence[str]):
             Required. The name of the intents to export. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
         intents_uri (str):
             Optional. The `Google Cloud
             Storage <https://cloud.google.com/storage/docs/>`__ URI to

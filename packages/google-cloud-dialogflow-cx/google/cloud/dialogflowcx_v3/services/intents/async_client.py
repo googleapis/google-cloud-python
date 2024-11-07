@@ -302,7 +302,7 @@ class IntentsAsyncClient:
                 [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
             parent (:class:`str`):
                 Required. The agent to list all intents for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -422,7 +422,7 @@ class IntentsAsyncClient:
                 [Intents.GetIntent][google.cloud.dialogflow.cx.v3.Intents.GetIntent].
             name (:class:`str`):
                 Required. The name of the intent. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -542,7 +542,7 @@ class IntentsAsyncClient:
                 [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent].
             parent (:class:`str`):
                 Required. The agent to create an intent for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -790,7 +790,7 @@ class IntentsAsyncClient:
                 [Intents.DeleteIntent][google.cloud.dialogflow.cx.v3.Intents.DeleteIntent].
             name (:class:`str`):
                 Required. The name of the intent to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

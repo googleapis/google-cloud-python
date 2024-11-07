@@ -445,6 +445,9 @@ class InputAudioConfig(proto.Message):
         enable_automatic_punctuation (bool):
             Enable automatic punctuation option at the
             speech backend.
+        phrase_sets (MutableSequence[str]):
+            A collection of phrase set resources to use
+            for speech adaptation.
         opt_out_conformer_model_migration (bool):
             If ``true``, the request will opt out for STT conformer
             model migration. This field will be deprecated once force
@@ -499,6 +502,10 @@ class InputAudioConfig(proto.Message):
     enable_automatic_punctuation: bool = proto.Field(
         proto.BOOL,
         number=17,
+    )
+    phrase_sets: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=20,
     )
     opt_out_conformer_model_migration: bool = proto.Field(
         proto.BOOL,
@@ -687,6 +694,9 @@ class SpeechToTextConfig(proto.Message):
             Leave this field unspecified to use `Agent Speech
             settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__
             for model selection.
+        phrase_sets (MutableSequence[str]):
+            List of names of Cloud Speech phrase sets
+            that are used for transcription.
         audio_encoding (google.cloud.dialogflow_v2.types.AudioEncoding):
             Audio encoding of the audio content to
             process.
@@ -724,6 +734,10 @@ class SpeechToTextConfig(proto.Message):
     model: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    phrase_sets: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
     audio_encoding: "AudioEncoding" = proto.Field(
         proto.ENUM,

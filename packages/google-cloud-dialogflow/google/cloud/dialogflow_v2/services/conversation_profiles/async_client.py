@@ -104,6 +104,10 @@ class ConversationProfilesAsyncClient:
     parse_knowledge_base_path = staticmethod(
         ConversationProfilesClient.parse_knowledge_base_path
     )
+    phrase_set_path = staticmethod(ConversationProfilesClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(
+        ConversationProfilesClient.parse_phrase_set_path
+    )
     common_billing_account_path = staticmethod(
         ConversationProfilesClient.common_billing_account_path
     )
