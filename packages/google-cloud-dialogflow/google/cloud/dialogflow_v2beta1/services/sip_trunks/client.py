@@ -19,8 +19,6 @@ import re
 from typing import (
     Callable,
     Dict,
-    Iterable,
-    Iterator,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -52,35 +50,35 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import audio_config
-from google.cloud.dialogflow_v2beta1.types import session
-from google.cloud.dialogflow_v2beta1.types import session as gcd_session
+from google.cloud.dialogflow_v2beta1.services.sip_trunks import pagers
+from google.cloud.dialogflow_v2beta1.types import sip_trunk
+from google.cloud.dialogflow_v2beta1.types import sip_trunk as gcd_sip_trunk
 
-from .transports.base import DEFAULT_CLIENT_INFO, SessionsTransport
-from .transports.grpc import SessionsGrpcTransport
-from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
-from .transports.rest import SessionsRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, SipTrunksTransport
+from .transports.grpc import SipTrunksGrpcTransport
+from .transports.grpc_asyncio import SipTrunksGrpcAsyncIOTransport
+from .transports.rest import SipTrunksRestTransport
 
 
-class SessionsClientMeta(type):
-    """Metaclass for the Sessions client.
+class SipTrunksClientMeta(type):
+    """Metaclass for the SipTrunks client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionsTransport]]
-    _transport_registry["grpc"] = SessionsGrpcTransport
-    _transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
-    _transport_registry["rest"] = SessionsRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[SipTrunksTransport]]
+    _transport_registry["grpc"] = SipTrunksGrpcTransport
+    _transport_registry["grpc_asyncio"] = SipTrunksGrpcAsyncIOTransport
+    _transport_registry["rest"] = SipTrunksRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[SessionsTransport]:
+    ) -> Type[SipTrunksTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -99,11 +97,9 @@ class SessionsClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class SessionsClient(metaclass=SessionsClientMeta):
-    """A service used for session interactions.
-
-    For more information, see the `API interactions
-    guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
+class SipTrunksClient(metaclass=SipTrunksClientMeta):
+    """Service for managing
+    [SipTrunks][google.cloud.dialogflow.v2beta1.SipTrunk].
     """
 
     @staticmethod
@@ -156,7 +152,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            SessionsClient: The constructed client.
+            SipTrunksClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -174,7 +170,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            SessionsClient: The constructed client.
+            SipTrunksClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -183,135 +179,33 @@ class SessionsClient(metaclass=SessionsClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> SessionsTransport:
+    def transport(self) -> SipTrunksTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            SessionsTransport: The transport used by the client
+            SipTrunksTransport: The transport used by the client
                 instance.
         """
         return self._transport
 
     @staticmethod
-    def context_path(
-        project: str,
-        session: str,
-        context: str,
-    ) -> str:
-        """Returns a fully-qualified context string."""
-        return "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
-            project=project,
-            session=session,
-            context=context,
-        )
-
-    @staticmethod
-    def parse_context_path(path: str) -> Dict[str, str]:
-        """Parses a context path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)/contexts/(?P<context>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def document_path(
-        project: str,
-        knowledge_base: str,
-        document: str,
-    ) -> str:
-        """Returns a fully-qualified document string."""
-        return "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
-            project=project,
-            knowledge_base=knowledge_base,
-            document=document,
-        )
-
-    @staticmethod
-    def parse_document_path(path: str) -> Dict[str, str]:
-        """Parses a document path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)/documents/(?P<document>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def intent_path(
-        project: str,
-        intent: str,
-    ) -> str:
-        """Returns a fully-qualified intent string."""
-        return "projects/{project}/agent/intents/{intent}".format(
-            project=project,
-            intent=intent,
-        )
-
-    @staticmethod
-    def parse_intent_path(path: str) -> Dict[str, str]:
-        """Parses a intent path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/agent/intents/(?P<intent>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def phrase_set_path(
+    def sip_trunk_path(
         project: str,
         location: str,
-        phrase_set: str,
+        siptrunk: str,
     ) -> str:
-        """Returns a fully-qualified phrase_set string."""
-        return "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
+        """Returns a fully-qualified sip_trunk string."""
+        return "projects/{project}/locations/{location}/sipTrunks/{siptrunk}".format(
             project=project,
             location=location,
-            phrase_set=phrase_set,
+            siptrunk=siptrunk,
         )
 
     @staticmethod
-    def parse_phrase_set_path(path: str) -> Dict[str, str]:
-        """Parses a phrase_set path into its component segments."""
+    def parse_sip_trunk_path(path: str) -> Dict[str, str]:
+        """Parses a sip_trunk path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/phraseSets/(?P<phrase_set>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def session_path(
-        project: str,
-        session: str,
-    ) -> str:
-        """Returns a fully-qualified session string."""
-        return "projects/{project}/agent/sessions/{session}".format(
-            project=project,
-            session=session,
-        )
-
-    @staticmethod
-    def parse_session_path(path: str) -> Dict[str, str]:
-        """Parses a session path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)$", path
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def session_entity_type_path(
-        project: str,
-        session: str,
-        entity_type: str,
-    ) -> str:
-        """Returns a fully-qualified session_entity_type string."""
-        return "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
-            project=project,
-            session=session,
-            entity_type=entity_type,
-        )
-
-    @staticmethod
-    def parse_session_entity_type_path(path: str) -> Dict[str, str]:
-        """Parses a session_entity_type path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)/entityTypes/(?P<entity_type>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sipTrunks/(?P<siptrunk>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -535,14 +429,14 @@ class SessionsClient(metaclass=SessionsClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = SessionsClient._DEFAULT_UNIVERSE
+            _default_universe = SipTrunksClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = SessionsClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = SipTrunksClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = SessionsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = SipTrunksClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -563,7 +457,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = SessionsClient._DEFAULT_UNIVERSE
+        universe_domain = SipTrunksClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -608,12 +502,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, SessionsTransport, Callable[..., SessionsTransport]]
+            Union[str, SipTrunksTransport, Callable[..., SipTrunksTransport]]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the sessions client.
+        """Instantiates the sip trunks client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -621,10 +515,10 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,SessionsTransport,Callable[..., SessionsTransport]]]):
+            transport (Optional[Union[str,SipTrunksTransport,Callable[..., SipTrunksTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the SessionsTransport constructor.
+                arguments as used in the SipTrunksTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -677,11 +571,11 @@ class SessionsClient(metaclass=SessionsClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = SessionsClient._read_environment_variables()
-        self._client_cert_source = SessionsClient._get_client_cert_source(
+        ) = SipTrunksClient._read_environment_variables()
+        self._client_cert_source = SipTrunksClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = SessionsClient._get_universe_domain(
+        self._universe_domain = SipTrunksClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -698,9 +592,9 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, SessionsTransport)
+        transport_provided = isinstance(transport, SipTrunksTransport)
         if transport_provided:
-            # transport is a SessionsTransport instance.
+            # transport is a SipTrunksTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -711,10 +605,10 @@ class SessionsClient(metaclass=SessionsClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(SessionsTransport, transport)
+            self._transport = cast(SipTrunksTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = self._api_endpoint or SessionsClient._get_api_endpoint(
+        self._api_endpoint = self._api_endpoint or SipTrunksClient._get_api_endpoint(
             self._client_options.api_endpoint,
             self._client_cert_source,
             self._universe_domain,
@@ -732,11 +626,11 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 )
 
             transport_init: Union[
-                Type[SessionsTransport], Callable[..., SessionsTransport]
+                Type[SipTrunksTransport], Callable[..., SipTrunksTransport]
             ] = (
-                SessionsClient.get_transport_class(transport)
+                SipTrunksClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., SessionsTransport], transport)
+                else cast(Callable[..., SipTrunksTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -751,31 +645,17 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-    def detect_intent(
+    def create_sip_trunk(
         self,
-        request: Optional[Union[gcd_session.DetectIntentRequest, dict]] = None,
+        request: Optional[Union[gcd_sip_trunk.CreateSipTrunkRequest, dict]] = None,
         *,
-        session: Optional[str] = None,
-        query_input: Optional[gcd_session.QueryInput] = None,
+        parent: Optional[str] = None,
+        sip_trunk: Optional[gcd_sip_trunk.SipTrunk] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_session.DetectIntentResponse:
-        r"""Processes a natural language query and returns structured,
-        actionable data as a result. This method is not idempotent,
-        because it may cause contexts and session entity types to be
-        updated, which in turn might affect results of future queries.
-
-        If you might use `Agent
-        Assist <https://cloud.google.com/dialogflow/docs/#aa>`__ or
-        other CCAI products now or in the future, consider using
-        [AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent]
-        instead of ``DetectIntent``. ``AnalyzeContent`` has additional
-        functionality for Agent Assist and other CCAI products.
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+    ) -> gcd_sip_trunk.SipTrunk:
+        r"""Creates a SipTrunk for a specified location.
 
         .. code-block:: python
 
@@ -788,75 +668,40 @@ class SessionsClient(metaclass=SessionsClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            def sample_detect_intent():
+            def sample_create_sip_trunk():
                 # Create a client
-                client = dialogflow_v2beta1.SessionsClient()
+                client = dialogflow_v2beta1.SipTrunksClient()
 
                 # Initialize request argument(s)
-                query_input = dialogflow_v2beta1.QueryInput()
-                query_input.audio_config.audio_encoding = "AUDIO_ENCODING_ALAW"
-                query_input.audio_config.sample_rate_hertz = 1817
-                query_input.audio_config.language_code = "language_code_value"
+                sip_trunk = dialogflow_v2beta1.SipTrunk()
+                sip_trunk.expected_hostname = ['expected_hostname_value1', 'expected_hostname_value2']
 
-                request = dialogflow_v2beta1.DetectIntentRequest(
-                    session="session_value",
-                    query_input=query_input,
+                request = dialogflow_v2beta1.CreateSipTrunkRequest(
+                    parent="parent_value",
+                    sip_trunk=sip_trunk,
                 )
 
                 # Make the request
-                response = client.detect_intent(request=request)
+                response = client.create_sip_trunk(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.dialogflow_v2beta1.types.DetectIntentRequest, dict]):
-                The request object. The request to detect user's intent.
-            session (str):
-                Required. The name of the session this query is sent to.
-                Supported formats:
+            request (Union[google.cloud.dialogflow_v2beta1.types.CreateSipTrunkRequest, dict]):
+                The request object. The request message for
+                [SipTrunks.CreateSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.CreateSipTrunk].
+            parent (str):
+                Required. The location to create a SIP trunk for.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>``.
 
-                -  \`projects//agent/sessions/,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-                -  ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``,
-
-                If ``Location ID`` is not specified we assume default
-                'us' location. If ``Environment ID`` is not specified,
-                we assume default 'draft' environment
-                (``Environment ID`` might be referred to as environment
-                name at some places). If ``User ID`` is not specified,
-                we are using "-". It's up to the API caller to choose an
-                appropriate ``Session ID`` and ``User Id``. They can be
-                a random number or some type of user and session
-                identifiers (preferably hashed). The length of the
-                ``Session ID`` and ``User ID`` must not exceed 36
-                characters. For more information, see the `API
-                interactions
-                guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
-
-                Note: Always use agent versions for production traffic.
-                See `Versions and
-                environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
-
-                This corresponds to the ``session`` field
+                This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            query_input (google.cloud.dialogflow_v2beta1.types.QueryInput):
-                Required. The input specification. It
-                can be set to:
-
-                1. an audio config which instructs the
-                    speech recognizer how to process the
-                    speech audio,
-
-                2. a conversational query in the form of
-                    text, or
-
-                3. an event that specifies which intent
-                    to trigger.
-
-                This corresponds to the ``query_input`` field
+            sip_trunk (google.cloud.dialogflow_v2beta1.types.SipTrunk):
+                Required. The SIP trunk to create.
+                This corresponds to the ``sip_trunk`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -866,15 +711,17 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.dialogflow_v2beta1.types.DetectIntentResponse:
-                The message returned from the
-                DetectIntent method.
+            google.cloud.dialogflow_v2beta1.types.SipTrunk:
+                SipTrunk is the resource that
+                represents a SIP trunk to connect to
+                Google Telephony platform SIP trunking
+                service.
 
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([session, query_input])
+        has_flattened_params = any([parent, sip_trunk])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -883,23 +730,23 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcd_session.DetectIntentRequest):
-            request = gcd_session.DetectIntentRequest(request)
+        if not isinstance(request, gcd_sip_trunk.CreateSipTrunkRequest):
+            request = gcd_sip_trunk.CreateSipTrunkRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if session is not None:
-                request.session = session
-            if query_input is not None:
-                request.query_input = query_input
+            if parent is not None:
+                request.parent = parent
+            if sip_trunk is not None:
+                request.sip_trunk = sip_trunk
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.detect_intent]
+        rpc = self._transport._wrapped_methods[self._transport.create_sip_trunk]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Validate the universe domain.
@@ -916,30 +763,16 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Done; return the response.
         return response
 
-    def streaming_detect_intent(
+    def delete_sip_trunk(
         self,
-        requests: Optional[Iterator[session.StreamingDetectIntentRequest]] = None,
+        request: Optional[Union[sip_trunk.DeleteSipTrunkRequest, dict]] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Iterable[session.StreamingDetectIntentResponse]:
-        r"""Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable data as a
-        result. This method is only available via the gRPC API (not
-        REST).
-
-        If you might use `Agent
-        Assist <https://cloud.google.com/dialogflow/docs/#aa>`__ or
-        other CCAI products now or in the future, consider using
-        [StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent]
-        instead of ``StreamingDetectIntent``.
-        ``StreamingAnalyzeContent`` has additional functionality for
-        Agent Assist and other CCAI products.
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+    ) -> None:
+        r"""Deletes a specified SipTrunk.
 
         .. code-block:: python
 
@@ -952,80 +785,125 @@ class SessionsClient(metaclass=SessionsClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            def sample_streaming_detect_intent():
+            def sample_delete_sip_trunk():
                 # Create a client
-                client = dialogflow_v2beta1.SessionsClient()
+                client = dialogflow_v2beta1.SipTrunksClient()
 
                 # Initialize request argument(s)
-                query_input = dialogflow_v2beta1.QueryInput()
-                query_input.audio_config.audio_encoding = "AUDIO_ENCODING_ALAW"
-                query_input.audio_config.sample_rate_hertz = 1817
-                query_input.audio_config.language_code = "language_code_value"
-
-                request = dialogflow_v2beta1.StreamingDetectIntentRequest(
-                    session="session_value",
-                    query_input=query_input,
+                request = dialogflow_v2beta1.DeleteSipTrunkRequest(
+                    name="name_value",
                 )
 
-                # This method expects an iterator which contains
-                # 'dialogflow_v2beta1.StreamingDetectIntentRequest' objects
-                # Here we create a generator that yields a single `request` for
-                # demonstrative purposes.
-                requests = [request]
+                # Make the request
+                client.delete_sip_trunk(request=request)
 
-                def request_generator():
-                    for request in requests:
-                        yield request
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteSipTrunkRequest, dict]):
+                The request object. The request message for
+                [SipTrunks.DeleteSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.DeleteSipTrunk].
+            name (str):
+                Required. The name of the SIP trunk to delete. Format:
+                ``projects/<Project ID>/locations/<Location ID>/sipTrunks/<SipTrunk ID>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, sip_trunk.DeleteSipTrunkRequest):
+            request = sip_trunk.DeleteSipTrunkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_sip_trunk]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def list_sip_trunks(
+        self,
+        request: Optional[Union[sip_trunk.ListSipTrunksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSipTrunksPager:
+        r"""Returns a list of SipTrunks in the specified
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_sip_trunks():
+                # Create a client
+                client = dialogflow_v2beta1.SipTrunksClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListSipTrunksRequest(
+                    parent="parent_value",
+                )
 
                 # Make the request
-                stream = client.streaming_detect_intent(requests=request_generator())
+                page_result = client.list_sip_trunks(request=request)
 
                 # Handle the response
-                for response in stream:
+                for response in page_result:
                     print(response)
 
         Args:
-            requests (Iterator[google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentRequest]):
-                The request object iterator. The top-level message sent by the client to the
-                [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]
-                method.
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListSipTrunksRequest, dict]):
+                The request object. The request message for
+                [SipTrunks.ListSipTrunks][google.cloud.dialogflow.v2beta1.SipTrunks.ListSipTrunks].
+            parent (str):
+                Required. The location to list SIP trunks from. Format:
+                ``projects/<Project ID>/locations/<Location ID>``.
 
-                Multiple request messages should be sent in order:
-
-                1. The first message must contain
-                   [session][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.session],
-                   [query_input][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_input]
-                   plus optionally
-                   [query_params][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_params].
-                   If the client wants to receive an audio response, it
-                   should also contain
-                   [output_audio_config][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.output_audio_config].
-                   The message must not contain
-                   [input_audio][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.input_audio].
-
-                2. If
-                   [query_input][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.query_input]
-                   was set to
-                   [query_input.audio_config][google.cloud.dialogflow.v2beta1.InputAudioConfig],
-                   all subsequent messages must contain
-                   [input_audio][google.cloud.dialogflow.v2beta1.StreamingDetectIntentRequest.input_audio]
-                   to continue with Speech recognition. If you decide to
-                   rather detect an intent from text input after you
-                   already started Speech recognition, please send a
-                   message with
-                   [query_input.text][google.cloud.dialogflow.v2beta1.QueryInput.text].
-
-                   However, note that:
-
-                   -  Dialogflow will bill you for the audio duration so
-                      far.
-                   -  Dialogflow discards all Speech recognition results
-                      in favor of the input text.
-                   -  Dialogflow will use the language code from the
-                      first message.
-
-                After you sent all input, you must half-close or abort
-                the request stream.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1033,38 +911,60 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentResponse]:
-                The top-level message returned from the
-                   StreamingDetectIntent method.
+            google.cloud.dialogflow_v2beta1.services.sip_trunks.pagers.ListSipTrunksPager:
+                The response message for
+                   [SipTrunks.ListSipTrunks][google.cloud.dialogflow.v2beta1.SipTrunks.ListSipTrunks].
 
-                   Multiple response messages can be returned in order:
-
-                   1. If the StreamingDetectIntentRequest.input_audio
-                      field was set, the recognition_result field is
-                      populated for one or more messages. See the
-                      [StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult]
-                      message for details about the result message
-                      sequence.
-                   2. The next message contains response_id,
-                      query_result, alternative_query_results and
-                      optionally webhook_status if a WebHook was called.
-                   3. If output_audio_config was specified in the
-                      request or agent-level speech synthesizer is
-                      configured, all subsequent messages contain
-                      output_audio and output_audio_config.
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, sip_trunk.ListSipTrunksRequest):
+            request = sip_trunk.ListSipTrunksRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.streaming_detect_intent]
+        rpc = self._transport._wrapped_methods[self._transport.list_sip_trunks]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
         response = rpc(
-            requests,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSipTrunksPager(
+            method=rpc,
+            request=request,
+            response=response,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -1073,7 +973,231 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "SessionsClient":
+    def get_sip_trunk(
+        self,
+        request: Optional[Union[sip_trunk.GetSipTrunkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> sip_trunk.SipTrunk:
+        r"""Retrieves the specified SipTrunk.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_sip_trunk():
+                # Create a client
+                client = dialogflow_v2beta1.SipTrunksClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetSipTrunkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_sip_trunk(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetSipTrunkRequest, dict]):
+                The request object. The request message for
+                [SipTrunks.GetSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.GetSipTrunk].
+            name (str):
+                Required. The name of the SIP trunk to delete. Format:
+                ``projects/<Project ID>/locations/<Location ID>/sipTrunks/<SipTrunk ID>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.SipTrunk:
+                SipTrunk is the resource that
+                represents a SIP trunk to connect to
+                Google Telephony platform SIP trunking
+                service.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, sip_trunk.GetSipTrunkRequest):
+            request = sip_trunk.GetSipTrunkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_sip_trunk]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_sip_trunk(
+        self,
+        request: Optional[Union[gcd_sip_trunk.UpdateSipTrunkRequest, dict]] = None,
+        *,
+        sip_trunk: Optional[gcd_sip_trunk.SipTrunk] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_sip_trunk.SipTrunk:
+        r"""Updates the specified SipTrunk.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_sip_trunk():
+                # Create a client
+                client = dialogflow_v2beta1.SipTrunksClient()
+
+                # Initialize request argument(s)
+                sip_trunk = dialogflow_v2beta1.SipTrunk()
+                sip_trunk.expected_hostname = ['expected_hostname_value1', 'expected_hostname_value2']
+
+                request = dialogflow_v2beta1.UpdateSipTrunkRequest(
+                    sip_trunk=sip_trunk,
+                )
+
+                # Make the request
+                response = client.update_sip_trunk(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateSipTrunkRequest, dict]):
+                The request object. The request message for
+                [SipTrunks.UpdateSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.UpdateSipTrunk].
+            sip_trunk (google.cloud.dialogflow_v2beta1.types.SipTrunk):
+                Required. The SipTrunk to update.
+                This corresponds to the ``sip_trunk`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. The mask to control which
+                fields get updated. If the mask is not
+                present, all fields will be updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.SipTrunk:
+                SipTrunk is the resource that
+                represents a SIP trunk to connect to
+                Google Telephony platform SIP trunking
+                service.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([sip_trunk, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcd_sip_trunk.UpdateSipTrunkRequest):
+            request = gcd_sip_trunk.UpdateSipTrunkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if sip_trunk is not None:
+                request.sip_trunk = sip_trunk
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_sip_trunk]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("sip_trunk.name", request.sip_trunk.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def __enter__(self) -> "SipTrunksClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -1357,4 +1481,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("SessionsClient",)
+__all__ = ("SipTrunksClient",)

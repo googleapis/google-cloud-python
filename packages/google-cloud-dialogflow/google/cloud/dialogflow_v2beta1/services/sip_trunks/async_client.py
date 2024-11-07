@@ -45,53 +45,49 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.services.generators import pagers
-from google.cloud.dialogflow_v2beta1.types import generator
-from google.cloud.dialogflow_v2beta1.types import generator as gcd_generator
+from google.cloud.dialogflow_v2beta1.services.sip_trunks import pagers
+from google.cloud.dialogflow_v2beta1.types import sip_trunk
+from google.cloud.dialogflow_v2beta1.types import sip_trunk as gcd_sip_trunk
 
-from .client import GeneratorsClient
-from .transports.base import DEFAULT_CLIENT_INFO, GeneratorsTransport
-from .transports.grpc_asyncio import GeneratorsGrpcAsyncIOTransport
+from .client import SipTrunksClient
+from .transports.base import DEFAULT_CLIENT_INFO, SipTrunksTransport
+from .transports.grpc_asyncio import SipTrunksGrpcAsyncIOTransport
 
 
-class GeneratorsAsyncClient:
-    """Generator Service for LLM powered Agent Assist. This service
-    manages the configurations of user owned Generators, such as
-    description, context and instruction, input/output format, etc.
-    The generator resources will be used inside a conversation and
-    will be triggered by TriggerEvent to query LLM for answers.
+class SipTrunksAsyncClient:
+    """Service for managing
+    [SipTrunks][google.cloud.dialogflow.v2beta1.SipTrunk].
     """
 
-    _client: GeneratorsClient
+    _client: SipTrunksClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = GeneratorsClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = GeneratorsClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = GeneratorsClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = GeneratorsClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = SipTrunksClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = SipTrunksClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = SipTrunksClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = SipTrunksClient._DEFAULT_UNIVERSE
 
-    generator_path = staticmethod(GeneratorsClient.generator_path)
-    parse_generator_path = staticmethod(GeneratorsClient.parse_generator_path)
+    sip_trunk_path = staticmethod(SipTrunksClient.sip_trunk_path)
+    parse_sip_trunk_path = staticmethod(SipTrunksClient.parse_sip_trunk_path)
     common_billing_account_path = staticmethod(
-        GeneratorsClient.common_billing_account_path
+        SipTrunksClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        GeneratorsClient.parse_common_billing_account_path
+        SipTrunksClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(GeneratorsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(GeneratorsClient.parse_common_folder_path)
-    common_organization_path = staticmethod(GeneratorsClient.common_organization_path)
+    common_folder_path = staticmethod(SipTrunksClient.common_folder_path)
+    parse_common_folder_path = staticmethod(SipTrunksClient.parse_common_folder_path)
+    common_organization_path = staticmethod(SipTrunksClient.common_organization_path)
     parse_common_organization_path = staticmethod(
-        GeneratorsClient.parse_common_organization_path
+        SipTrunksClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(GeneratorsClient.common_project_path)
-    parse_common_project_path = staticmethod(GeneratorsClient.parse_common_project_path)
-    common_location_path = staticmethod(GeneratorsClient.common_location_path)
+    common_project_path = staticmethod(SipTrunksClient.common_project_path)
+    parse_common_project_path = staticmethod(SipTrunksClient.parse_common_project_path)
+    common_location_path = staticmethod(SipTrunksClient.common_location_path)
     parse_common_location_path = staticmethod(
-        GeneratorsClient.parse_common_location_path
+        SipTrunksClient.parse_common_location_path
     )
 
     @classmethod
@@ -105,9 +101,9 @@ class GeneratorsAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            GeneratorsAsyncClient: The constructed client.
+            SipTrunksAsyncClient: The constructed client.
         """
-        return GeneratorsClient.from_service_account_info.__func__(GeneratorsAsyncClient, info, *args, **kwargs)  # type: ignore
+        return SipTrunksClient.from_service_account_info.__func__(SipTrunksAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -121,9 +117,9 @@ class GeneratorsAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            GeneratorsAsyncClient: The constructed client.
+            SipTrunksAsyncClient: The constructed client.
         """
-        return GeneratorsClient.from_service_account_file.__func__(GeneratorsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return SipTrunksClient.from_service_account_file.__func__(SipTrunksAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -161,14 +157,14 @@ class GeneratorsAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return GeneratorsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return SipTrunksClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> GeneratorsTransport:
+    def transport(self) -> SipTrunksTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            GeneratorsTransport: The transport used by the client instance.
+            SipTrunksTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -191,19 +187,19 @@ class GeneratorsAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = GeneratorsClient.get_transport_class
+    get_transport_class = SipTrunksClient.get_transport_class
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, GeneratorsTransport, Callable[..., GeneratorsTransport]]
+            Union[str, SipTrunksTransport, Callable[..., SipTrunksTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the generators async client.
+        """Instantiates the sip trunks async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -211,10 +207,10 @@ class GeneratorsAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,GeneratorsTransport,Callable[..., GeneratorsTransport]]]):
+            transport (Optional[Union[str,SipTrunksTransport,Callable[..., SipTrunksTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the GeneratorsTransport constructor.
+                arguments as used in the SipTrunksTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -252,25 +248,24 @@ class GeneratorsAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = GeneratorsClient(
+        self._client = SipTrunksClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def create_generator(
+    async def create_sip_trunk(
         self,
-        request: Optional[Union[gcd_generator.CreateGeneratorRequest, dict]] = None,
+        request: Optional[Union[gcd_sip_trunk.CreateSipTrunkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        generator: Optional[gcd_generator.Generator] = None,
-        generator_id: Optional[str] = None,
+        sip_trunk: Optional[gcd_sip_trunk.SipTrunk] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_generator.Generator:
-        r"""Creates a generator.
+    ) -> gcd_sip_trunk.SipTrunk:
+        r"""Creates a SipTrunk for a specified location.
 
         .. code-block:: python
 
@@ -283,54 +278,40 @@ class GeneratorsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            async def sample_create_generator():
+            async def sample_create_sip_trunk():
                 # Create a client
-                client = dialogflow_v2beta1.GeneratorsAsyncClient()
+                client = dialogflow_v2beta1.SipTrunksAsyncClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.CreateGeneratorRequest(
+                sip_trunk = dialogflow_v2beta1.SipTrunk()
+                sip_trunk.expected_hostname = ['expected_hostname_value1', 'expected_hostname_value2']
+
+                request = dialogflow_v2beta1.CreateSipTrunkRequest(
                     parent="parent_value",
+                    sip_trunk=sip_trunk,
                 )
 
                 # Make the request
-                response = await client.create_generator(request=request)
+                response = await client.create_sip_trunk(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.CreateGeneratorRequest, dict]]):
-                The request object. Request message of CreateGenerator.
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.CreateSipTrunkRequest, dict]]):
+                The request object. The request message for
+                [SipTrunks.CreateSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.CreateSipTrunk].
             parent (:class:`str`):
-                Required. The project/location to create generator for.
+                Required. The location to create a SIP trunk for.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>``
+                ``projects/<Project ID>/locations/<Location ID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            generator (:class:`google.cloud.dialogflow_v2beta1.types.Generator`):
-                Required. The generator to create.
-                This corresponds to the ``generator`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            generator_id (:class:`str`):
-                Optional. The ID to use for the generator, which will
-                become the final component of the generator's resource
-                name.
-
-                The generator ID must be compliant with the regression
-                formula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters
-                length in range of [3,64]. If the field is not provided,
-                an Id will be auto-generated. If the field is provided,
-                the caller is responsible for
-
-                1. the uniqueness of the ID, otherwise the request will
-                   be rejected.
-                2. the consistency for whether to use custom ID or not
-                   under a project to better ensure uniqueness.
-
-                This corresponds to the ``generator_id`` field
+            sip_trunk (:class:`google.cloud.dialogflow_v2beta1.types.SipTrunk`):
+                Required. The SIP trunk to create.
+                This corresponds to the ``sip_trunk`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -340,13 +321,17 @@ class GeneratorsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.dialogflow_v2beta1.types.Generator:
-                LLM generator.
+            google.cloud.dialogflow_v2beta1.types.SipTrunk:
+                SipTrunk is the resource that
+                represents a SIP trunk to connect to
+                Google Telephony platform SIP trunking
+                service.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, generator, generator_id])
+        has_flattened_params = any([parent, sip_trunk])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -355,22 +340,20 @@ class GeneratorsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcd_generator.CreateGeneratorRequest):
-            request = gcd_generator.CreateGeneratorRequest(request)
+        if not isinstance(request, gcd_sip_trunk.CreateSipTrunkRequest):
+            request = gcd_sip_trunk.CreateSipTrunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
-        if generator is not None:
-            request.generator = generator
-        if generator_id is not None:
-            request.generator_id = generator_id
+        if sip_trunk is not None:
+            request.sip_trunk = sip_trunk
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_generator
+            self._client._transport.create_sip_trunk
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -393,16 +376,16 @@ class GeneratorsAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_generator(
+    async def delete_sip_trunk(
         self,
-        request: Optional[Union[generator.GetGeneratorRequest, dict]] = None,
+        request: Optional[Union[sip_trunk.DeleteSipTrunkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> generator.Generator:
-        r"""Retrieves a generator.
+    ) -> None:
+        r"""Deletes a specified SipTrunk.
 
         .. code-block:: python
 
@@ -415,28 +398,25 @@ class GeneratorsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            async def sample_get_generator():
+            async def sample_delete_sip_trunk():
                 # Create a client
-                client = dialogflow_v2beta1.GeneratorsAsyncClient()
+                client = dialogflow_v2beta1.SipTrunksAsyncClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.GetGeneratorRequest(
+                request = dialogflow_v2beta1.DeleteSipTrunkRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = await client.get_generator(request=request)
-
-                # Handle the response
-                print(response)
+                await client.delete_sip_trunk(request=request)
 
         Args:
-            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GetGeneratorRequest, dict]]):
-                The request object. Request message of GetGenerator.
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.DeleteSipTrunkRequest, dict]]):
+                The request object. The request message for
+                [SipTrunks.DeleteSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.DeleteSipTrunk].
             name (:class:`str`):
-                Required. The generator resource name to retrieve.
-                Format:
-                ``projects/<Project ID>/locations/<Location ID>``/generators/\`
+                Required. The name of the SIP trunk to delete. Format:
+                ``projects/<Project ID>/locations/<Location ID>/sipTrunks/<SipTrunk ID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -446,10 +426,6 @@ class GeneratorsAsyncClient:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
-
-        Returns:
-            google.cloud.dialogflow_v2beta1.types.Generator:
-                LLM generator.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -463,8 +439,8 @@ class GeneratorsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, generator.GetGeneratorRequest):
-            request = generator.GetGeneratorRequest(request)
+        if not isinstance(request, sip_trunk.DeleteSipTrunkRequest):
+            request = sip_trunk.DeleteSipTrunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -474,7 +450,7 @@ class GeneratorsAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_generator
+            self._client._transport.delete_sip_trunk
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -487,26 +463,24 @@ class GeneratorsAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        response = await rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-        # Done; return the response.
-        return response
-
-    async def list_generators(
+    async def list_sip_trunks(
         self,
-        request: Optional[Union[generator.ListGeneratorsRequest, dict]] = None,
+        request: Optional[Union[sip_trunk.ListSipTrunksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListGeneratorsAsyncPager:
-        r"""Lists generators.
+    ) -> pagers.ListSipTrunksAsyncPager:
+        r"""Returns a list of SipTrunks in the specified
+        location.
 
         .. code-block:: python
 
@@ -519,29 +493,29 @@ class GeneratorsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            async def sample_list_generators():
+            async def sample_list_sip_trunks():
                 # Create a client
-                client = dialogflow_v2beta1.GeneratorsAsyncClient()
+                client = dialogflow_v2beta1.SipTrunksAsyncClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.ListGeneratorsRequest(
+                request = dialogflow_v2beta1.ListSipTrunksRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_generators(request=request)
+                page_result = client.list_sip_trunks(request=request)
 
                 # Handle the response
                 async for response in page_result:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListGeneratorsRequest, dict]]):
-                The request object. Request message of ListGenerators.
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.ListSipTrunksRequest, dict]]):
+                The request object. The request message for
+                [SipTrunks.ListSipTrunks][google.cloud.dialogflow.v2beta1.SipTrunks.ListSipTrunks].
             parent (:class:`str`):
-                Required. The project/location to list generators for.
-                Format:
-                ``projects/<Project ID>/locations/<Location ID>``
+                Required. The location to list SIP trunks from. Format:
+                ``projects/<Project ID>/locations/<Location ID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -553,12 +527,12 @@ class GeneratorsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.dialogflow_v2beta1.services.generators.pagers.ListGeneratorsAsyncPager:
-                Response of ListGenerators.
+            google.cloud.dialogflow_v2beta1.services.sip_trunks.pagers.ListSipTrunksAsyncPager:
+                The response message for
+                   [SipTrunks.ListSipTrunks][google.cloud.dialogflow.v2beta1.SipTrunks.ListSipTrunks].
 
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -573,8 +547,8 @@ class GeneratorsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, generator.ListGeneratorsRequest):
-            request = generator.ListGeneratorsRequest(request)
+        if not isinstance(request, sip_trunk.ListSipTrunksRequest):
+            request = sip_trunk.ListSipTrunksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -584,7 +558,7 @@ class GeneratorsAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_generators
+            self._client._transport.list_sip_trunks
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -606,7 +580,7 @@ class GeneratorsAsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers.ListGeneratorsAsyncPager(
+        response = pagers.ListSipTrunksAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -618,16 +592,16 @@ class GeneratorsAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_generator(
+    async def get_sip_trunk(
         self,
-        request: Optional[Union[generator.DeleteGeneratorRequest, dict]] = None,
+        request: Optional[Union[sip_trunk.GetSipTrunkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a generator.
+    ) -> sip_trunk.SipTrunk:
+        r"""Retrieves the specified SipTrunk.
 
         .. code-block:: python
 
@@ -640,24 +614,28 @@ class GeneratorsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            async def sample_delete_generator():
+            async def sample_get_sip_trunk():
                 # Create a client
-                client = dialogflow_v2beta1.GeneratorsAsyncClient()
+                client = dialogflow_v2beta1.SipTrunksAsyncClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.DeleteGeneratorRequest(
+                request = dialogflow_v2beta1.GetSipTrunkRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                await client.delete_generator(request=request)
+                response = await client.get_sip_trunk(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.DeleteGeneratorRequest, dict]]):
-                The request object. Request of DeleteGenerator.
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.GetSipTrunkRequest, dict]]):
+                The request object. The request message for
+                [SipTrunks.GetSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.GetSipTrunk].
             name (:class:`str`):
-                Required. The generator resource name to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>``
+                Required. The name of the SIP trunk to delete. Format:
+                ``projects/<Project ID>/locations/<Location ID>/sipTrunks/<SipTrunk ID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -667,6 +645,14 @@ class GeneratorsAsyncClient:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.SipTrunk:
+                SipTrunk is the resource that
+                represents a SIP trunk to connect to
+                Google Telephony platform SIP trunking
+                service.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -680,8 +666,8 @@ class GeneratorsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, generator.DeleteGeneratorRequest):
-            request = generator.DeleteGeneratorRequest(request)
+        if not isinstance(request, sip_trunk.GetSipTrunkRequest):
+            request = sip_trunk.GetSipTrunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -691,7 +677,7 @@ class GeneratorsAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_generator
+            self._client._transport.get_sip_trunk
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -704,24 +690,27 @@ class GeneratorsAsyncClient:
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    async def update_generator(
+        # Done; return the response.
+        return response
+
+    async def update_sip_trunk(
         self,
-        request: Optional[Union[gcd_generator.UpdateGeneratorRequest, dict]] = None,
+        request: Optional[Union[gcd_sip_trunk.UpdateSipTrunkRequest, dict]] = None,
         *,
-        generator: Optional[gcd_generator.Generator] = None,
+        sip_trunk: Optional[gcd_sip_trunk.SipTrunk] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_generator.Generator:
-        r"""Updates a generator.
+    ) -> gcd_sip_trunk.SipTrunk:
+        r"""Updates the specified SipTrunk.
 
         .. code-block:: python
 
@@ -734,34 +723,37 @@ class GeneratorsAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import dialogflow_v2beta1
 
-            async def sample_update_generator():
+            async def sample_update_sip_trunk():
                 # Create a client
-                client = dialogflow_v2beta1.GeneratorsAsyncClient()
+                client = dialogflow_v2beta1.SipTrunksAsyncClient()
 
                 # Initialize request argument(s)
-                request = dialogflow_v2beta1.UpdateGeneratorRequest(
+                sip_trunk = dialogflow_v2beta1.SipTrunk()
+                sip_trunk.expected_hostname = ['expected_hostname_value1', 'expected_hostname_value2']
+
+                request = dialogflow_v2beta1.UpdateSipTrunkRequest(
+                    sip_trunk=sip_trunk,
                 )
 
                 # Make the request
-                response = await client.update_generator(request=request)
+                response = await client.update_sip_trunk(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.UpdateGeneratorRequest, dict]]):
-                The request object. Request of UpdateGenerator.
-            generator (:class:`google.cloud.dialogflow_v2beta1.types.Generator`):
-                Required. The generator to update.
-                The name field of generator is to
-                identify the generator to update.
-
-                This corresponds to the ``generator`` field
+            request (Optional[Union[google.cloud.dialogflow_v2beta1.types.UpdateSipTrunkRequest, dict]]):
+                The request object. The request message for
+                [SipTrunks.UpdateSipTrunk][google.cloud.dialogflow.v2beta1.SipTrunks.UpdateSipTrunk].
+            sip_trunk (:class:`google.cloud.dialogflow_v2beta1.types.SipTrunk`):
+                Required. The SipTrunk to update.
+                This corresponds to the ``sip_trunk`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. The list of fields to
-                update.
+                Optional. The mask to control which
+                fields get updated. If the mask is not
+                present, all fields will be updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -773,13 +765,17 @@ class GeneratorsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.dialogflow_v2beta1.types.Generator:
-                LLM generator.
+            google.cloud.dialogflow_v2beta1.types.SipTrunk:
+                SipTrunk is the resource that
+                represents a SIP trunk to connect to
+                Google Telephony platform SIP trunking
+                service.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([generator, update_mask])
+        has_flattened_params = any([sip_trunk, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -788,27 +784,27 @@ class GeneratorsAsyncClient:
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcd_generator.UpdateGeneratorRequest):
-            request = gcd_generator.UpdateGeneratorRequest(request)
+        if not isinstance(request, gcd_sip_trunk.UpdateSipTrunkRequest):
+            request = gcd_sip_trunk.UpdateSipTrunkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if generator is not None:
-            request.generator = generator
+        if sip_trunk is not None:
+            request.sip_trunk = sip_trunk
         if update_mask is not None:
             request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_generator
+            self._client._transport.update_sip_trunk
         ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("generator.name", request.generator.name),)
+                (("sip_trunk.name", request.sip_trunk.name),)
             ),
         )
 
@@ -1091,7 +1087,7 @@ class GeneratorsAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "GeneratorsAsyncClient":
+    async def __aenter__(self) -> "SipTrunksAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -1103,4 +1099,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("GeneratorsAsyncClient",)
+__all__ = ("SipTrunksAsyncClient",)
