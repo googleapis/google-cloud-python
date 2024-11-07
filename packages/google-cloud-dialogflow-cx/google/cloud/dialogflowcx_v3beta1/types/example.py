@@ -77,7 +77,7 @@ class CreateExampleRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The playbook to create an example for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
         example (google.cloud.dialogflowcx_v3beta1.types.Example):
             Required. The example to create.
     """
@@ -100,7 +100,7 @@ class DeleteExampleRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the example to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/examples/<Example ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>``.
     """
 
     name: str = proto.Field(
@@ -116,7 +116,7 @@ class ListExamplesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The playbook to list the examples from. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
         page_size (int):
             Optional. The maximum number of items to
             return in a single page. By default 100 and at
@@ -127,8 +127,8 @@ class ListExamplesRequest(proto.Message):
             returned from a previous list request.
         language_code (str):
             Optional. The language to list examples for.
-            If not specified, the agent's default language
-            is used. Note: languages must be enabled in the
+            If not specified, list all examples under the
+            playbook. Note: languages must be enabled in the
             agent before they can be used.
     """
 
@@ -188,7 +188,7 @@ class GetExampleRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the example. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/examples/<Example ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>``.
     """
 
     name: str = proto.Field(
@@ -232,7 +232,7 @@ class Example(proto.Message):
     Attributes:
         name (str):
             The unique identifier of the playbook example. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>/examples/<Example ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>``.
         playbook_input (google.cloud.dialogflowcx_v3beta1.types.PlaybookInput):
             Optional. The input to the playbook in the
             example.
@@ -264,7 +264,9 @@ class Example(proto.Message):
             Optional. The language code of the example.
             If not specified, the agent's default language
             is used. Note: languages must be enabled in the
-            agent before they can be used.
+            agent before they can be used. Note: example's
+            language code is not currently used in
+            dialogflow agents.
     """
 
     name: str = proto.Field(
@@ -473,7 +475,7 @@ class ToolUse(proto.Message):
             Required. The
             [tool][google.cloud.dialogflow.cx.v3beta1.Tool] that should
             be used. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/tools/<Tool ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>``.
         action (str):
             Optional. Name of the action to be called
             during the tool use.
@@ -507,12 +509,11 @@ class ToolUse(proto.Message):
 
 class PlaybookInvocation(proto.Message):
     r"""Stores metadata of the invocation of a child playbook.
-    Next Id: 5
 
     Attributes:
         playbook (str):
             Required. The unique identifier of the playbook. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
         playbook_input (google.cloud.dialogflowcx_v3beta1.types.PlaybookInput):
             Optional. Input of the child playbook
             invocation.
@@ -546,12 +547,11 @@ class PlaybookInvocation(proto.Message):
 
 class FlowInvocation(proto.Message):
     r"""Stores metadata of the invocation of a CX flow.
-    Next Id: 7
 
     Attributes:
         flow (str):
             Required. The unique identifier of the flow. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent flows/<Flow ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
         input_action_parameters (google.protobuf.struct_pb2.Struct):
             Optional. A list of input parameters for the
             flow.

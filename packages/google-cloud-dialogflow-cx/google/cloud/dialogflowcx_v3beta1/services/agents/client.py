@@ -57,13 +57,13 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.agents import pagers
+from google.cloud.dialogflowcx_v3beta1.types import audio_config, bigquery_export, flow
 from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
 )
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3beta1.types import audio_config, flow
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import safety_settings
 
@@ -362,6 +362,28 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def secret_version_path(
+        project: str,
+        secret: str,
+        version: str,
+    ) -> str:
+        """Returns a fully-qualified secret_version string."""
+        return "projects/{project}/secrets/{secret}/versions/{version}".format(
+            project=project,
+            secret=secret,
+            version=version,
+        )
+
+    @staticmethod
+    def parse_secret_version_path(path: str) -> Dict[str, str]:
+        """Parses a secret_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)/versions/(?P<version>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def security_settings_path(
         project: str,
         location: str,
@@ -639,36 +661,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
             raise ValueError("Universe Domain cannot be an empty string.")
         return universe_domain
 
-    @staticmethod
-    def _compare_universes(
-        client_universe: str, credentials: ga_credentials.Credentials
-    ) -> bool:
-        """Returns True iff the universe domains used by the client and credentials match.
-
-        Args:
-            client_universe (str): The universe domain configured via the client options.
-            credentials (ga_credentials.Credentials): The credentials being used in the client.
-
-        Returns:
-            bool: True iff client_universe matches the universe in credentials.
-
-        Raises:
-            ValueError: when client_universe does not match the universe in credentials.
-        """
-
-        default_universe = AgentsClient._DEFAULT_UNIVERSE
-        credentials_universe = getattr(credentials, "universe_domain", default_universe)
-
-        if client_universe != credentials_universe:
-            raise ValueError(
-                "The configured universe domain "
-                f"({client_universe}) does not match the universe domain "
-                f"found in the credentials ({credentials_universe}). "
-                "If you haven't configured the universe domain explicitly, "
-                f"`{default_universe}` is the default."
-            )
-        return True
-
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
 
@@ -678,13 +670,9 @@ class AgentsClient(metaclass=AgentsClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (
-            self._is_universe_domain_valid
-            or AgentsClient._compare_universes(
-                self.universe_domain, self.transport._credentials
-            )
-        )
-        return self._is_universe_domain_valid
+
+        # NOTE (b/349488459): universe validation is disabled until further notice.
+        return True
 
     @property
     def api_endpoint(self):
@@ -835,7 +823,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
             transport_init: Union[
                 Type[AgentsTransport], Callable[..., AgentsTransport]
             ] = (
-                type(self).get_transport_class(transport)
+                AgentsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AgentsTransport], transport)
             )
@@ -897,7 +885,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.ListAgents][google.cloud.dialogflow.cx.v3beta1.Agents.ListAgents].
             parent (str):
                 Required. The location to list all agents for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -963,6 +951,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -1012,7 +1002,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.GetAgent][google.cloud.dialogflow.cx.v3beta1.Agents.GetAgent].
             name (str):
                 Required. The name of the agent. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1140,7 +1130,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.CreateAgent][google.cloud.dialogflow.cx.v3beta1.Agents.CreateAgent].
             parent (str):
                 Required. The location to create a agent for. Format:
-                ``projects/<Project ID>/locations/<Location ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1397,7 +1387,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.DeleteAgent][google.cloud.dialogflow.cx.v3beta1.Agents.DeleteAgent].
             name (str):
                 Required. The name of the agent to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1806,7 +1796,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3beta1.Agents.GetAgentValidationResult].
             name (str):
                 Required. The agent name. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/validationResult``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1914,7 +1904,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 RPC.
             name (str):
                 Required. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2143,11 +2133,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2200,11 +2186,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2260,11 +2242,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2314,11 +2292,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2371,11 +2345,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

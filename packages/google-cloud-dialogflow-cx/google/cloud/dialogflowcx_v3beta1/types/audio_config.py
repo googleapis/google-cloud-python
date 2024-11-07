@@ -87,6 +87,9 @@ class AudioEncoding(proto.Enum):
             5574. In other words, each RTP header is replaced with a
             single byte containing the block length. Only Speex wideband
             is supported. ``sample_rate_hertz`` must be 16000.
+        AUDIO_ENCODING_ALAW (8):
+            8-bit samples that compand 13-bit audio
+            samples using G.711 PCMU/a-law.
     """
     AUDIO_ENCODING_UNSPECIFIED = 0
     AUDIO_ENCODING_LINEAR_16 = 1
@@ -96,6 +99,7 @@ class AudioEncoding(proto.Enum):
     AUDIO_ENCODING_AMR_WB = 5
     AUDIO_ENCODING_OGG_OPUS = 6
     AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE = 7
+    AUDIO_ENCODING_ALAW = 8
 
 
 class SpeechModelVariant(proto.Enum):
@@ -187,6 +191,9 @@ class OutputAudioEncoding(proto.Enum):
         OUTPUT_AUDIO_ENCODING_MULAW (5):
             8-bit samples that compand 14-bit audio
             samples using G.711 PCMU/mu-law.
+        OUTPUT_AUDIO_ENCODING_ALAW (6):
+            8-bit samples that compand 13-bit audio
+            samples using G.711 PCMU/a-law.
     """
     OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
     OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
@@ -194,6 +201,7 @@ class OutputAudioEncoding(proto.Enum):
     OUTPUT_AUDIO_ENCODING_MP3_64_KBPS = 4
     OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3
     OUTPUT_AUDIO_ENCODING_MULAW = 5
+    OUTPUT_AUDIO_ENCODING_ALAW = 6
 
 
 class SpeechWordInfo(proto.Message):

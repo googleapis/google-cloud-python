@@ -36,7 +36,7 @@ class GenerativeSettings(proto.Message):
     Attributes:
         name (str):
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings``.
         fallback_settings (google.cloud.dialogflowcx_v3beta1.types.GenerativeSettings.FallbackSettings):
             Settings for Generative Fallback.
         generative_safety_settings (google.cloud.dialogflowcx_v3beta1.types.SafetySettings):

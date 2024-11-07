@@ -273,6 +273,16 @@ from .session_entity_type import (
     SessionEntityType,
     UpdateSessionEntityTypeRequest,
 )
+from .sip_trunk import (
+    Connection,
+    CreateSipTrunkRequest,
+    DeleteSipTrunkRequest,
+    GetSipTrunkRequest,
+    ListSipTrunksRequest,
+    ListSipTrunksResponse,
+    SipTrunk,
+    UpdateSipTrunkRequest,
+)
 from .validation_result import ValidationError, ValidationResult
 from .version import (
     CreateVersionRequest,
@@ -518,6 +528,14 @@ __all__ = (
     "ListSessionEntityTypesResponse",
     "SessionEntityType",
     "UpdateSessionEntityTypeRequest",
+    "Connection",
+    "CreateSipTrunkRequest",
+    "DeleteSipTrunkRequest",
+    "GetSipTrunkRequest",
+    "ListSipTrunksRequest",
+    "ListSipTrunksResponse",
+    "SipTrunk",
+    "UpdateSipTrunkRequest",
     "ValidationError",
     "ValidationResult",
     "CreateVersionRequest",

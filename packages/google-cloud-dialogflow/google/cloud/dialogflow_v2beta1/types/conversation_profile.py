@@ -470,6 +470,9 @@ class HumanAgentAssistantConfig(proto.Message):
                 Optional. The customized sections chosen to
                 return when requesting a summary of a
                 conversation.
+            context_size (int):
+                Optional. The number of recent messages to include in the
+                context. Supported features: KNOWLEDGE_ASSIST.
         """
 
         class KnowledgeBaseQuerySource(proto.Message):
@@ -683,6 +686,10 @@ class HumanAgentAssistantConfig(proto.Message):
                 number=8,
                 message="HumanAgentAssistantConfig.SuggestionQueryConfig.Sections",
             )
+        )
+        context_size: int = proto.Field(
+            proto.INT32,
+            number=9,
         )
 
     class ConversationModelConfig(proto.Message):

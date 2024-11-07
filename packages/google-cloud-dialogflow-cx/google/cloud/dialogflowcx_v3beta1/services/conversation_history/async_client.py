@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import functools
 import re
 from typing import (
     Callable,
@@ -246,10 +245,7 @@ class ConversationHistoryAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = functools.partial(
-        type(ConversationHistoryClient).get_transport_class,
-        type(ConversationHistoryClient),
-    )
+    get_transport_class = ConversationHistoryClient.get_transport_class
 
     def __init__(
         self,
@@ -368,7 +364,7 @@ class ConversationHistoryAsyncClient:
             parent (:class:`str`):
                 Required. The agent to list all conversations for.
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -437,6 +433,8 @@ class ConversationHistoryAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
@@ -488,7 +486,7 @@ class ConversationHistoryAsyncClient:
                 [Conversations.GetConversation][].
             name (:class:`str`):
                 Required. The name of the conversation. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/conversations/<Conversation ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -591,7 +589,7 @@ class ConversationHistoryAsyncClient:
                 [Conversations.DeleteConversation][].
             name (:class:`str`):
                 Required. The name of the conversation. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/conversations/<Conversation ID>``.
+                ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -676,11 +674,7 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -733,11 +727,7 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -793,11 +783,7 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -847,11 +833,7 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -904,11 +886,7 @@ class ConversationHistoryAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

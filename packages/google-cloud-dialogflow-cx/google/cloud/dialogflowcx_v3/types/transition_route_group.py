@@ -46,7 +46,7 @@ class TransitionRouteGroup(proto.Message):
             The unique identifier of the transition route group.
             [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroups.CreateTransitionRouteGroup]
             populates the name automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             .
         display_name (str):
             Required. The human-readable name of the
@@ -81,7 +81,7 @@ class ListTransitionRouteGroupsRequest(proto.Message):
         parent (str):
             Required. The flow to list all transition route groups for.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
             or \`projects//locations//agents/.
         page_size (int):
             The maximum number of items to return in a
@@ -166,9 +166,9 @@ class GetTransitionRouteGroupRequest(proto.Message):
             Required. The name of the
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.
         language_code (str):
             The language to retrieve the transition route group for. The
             following fields are language dependent:
@@ -204,9 +204,9 @@ class CreateTransitionRouteGroupRequest(proto.Message):
             Required. The flow to create an
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
             for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``
             for agent-level groups.
         transition_route_group (google.cloud.dialogflowcx_v3.types.TransitionRouteGroup):
             Required. The transition route group to
@@ -293,9 +293,9 @@ class DeleteTransitionRouteGroupRequest(proto.Message):
             Required. The name of the
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
             to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>``
             or
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>``.
         force (bool):
             This field has no effect for transition route group that no
             page is using. If the transition route group is referenced

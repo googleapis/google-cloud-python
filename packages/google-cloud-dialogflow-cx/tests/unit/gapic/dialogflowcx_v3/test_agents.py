@@ -306,86 +306,6 @@ def test__get_universe_domain():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [
-        (AgentsClient, transports.AgentsGrpcTransport, "grpc"),
-        (AgentsClient, transports.AgentsRestTransport, "rest"),
-    ],
-)
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
-    )
-    assert client._validate_universe_domain() == True
-
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
-
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
-
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel(
-            "http://localhost/", grpc.local_channel_credentials()
-        )
-        transport = transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
-
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [
-        int(part) for part in google.auth.__version__.split(".")[0:2]
-    ]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(transport=transport_class(credentials=credentials))
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert (
-            str(excinfo.value)
-            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-        )
-
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [
-            int(part) for part in api_core_version.__version__.split(".")[0:2]
-        ]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(
-                client_options={"universe_domain": "bar.com"},
-                transport=transport_class(
-                    credentials=ga_credentials.AnonymousCredentials(),
-                ),
-            )
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert (
-                str(excinfo.value)
-                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-            )
-
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
-
-
-@pytest.mark.parametrize(
     "client_class,transport_name",
     [
         (AgentsClient, "grpc"),
@@ -7767,6 +7687,11 @@ def test_create_agent_rest_call_success(request_type):
         "gen_app_builder_settings": {"engine": "engine_value"},
         "answer_feedback_settings": {"enable_answer_feedback": True},
         "personalization_settings": {"default_end_user_metadata": {"fields": {}}},
+        "client_certificate_settings": {
+            "ssl_certificate": "ssl_certificate_value",
+            "private_key": "private_key_value",
+            "passphrase": "passphrase_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8028,6 +7953,11 @@ def test_update_agent_rest_call_success(request_type):
         "gen_app_builder_settings": {"engine": "engine_value"},
         "answer_feedback_settings": {"enable_answer_feedback": True},
         "personalization_settings": {"default_end_user_metadata": {"fields": {}}},
+        "client_certificate_settings": {
+            "ssl_certificate": "ssl_certificate_value",
+            "private_key": "private_key_value",
+            "passphrase": "passphrase_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10322,10 +10252,36 @@ def test_parse_flow_validation_result_path():
     assert expected == actual
 
 
-def test_security_settings_path():
+def test_secret_version_path():
     project = "cuttlefish"
-    location = "mussel"
-    security_settings = "winkle"
+    secret = "mussel"
+    version = "winkle"
+    expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
+        project=project,
+        secret=secret,
+        version=version,
+    )
+    actual = AgentsClient.secret_version_path(project, secret, version)
+    assert expected == actual
+
+
+def test_parse_secret_version_path():
+    expected = {
+        "project": "nautilus",
+        "secret": "scallop",
+        "version": "abalone",
+    }
+    path = AgentsClient.secret_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentsClient.parse_secret_version_path(path)
+    assert expected == actual
+
+
+def test_security_settings_path():
+    project = "squid"
+    location = "clam"
+    security_settings = "whelk"
     expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
         project=project,
         location=location,
@@ -10337,9 +10293,9 @@ def test_security_settings_path():
 
 def test_parse_security_settings_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "security_settings": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "security_settings": "nudibranch",
     }
     path = AgentsClient.security_settings_path(**expected)
 
@@ -10349,7 +10305,7 @@ def test_parse_security_settings_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -10359,7 +10315,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = AgentsClient.common_billing_account_path(**expected)
 
@@ -10369,7 +10325,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -10379,7 +10335,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = AgentsClient.common_folder_path(**expected)
 
@@ -10389,7 +10345,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -10399,7 +10355,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = AgentsClient.common_organization_path(**expected)
 
@@ -10409,7 +10365,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -10419,7 +10375,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = AgentsClient.common_project_path(**expected)
 
@@ -10429,8 +10385,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -10441,8 +10397,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = AgentsClient.common_location_path(**expected)
 

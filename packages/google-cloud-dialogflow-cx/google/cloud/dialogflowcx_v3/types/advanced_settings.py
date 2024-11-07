@@ -171,7 +171,7 @@ class AdvancedSettings(proto.Message):
 
         Attributes:
             enable_stackdriver_logging (bool):
-                Enables StackDriver logging.
+                Enables Google Cloud Logging.
             enable_interaction_logging (bool):
                 Enables DF Interaction logging.
             enable_consent_based_redaction (bool):
