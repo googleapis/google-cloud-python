@@ -53,6 +53,22 @@ jobs:
       - name: Run mockserver tests
         run: nox -s mockserver
 
+  samples:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Install nox
+        run: python -m pip install nox
+      - name: Run samples
+        run: nox -s _all_samples
+        working-directory: samples
+
   compliance_tests_13:
     runs-on: ubuntu-latest
 
