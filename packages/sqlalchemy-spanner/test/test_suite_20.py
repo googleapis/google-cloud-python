@@ -1414,7 +1414,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 "include_columns": [],
             }
             if column_sorting:
-                res["column_sorting"] = {"q": "DESC"}
+                res["column_sorting"] = {"q": "desc"}
             if duplicates:
                 res["duplicates_constraint"] = name
             return [res]
@@ -1458,11 +1458,11 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 *idx(
                     "q",
                     name="noncol_idx_nopk",
-                    column_sorting={"q": "DESC"},
+                    column_sorting={"q": "desc"},
                 )
             ],
             (schema, "noncol_idx_test_pk"): [
-                *idx("q", name="noncol_idx_pk", column_sorting={"q": "DESC"})
+                *idx("q", name="noncol_idx_pk", column_sorting={"q": "desc"})
             ],
             (schema, self.temp_table_name()): [
                 *idx("foo", name="user_tmp_ix"),

@@ -492,6 +492,26 @@ class SpannerDDLCompiler(DDLCompiler):
 
         return post_cmds
 
+    def visit_create_index(
+        self, create, include_schema=False, include_table_schema=True, **kw
+    ):
+        text = super().visit_create_index(
+            create, include_schema, include_table_schema, **kw
+        )
+        index = create.element
+        if "spanner" in index.dialect_options:
+            options = index.dialect_options["spanner"]
+            if "storing" in options:
+                storing = options["storing"]
+                storing_columns = [
+                    index.table.c[col] if isinstance(col, str) else col
+                    for col in storing
+                ]
+                text += " STORING (%s)" % ", ".join(
+                    [self.preparer.quote(c.name) for c in storing_columns]
+                )
+        return text
+
     def get_identity_options(self, identity_options):
         text = ["sequence_kind = 'bit_reversed_positive'"]
         if identity_options.start is not None:
@@ -997,15 +1017,35 @@ class SpannerDialect(DefaultDialect):
                i.table_schema,
                i.table_name,
                i.index_name,
-               ARRAY_AGG(ic.column_name),
+               (
+                   SELECT ARRAY_AGG(ic.column_name)
+                   FROM information_schema.index_columns ic
+                   WHERE ic.index_name = i.index_name
+                   AND ic.table_catalog = i.table_catalog
+                   AND ic.table_schema = i.table_schema
+                   AND ic.table_name = i.table_name
+                   AND ic.column_ordering is not null
+               ) as columns,
                i.is_unique,
-               ARRAY_AGG(ic.column_ordering)
+               (
+                   SELECT ARRAY_AGG(ic.column_ordering)
+                   FROM information_schema.index_columns ic
+                   WHERE ic.index_name = i.index_name
+                   AND ic.table_catalog = i.table_catalog
+                   AND ic.table_schema = i.table_schema
+                   AND ic.table_name = i.table_name
+                   AND ic.column_ordering is not null
+               ) as column_orderings,
+               (
+                   SELECT ARRAY_AGG(storing.column_name)
+                   FROM information_schema.index_columns storing
+                   WHERE storing.index_name = i.index_name
+                   AND storing.table_catalog = i.table_catalog
+                   AND storing.table_schema = i.table_schema
+                   AND storing.table_name = i.table_name
+                   AND storing.column_ordering is null
+               ) as storing_columns,
             FROM information_schema.indexes as i
-            JOIN information_schema.index_columns AS ic
-                ON  ic.index_name = i.index_name
-                AND ic.table_catalog = i.table_catalog
-                AND ic.table_schema = i.table_schema
-                AND ic.table_name = i.table_name
             JOIN information_schema.tables AS t
                 ON  i.table_catalog = t.table_catalog
                 AND i.table_schema = t.table_schema
@@ -1016,7 +1056,8 @@ class SpannerDialect(DefaultDialect):
                 {schema_filter_query}
                 i.index_type != 'PRIMARY_KEY'
                 AND i.spanner_is_managed = FALSE
-            GROUP BY i.table_schema, i.table_name, i.index_name, i.is_unique
+            GROUP BY i.table_catalog, i.table_schema, i.table_name,
+                     i.index_name, i.is_unique
             ORDER BY i.index_name
         """.format(
             table_filter_query=table_filter_query,
@@ -1029,13 +1070,19 @@ class SpannerDialect(DefaultDialect):
             result_dict = {}
 
             for row in rows:
+                dialect_options = {}
+                include_columns = row[6]
+                if include_columns:
+                    dialect_options["spanner_storing"] = include_columns
                 index_info = {
                     "name": row[2],
                     "column_names": row[3],
                     "unique": row[4],
                     "column_sorting": {
-                        col: order for col, order in zip(row[3], row[5])
+                        col: order.lower() for col, order in zip(row[3], row[5])
                     },
+                    "include_columns": include_columns if include_columns else [],
+                    "dialect_options": dialect_options,
                 }
                 row[0] = row[0] or None
                 table_info = result_dict.get((row[0], row[1]), [])
