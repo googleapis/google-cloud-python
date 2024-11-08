@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.36.1](https://github.com/googleapis/google-auth-library-python/compare/v2.36.0...v2.36.1) (2024-11-08)
+
+
+### Bug Fixes
+
+* Improve user guide for Impersonation and SA ([#1627](https://github.com/googleapis/google-auth-library-python/issues/1627)) ([656307d](https://github.com/googleapis/google-auth-library-python/commit/656307d40941d2b72bb41e15238ebabba5ab6f52))
+
 ## [2.36.0](https://github.com/googleapis/google-auth-library-python/compare/v2.35.0...v2.36.0) (2024-10-30)
 
 
