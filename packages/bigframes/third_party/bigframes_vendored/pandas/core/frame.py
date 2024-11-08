@@ -2649,7 +2649,7 @@ class DataFrame(generic.NDFrame):
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def __add__(self, other) -> DataFrame:
-        """Get addition of DataFrame and other, column-wise, using arithmatic
+        """Get addition of DataFrame and other, column-wise, using arithmetic
         operator `+`.
 
         Equivalent to ``DataFrame.add(other)``.
@@ -3308,7 +3308,7 @@ class DataFrame(generic.NDFrame):
 
     def __floordiv__(self, other):
         """
-        Get integer divison of DataFrame by other, using arithmatic operator `//`.
+        Get integer division of DataFrame by other, using arithmetic operator `//`.
 
         Equivalent to `DataFrame.floordiv(other)`.
 
@@ -4358,7 +4358,7 @@ class DataFrame(generic.NDFrame):
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-        Merge DataFrames df1 and df2 by specifiying type of merge:
+        Merge DataFrames df1 and df2 by specifying type of merge:
 
             >>> df1 = bpd.DataFrame({'a': ['foo', 'bar'], 'b': [1, 2]})
             >>> df1
