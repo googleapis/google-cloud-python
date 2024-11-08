@@ -59,31 +59,6 @@ class TABLE_DEFAULT(enum.Enum):
     MUTATE_ROWS = "MUTATE_ROWS_DEFAULT"
 
 
-def _make_metadata(
-    table_name: str | None, app_profile_id: str | None, instance_name: str | None
-) -> list[tuple[str, str]]:
-    """
-    Create properly formatted gRPC metadata for requests.
-    """
-    params = []
-
-    if table_name is not None and instance_name is not None:
-        raise ValueError("metadata can't contain both instance_name and table_name")
-
-    if table_name is not None:
-        params.append(f"table_name={table_name}")
-    if instance_name is not None:
-        params.append(f"name={instance_name}")
-    if app_profile_id is not None:
-        params.append(f"app_profile_id={app_profile_id}")
-    if len(params) == 0:
-        raise ValueError(
-            "At least one of table_name and app_profile_id should be not None."
-        )
-    params_str = "&".join(params)
-    return [("x-goog-request-params", params_str)]
-
-
 def _attempt_timeout_generator(
     per_request_timeout: float | None, operation_timeout: float
 ):
