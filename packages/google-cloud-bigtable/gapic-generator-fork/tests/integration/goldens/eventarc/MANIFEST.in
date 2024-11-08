@@ -1,2 +1,0 @@
-recursive-include google/cloud/eventarc *.py
-recursive-include google/cloud/eventarc_v1 *.py

@@ -168,12 +168,7 @@ async def test_ping_and_warm(client, table):
     """
     Test ping and warm from handwritten client
     """
-    try:
-        channel = client.transport._grpc_channel.pool[0]
-    except Exception:
-        # for sync client
-        channel = client.transport._grpc_channel
-    results = await client._ping_and_warm_instances(channel)
+    results = await client._ping_and_warm_instances()
     assert len(results) == 1
     assert results[0] is None
 
