@@ -45,4 +45,5 @@ if [[ -n "${NOX_SESSION:-}" ]]; then
     python3 -m nox -s ${NOX_SESSION:-}
 else
     python3 -m nox -s unit
+    python3 -m nox -s system
 fi

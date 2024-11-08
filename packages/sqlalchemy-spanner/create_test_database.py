@@ -14,14 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import configparser
 import os
 import time
 
 from create_test_config import set_test_config
+from google.api_core import datetime_helpers
 from google.api_core.exceptions import AlreadyExists, ResourceExhausted
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.instance import Instance
+from google.cloud.spanner_v1.database import Database
 
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
@@ -66,43 +67,62 @@ def delete_stale_test_instances():
             )
 
 
+def delete_stale_test_databases():
+    """Delete test databases that are older than four hours."""
+    cutoff = (int(time.time()) - 4 * 60 * 60) * 1000
+    instance = CLIENT.instance("sqlalchemy-dialect-test")
+    if not instance.exists():
+        return
+    database_pbs = instance.list_databases()
+    for database_pb in database_pbs:
+        database = Database.from_pb(database_pb, instance)
+        # The emulator does not return a create_time for databases.
+        if database.create_time is None:
+            continue
+        create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
+        if create_time > cutoff:
+            continue
+        try:
+            database.drop()
+        except ResourceExhausted:
+            print(
+                "Unable to drop stale database '{}'. May need manual delete.".format(
+                    database.database_id
+                )
+            )
+
+
 def create_test_instance():
-    configs = list(CLIENT.list_instance_configs())
-    if not USE_EMULATOR:
-        # Filter out non "us" locations
-        configs = [config for config in configs if "asia-southeast1" in config.name]
+    instance_id = "sqlalchemy-dialect-test"
+    instance = CLIENT.instance(instance_id)
+    if not instance.exists():
+        instance_config = f"projects/{PROJECT}/instanceConfigs/regional-us-east1"
+        if USE_EMULATOR:
+            configs = list(CLIENT.list_instance_configs())
+            instance_config = configs[0].name
+        create_time = str(int(time.time()))
+        labels = {"python-spanner-sqlalchemy-systest": "true", "created": create_time}
 
-    instance_config = configs[0].name
-    create_time = str(int(time.time()))
+        instance = CLIENT.instance(instance_id, instance_config, labels=labels)
+
+        try:
+            created_op = instance.create()
+            created_op.result(1800)  # block until completion
+        except AlreadyExists:
+            pass  # instance was already created
+
     unique_resource_id = "%s%d" % ("-", 1000 * time.time())
-    instance_id = (
-        "sqlalchemy-dialect-test"
-        if USE_EMULATOR
-        else "sqlalchemy-test" + unique_resource_id
-    )
-    labels = {"python-spanner-sqlalchemy-systest": "true", "created": create_time}
-
-    instance = CLIENT.instance(instance_id, instance_config, labels=labels)
+    database_id = "sqlalchemy-test" + unique_resource_id
 
     try:
-        created_op = instance.create()
-        created_op.result(1800)  # block until completion
-    except AlreadyExists:
-        pass  # instance was already created
-
-    if USE_EMULATOR:
-        database = instance.database("compliance-test")
-        database.drop()
-
-    try:
-        database = instance.database("compliance-test")
+        database = instance.database(database_id)
         created_op = database.create()
         created_op.result(1800)
     except AlreadyExists:
-        pass  # instance was already created
+        pass  # database was already created
 
-    set_test_config(PROJECT, instance_id)
+    set_test_config(PROJECT, instance_id, database_id)
 
 
-delete_stale_test_instances()
+delete_stale_test_databases()
 create_test_instance()

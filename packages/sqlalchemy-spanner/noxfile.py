@@ -252,6 +252,43 @@ def compliance_test_20(session):
     )
 
 
+@nox.session()
+def system(session):
+    """Run SQLAlchemy dialect system test suite."""
+
+    # Sanity check: Only run tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
+
+    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false" and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
+
+    session.install(
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
+    )
+
+    session.install("mock")
+    session.install(".[tracing]")
+    session.install("opentelemetry-api==1.27.0")
+    session.install("opentelemetry-sdk==1.27.0")
+    session.install("opentelemetry-instrumentation==0.48b0")
+    session.run("python", "create_test_database.py")
+
+    session.install("sqlalchemy>=2.0")
+
+    session.run("py.test", "--quiet", os.path.join("test", "system"), *session.posargs)
+
+    session.run("python", "drop_test_database.py")
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def unit(session):
     """Run unit tests."""
@@ -263,7 +300,9 @@ def unit(session):
     session.install("opentelemetry-api==1.27.0")
     session.install("opentelemetry-sdk==1.27.0")
     session.install("opentelemetry-instrumentation==0.48b0")
-    session.run("python", "create_test_config.py", "my-project", "my-instance")
+    session.run(
+        "python", "create_test_config.py", "my-project", "my-instance", "my-database"
+    )
     session.run("py.test", "--quiet", os.path.join("test/unit"), *session.posargs)
 
 
@@ -281,6 +320,7 @@ def mockserver(session):
         "create_test_config.py",
         "my-project",
         "my-instance",
+        "my-database",
         "none",
         "AnonymousCredentials",
         "localhost",
@@ -323,21 +363,12 @@ def _migration_test(session):
 
     session.run("python", "create_test_database.py")
 
-    project = os.getenv(
-        "GOOGLE_CLOUD_PROJECT",
-        os.getenv("PROJECT_ID", "emulator-test-project"),
-    )
-    db_url = (
-        f"spanner+spanner:///projects/{project}/instances/"
-        "sqlalchemy-dialect-test/databases/compliance-test"
-    )
-
     config = configparser.ConfigParser()
     if os.path.exists("test.cfg"):
         config.read("test.cfg")
     else:
         config.read("setup.cfg")
-    db_url = config.get("db", "default", fallback=db_url)
+    db_url = config.get("db", "default")
 
     session.run("alembic", "init", "test_migration")
 

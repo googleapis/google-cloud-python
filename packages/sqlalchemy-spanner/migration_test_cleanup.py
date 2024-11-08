@@ -25,10 +25,11 @@ def main(argv):
 
   project = re.findall(r"projects(.*?)instances", db_url)
   instance_id = re.findall(r"instances(.*?)databases", db_url)
+  database_id = re.findall(r"databases(.*?)$", db_url)
 
   client = spanner.Client(project="".join(project).replace("/", ""))
   instance = client.instance(instance_id="".join(instance_id).replace("/", ""))
-  database = instance.database("compliance-test")
+  database = instance.database("".join(database_id).replace("/", ""))
 
   database.update_ddl(["DROP TABLE account", "DROP TABLE alembic_version"]).result(120)
 
