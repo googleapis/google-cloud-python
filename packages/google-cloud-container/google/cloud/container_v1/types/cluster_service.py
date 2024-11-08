@@ -91,6 +91,7 @@ __protobuf__ = proto.module(
         "ClusterUpdate",
         "AdditionalPodRangesConfig",
         "RangeInfo",
+        "DesiredEnterpriseConfig",
         "Operation",
         "OperationProgress",
         "CreateClusterRequest",
@@ -182,6 +183,7 @@ __protobuf__ = proto.module(
         "NotificationConfig",
         "ConfidentialNodes",
         "UpgradeEvent",
+        "UpgradeInfoEvent",
         "UpgradeAvailableEvent",
         "SecurityBulletinEvent",
         "Autopilot",
@@ -359,7 +361,8 @@ class LinuxNodeConfig(proto.Message):
             net.core.netdev_max_backlog net.core.rmem_max
             net.core.wmem_default net.core.wmem_max net.core.optmem_max
             net.core.somaxconn net.ipv4.tcp_rmem net.ipv4.tcp_wmem
-            net.ipv4.tcp_tw_reuse
+            net.ipv4.tcp_tw_reuse kernel.shmmni kernel.shmmax
+            kernel.shmall
         cgroup_mode (google.cloud.container_v1.types.LinuxNodeConfig.CgroupMode):
             cgroup_mode specifies the cgroup mode to be used on the
             node.
@@ -780,12 +783,40 @@ class NodeConfig(proto.Message):
             Secondary boot disk update strategy.
 
             This field is a member of `oneof`_ ``_secondary_boot_disk_update_strategy``.
+        local_ssd_encryption_mode (google.cloud.container_v1.types.NodeConfig.LocalSsdEncryptionMode):
+            Specifies which method should be used for
+            encrypting the Local SSDs attahced to the node.
+
+            This field is a member of `oneof`_ ``_local_ssd_encryption_mode``.
         effective_cgroup_mode (google.cloud.container_v1.types.NodeConfig.EffectiveCgroupMode):
             Output only. effective_cgroup_mode is the cgroup mode
             actually used by the node pool. It is determined by the
             cgroup mode specified in the LinuxNodeConfig or the default
             cgroup mode based on the cluster creation version.
     """
+
+    class LocalSsdEncryptionMode(proto.Enum):
+        r"""LocalSsdEncryptionMode specifies the method used for
+        encrypting the Local SSDs attached to the node.
+
+        Values:
+            LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED (0):
+                The given node will be encrypted using keys
+                managed by Google infrastructure and the keys
+                will be deleted when the node is deleted.
+            STANDARD_ENCRYPTION (1):
+                The given node will be encrypted using keys
+                managed by Google infrastructure and the keys
+                will be deleted when the node is deleted.
+            EPHEMERAL_KEY_ENCRYPTION (2):
+                The given node will opt-in for using
+                ephemeral key for encryption of Local SSDs.
+                The Local SSDs will not be able to recover data
+                in case of node crash.
+        """
+        LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED = 0
+        STANDARD_ENCRYPTION = 1
+        EPHEMERAL_KEY_ENCRYPTION = 2
 
     class EffectiveCgroupMode(proto.Enum):
         r"""Possible effective cgroup modes for the node.
@@ -994,6 +1025,12 @@ class NodeConfig(proto.Message):
             optional=True,
             message="SecondaryBootDiskUpdateStrategy",
         )
+    )
+    local_ssd_encryption_mode: LocalSsdEncryptionMode = proto.Field(
+        proto.ENUM,
+        number=54,
+        optional=True,
+        enum=LocalSsdEncryptionMode,
     )
     effective_cgroup_mode: EffectiveCgroupMode = proto.Field(
         proto.ENUM,
@@ -3750,6 +3787,9 @@ class NodePoolAutoConfig(proto.Message):
 
             Currently only ``insecure_kubelet_readonly_port_enabled``
             can be set here.
+        linux_node_config (google.cloud.container_v1.types.LinuxNodeConfig):
+            Output only. Configuration options for Linux
+            nodes.
     """
 
     network_tags: "NetworkTags" = proto.Field(
@@ -3766,6 +3806,11 @@ class NodePoolAutoConfig(proto.Message):
         proto.MESSAGE,
         number=3,
         message="NodeKubeletConfig",
+    )
+    linux_node_config: "LinuxNodeConfig" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="LinuxNodeConfig",
     )
 
 
@@ -4119,6 +4164,15 @@ class ClusterUpdate(proto.Message):
             created.
 
             This field is a member of `oneof`_ ``_desired_rbac_binding_config``.
+        desired_enterprise_config (google.cloud.container_v1.types.DesiredEnterpriseConfig):
+            The desired enterprise configuration for the
+            cluster.
+        desired_node_pool_auto_config_linux_node_config (google.cloud.container_v1.types.LinuxNodeConfig):
+            The desired Linux node config for all auto-provisioned node
+            pools in autopilot clusters and node auto-provisioning
+            enabled clusters.
+
+            Currently only ``cgroup_mode`` can be set here.
     """
 
     desired_node_version: str = proto.Field(
@@ -4431,6 +4485,16 @@ class ClusterUpdate(proto.Message):
         optional=True,
         message="RBACBindingConfig",
     )
+    desired_enterprise_config: "DesiredEnterpriseConfig" = proto.Field(
+        proto.MESSAGE,
+        number=147,
+        message="DesiredEnterpriseConfig",
+    )
+    desired_node_pool_auto_config_linux_node_config: "LinuxNodeConfig" = proto.Field(
+        proto.MESSAGE,
+        number=150,
+        message="LinuxNodeConfig",
+    )
 
 
 class AdditionalPodRangesConfig(proto.Message):
@@ -4475,6 +4539,22 @@ class RangeInfo(proto.Message):
     utilization: float = proto.Field(
         proto.DOUBLE,
         number=2,
+    )
+
+
+class DesiredEnterpriseConfig(proto.Message):
+    r"""DesiredEnterpriseConfig is a wrapper used for updating
+    enterprise_config.
+
+    Attributes:
+        desired_tier (google.cloud.container_v1.types.EnterpriseConfig.ClusterTier):
+            desired_tier specifies the desired tier of the cluster.
+    """
+
+    desired_tier: "EnterpriseConfig.ClusterTier" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="EnterpriseConfig.ClusterTier",
     )
 
 
@@ -7624,10 +7704,11 @@ class NodePoolAutoscaling(proto.Message):
         enabled (bool):
             Is autoscaling enabled for this node pool.
         min_node_count (int):
-            Minimum number of nodes for one location in the NodePool.
-            Must be >= 1 and <= max_node_count.
+            Minimum number of nodes for one location in the node pool.
+            Must be greater than or equal to 0 and less than or equal to
+            max_node_count.
         max_node_count (int):
-            Maximum number of nodes for one location in the NodePool.
+            Maximum number of nodes for one location in the node pool.
             Must be >= min_node_count. There has to be enough quota to
             scale up the cluster.
         autoprovisioned (bool):
@@ -7637,14 +7718,14 @@ class NodePoolAutoscaling(proto.Message):
             nodepool.
         total_min_node_count (int):
             Minimum number of nodes in the node pool. Must be greater
-            than 1 less than total_max_node_count. The
-            total_*_node_count fields are mutually exclusive with the
-            \*_node_count fields.
+            than or equal to 0 and less than or equal to
+            total_max_node_count. The total_*_node_count fields are
+            mutually exclusive with the \*_node_count fields.
         total_max_node_count (int):
             Maximum number of nodes in the node pool. Must be greater
-            than total_min_node_count. There has to be enough quota to
-            scale up the cluster. The total_*_node_count fields are
-            mutually exclusive with the \*_node_count fields.
+            than or equal to total_min_node_count. There has to be
+            enough quota to scale up the cluster. The total_*_node_count
+            fields are mutually exclusive with the \*_node_count fields.
     """
 
     class LocationPolicy(proto.Enum):
@@ -9636,6 +9717,98 @@ class UpgradeEvent(proto.Message):
     )
 
 
+class UpgradeInfoEvent(proto.Message):
+    r"""UpgradeInfoEvent is a notification sent to customers about
+    the upgrade information of a resource.
+
+    Attributes:
+        resource_type (google.cloud.container_v1.types.UpgradeResourceType):
+            The resource type associated with the
+            upgrade.
+        operation (str):
+            The operation associated with this upgrade.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation was started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation ended.
+        current_version (str):
+            The current version before the upgrade.
+        target_version (str):
+            The target version for the upgrade.
+        resource (str):
+            Optional relative path to the resource. For
+            example in node pool upgrades, the relative path
+            of the node pool.
+        state (google.cloud.container_v1.types.UpgradeInfoEvent.State):
+            Output only. The state of the upgrade.
+        description (str):
+            A brief description of the event.
+    """
+
+    class State(proto.Enum):
+        r"""The state of the upgrade.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                STATE_UNSPECIFIED indicates the state is unspecified.
+            STARTED (3):
+                STARTED indicates the upgrade has started.
+            SUCCEEDED (4):
+                SUCCEEDED indicates the upgrade has completed
+                successfully.
+            FAILED (5):
+                FAILED indicates the upgrade has failed.
+            CANCELED (6):
+                CANCELED indicates the upgrade has canceled.
+        """
+        STATE_UNSPECIFIED = 0
+        STARTED = 3
+        SUCCEEDED = 4
+        FAILED = 5
+        CANCELED = 6
+
+    resource_type: "UpgradeResourceType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="UpgradeResourceType",
+    )
+    operation: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    current_version: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    target_version: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=State,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+
+
 class UpgradeAvailableEvent(proto.Message):
     r"""UpgradeAvailableEvent is a notification sent to customers
     when a new available version is released.
@@ -10375,6 +10548,8 @@ class EnterpriseConfig(proto.Message):
         cluster_tier (google.cloud.container_v1.types.EnterpriseConfig.ClusterTier):
             Output only. cluster_tier indicates the effective tier of
             the cluster.
+        desired_tier (google.cloud.container_v1.types.EnterpriseConfig.ClusterTier):
+            desired_tier specifies the desired tier of the cluster.
     """
 
     class ClusterTier(proto.Enum):
@@ -10396,6 +10571,11 @@ class EnterpriseConfig(proto.Message):
     cluster_tier: ClusterTier = proto.Field(
         proto.ENUM,
         number=1,
+        enum=ClusterTier,
+    )
+    desired_tier: ClusterTier = proto.Field(
+        proto.ENUM,
+        number=2,
         enum=ClusterTier,
     )
 
