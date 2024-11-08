@@ -69,6 +69,7 @@ from google.maps.places_v1.types import (
     place,
     places_service,
     polyline,
+    price_range,
     review,
     route_modifiers,
     routing_preference,
@@ -1753,6 +1754,7 @@ def test_get_place(request_type, transport: str = "grpc"):
             restroom=True,
             good_for_groups=True,
             good_for_watching_sports=True,
+            pure_service_area_business=True,
         )
         response = client.get_place(request)
 
@@ -1805,6 +1807,7 @@ def test_get_place(request_type, transport: str = "grpc"):
     assert response.restroom is True
     assert response.good_for_groups is True
     assert response.good_for_watching_sports is True
+    assert response.pure_service_area_business is True
 
 
 def test_get_place_non_empty_request_with_auto_populated_field():
@@ -1975,6 +1978,7 @@ async def test_get_place_async(
                 restroom=True,
                 good_for_groups=True,
                 good_for_watching_sports=True,
+                pure_service_area_business=True,
             )
         )
         response = await client.get_place(request)
@@ -2028,6 +2032,7 @@ async def test_get_place_async(
     assert response.restroom is True
     assert response.good_for_groups is True
     assert response.good_for_watching_sports is True
+    assert response.pure_service_area_business is True
 
 
 @pytest.mark.asyncio
@@ -3464,6 +3469,7 @@ async def test_get_place_empty_call_grpc_asyncio():
                 restroom=True,
                 good_for_groups=True,
                 good_for_watching_sports=True,
+                pure_service_area_business=True,
             )
         )
         await client.get_place(request=None)
@@ -3942,6 +3948,7 @@ def test_get_place_rest_call_success(request_type):
             restroom=True,
             good_for_groups=True,
             good_for_watching_sports=True,
+            pure_service_area_business=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -3998,6 +4005,7 @@ def test_get_place_rest_call_success(request_type):
     assert response.restroom is True
     assert response.good_for_groups is True
     assert response.good_for_watching_sports is True
+    assert response.pure_service_area_business is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

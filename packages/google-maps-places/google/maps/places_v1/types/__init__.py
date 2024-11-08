@@ -34,6 +34,7 @@ from .places_service import (
     SearchTextResponse,
 )
 from .polyline import Polyline
+from .price_range import PriceRange
 from .reference import References
 from .review import Review
 from .route_modifiers import RouteModifiers
@@ -63,6 +64,7 @@ __all__ = (
     "SearchTextRequest",
     "SearchTextResponse",
     "Polyline",
+    "PriceRange",
     "References",
     "Review",
     "RouteModifiers",

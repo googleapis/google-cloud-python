@@ -41,6 +41,7 @@ from google.maps.places_v1.types.places_service import (
     SearchTextResponse,
 )
 from google.maps.places_v1.types.polyline import Polyline
+from google.maps.places_v1.types.price_range import PriceRange
 from google.maps.places_v1.types.reference import References
 from google.maps.places_v1.types.review import Review
 from google.maps.places_v1.types.route_modifiers import RouteModifiers
@@ -72,6 +73,7 @@ __all__ = (
     "SearchTextRequest",
     "SearchTextResponse",
     "Polyline",
+    "PriceRange",
     "References",
     "Review",
     "RouteModifiers",

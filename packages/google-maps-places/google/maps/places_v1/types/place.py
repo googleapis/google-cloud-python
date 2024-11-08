@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.geo.type.types import viewport as ggt_viewport
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 from google.type import localized_text_pb2  # type: ignore
@@ -25,7 +26,9 @@ import proto  # type: ignore
 
 from google.maps.places_v1.types import content_block, ev_charging
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
-from google.maps.places_v1.types import photo, reference, review
+from google.maps.places_v1.types import photo
+from google.maps.places_v1.types import price_range as gmp_price_range
+from google.maps.places_v1.types import reference, review
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
@@ -134,7 +137,9 @@ class Place(proto.Message):
             The position of this place.
         viewport (google.geo.type.types.Viewport):
             A viewport suitable for displaying the place
-            on an average-sized map.
+            on an average-sized map. This viewport should
+            not be used as the physical boundary or the
+            service area of the business.
         rating (float):
             A rating between 1.0 and 5.0, based on user
             reviews of this place.
@@ -169,7 +174,7 @@ class Place(proto.Message):
             The place's address in adr microformat:
             http://microformats.org/wiki/adr.
         business_status (google.maps.places_v1.types.Place.BusinessStatus):
-            The business status for the place.
+
         price_level (google.maps.places_v1.types.PriceLevel):
             Price level of the place.
         attributions (MutableSequence[google.maps.places_v1.types.Place.Attribution]):
@@ -346,6 +351,22 @@ class Place(proto.Message):
 
             AI-generated summary of the area that the place
             is in.
+        containing_places (MutableSequence[google.maps.places_v1.types.Place.ContainingPlace]):
+            List of places in which the current place is
+            located.
+        pure_service_area_business (bool):
+            Indicates whether the place is a pure service
+            area business. Pure service area business is a
+            business that visits or delivers to customers
+            directly but does not serve customers at their
+            business address. For example, businesses like
+            cleaning services or plumbers. Those businesses
+            may not have a physical address or location on
+            Google Maps.
+
+            This field is a member of `oneof`_ ``_pure_service_area_business``.
+        price_range (google.maps.places_v1.types.PriceRange):
+            The price range associated with a Place.
     """
 
     class BusinessStatus(proto.Enum):
@@ -472,6 +493,18 @@ class Place(proto.Message):
                 e.g. Christmas day. Set for current_opening_hours and
                 current_secondary_opening_hours if there are exceptional
                 hours.
+            next_open_time (google.protobuf.timestamp_pb2.Timestamp):
+                The next time the current opening hours
+                period starts up to 7 days in the future. This
+                field is only populated if the opening hours
+                period is not active at the time of serving the
+                request.
+            next_close_time (google.protobuf.timestamp_pb2.Timestamp):
+                The next time the current opening hours
+                period ends up to 7 days in the future. This
+                field is only populated if the opening hours
+                period is active at the time of serving the
+                request.
         """
 
         class SecondaryHoursType(proto.Enum):
@@ -641,6 +674,16 @@ class Place(proto.Message):
             proto.MESSAGE,
             number=5,
             message="Place.OpeningHours.SpecialDay",
+        )
+        next_open_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=timestamp_pb2.Timestamp,
+        )
+        next_close_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=timestamp_pb2.Timestamp,
         )
 
     class Attribution(proto.Message):
@@ -901,6 +944,27 @@ class Place(proto.Message):
             proto.MESSAGE,
             number=4,
             message=content_block.ContentBlock,
+        )
+
+    class ContainingPlace(proto.Message):
+        r"""Info about the place in which this place is located.
+
+        Attributes:
+            name (str):
+                The resource name of the place in which this
+                place is located.
+            id (str):
+                The place id of the place in which this place
+                is located.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        id: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     name: str = proto.Field(
@@ -1208,6 +1272,21 @@ class Place(proto.Message):
         proto.MESSAGE,
         number=81,
         message=AreaSummary,
+    )
+    containing_places: MutableSequence[ContainingPlace] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=82,
+        message=ContainingPlace,
+    )
+    pure_service_area_business: bool = proto.Field(
+        proto.BOOL,
+        number=83,
+        optional=True,
+    )
+    price_range: gmp_price_range.PriceRange = proto.Field(
+        proto.MESSAGE,
+        number=86,
+        message=gmp_price_range.PriceRange,
     )
 
 
