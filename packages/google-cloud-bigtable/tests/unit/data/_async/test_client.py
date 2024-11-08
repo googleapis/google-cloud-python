@@ -2176,11 +2176,10 @@ class TestSampleRowKeys:
                     await table.sample_row_keys(attempt_timeout=expected_timeout)
                     args, kwargs = sample_row_keys.call_args
                     assert len(args) == 0
-                    assert len(kwargs) == 5
+                    assert len(kwargs) == 4
                     assert kwargs["timeout"] == expected_timeout
                     assert kwargs["app_profile_id"] == expected_profile
                     assert kwargs["table_name"] == table.table_name
-                    assert kwargs["metadata"] is not None
                     assert kwargs["retry"] is None
 
     @pytest.mark.parametrize(
@@ -2374,30 +2373,6 @@ class TestMutateRow:
                         await table.mutate_row(
                             "row_key", mutation, operation_timeout=0.2
                         )
-
-    @pytest.mark.parametrize("include_app_profile", [True, False])
-    @pytest.mark.asyncio
-    async def test_mutate_row_metadata(self, include_app_profile):
-        """request should attach metadata headers"""
-        profile = "profile" if include_app_profile else None
-        async with _make_client() as client:
-            async with client.get_table("i", "t", app_profile_id=profile) as table:
-                with mock.patch.object(
-                    client._gapic_client, "mutate_row", AsyncMock()
-                ) as read_rows:
-                    await table.mutate_row("rk", mock.Mock())
-                kwargs = read_rows.call_args_list[0].kwargs
-                metadata = kwargs["metadata"]
-                goog_metadata = None
-                for key, value in metadata:
-                    if key == "x-goog-request-params":
-                        goog_metadata = value
-                assert goog_metadata is not None, "x-goog-request-params not found"
-                assert "table_name=" + table.table_name in goog_metadata
-                if include_app_profile:
-                    assert "app_profile_id=profile" in goog_metadata
-                else:
-                    assert "app_profile_id=" not in goog_metadata
 
     @pytest.mark.parametrize("mutations", [[], None])
     @pytest.mark.asyncio

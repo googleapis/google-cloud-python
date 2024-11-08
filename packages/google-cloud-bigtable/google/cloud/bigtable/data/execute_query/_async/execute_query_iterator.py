@@ -19,7 +19,6 @@ from typing import (
     Any,
     AsyncIterator,
     Dict,
-    List,
     Optional,
     Sequence,
     Tuple,
@@ -83,8 +82,8 @@ class ExecuteQueryIteratorAsync:
         request_body: Dict[str, Any],
         attempt_timeout: float | None,
         operation_timeout: float,
-        req_metadata: Sequence[Tuple[str, str]],
-        retryable_excs: List[type[Exception]],
+        req_metadata: Sequence[Tuple[str, str]] = (),
+        retryable_excs: Sequence[type[Exception]] = (),
     ) -> None:
         self._table_name = None
         self._app_profile_id = app_profile_id
@@ -99,6 +98,7 @@ class ExecuteQueryIteratorAsync:
         self._attempt_timeout_gen = _attempt_timeout_generator(
             attempt_timeout, operation_timeout
         )
+        retryable_excs = retryable_excs or []
         self._async_stream = retries.retry_target_stream_async(
             self._make_request_with_resume_token,
             retries.if_exception_type(*retryable_excs),

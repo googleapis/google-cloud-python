@@ -22,7 +22,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.cloud.bigtable_v2.types.bigtable as types_pb
 import google.cloud.bigtable.data.exceptions as bt_exceptions
-from google.cloud.bigtable.data._helpers import _make_metadata
 from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
 from google.cloud.bigtable.data._helpers import _retry_exception_factory
 
@@ -84,14 +83,10 @@ class _MutateRowsOperationAsync:
                 f"all entries. Found {total_mutations}."
             )
         # create partial function to pass to trigger rpc call
-        metadata = _make_metadata(
-            table.table_name, table.app_profile_id, instance_name=None
-        )
         self._gapic_fn = functools.partial(
             gapic_client.mutate_rows,
             table_name=table.table_name,
             app_profile_id=table.app_profile_id,
-            metadata=metadata,
             retry=None,
         )
         # create predicate for determining which errors are retryable

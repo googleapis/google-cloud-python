@@ -78,12 +78,6 @@ class TestReadRowsOperation:
         assert instance._remaining_count == row_limit
         assert instance.operation_timeout == expected_operation_timeout
         assert client.read_rows.call_count == 0
-        assert instance._metadata == [
-            (
-                "x-goog-request-params",
-                "table_name=test_table&app_profile_id=test_profile",
-            )
-        ]
         assert instance.request.table_name == table.table_name
         assert instance.request.app_profile_id == table.app_profile_id
         assert instance.request.rows_limit == row_limit
