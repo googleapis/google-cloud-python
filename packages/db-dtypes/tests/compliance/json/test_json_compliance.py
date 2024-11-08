@@ -31,7 +31,8 @@ class TestJSONArrayCasting(base.BaseCastingTests):
         # Use `json.dumps(str)` instead of passing `str(obj)` directly to the super method.
         result = pd.Series(data[:5]).astype(str)
         expected = pd.Series(
-            [json.dumps(x, sort_keys=True) for x in data[:5]], dtype=str
+            [json.dumps(x, sort_keys=True, separators=(",", ":")) for x in data[:5]],
+            dtype=str,
         )
         tm.assert_series_equal(result, expected)
 
@@ -46,7 +47,7 @@ class TestJSONArrayCasting(base.BaseCastingTests):
         # Use `json.dumps(str)` instead of passing `str(obj)` directly to the super method.
         result = pd.Series(data[:5]).astype(nullable_string_dtype)
         expected = pd.Series(
-            [json.dumps(x, sort_keys=True) for x in data[:5]],
+            [json.dumps(x, sort_keys=True, separators=(",", ":")) for x in data[:5]],
             dtype=nullable_string_dtype,
         )
         tm.assert_series_equal(result, expected)
@@ -119,11 +120,14 @@ class TestJSONArrayInterface(base.BaseInterfaceTests):
     def test_array_interface(self, data):
         result = np.array(data)
         # Use `json.dumps(data[0])` instead of passing `data[0]` directly to the super method.
-        assert result[0] == json.dumps(data[0])
+        assert result[0] == json.dumps(data[0], sort_keys=True, separators=(",", ":"))
 
         result = np.array(data, dtype=object)
         # Use `json.dumps(x)` instead of passing `x` directly to the super method.
-        expected = np.array([json.dumps(x) for x in data], dtype=object)
+        expected = np.array(
+            [json.dumps(x, sort_keys=True, separators=(",", ":")) for x in data],
+            dtype=object,
+        )
         # if expected.ndim > 1:
         #     # nested data, explicitly construct as 1D
         #     expected = construct_1d_object_array_from_listlike(list(data))

@@ -143,7 +143,9 @@ class JSONArray(arrays.ArrowExtensionArray):
         else:
             # `sort_keys=True` sorts dictionary keys before serialization, making
             # JSON comparisons deterministic.
-            return json.dumps(value, sort_keys=True)
+            # `separators=(',', ':')` eliminate whitespace to get the most compact
+            # JSON representation.
+            return json.dumps(value, sort_keys=True, separators=(",", ":"))
 
     @staticmethod
     def _deserialize_json(value):
