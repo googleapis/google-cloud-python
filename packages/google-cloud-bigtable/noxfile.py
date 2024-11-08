@@ -48,7 +48,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.12"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -56,6 +56,8 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
+    "black==23.7.0",
+    "pyyaml==6.0.2",
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
@@ -256,7 +258,7 @@ def install_systemtest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python="3.8")
 def system_emulated(session):
     import subprocess
     import signal
