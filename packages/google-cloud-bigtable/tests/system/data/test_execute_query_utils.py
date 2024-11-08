@@ -14,7 +14,6 @@
 
 from unittest import mock
 
-import google.cloud.bigtable_v2.services.bigtable.transports.pooled_grpc_asyncio as pga
 from google.cloud.bigtable_v2.types.bigtable import ExecuteQueryResponse
 from google.cloud.bigtable_v2.types.data import ProtoRows, Value as PBValue
 import grpc.aio
@@ -143,7 +142,7 @@ class ChannelMock:
         return mock.MagicMock()
 
 
-class ChannelMockAsync(pga.PooledChannel, mock.MagicMock):
+class ChannelMockAsync(grpc.aio.Channel, mock.MagicMock):
     def __init__(self, *args, **kwargs):
         mock.MagicMock.__init__(self, *args, **kwargs)
         self.execute_query_calls = []
@@ -270,3 +269,27 @@ class ChannelMockAsync(pga.PooledChannel, mock.MagicMock):
             # PTAL https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.Channel.unary_stream
             return UnaryStreamMultiCallableMock(self)
         return async_mock()
+
+    def stream_unary(self, *args, **kwargs) -> grpc.aio.StreamUnaryMultiCallable:
+        raise NotImplementedError()
+
+    def stream_stream(self, *args, **kwargs) -> grpc.aio.StreamStreamMultiCallable:
+        raise NotImplementedError()
+
+    async def close(self, grace=None):
+        return
+
+    async def channel_ready(self):
+        return
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+
+    def get_state(self, try_to_connect: bool = False) -> grpc.ChannelConnectivity:
+        raise NotImplementedError()
+
+    async def wait_for_state_change(self, last_observed_state):
+        raise NotImplementedError()

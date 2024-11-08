@@ -23,7 +23,6 @@ from .test_execute_query_utils import (
 )
 from google.api_core import exceptions as core_exceptions
 from google.cloud.bigtable.data import BigtableDataClientAsync
-import google.cloud.bigtable.data._async.client
 
 TABLE_NAME = "TABLE_NAME"
 INSTANCE_NAME = "INSTANCE_NAME"
@@ -39,11 +38,7 @@ class TestAsyncExecuteQuery:
     def async_client(self, async_channel_mock):
         with mock.patch.dict(
             os.environ, {"BIGTABLE_EMULATOR_HOST": "localhost"}
-        ), mock.patch.object(
-            google.cloud.bigtable.data._async.client,
-            "PooledChannel",
-            return_value=async_channel_mock,
-        ):
+        ), mock.patch("grpc.aio.insecure_channel", return_value=async_channel_mock):
             yield BigtableDataClientAsync()
 
     @pytest.mark.asyncio
