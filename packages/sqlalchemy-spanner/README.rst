@@ -508,7 +508,7 @@ run the tests the ``nox`` package commands can be used:
 Running tests on Spanner emulator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The dialect test suite can be runned on `Spanner
+The dialect test suite can be run on `Spanner
 emulator <https://cloud.google.com/spanner/docs/emulator>`__. Several
 tests, relating to ``NULL`` values of data types, are skipped when
 executed on emulator.
