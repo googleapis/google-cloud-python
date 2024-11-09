@@ -65,6 +65,11 @@
                 "delete_user"
               ]
             },
+            "ExecuteSql": {
+              "methods": [
+                "execute_sql"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -150,6 +155,11 @@
                 "restore_cluster"
               ]
             },
+            "SwitchoverCluster": {
+              "methods": [
+                "switchover_cluster"
+              ]
+            },
             "UpdateBackup": {
               "methods": [
                 "update_backup"
@@ -168,6 +178,11 @@
             "UpdateUser": {
               "methods": [
                 "update_user"
+              ]
+            },
+            "UpgradeCluster": {
+              "methods": [
+                "upgrade_cluster"
               ]
             }
           }
@@ -230,6 +245,11 @@
                 "delete_user"
               ]
             },
+            "ExecuteSql": {
+              "methods": [
+                "execute_sql"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -315,6 +335,11 @@
                 "restore_cluster"
               ]
             },
+            "SwitchoverCluster": {
+              "methods": [
+                "switchover_cluster"
+              ]
+            },
             "UpdateBackup": {
               "methods": [
                 "update_backup"
@@ -333,6 +358,11 @@
             "UpdateUser": {
               "methods": [
                 "update_user"
+              ]
+            },
+            "UpgradeCluster": {
+              "methods": [
+                "upgrade_cluster"
               ]
             }
           }
@@ -395,6 +425,11 @@
                 "delete_user"
               ]
             },
+            "ExecuteSql": {
+              "methods": [
+                "execute_sql"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -480,6 +515,11 @@
                 "restore_cluster"
               ]
             },
+            "SwitchoverCluster": {
+              "methods": [
+                "switchover_cluster"
+              ]
+            },
             "UpdateBackup": {
               "methods": [
                 "update_backup"
@@ -498,6 +538,11 @@
             "UpdateUser": {
               "methods": [
                 "update_user"
+              ]
+            },
+            "UpgradeCluster": {
+              "methods": [
+                "upgrade_cluster"
               ]
             }
           }

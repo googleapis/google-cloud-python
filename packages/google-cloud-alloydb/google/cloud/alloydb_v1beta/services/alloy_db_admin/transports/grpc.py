@@ -358,6 +358,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["update_cluster"]
 
     @property
+    def upgrade_cluster(
+        self,
+    ) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the upgrade cluster method over gRPC.
+
+        Upgrades a single Cluster.
+        Imperative only.
+
+        Returns:
+            Callable[[~.UpgradeClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "upgrade_cluster" not in self._stubs:
+            self._stubs["upgrade_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/UpgradeCluster",
+                request_serializer=service.UpgradeClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["upgrade_cluster"]
+
+    @property
     def delete_cluster(
         self,
     ) -> Callable[[service.DeleteClusterRequest], operations_pb2.Operation]:
@@ -411,6 +438,35 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["promote_cluster"]
+
+    @property
+    def switchover_cluster(
+        self,
+    ) -> Callable[[service.SwitchoverClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the switchover cluster method over gRPC.
+
+        Switches the roles of PRIMARY and SECONDARY clusters
+        without any data loss. This promotes the SECONDARY
+        cluster to PRIMARY and sets up the original PRIMARY
+        cluster to replicate from this newly promoted cluster.
+
+        Returns:
+            Callable[[~.SwitchoverClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "switchover_cluster" not in self._stubs:
+            self._stubs["switchover_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/SwitchoverCluster",
+                request_serializer=service.SwitchoverClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["switchover_cluster"]
 
     @property
     def restore_cluster(
@@ -745,6 +801,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restart_instance"]
+
+    @property
+    def execute_sql(
+        self,
+    ) -> Callable[[service.ExecuteSqlRequest], service.ExecuteSqlResponse]:
+        r"""Return a callable for the execute sql method over gRPC.
+
+        Executes a SQL statement in a database inside an
+        AlloyDB instance.
+
+        Returns:
+            Callable[[~.ExecuteSqlRequest],
+                    ~.ExecuteSqlResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_sql" not in self._stubs:
+            self._stubs["execute_sql"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/ExecuteSql",
+                request_serializer=service.ExecuteSqlRequest.serialize,
+                response_deserializer=service.ExecuteSqlResponse.deserialize,
+            )
+        return self._stubs["execute_sql"]
 
     @property
     def list_backups(

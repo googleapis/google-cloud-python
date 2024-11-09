@@ -24,12 +24,15 @@ from google.type import dayofweek_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.alloydb_v1beta.types import csql_resources, gemini
+
 __protobuf__ = proto.module(
     package="google.cloud.alloydb.v1beta",
     manifest={
         "InstanceView",
         "ClusterView",
         "DatabaseVersion",
+        "SubscriptionType",
         "UserPassword",
         "MigrationSource",
         "EncryptionConfig",
@@ -113,11 +116,33 @@ class DatabaseVersion(proto.Enum):
             The database version is Postgres 14.
         POSTGRES_15 (3):
             The database version is Postgres 15.
+        POSTGRES_16 (4):
+            The database version is Postgres 16.
     """
     DATABASE_VERSION_UNSPECIFIED = 0
     POSTGRES_13 = 1
     POSTGRES_14 = 2
     POSTGRES_15 = 3
+    POSTGRES_16 = 4
+
+
+class SubscriptionType(proto.Enum):
+    r"""Subscription_type added to distinguish between Standard and Trial
+    subscriptions. By default, a subscription type is considered
+    STANDARD unless explicitly specified.
+
+    Values:
+        SUBSCRIPTION_TYPE_UNSPECIFIED (0):
+            This is an unknown subscription type. By
+            default, the subscription type is STANDARD.
+        STANDARD (1):
+            Standard subscription.
+        TRIAL (2):
+            Trial subscription.
+    """
+    SUBSCRIPTION_TYPE_UNSPECIFIED = 0
+    STANDARD = 1
+    TRIAL = 2
 
 
 class UserPassword(proto.Message):
@@ -266,7 +291,7 @@ class SslConfig(proto.Message):
 
         Values:
             SSL_MODE_UNSPECIFIED (0):
-                SSL mode not specified. Defaults to ENCRYPTED_ONLY.
+                SSL mode is not specified. Defaults to ENCRYPTED_ONLY.
             SSL_MODE_ALLOW (1):
                 SSL connections are optional. CA verification
                 not enforced.
@@ -278,7 +303,7 @@ class SslConfig(proto.Message):
             SSL_MODE_VERIFY_CA (3):
                 SSL connections are required. CA verification
                 enforced. Clients must have certificates signed
-                by a Cluster CA, e.g. via
+                by a Cluster CA, for example, using
                 GenerateClientCertificate.
             ALLOW_UNENCRYPTED_AND_ENCRYPTED (4):
                 SSL connections are optional. CA verification
@@ -710,6 +735,11 @@ class Cluster(proto.Message):
             migration.
 
             This field is a member of `oneof`_ ``source``.
+        cloudsql_backup_run_source (google.cloud.alloydb_v1beta.types.CloudSQLBackupRunSource):
+            Output only. Cluster created from CloudSQL
+            snapshot.
+
+            This field is a member of `oneof`_ ``source``.
         name (str):
             Output only. The name of the cluster resource with the
             format:
@@ -817,6 +847,9 @@ class Cluster(proto.Message):
             specific to PRIMARY cluster.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
+        psc_config (google.cloud.alloydb_v1beta.types.Cluster.PscConfig):
+            Optional. The configuration for Private
+            Service Connect (PSC) for the cluster.
         maintenance_update_policy (google.cloud.alloydb_v1beta.types.MaintenanceUpdatePolicy):
             Optional. The maintenance update policy
             determines when to allow or deny updates.
@@ -824,6 +857,21 @@ class Cluster(proto.Message):
             Output only. The maintenance schedule for the
             cluster, generated for a specific rollout if a
             maintenance window is set.
+        gemini_config (google.cloud.alloydb_v1beta.types.GeminiClusterConfig):
+            Optional. Configuration parameters related to
+            the Gemini in Databases add-on.
+        subscription_type (google.cloud.alloydb_v1beta.types.SubscriptionType):
+            Optional. Subscription type of the cluster.
+        trial_metadata (google.cloud.alloydb_v1beta.types.Cluster.TrialMetadata):
+            Output only. Metadata for free trial clusters
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag keys/values directly
+            bound to this resource. For example:
+
+            ::
+
+               "123/environment": "production",
+               "123/costCenter": "marketing".
     """
 
     class State(proto.Enum):
@@ -956,6 +1004,59 @@ class Cluster(proto.Message):
             number=1,
         )
 
+    class PscConfig(proto.Message):
+        r"""PscConfig contains PSC related configuration at a cluster
+        level.
+
+        Attributes:
+            psc_enabled (bool):
+                Optional. Create an instance that allows
+                connections from Private Service Connect
+                endpoints to the instance.
+        """
+
+        psc_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
+    class TrialMetadata(proto.Message):
+        r"""Contains information and all metadata related to TRIAL
+        clusters.
+
+        Attributes:
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
+                start time of the trial cluster.
+            end_time (google.protobuf.timestamp_pb2.Timestamp):
+                End time of the trial cluster.
+            upgrade_time (google.protobuf.timestamp_pb2.Timestamp):
+                Upgrade time of trial cluster to Standard
+                cluster.
+            grace_end_time (google.protobuf.timestamp_pb2.Timestamp):
+                grace end time of the cluster.
+        """
+
+        start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        end_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+        upgrade_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+        grace_end_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=timestamp_pb2.Timestamp,
+        )
+
     backup_source: "BackupSource" = proto.Field(
         proto.MESSAGE,
         number=15,
@@ -967,6 +1068,12 @@ class Cluster(proto.Message):
         number=16,
         oneof="source",
         message="MigrationSource",
+    )
+    cloudsql_backup_run_source: csql_resources.CloudSQLBackupRunSource = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        oneof="source",
+        message=csql_resources.CloudSQLBackupRunSource,
     )
     name: str = proto.Field(
         proto.STRING,
@@ -1086,6 +1193,11 @@ class Cluster(proto.Message):
         proto.BOOL,
         number=30,
     )
+    psc_config: PscConfig = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=PscConfig,
+    )
     maintenance_update_policy: "MaintenanceUpdatePolicy" = proto.Field(
         proto.MESSAGE,
         number=32,
@@ -1095,6 +1207,26 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=37,
         message="MaintenanceSchedule",
+    )
+    gemini_config: gemini.GeminiClusterConfig = proto.Field(
+        proto.MESSAGE,
+        number=36,
+        message=gemini.GeminiClusterConfig,
+    )
+    subscription_type: "SubscriptionType" = proto.Field(
+        proto.ENUM,
+        number=38,
+        enum="SubscriptionType",
+    )
+    trial_metadata: TrialMetadata = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        message=TrialMetadata,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=41,
     )
 
 
@@ -1184,6 +1316,8 @@ class Instance(proto.Message):
             PRIMARY instance.
         query_insights_config (google.cloud.alloydb_v1beta.types.Instance.QueryInsightsInstanceConfig):
             Configuration for query insights.
+        observability_config (google.cloud.alloydb_v1beta.types.Instance.ObservabilityInstanceConfig):
+            Configuration for observability.
         read_pool_config (google.cloud.alloydb_v1beta.types.Instance.ReadPoolConfig):
             Read pool instance configuration. This is required if the
             value of instanceType is READ_POOL.
@@ -1227,8 +1361,11 @@ class Instance(proto.Message):
             Optional. The configuration for Private
             Service Connect (PSC) for the instance.
         network_config (google.cloud.alloydb_v1beta.types.Instance.InstanceNetworkConfig):
-            Optional. Instance level network
+            Optional. Instance-level network
             configuration.
+        gemini_config (google.cloud.alloydb_v1beta.types.GeminiInstanceConfig):
+            Optional. Configuration parameters related to
+            the Gemini in Databases add-on.
         outbound_public_ip_addresses (MutableSequence[str]):
             Output only. All outbound public IP addresses
             configured for the instance.
@@ -1427,6 +1564,114 @@ class Instance(proto.Message):
             optional=True,
         )
 
+    class ObservabilityInstanceConfig(proto.Message):
+        r"""Observability Instance specific configuration.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            enabled (bool):
+                Observability feature status for an instance.
+                This flag is turned "off" by default.
+
+                This field is a member of `oneof`_ ``_enabled``.
+            preserve_comments (bool):
+                Preserve comments in query string for an
+                instance. This flag is turned "off" by default.
+
+                This field is a member of `oneof`_ ``_preserve_comments``.
+            track_wait_events (bool):
+                Track wait events during query execution for
+                an instance. This flag is turned "on" by default
+                but tracking is enabled only after observability
+                enabled flag is also turned on.
+
+                This field is a member of `oneof`_ ``_track_wait_events``.
+            track_wait_event_types (bool):
+                Output only. Track wait event types during
+                query execution for an instance. This flag is
+                turned "on" by default but tracking is enabled
+                only after observability enabled flag is also
+                turned on. This is read-only flag and only
+                modifiable by producer API.
+
+                This field is a member of `oneof`_ ``_track_wait_event_types``.
+            max_query_string_length (int):
+                Query string length. The default value is
+                10k.
+
+                This field is a member of `oneof`_ ``_max_query_string_length``.
+            record_application_tags (bool):
+                Record application tags for an instance.
+                This flag is turned "off" by default.
+
+                This field is a member of `oneof`_ ``_record_application_tags``.
+            query_plans_per_minute (int):
+                Number of query execution plans captured by
+                Insights per minute for all queries combined.
+                The default value is 200. Any integer between 0
+                to 200 is considered valid.
+
+                This field is a member of `oneof`_ ``_query_plans_per_minute``.
+            track_active_queries (bool):
+                Track actively running queries on the
+                instance. If not set, this flag is "off" by
+                default.
+
+                This field is a member of `oneof`_ ``_track_active_queries``.
+            track_client_address (bool):
+                Track client address for an instance.
+                If not set, default value is "off".
+
+                This field is a member of `oneof`_ ``_track_client_address``.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+        preserve_comments: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+            optional=True,
+        )
+        track_wait_events: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            optional=True,
+        )
+        track_wait_event_types: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            optional=True,
+        )
+        max_query_string_length: int = proto.Field(
+            proto.INT32,
+            number=5,
+            optional=True,
+        )
+        record_application_tags: bool = proto.Field(
+            proto.BOOL,
+            number=6,
+            optional=True,
+        )
+        query_plans_per_minute: int = proto.Field(
+            proto.INT32,
+            number=7,
+            optional=True,
+        )
+        track_active_queries: bool = proto.Field(
+            proto.BOOL,
+            number=8,
+            optional=True,
+        )
+        track_client_address: bool = proto.Field(
+            proto.BOOL,
+            number=9,
+            optional=True,
+        )
+
     class ReadPoolConfig(proto.Message):
         r"""Configuration for a read pool instance.
 
@@ -1480,7 +1725,7 @@ class Instance(proto.Message):
                 only (ex: AuthProxy) connections to the
                 database.
             ssl_config (google.cloud.alloydb_v1beta.types.SslConfig):
-                Optional. SSL config option for this
+                Optional. SSL configuration option for this
                 instance.
         """
 
@@ -1492,36 +1737,6 @@ class Instance(proto.Message):
             proto.MESSAGE,
             number=2,
             message="SslConfig",
-        )
-
-    class PscInterfaceConfig(proto.Message):
-        r"""Configuration for setting up a PSC interface. This
-        information needs to be provided by the customer.
-        PSC interfaces will be created and added to VMs via SLM (adding
-        a network interface will require recreating the VM). For HA
-        instances this will be done via LDTM.
-
-        Attributes:
-            consumer_endpoint_ips (MutableSequence[str]):
-                A list of endpoints in the consumer VPC the
-                interface might initiate outbound connections
-                to. This list has to be provided when the PSC
-                interface is created.
-            network_attachment (str):
-                The NetworkAttachment resource created in the consumer VPC
-                to which the PSC interface will be linked, in the form of:
-                ``projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}``.
-                NetworkAttachment has to be provided when the PSC interface
-                is created.
-        """
-
-        consumer_endpoint_ips: MutableSequence[str] = proto.RepeatedField(
-            proto.STRING,
-            number=1,
-        )
-        network_attachment: str = proto.Field(
-            proto.STRING,
-            number=2,
         )
 
     class PscInstanceConfig(proto.Message):
@@ -1538,27 +1753,10 @@ class Instance(proto.Message):
                 Optional. List of consumer projects that are
                 allowed to create PSC endpoints to
                 service-attachments to this instance.
-            allowed_consumer_networks (MutableSequence[str]):
-                Optional. List of consumer networks that are
-                allowed to create PSC endpoints to
-                service-attachments to this instance.
-            psc_interface_configs (MutableSequence[google.cloud.alloydb_v1beta.types.Instance.PscInterfaceConfig]):
-                Optional. Configurations for setting up PSC
-                interfaces attached to the instance which are
-                used for outbound connectivity. Only primary
-                instances can have PSC interface attached. All
-                the VMs created for the primary instance will
-                share the same configurations. Currently we only
-                support 0 or 1 PSC interface.
-            outgoing_service_attachment_links (MutableSequence[str]):
-                Optional. List of service attachments that
-                this instance has created endpoints to connect
-                with. Currently, only a single outgoing service
-                attachment is supported per instance.
-            psc_enabled (bool):
-                Optional. Whether PSC connectivity is enabled
-                for this instance. This is populated by
-                referencing the value from the parent cluster.
+            psc_dns_name (str):
+                Output only. The DNS name of the instance for
+                PSC connectivity. Name convention:
+                <uid>.<uid>.<region>.alloydb-psc.goog
         """
 
         service_attachment_link: str = proto.Field(
@@ -1569,28 +1767,13 @@ class Instance(proto.Message):
             proto.STRING,
             number=2,
         )
-        allowed_consumer_networks: MutableSequence[str] = proto.RepeatedField(
+        psc_dns_name: str = proto.Field(
             proto.STRING,
-            number=3,
-        )
-        psc_interface_configs: MutableSequence[
-            "Instance.PscInterfaceConfig"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="Instance.PscInterfaceConfig",
-        )
-        outgoing_service_attachment_links: MutableSequence[str] = proto.RepeatedField(
-            proto.STRING,
-            number=5,
-        )
-        psc_enabled: bool = proto.Field(
-            proto.BOOL,
-            number=6,
+            number=7,
         )
 
     class InstanceNetworkConfig(proto.Message):
-        r"""Metadata related to instance level network configuration.
+        r"""Metadata related to instance-level network configuration.
 
         Attributes:
             authorized_external_networks (MutableSequence[google.cloud.alloydb_v1beta.types.Instance.InstanceNetworkConfig.AuthorizedNetwork]):
@@ -1712,6 +1895,11 @@ class Instance(proto.Message):
         number=21,
         message=QueryInsightsInstanceConfig,
     )
+    observability_config: ObservabilityInstanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message=ObservabilityInstanceConfig,
+    )
     read_pool_config: ReadPoolConfig = proto.Field(
         proto.MESSAGE,
         number=14,
@@ -1761,6 +1949,11 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=29,
         message=InstanceNetworkConfig,
+    )
+    gemini_config: gemini.GeminiInstanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=33,
+        message=gemini.GeminiInstanceConfig,
     )
     outbound_public_ip_addresses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1915,6 +2108,14 @@ class Backup(proto.Message):
             version of the cluster this backup was created
             from. Any restored cluster created from this
             backup will have the same database version.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag keys/values directly
+            bound to this resource. For example:
+
+            ::
+
+               "123/environment": "production",
+               "123/costCenter": "marketing".
     """
 
     class State(proto.Enum):
@@ -2096,6 +2297,11 @@ class Backup(proto.Message):
         number=22,
         enum="DatabaseVersion",
     )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=25,
+    )
 
 
 class SupportedDatabaseFlag(proto.Message):
@@ -2267,6 +2473,9 @@ class User(proto.Message):
             the PostgreSQL naming conventions.
         user_type (google.cloud.alloydb_v1beta.types.User.UserType):
             Optional. Type of this user.
+        keep_extra_roles (bool):
+            Input only. If the user already exists and it
+            has additional roles, keep them granted.
     """
 
     class UserType(proto.Enum):
@@ -2302,6 +2511,10 @@ class User(proto.Message):
         proto.ENUM,
         number=5,
         enum=UserType,
+    )
+    keep_extra_roles: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
