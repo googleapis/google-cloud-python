@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.27.1](https://github.com/googleapis/python-pubsub/compare/v2.27.0...v2.27.1) (2024-11-08)
+
+
+### Bug Fixes
+
+* Add support for Python3.13 ([#1302](https://github.com/googleapis/python-pubsub/issues/1302)) ([ab22e27](https://github.com/googleapis/python-pubsub/commit/ab22e27954450b4e06ec98fe2e3458056aa8ca60))
+
 ## [2.27.0](https://github.com/googleapis/python-pubsub/compare/v2.26.1...v2.27.0) (2024-11-02)
 
 
