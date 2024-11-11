@@ -309,7 +309,6 @@ class SummarizationSectionList(proto.Message):
 class FewShotExample(proto.Message):
     r"""Providing examples in the generator (i.e. building a few-shot
     generator) helps convey the desired format of the LLM response.
-    NEXT_ID: 10
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

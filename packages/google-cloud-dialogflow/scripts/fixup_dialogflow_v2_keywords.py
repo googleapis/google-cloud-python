@@ -128,7 +128,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'reload_document': ('name', 'content_uri', 'import_gcs_custom_metadata', 'smart_messaging_partial_update', ),
         'restore_agent': ('parent', 'agent_uri', 'agent_content', ),
         'search_agents': ('parent', 'page_size', 'page_token', ),
-        'search_knowledge': ('parent', 'query', 'conversation_profile', 'session_id', 'conversation', 'latest_message', ),
+        'search_knowledge': ('parent', 'query', 'conversation_profile', 'session_id', 'conversation', 'latest_message', 'query_source', 'end_user_metadata', 'search_config', 'exact_search', ),
         'set_agent': ('agent', 'update_mask', ),
         'set_suggestion_feature_config': ('conversation_profile', 'participant_role', 'suggestion_feature_config', ),
         'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', 'assist_query_params', 'cx_parameters', 'enable_extended_streaming', 'enable_partial_automated_agent_reply', 'enable_debugging_info', ),
