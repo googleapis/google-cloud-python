@@ -4,6 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+
 ## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.16.0...google-cloud-translate-v3.17.0) (2024-10-24)
 
 
