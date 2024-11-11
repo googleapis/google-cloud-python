@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.1.3...google-maps-solar-v0.1.4) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13247](https://github.com/googleapis/google-cloud-python/issues/13247)) ([5adc8b7](https://github.com/googleapis/google-cloud-python/commit/5adc8b7d2cc8ab9707ab5a65f15270c125cee051))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.1.2...google-maps-solar-v0.1.3) (2024-10-24)
 
 
