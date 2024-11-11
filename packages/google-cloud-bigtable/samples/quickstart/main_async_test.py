@@ -13,62 +13,32 @@
 # limitations under the License.
 
 import os
+import uuid
 from typing import AsyncGenerator
 
 from google.cloud.bigtable.data import BigtableDataClientAsync, SetCell
 import pytest
 import pytest_asyncio
 
-from main_async import main
-
+from .main_async import main
+from ..utils import create_table_cm
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
-TABLE_ID_FORMAT = "quickstart-test-{}"
+TABLE_ID = f"quickstart-async-test-{str(uuid.uuid4())[:16]}"
 
 
 @pytest_asyncio.fixture
 async def table_id() -> AsyncGenerator[str, None]:
-    table_id = _create_table()
-    await _populate_table(table_id)
-
-    yield table_id
-
-    _delete_table(table_id)
-
-
-def _create_table():
-    from google.cloud import bigtable
-    import uuid
-
-    client = bigtable.Client(project=PROJECT, admin=True)
-    instance = client.instance(BIGTABLE_INSTANCE)
-
-    table_id = TABLE_ID_FORMAT.format(uuid.uuid4().hex[:8])
-    table = instance.table(table_id)
-    if table.exists():
-        table.delete()
-
-    table.create(column_families={"cf1": None})
-
-    client.close()
-    return table_id
+    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"cf1": None}):
+        await _populate_table(TABLE_ID)
+        yield TABLE_ID
 
 
 async def _populate_table(table_id: str):
     async with BigtableDataClientAsync(project=PROJECT) as client:
         async with client.get_table(BIGTABLE_INSTANCE, table_id) as table:
             await table.mutate_row("r1", SetCell("cf1", "c1", "test-value"))
-
-
-def _delete_table(table_id: str):
-    from google.cloud import bigtable
-
-    client = bigtable.Client(project=PROJECT, admin=True)
-    instance = client.instance(BIGTABLE_INSTANCE)
-    table = instance.table(table_id)
-    table.delete()
-    client.close()
 
 
 @pytest.mark.asyncio

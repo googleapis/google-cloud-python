@@ -13,48 +13,27 @@
 # limitations under the License.
 
 import os
-import uuid
 
 import backoff
 from google.api_core.exceptions import DeadlineExceeded
-from google.cloud import bigtable
 import pytest
+import uuid
 
 from .write_batch import write_batch
 from .write_conditionally import write_conditional
 from .write_increment import write_increment
 from .write_simple import write_simple
-
+from ...utils import create_table_cm
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
-TABLE_ID_PREFIX = "mobile-time-series-{}"
+TABLE_ID = f"mobile-time-series-writes-{str(uuid.uuid4())[:16]}"
 
 
 @pytest.fixture
-def bigtable_client():
-    return bigtable.Client(project=PROJECT, admin=True)
-
-
-@pytest.fixture
-def bigtable_instance(bigtable_client):
-    return bigtable_client.instance(BIGTABLE_INSTANCE)
-
-
-@pytest.fixture
-def table_id(bigtable_instance):
-    table_id = TABLE_ID_PREFIX.format(str(uuid.uuid4())[:16])
-    table = bigtable_instance.table(table_id)
-    if table.exists():
-        table.delete()
-
-    column_family_id = "stats_summary"
-    column_families = {column_family_id: None}
-    table.create(column_families=column_families)
-
-    yield table_id
-
-    table.delete()
+def table_id():
+    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None}):
+        yield TABLE_ID
 
 
 def test_writes(capsys, table_id):

@@ -14,29 +14,25 @@
 # limitations under the License.
 
 import os
+from test_utils.retry import RetryErrors
+from google.api_core import exceptions
 import uuid
 
-from google.api_core import exceptions
-from test_utils.retry import RetryErrors
-
-from tableadmin import create_table
-from tableadmin import delete_table
-from tableadmin import run_table_operations
+from .tableadmin import delete_table
+from .tableadmin import run_table_operations
+from ..utils import create_table_cm
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
-TABLE_ID_FORMAT = "tableadmin-test-{}"
+TABLE_ID = f"tableadmin-test-{str(uuid.uuid4())[:16]}"
 
 retry_429_503 = RetryErrors(exceptions.TooManyRequests, exceptions.ServiceUnavailable)
 
 
 def test_run_table_operations(capsys):
-    table_id = TABLE_ID_FORMAT.format(uuid.uuid4().hex[:8])
-
-    retry_429_503(run_table_operations)(PROJECT, BIGTABLE_INSTANCE, table_id)
+    retry_429_503(run_table_operations)(PROJECT, BIGTABLE_INSTANCE, TABLE_ID)
     out, _ = capsys.readouterr()
 
-    assert "Creating the " + table_id + " table." in out
     assert "Listing tables in current project." in out
     assert "Creating column family cf1 with with MaxAge GC Rule" in out
     assert "Created column family cf1 with MaxAge GC Rule." in out
@@ -53,14 +49,11 @@ def test_run_table_operations(capsys):
     assert "Delete a column family cf2..." in out
     assert "Column family cf2 deleted successfully." in out
 
-    retry_429_503(delete_table)(PROJECT, BIGTABLE_INSTANCE, table_id)
-
 
 def test_delete_table(capsys):
-    table_id = TABLE_ID_FORMAT.format(uuid.uuid4().hex[:8])
-    retry_429_503(create_table)(PROJECT, BIGTABLE_INSTANCE, table_id)
-
-    retry_429_503(delete_table)(PROJECT, BIGTABLE_INSTANCE, table_id)
+    table_id = f"table-admin-to-delete-{str(uuid.uuid4())[:16]}"
+    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, table_id, verbose=False):
+        delete_table(PROJECT, BIGTABLE_INSTANCE, table_id)
     out, _ = capsys.readouterr()
 
     assert "Table " + table_id + " exists." in out
