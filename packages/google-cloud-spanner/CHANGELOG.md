@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.50.0](https://github.com/googleapis/python-spanner/compare/v3.49.1...v3.50.0) (2024-11-11)
+
+
+### Features
+
+* **spanner:** Add support for Cloud Spanner Default Backup Schedules ([45d4517](https://github.com/googleapis/python-spanner/commit/45d4517789660a803849b829c8eae8b4ea227599))
+
+
+### Bug Fixes
+
+* Add PROTO in streaming chunks ([#1213](https://github.com/googleapis/python-spanner/issues/1213)) ([43c190b](https://github.com/googleapis/python-spanner/commit/43c190bc694d56e0c57d96dbaa7fc48117f3c971))
+* Pass through route-to-leader option in dbapi ([#1223](https://github.com/googleapis/python-spanner/issues/1223)) ([ec6c204](https://github.com/googleapis/python-spanner/commit/ec6c204f66e5c8419ea25c4b77f18a38a57acf81))
+* Pin `nox` version in `requirements.in` for devcontainer. ([#1215](https://github.com/googleapis/python-spanner/issues/1215)) ([41604fe](https://github.com/googleapis/python-spanner/commit/41604fe297d02f5cc2e5516ba24e0fdcceda8e26))
+
+
+### Documentation
+
+* Allow multiple KMS keys to create CMEK database/backup ([68551c2](https://github.com/googleapis/python-spanner/commit/68551c20cd101045f3d3fe948d04b99388f28c26))
+
 ## [3.49.1](https://github.com/googleapis/python-spanner/compare/v3.49.0...v3.49.1) (2024-09-06)
 
 
