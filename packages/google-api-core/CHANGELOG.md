@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.23.0](https://github.com/googleapis/python-api-core/compare/v2.22.0...v2.23.0) (2024-11-11)
+
+
+### Features
+
+* Migrate to pyproject.toml ([#736](https://github.com/googleapis/python-api-core/issues/736)) ([159e9a4](https://github.com/googleapis/python-api-core/commit/159e9a49525937f18a55c38136aae32575424d55))
+
 ## [2.22.0](https://github.com/googleapis/python-api-core/compare/v2.21.0...v2.22.0) (2024-10-25)
 
 
