@@ -19,6 +19,9 @@ __version__ = package_version.__version__
 
 
 from .services.alloy_db_admin import AlloyDBAdminAsyncClient, AlloyDBAdminClient
+from .types.csql_resources import CloudSQLBackupRunSource
+from .types.data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
+from .types.gemini import GeminiClusterConfig, GeminiInstanceConfig
 from .types.resources import (
     AutomatedBackupPolicy,
     Backup,
@@ -39,6 +42,7 @@ from .types.resources import (
     MaintenanceUpdatePolicy,
     MigrationSource,
     SslConfig,
+    SubscriptionType,
     SupportedDatabaseFlag,
     User,
     UserPassword,
@@ -59,6 +63,9 @@ from .types.service import (
     DeleteClusterRequest,
     DeleteInstanceRequest,
     DeleteUserRequest,
+    ExecuteSqlMetadata,
+    ExecuteSqlRequest,
+    ExecuteSqlResponse,
     FailoverInstanceRequest,
     GenerateClientCertificateRequest,
     GenerateClientCertificateResponse,
@@ -82,12 +89,17 @@ from .types.service import (
     ListUsersResponse,
     OperationMetadata,
     PromoteClusterRequest,
+    PromoteClusterStatus,
     RestartInstanceRequest,
     RestoreClusterRequest,
+    SwitchoverClusterRequest,
     UpdateBackupRequest,
     UpdateClusterRequest,
     UpdateInstanceRequest,
     UpdateUserRequest,
+    UpgradeClusterRequest,
+    UpgradeClusterResponse,
+    UpgradeClusterStatus,
 )
 
 __all__ = (
@@ -100,6 +112,7 @@ __all__ = (
     "BatchCreateInstancesMetadata",
     "BatchCreateInstancesRequest",
     "BatchCreateInstancesResponse",
+    "CloudSQLBackupRunSource",
     "Cluster",
     "ClusterView",
     "ConnectionInfo",
@@ -121,7 +134,12 @@ __all__ = (
     "DeleteUserRequest",
     "EncryptionConfig",
     "EncryptionInfo",
+    "ExecuteSqlMetadata",
+    "ExecuteSqlRequest",
+    "ExecuteSqlResponse",
     "FailoverInstanceRequest",
+    "GeminiClusterConfig",
+    "GeminiInstanceConfig",
     "GenerateClientCertificateRequest",
     "GenerateClientCertificateResponse",
     "GetBackupRequest",
@@ -149,14 +167,24 @@ __all__ = (
     "MigrationSource",
     "OperationMetadata",
     "PromoteClusterRequest",
+    "PromoteClusterStatus",
     "RestartInstanceRequest",
     "RestoreClusterRequest",
+    "SqlResult",
+    "SqlResultColumn",
+    "SqlResultRow",
+    "SqlResultValue",
     "SslConfig",
+    "SubscriptionType",
     "SupportedDatabaseFlag",
+    "SwitchoverClusterRequest",
     "UpdateBackupRequest",
     "UpdateClusterRequest",
     "UpdateInstanceRequest",
     "UpdateUserRequest",
+    "UpgradeClusterRequest",
+    "UpgradeClusterResponse",
+    "UpgradeClusterStatus",
     "User",
     "UserPassword",
 )

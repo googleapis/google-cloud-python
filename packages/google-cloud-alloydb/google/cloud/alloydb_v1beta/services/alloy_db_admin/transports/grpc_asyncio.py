@@ -372,6 +372,33 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         return self._stubs["update_cluster"]
 
     @property
+    def upgrade_cluster(
+        self,
+    ) -> Callable[[service.UpgradeClusterRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the upgrade cluster method over gRPC.
+
+        Upgrades a single Cluster.
+        Imperative only.
+
+        Returns:
+            Callable[[~.UpgradeClusterRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "upgrade_cluster" not in self._stubs:
+            self._stubs["upgrade_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/UpgradeCluster",
+                request_serializer=service.UpgradeClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["upgrade_cluster"]
+
+    @property
     def delete_cluster(
         self,
     ) -> Callable[[service.DeleteClusterRequest], Awaitable[operations_pb2.Operation]]:
@@ -425,6 +452,37 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["promote_cluster"]
+
+    @property
+    def switchover_cluster(
+        self,
+    ) -> Callable[
+        [service.SwitchoverClusterRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the switchover cluster method over gRPC.
+
+        Switches the roles of PRIMARY and SECONDARY clusters
+        without any data loss. This promotes the SECONDARY
+        cluster to PRIMARY and sets up the original PRIMARY
+        cluster to replicate from this newly promoted cluster.
+
+        Returns:
+            Callable[[~.SwitchoverClusterRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "switchover_cluster" not in self._stubs:
+            self._stubs["switchover_cluster"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/SwitchoverCluster",
+                request_serializer=service.SwitchoverClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["switchover_cluster"]
 
     @property
     def restore_cluster(
@@ -771,6 +829,33 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restart_instance"]
+
+    @property
+    def execute_sql(
+        self,
+    ) -> Callable[[service.ExecuteSqlRequest], Awaitable[service.ExecuteSqlResponse]]:
+        r"""Return a callable for the execute sql method over gRPC.
+
+        Executes a SQL statement in a database inside an
+        AlloyDB instance.
+
+        Returns:
+            Callable[[~.ExecuteSqlRequest],
+                    Awaitable[~.ExecuteSqlResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "execute_sql" not in self._stubs:
+            self._stubs["execute_sql"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/ExecuteSql",
+                request_serializer=service.ExecuteSqlRequest.serialize,
+                response_deserializer=service.ExecuteSqlResponse.deserialize,
+            )
+        return self._stubs["execute_sql"]
 
     @property
     def list_backups(
@@ -1195,6 +1280,11 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.upgrade_cluster: self._wrap_method(
+                self.upgrade_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_cluster: self._wrap_method(
                 self.delete_cluster,
                 default_timeout=None,
@@ -1202,6 +1292,11 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
             ),
             self.promote_cluster: self._wrap_method(
                 self.promote_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.switchover_cluster: self._wrap_method(
+                self.switchover_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1280,6 +1375,11 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
             ),
             self.restart_instance: self._wrap_method(
                 self.restart_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.execute_sql: self._wrap_method(
+                self.execute_sql,
                 default_timeout=None,
                 client_info=client_info,
             ),
