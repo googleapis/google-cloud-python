@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.10...google-cloud-migrationcenter-v0.1.11) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13243](https://github.com/googleapis/google-cloud-python/issues/13243)) ([d794dec](https://github.com/googleapis/google-cloud-python/commit/d794dec5eff5f23a1ff926012bf9e6cad719e020))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.9...google-cloud-migrationcenter-v0.1.10) (2024-10-24)
 
 

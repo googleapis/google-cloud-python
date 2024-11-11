@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.1.0...google-cloud-kms-v3.1.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13243](https://github.com/googleapis/google-cloud-python/issues/13243)) ([d794dec](https://github.com/googleapis/google-cloud-python/commit/d794dec5eff5f23a1ff926012bf9e6cad719e020))
+
 ## [3.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.0.0...google-cloud-kms-v3.1.0) (2024-10-24)
 
 
