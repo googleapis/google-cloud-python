@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.5...google-cloud-parallelstore-v0.2.6) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([170e8f2](https://github.com/googleapis/google-cloud-python/commit/170e8f2dda4d42842728797f24436a98f79a7bbc))
+
 ## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.4...google-cloud-parallelstore-v0.2.5) (2024-10-24)
 
 
