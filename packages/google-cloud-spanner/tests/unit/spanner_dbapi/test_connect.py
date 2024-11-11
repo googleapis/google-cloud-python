@@ -51,6 +51,12 @@ class Test_connect(unittest.TestCase):
 
         self.assertIs(connection.instance, instance)
         client.instance.assert_called_once_with(INSTANCE)
+        mock_client.assert_called_once_with(
+            project=mock.ANY,
+            credentials=mock.ANY,
+            client_info=mock.ANY,
+            route_to_leader_enabled=True,
+        )
 
         self.assertIs(connection.database, database)
         instance.database.assert_called_once_with(DATABASE, pool=None)
@@ -86,7 +92,7 @@ class Test_connect(unittest.TestCase):
             project=PROJECT,
             credentials=credentials,
             client_info=mock.ANY,
-            route_to_leader_enabled=True,
+            route_to_leader_enabled=False,
         )
         client_info = mock_client.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)

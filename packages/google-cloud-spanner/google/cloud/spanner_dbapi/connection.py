@@ -712,14 +712,14 @@ def connect(
                 credentials,
                 project=project,
                 client_info=client_info,
-                route_to_leader_enabled=True,
+                route_to_leader_enabled=route_to_leader_enabled,
             )
         else:
             client = spanner.Client(
                 project=project,
                 credentials=credentials,
                 client_info=client_info,
-                route_to_leader_enabled=True,
+                route_to_leader_enabled=route_to_leader_enabled,
             )
     else:
         if project is not None and client.project != project:
