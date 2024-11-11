@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.10.1...google-cloud-service-management-v1.11.0) (2024-11-11)
+
+
+### Features
+
+* Add field protobuf_pythonic_types_enabled to message ExperimentalFeatures ([a6897e3](https://github.com/googleapis/google-cloud-python/commit/a6897e3f763e831a22602d1860f1810e9600e014))
+
+
+### Documentation
+
+* A comment for field `unit` in message `.google.api.QuotaLimit` is changed ([a6897e3](https://github.com/googleapis/google-cloud-python/commit/a6897e3f763e831a22602d1860f1810e9600e014))
+
 ## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.10.0...google-cloud-service-management-v1.10.1) (2024-10-31)
 
 

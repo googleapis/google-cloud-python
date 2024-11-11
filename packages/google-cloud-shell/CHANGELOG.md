@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.10.0...google-cloud-shell-v1.10.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13246](https://github.com/googleapis/google-cloud-python/issues/13246)) ([bcad563](https://github.com/googleapis/google-cloud-python/commit/bcad563acea541bb51f9fbd005f18e9f32e381f0))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.9.5...google-cloud-shell-v1.10.0) (2024-10-24)
 
 
