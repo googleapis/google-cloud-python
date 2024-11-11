@@ -13,65 +13,52 @@
 
 import datetime
 import os
-import uuid
 import inspect
+import uuid
 
-from google.cloud import bigtable
 import pytest
 
 from .snapshots.snap_reads_test import snapshots
 from . import read_snippets
+from ...utils import create_table_cm
 
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
-TABLE_ID_PREFIX = "mobile-time-series-{}"
+TABLE_ID = f"mobile-time-series-reads-{str(uuid.uuid4())[:16]}"
 
 
 @pytest.fixture(scope="module", autouse=True)
 def table_id():
-    client = bigtable.Client(project=PROJECT, admin=True)
-    instance = client.instance(BIGTABLE_INSTANCE)
+    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None}) as table:
+        timestamp = datetime.datetime(2019, 5, 1)
+        rows = [
+            table.direct_row("phone#4c410523#20190501"),
+            table.direct_row("phone#4c410523#20190502"),
+            table.direct_row("phone#4c410523#20190505"),
+            table.direct_row("phone#5c10102#20190501"),
+            table.direct_row("phone#5c10102#20190502"),
+        ]
 
-    table_id = TABLE_ID_PREFIX.format(str(uuid.uuid4())[:16])
-    table = instance.table(table_id)
-    if table.exists():
-        table.delete()
+        rows[0].set_cell("stats_summary", "connected_cell", 1, timestamp)
+        rows[0].set_cell("stats_summary", "connected_wifi", 1, timestamp)
+        rows[0].set_cell("stats_summary", "os_build", "PQ2A.190405.003", timestamp)
+        rows[1].set_cell("stats_summary", "connected_cell", 1, timestamp)
+        rows[1].set_cell("stats_summary", "connected_wifi", 1, timestamp)
+        rows[1].set_cell("stats_summary", "os_build", "PQ2A.190405.004", timestamp)
+        rows[2].set_cell("stats_summary", "connected_cell", 0, timestamp)
+        rows[2].set_cell("stats_summary", "connected_wifi", 1, timestamp)
+        rows[2].set_cell("stats_summary", "os_build", "PQ2A.190406.000", timestamp)
+        rows[3].set_cell("stats_summary", "connected_cell", 1, timestamp)
+        rows[3].set_cell("stats_summary", "connected_wifi", 1, timestamp)
+        rows[3].set_cell("stats_summary", "os_build", "PQ2A.190401.002", timestamp)
+        rows[4].set_cell("stats_summary", "connected_cell", 1, timestamp)
+        rows[4].set_cell("stats_summary", "connected_wifi", 0, timestamp)
+        rows[4].set_cell("stats_summary", "os_build", "PQ2A.190406.000", timestamp)
 
-    table.create(column_families={"stats_summary": None})
+        table.mutate_rows(rows)
 
-    # table = instance.table(table_id)
-
-    timestamp = datetime.datetime(2019, 5, 1)
-    rows = [
-        table.direct_row("phone#4c410523#20190501"),
-        table.direct_row("phone#4c410523#20190502"),
-        table.direct_row("phone#4c410523#20190505"),
-        table.direct_row("phone#5c10102#20190501"),
-        table.direct_row("phone#5c10102#20190502"),
-    ]
-
-    rows[0].set_cell("stats_summary", "connected_cell", 1, timestamp)
-    rows[0].set_cell("stats_summary", "connected_wifi", 1, timestamp)
-    rows[0].set_cell("stats_summary", "os_build", "PQ2A.190405.003", timestamp)
-    rows[1].set_cell("stats_summary", "connected_cell", 1, timestamp)
-    rows[1].set_cell("stats_summary", "connected_wifi", 1, timestamp)
-    rows[1].set_cell("stats_summary", "os_build", "PQ2A.190405.004", timestamp)
-    rows[2].set_cell("stats_summary", "connected_cell", 0, timestamp)
-    rows[2].set_cell("stats_summary", "connected_wifi", 1, timestamp)
-    rows[2].set_cell("stats_summary", "os_build", "PQ2A.190406.000", timestamp)
-    rows[3].set_cell("stats_summary", "connected_cell", 1, timestamp)
-    rows[3].set_cell("stats_summary", "connected_wifi", 1, timestamp)
-    rows[3].set_cell("stats_summary", "os_build", "PQ2A.190401.002", timestamp)
-    rows[4].set_cell("stats_summary", "connected_cell", 1, timestamp)
-    rows[4].set_cell("stats_summary", "connected_wifi", 0, timestamp)
-    rows[4].set_cell("stats_summary", "os_build", "PQ2A.190406.000", timestamp)
-
-    table.mutate_rows(rows)
-
-    yield table_id
-
-    table.delete()
+        yield TABLE_ID
 
 
 def test_read_row(capsys, table_id):

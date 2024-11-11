@@ -12,36 +12,22 @@
 # limitations under the License.
 import pytest
 import pytest_asyncio
-import uuid
 import os
+import uuid
 
-import data_client_snippets_async as data_snippets
+from . import data_client_snippets_async as data_snippets
+from ...utils import create_table_cm
 
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
-TABLE_ID_STATIC = os.getenv(
-    "BIGTABLE_TABLE", None
-)  # if not set, a temproary table will be generated
+TABLE_ID = f"data-client-{str(uuid.uuid4())[:16]}"
 
 
 @pytest.fixture(scope="session")
 def table_id():
-    from google.cloud import bigtable
-
-    client = bigtable.Client(project=PROJECT, admin=True)
-    instance = client.instance(BIGTABLE_INSTANCE)
-    table_id = TABLE_ID_STATIC or f"data-client-{str(uuid.uuid4())[:16]}"
-
-    admin_table = instance.table(table_id)
-    if not admin_table.exists():
-        admin_table.create(column_families={"family": None, "stats_summary": None})
-
-    yield table_id
-
-    if not table_id == TABLE_ID_STATIC:
-        # clean up table when finished
-        admin_table.delete()
+    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"family": None, "stats_summary": None}):
+        yield TABLE_ID
 
 
 @pytest_asyncio.fixture

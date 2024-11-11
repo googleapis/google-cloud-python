@@ -26,6 +26,7 @@ Prerequisites:
 
 import argparse
 import asyncio
+from ..utils import wait_for_table
 
 # [START bigtable_async_hw_imports]
 from google.cloud import bigtable
@@ -33,7 +34,6 @@ from google.cloud.bigtable.data import row_filters
 from google.cloud.bigtable.data import RowMutationEntry
 from google.cloud.bigtable.data import SetCell
 from google.cloud.bigtable.data import ReadRowsQuery
-
 # [END bigtable_async_hw_imports]
 
 
@@ -65,63 +65,66 @@ async def main(project_id, instance_id, table_id):
         print("Table {} already exists.".format(table_id))
     # [END bigtable_async_hw_create_table]
 
-    # [START bigtable_async_hw_write_rows]
-    print("Writing some greetings to the table.")
-    greetings = ["Hello World!", "Hello Cloud Bigtable!", "Hello Python!"]
-    mutations = []
-    column = "greeting"
-    for i, value in enumerate(greetings):
-        # Note: This example uses sequential numeric IDs for simplicity,
-        # but this can result in poor performance in a production
-        # application.  Since rows are stored in sorted order by key,
-        # sequential keys can result in poor distribution of operations
-        # across nodes.
-        #
-        # For more information about how to design a Bigtable schema for
-        # the best performance, see the documentation:
-        #
-        #     https://cloud.google.com/bigtable/docs/schema-design
-        row_key = "greeting{}".format(i).encode()
-        row_mutation = RowMutationEntry(
-            row_key, SetCell(column_family_id, column, value)
-        )
-        mutations.append(row_mutation)
-    await table.bulk_mutate_rows(mutations)
-    # [END bigtable_async_hw_write_rows]
+    try:
+        # let table creation complete
+        wait_for_table(admin_table)
+        # [START bigtable_async_hw_write_rows]
+        print("Writing some greetings to the table.")
+        greetings = ["Hello World!", "Hello Cloud Bigtable!", "Hello Python!"]
+        mutations = []
+        column = "greeting"
+        for i, value in enumerate(greetings):
+            # Note: This example uses sequential numeric IDs for simplicity,
+            # but this can result in poor performance in a production
+            # application.  Since rows are stored in sorted order by key,
+            # sequential keys can result in poor distribution of operations
+            # across nodes.
+            #
+            # For more information about how to design a Bigtable schema for
+            # the best performance, see the documentation:
+            #
+            #     https://cloud.google.com/bigtable/docs/schema-design
+            row_key = "greeting{}".format(i).encode()
+            row_mutation = RowMutationEntry(
+                row_key, SetCell(column_family_id, column, value)
+            )
+            mutations.append(row_mutation)
+        await table.bulk_mutate_rows(mutations)
+        # [END bigtable_async_hw_write_rows]
 
-    # [START bigtable_async_hw_create_filter]
-    # Create a filter to only retrieve the most recent version of the cell
-    # for each column across entire row.
-    row_filter = row_filters.CellsColumnLimitFilter(1)
-    # [END bigtable_async_hw_create_filter]
+        # [START bigtable_async_hw_create_filter]
+        # Create a filter to only retrieve the most recent version of the cell
+        # for each column across entire row.
+        row_filter = row_filters.CellsColumnLimitFilter(1)
+        # [END bigtable_async_hw_create_filter]
 
-    # [START bigtable_async_hw_get_with_filter]
-    # [START bigtable_async_hw_get_by_key]
-    print("Getting a single greeting by row key.")
-    key = "greeting0".encode()
+        # [START bigtable_async_hw_get_with_filter]
+        # [START bigtable_async_hw_get_by_key]
+        print("Getting a single greeting by row key.")
+        key = "greeting0".encode()
 
-    row = await table.read_row(key, row_filter=row_filter)
-    cell = row.cells[0]
-    print(cell.value.decode("utf-8"))
-    # [END bigtable_async_hw_get_by_key]
-    # [END bigtable_async_hw_get_with_filter]
-
-    # [START bigtable_async_hw_scan_with_filter]
-    # [START bigtable_async_hw_scan_all]
-    print("Scanning for all greetings:")
-    query = ReadRowsQuery(row_filter=row_filter)
-    async for row in await table.read_rows_stream(query):
+        row = await table.read_row(key, row_filter=row_filter)
         cell = row.cells[0]
         print(cell.value.decode("utf-8"))
-    # [END bigtable_async_hw_scan_all]
-    # [END bigtable_async_hw_scan_with_filter]
+        # [END bigtable_async_hw_get_by_key]
+        # [END bigtable_async_hw_get_with_filter]
 
-    # [START bigtable_async_hw_delete_table]
-    # the async client only supports the data API. Table deletion as an admin operation
-    # use admin client to create the table
-    print("Deleting the {} table.".format(table_id))
-    admin_table.delete()
-    # [END bigtable_async_hw_delete_table]
+        # [START bigtable_async_hw_scan_with_filter]
+        # [START bigtable_async_hw_scan_all]
+        print("Scanning for all greetings:")
+        query = ReadRowsQuery(row_filter=row_filter)
+        async for row in await table.read_rows_stream(query):
+            cell = row.cells[0]
+            print(cell.value.decode("utf-8"))
+        # [END bigtable_async_hw_scan_all]
+        # [END bigtable_async_hw_scan_with_filter]
+    finally:
+        # [START bigtable_async_hw_delete_table]
+        # the async client only supports the data API. Table deletion as an admin operation
+        # use admin client to create the table
+        print("Deleting the {} table.".format(table_id))
+        admin_table.delete()
+        # [END bigtable_async_hw_delete_table]
 
 
 if __name__ == "__main__":

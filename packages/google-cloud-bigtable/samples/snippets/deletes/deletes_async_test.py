@@ -15,52 +15,26 @@
 
 import datetime
 import os
+import uuid
 from typing import AsyncGenerator
 
 from google.cloud._helpers import _microseconds_from_datetime
 import pytest
 import pytest_asyncio
 
-import deletes_snippets_async
+from . import deletes_snippets_async
+from ...utils import create_table_cm
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
-TABLE_ID_PREFIX = "mobile-time-series-{}"
+TABLE_ID = f"mobile-time-series-deletes-async-{str(uuid.uuid4())[:16]}"
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module", autouse=True)
 async def table_id() -> AsyncGenerator[str, None]:
-    table_id = _create_table()
-    await _populate_table(table_id)
-    yield table_id
-    _delete_table(table_id)
-
-
-def _create_table():
-    from google.cloud import bigtable
-    import uuid
-
-    client = bigtable.Client(project=PROJECT, admin=True)
-    instance = client.instance(BIGTABLE_INSTANCE)
-
-    table_id = TABLE_ID_PREFIX.format(str(uuid.uuid4())[:16])
-    table = instance.table(table_id)
-    if table.exists():
-        table.delete()
-
-    table.create(column_families={"stats_summary": None, "cell_plan": None})
-    client.close()
-    return table_id
-
-
-def _delete_table(table_id: str):
-    from google.cloud import bigtable
-
-    client = bigtable.Client(project=PROJECT, admin=True)
-    instance = client.instance(BIGTABLE_INSTANCE)
-    table = instance.table(table_id)
-    table.delete()
-    client.close()
+    with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None, "cell_plan": None}, verbose=False):
+        await _populate_table(TABLE_ID)
+        yield TABLE_ID
 
 
 async def _populate_table(table_id):

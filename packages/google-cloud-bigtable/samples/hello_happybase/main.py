@@ -25,6 +25,7 @@ Prerequisites:
 """
 
 import argparse
+from ..utils import wait_for_table
 
 # [START bigtable_hw_imports_happybase]
 from google.cloud import bigtable
@@ -50,6 +51,8 @@ def main(project_id, instance_id, table_name):
             table_name, {column_family_name: dict()}  # Use default options.
         )
         # [END bigtable_hw_create_table_happybase]
+
+        wait_for_table(instance.table(table_name))
 
         # [START bigtable_hw_write_rows_happybase]
         print("Writing some greetings to the table.")
@@ -90,12 +93,11 @@ def main(project_id, instance_id, table_name):
             print("\t{}: {}".format(key, row[column_name.encode("utf-8")]))
         # [END bigtable_hw_scan_all_happybase]
 
+    finally:
         # [START bigtable_hw_delete_table_happybase]
         print("Deleting the {} table.".format(table_name))
         connection.delete_table(table_name)
         # [END bigtable_hw_delete_table_happybase]
-
-    finally:
         connection.close()
 
 
