@@ -59,6 +59,7 @@ from google.maps.places_v1.types import (
     photo,
     place,
     places_service,
+    price_range,
     review,
     routing_summary,
 )

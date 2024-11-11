@@ -40,6 +40,7 @@ from .types.places_service import (
     SearchTextResponse,
 )
 from .types.polyline import Polyline
+from .types.price_range import PriceRange
 from .types.reference import References
 from .types.review import Review
 from .types.route_modifiers import RouteModifiers
@@ -66,6 +67,7 @@ __all__ = (
     "PlacesClient",
     "Polyline",
     "PriceLevel",
+    "PriceRange",
     "References",
     "Review",
     "RouteModifiers",
