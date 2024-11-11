@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.1...google-ads-marketingplatform-admin-v0.1.2) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.0...google-ads-marketingplatform-admin-v0.1.1) (2024-10-24)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.3...google-cloud-discoveryengine-v0.13.4) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
 ## [0.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.2...google-cloud-discoveryengine-v0.13.3) (2024-10-31)
 
 

@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.36.0...google-cloud-dialogflow-cx-v1.37.0) (2024-11-11)
+
+
+### Features
+
+* add options of client_certificate_settings, bigquery_export_settings, bearer_token_config and boost_control_spec; add support of ALAW encoding ([3e438ff](https://github.com/googleapis/google-cloud-python/commit/3e438ff52c5b3c436cf8e46d82c54b9caf77a658))
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
 ## [1.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.35.0...google-cloud-dialogflow-cx-v1.36.0) (2024-10-24)
 
 
