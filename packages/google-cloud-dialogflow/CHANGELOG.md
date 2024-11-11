@@ -2,7 +2,7 @@
 
 [PyPI History][1]
 
-[1]: https://pypi.org/project/dialogflow/#history
+[1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
 ## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.33.0...google-cloud-dialogflow-v2.34.0) (2024-10-24)
 
