@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .csql_resources import CloudSQLBackupRunSource
+from .data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
+from .gemini import GeminiClusterConfig, GeminiInstanceConfig
 from .resources import (
     AutomatedBackupPolicy,
     Backup,
@@ -33,6 +36,7 @@ from .resources import (
     MaintenanceUpdatePolicy,
     MigrationSource,
     SslConfig,
+    SubscriptionType,
     SupportedDatabaseFlag,
     User,
     UserPassword,
@@ -53,6 +57,9 @@ from .service import (
     DeleteClusterRequest,
     DeleteInstanceRequest,
     DeleteUserRequest,
+    ExecuteSqlMetadata,
+    ExecuteSqlRequest,
+    ExecuteSqlResponse,
     FailoverInstanceRequest,
     GenerateClientCertificateRequest,
     GenerateClientCertificateResponse,
@@ -76,15 +83,27 @@ from .service import (
     ListUsersResponse,
     OperationMetadata,
     PromoteClusterRequest,
+    PromoteClusterStatus,
     RestartInstanceRequest,
     RestoreClusterRequest,
+    SwitchoverClusterRequest,
     UpdateBackupRequest,
     UpdateClusterRequest,
     UpdateInstanceRequest,
     UpdateUserRequest,
+    UpgradeClusterRequest,
+    UpgradeClusterResponse,
+    UpgradeClusterStatus,
 )
 
 __all__ = (
+    "CloudSQLBackupRunSource",
+    "SqlResult",
+    "SqlResultColumn",
+    "SqlResultRow",
+    "SqlResultValue",
+    "GeminiClusterConfig",
+    "GeminiInstanceConfig",
     "AutomatedBackupPolicy",
     "Backup",
     "BackupSource",
@@ -107,6 +126,7 @@ __all__ = (
     "ClusterView",
     "DatabaseVersion",
     "InstanceView",
+    "SubscriptionType",
     "BatchCreateInstancesMetadata",
     "BatchCreateInstancesRequest",
     "BatchCreateInstancesResponse",
@@ -122,6 +142,9 @@ __all__ = (
     "DeleteClusterRequest",
     "DeleteInstanceRequest",
     "DeleteUserRequest",
+    "ExecuteSqlMetadata",
+    "ExecuteSqlRequest",
+    "ExecuteSqlResponse",
     "FailoverInstanceRequest",
     "GenerateClientCertificateRequest",
     "GenerateClientCertificateResponse",
@@ -145,10 +168,15 @@ __all__ = (
     "ListUsersResponse",
     "OperationMetadata",
     "PromoteClusterRequest",
+    "PromoteClusterStatus",
     "RestartInstanceRequest",
     "RestoreClusterRequest",
+    "SwitchoverClusterRequest",
     "UpdateBackupRequest",
     "UpdateClusterRequest",
     "UpdateInstanceRequest",
     "UpdateUserRequest",
+    "UpgradeClusterRequest",
+    "UpgradeClusterResponse",
+    "UpgradeClusterStatus",
 )

@@ -307,13 +307,11 @@ class SearchNearbyResponse(proto.Message):
             requirements like places types, number of places
             and specific location restriction.
         routing_summaries (MutableSequence[google.maps.places_v1.types.RoutingSummary]):
-            A list of routing summaries where each entry
-            associates to the corresponding place in the
-            same index in the places field. If the routing
-            summary is not available for one of the places,
-            it will contain an empty entry. This list should
-            have as many entries as the list of places if
-            requested.
+            A list of routing summaries where each entry associates to
+            the corresponding place in the same index in the ``places``
+            field. If the routing summary is not available for one of
+            the places, it will contain an empty entry. This list should
+            have as many entries as the list of places if requested.
     """
 
     places: MutableSequence[gmp_place.Place] = proto.RepeatedField(
@@ -406,6 +404,16 @@ class SearchTextRequest(proto.Message):
         search_along_route_parameters (google.maps.places_v1.types.SearchTextRequest.SearchAlongRouteParameters):
             Optional. Additional parameters proto for
             searching along a route.
+        include_pure_service_area_businesses (bool):
+            Optional. Include pure service area businesses if the field
+            is set to true. Pure service area business is a business
+            that visits or delivers to customers directly but does not
+            serve customers at their business address. For example,
+            businesses like cleaning services or plumbers. Those
+            businesses do not have a physical address or location on
+            Google Maps. Places will not return fields including
+            ``location``, ``plus_code``, and other location related
+            fields for these businesses.
     """
 
     class RankPreference(proto.Enum):
@@ -620,6 +628,10 @@ class SearchTextRequest(proto.Message):
         number=17,
         message=SearchAlongRouteParameters,
     )
+    include_pure_service_area_businesses: bool = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
 
 
 class SearchTextResponse(proto.Message):
@@ -630,13 +642,11 @@ class SearchTextResponse(proto.Message):
             A list of places that meet the user's text
             search criteria.
         routing_summaries (MutableSequence[google.maps.places_v1.types.RoutingSummary]):
-            A list of routing summaries where each entry
-            associates to the corresponding place in the
-            same index in the places field. If the routing
-            summary is not available for one of the places,
-            it will contain an empty entry. This list will
-            have as many entries as the list of places if
-            requested.
+            A list of routing summaries where each entry associates to
+            the corresponding place in the same index in the ``places``
+            field. If the routing summary is not available for one of
+            the places, it will contain an empty entry. This list will
+            have as many entries as the list of places if requested.
         contextual_contents (MutableSequence[google.maps.places_v1.types.ContextualContent]):
             Experimental: See
             https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
@@ -933,6 +943,16 @@ class AutocompletePlacesRequest(proto.Message):
             -  Be sure to pass a unique session token for each new
                session. Using the same token for more than one session
                will result in each request being billed individually.
+        include_pure_service_area_businesses (bool):
+            Optional. Include pure service area businesses if the field
+            is set to true. Pure service area business is a business
+            that visits or delivers to customers directly but does not
+            serve customers at their business address. For example,
+            businesses like cleaning services or plumbers. Those
+            businesses do not have a physical address or location on
+            Google Maps. Places will not return fields including
+            ``location``, ``plus_code``, and other location related
+            fields for these businesses.
     """
 
     class LocationBias(proto.Message):
@@ -1055,6 +1075,10 @@ class AutocompletePlacesRequest(proto.Message):
     session_token: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    include_pure_service_area_businesses: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
 
 

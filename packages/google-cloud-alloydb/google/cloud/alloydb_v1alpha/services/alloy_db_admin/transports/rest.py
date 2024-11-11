@@ -149,6 +149,14 @@ class AlloyDBAdminRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_execute_sql(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_execute_sql(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_failover_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -285,6 +293,14 @@ class AlloyDBAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_switchover_cluster(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_switchover_cluster(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -314,6 +330,14 @@ class AlloyDBAdminRestInterceptor:
                 return request, metadata
 
             def post_update_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_upgrade_cluster(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_upgrade_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -550,6 +574,27 @@ class AlloyDBAdminRestInterceptor:
         before they are sent to the AlloyDBAdmin server.
         """
         return request, metadata
+
+    def pre_execute_sql(
+        self, request: service.ExecuteSqlRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.ExecuteSqlRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for execute_sql
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_execute_sql(
+        self, response: service.ExecuteSqlResponse
+    ) -> service.ExecuteSqlResponse:
+        """Post-rpc interceptor for execute_sql
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_failover_instance(
         self,
@@ -914,6 +959,29 @@ class AlloyDBAdminRestInterceptor:
         """
         return response
 
+    def pre_switchover_cluster(
+        self,
+        request: service.SwitchoverClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.SwitchoverClusterRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for switchover_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_switchover_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for switchover_cluster
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_backup(
         self, request: service.UpdateBackupRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
@@ -991,6 +1059,29 @@ class AlloyDBAdminRestInterceptor:
 
     def post_update_user(self, response: resources.User) -> resources.User:
         """Post-rpc interceptor for update_user
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_upgrade_cluster(
+        self,
+        request: service.UpgradeClusterRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.UpgradeClusterRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for upgrade_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_upgrade_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for upgrade_cluster
 
         Override in a subclass to manipulate the response
         after it is returned by the AlloyDBAdmin server but before
@@ -2304,6 +2395,106 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _ExecuteSql(
+        _BaseAlloyDBAdminRestTransport._BaseExecuteSql, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.ExecuteSql")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.ExecuteSqlRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.ExecuteSqlResponse:
+            r"""Call the execute sql method over HTTP.
+
+            Args:
+                request (~.service.ExecuteSqlRequest):
+                    The request object. Request for ExecuteSql rpc.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.ExecuteSqlResponse:
+                    Execute a SQL statement response.
+            """
+
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_execute_sql(request, metadata)
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = AlloyDBAdminRestTransport._ExecuteSql._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.ExecuteSqlResponse()
+            pb_resp = service.ExecuteSqlResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_execute_sql(resp)
+            return resp
 
     class _FailoverInstance(
         _BaseAlloyDBAdminRestTransport._BaseFailoverInstance, AlloyDBAdminRestStub
@@ -3926,6 +4117,104 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = self._interceptor.post_restore_cluster(resp)
             return resp
 
+    class _SwitchoverCluster(
+        _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.SwitchoverCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.SwitchoverClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the switchover cluster method over HTTP.
+
+            Args:
+                request (~.service.SwitchoverClusterRequest):
+                    The request object. Message for switching over to a
+                cluster
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_switchover_cluster(
+                request, metadata
+            )
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = AlloyDBAdminRestTransport._SwitchoverCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_switchover_cluster(resp)
+            return resp
+
     class _UpdateBackup(
         _BaseAlloyDBAdminRestTransport._BaseUpdateBackup, AlloyDBAdminRestStub
     ):
@@ -4315,6 +4604,101 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = self._interceptor.post_update_user(resp)
             return resp
 
+    class _UpgradeCluster(
+        _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.UpgradeCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.UpgradeClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the upgrade cluster method over HTTP.
+
+            Args:
+                request (~.service.UpgradeClusterRequest):
+                    The request object. Upgrades a cluster.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_upgrade_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpgradeCluster._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = AlloyDBAdminRestTransport._UpgradeCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_upgrade_cluster(resp)
+            return resp
+
     @property
     def batch_create_instances(
         self,
@@ -4398,6 +4782,14 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def execute_sql(
+        self,
+    ) -> Callable[[service.ExecuteSqlRequest], service.ExecuteSqlResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExecuteSql(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def failover_instance(
@@ -4536,6 +4928,14 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         return self._RestoreCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def switchover_cluster(
+        self,
+    ) -> Callable[[service.SwitchoverClusterRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SwitchoverCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_backup(
         self,
     ) -> Callable[[service.UpdateBackupRequest], operations_pb2.Operation]:
@@ -4564,6 +4964,14 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def upgrade_cluster(
+        self,
+    ) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpgradeCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

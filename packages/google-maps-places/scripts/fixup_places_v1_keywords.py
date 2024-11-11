@@ -39,11 +39,11 @@ def partition(
 class placesCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'autocomplete_places': ('input', 'location_bias', 'location_restriction', 'included_primary_types', 'included_region_codes', 'language_code', 'region_code', 'origin', 'input_offset', 'include_query_predictions', 'session_token', ),
+        'autocomplete_places': ('input', 'location_bias', 'location_restriction', 'included_primary_types', 'included_region_codes', 'language_code', 'region_code', 'origin', 'input_offset', 'include_query_predictions', 'session_token', 'include_pure_service_area_businesses', ),
         'get_photo_media': ('name', 'max_width_px', 'max_height_px', 'skip_http_redirect', ),
         'get_place': ('name', 'language_code', 'region_code', 'session_token', ),
         'search_nearby': ('location_restriction', 'language_code', 'region_code', 'included_types', 'excluded_types', 'included_primary_types', 'excluded_primary_types', 'max_result_count', 'rank_preference', 'routing_parameters', ),
-        'search_text': ('text_query', 'language_code', 'region_code', 'rank_preference', 'included_type', 'open_now', 'min_rating', 'max_result_count', 'price_levels', 'strict_type_filtering', 'location_bias', 'location_restriction', 'ev_options', 'routing_parameters', 'search_along_route_parameters', ),
+        'search_text': ('text_query', 'language_code', 'region_code', 'rank_preference', 'included_type', 'open_now', 'min_rating', 'max_result_count', 'price_levels', 'strict_type_filtering', 'location_bias', 'location_restriction', 'ev_options', 'routing_parameters', 'search_along_route_parameters', 'include_pure_service_area_businesses', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

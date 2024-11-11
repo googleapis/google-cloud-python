@@ -5291,6 +5291,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
             "load_balancer_id": "load_balancer_id_value",
             "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
+            "fqdn": "fqdn_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
@@ -5505,6 +5506,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "cluster_network_uri": "cluster_network_uri_value",
                                 "internal_ip": "internal_ip_value",
                                 "external_ip": "external_ip_value",
+                                "dns_endpoint": "dns_endpoint_value",
                             },
                             "cloud_sql_instance": {
                                 "display_name": "display_name_value",
@@ -5815,6 +5817,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
             "load_balancer_id": "load_balancer_id_value",
             "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
+            "fqdn": "fqdn_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
@@ -6029,6 +6032,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "cluster_network_uri": "cluster_network_uri_value",
                                 "internal_ip": "internal_ip_value",
                                 "external_ip": "external_ip_value",
+                                "dns_endpoint": "dns_endpoint_value",
                             },
                             "cloud_sql_instance": {
                                 "display_name": "display_name_value",
