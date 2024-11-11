@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.24.0...google-cloud-recaptcha-enterprise-v1.24.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
 ## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.23.0...google-cloud-recaptcha-enterprise-v1.24.0) (2024-10-31)
 
 
