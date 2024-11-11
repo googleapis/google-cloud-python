@@ -2391,6 +2391,10 @@ class DropInfo(proto.Message):
                 Packet from the unknown peered network is
                 dropped due to no known route from the source
                 network to the destination IP address.
+            PRIVATE_NAT_TO_PSC_ENDPOINT_UNSUPPORTED (83):
+                Sending packets processed by the Private NAT
+                Gateways to the Private Service Connect
+                endpoints is not supported.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -2475,6 +2479,7 @@ class DropInfo(proto.Message):
         NO_ADVERTISED_ROUTE_TO_GCP_DESTINATION = 80
         NO_TRAFFIC_SELECTOR_TO_GCP_DESTINATION = 81
         NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION = 82
+        PRIVATE_NAT_TO_PSC_ENDPOINT_UNSUPPORTED = 83
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2509,9 +2514,13 @@ class GKEMasterInfo(proto.Message):
         cluster_network_uri (str):
             URI of a GKE cluster network.
         internal_ip (str):
-            Internal IP address of a GKE cluster master.
+            Internal IP address of a GKE cluster control
+            plane.
         external_ip (str):
-            External IP address of a GKE cluster master.
+            External IP address of a GKE cluster control
+            plane.
+        dns_endpoint (str):
+            DNS endpoint of a GKE cluster control plane.
     """
 
     cluster_uri: str = proto.Field(
@@ -2529,6 +2538,10 @@ class GKEMasterInfo(proto.Message):
     external_ip: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    dns_endpoint: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

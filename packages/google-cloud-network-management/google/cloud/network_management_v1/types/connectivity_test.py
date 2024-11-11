@@ -241,8 +241,14 @@ class Endpoint(proto.Message):
 
             This field is a member of `oneof`_ ``_load_balancer_type``.
         gke_master_cluster (str):
-            A cluster URI for `Google Kubernetes Engine
-            master <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
+            A cluster URI for `Google Kubernetes Engine cluster control
+            plane <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
+        fqdn (str):
+            DNS endpoint of `Google Kubernetes Engine cluster control
+            plane <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
+            Requires gke_master_cluster to be set, can't be used
+            simultaneoulsly with ip_address or network. Applicable only
+            to destination endpoint.
         cloud_sql_instance (str):
             A `Cloud SQL <https://cloud.google.com/sql>`__ instance URI.
         redis_instance (str):
@@ -412,6 +418,10 @@ class Endpoint(proto.Message):
     gke_master_cluster: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    fqdn: str = proto.Field(
+        proto.STRING,
+        number=19,
     )
     cloud_sql_instance: str = proto.Field(
         proto.STRING,
