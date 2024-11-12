@@ -231,3 +231,16 @@ class JSONArray(arrays.ArrowExtensionArray):
         if name in ["min", "max"]:
             raise TypeError("JSONArray does not support min/max reducntion.")
         super()._reduce(name, skipna=skipna, keepdims=keepdims, **kwargs)
+
+    def __array__(self, dtype=None, copy: bool | None = None) -> np.ndarray:
+        """Correctly construct numpy arrays when passed to `np.asarray()`."""
+        pa_type = self.pa_data.type
+        data = self
+        if dtype is None:
+            empty = pa.array([], type=pa_type).to_numpy(zero_copy_only=False)
+            dtype = empty.dtype
+        result = np.empty(len(data), dtype=dtype)
+        mask = data.isna()
+        result[mask] = self._dtype.na_value
+        result[~mask] = data[~mask].pa_data.to_numpy()
+        return result

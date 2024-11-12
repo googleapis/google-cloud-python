@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -81,3 +83,34 @@ def test_deterministic_json_serialization():
     y = {"b": 1, "a": 0}
     data = db_dtypes.JSONArray._from_sequence([y])
     assert data[0] == x
+
+
+def test_to_numpy():
+    """
+    Verifies that JSONArray can be cast to a NumPy array.
+    This test ensures compatibility with Python 3.9 and replicates the behavior
+    of the `test_to_numpy` test from `test_json_compliance.py::TestJSONArrayCasting`,
+    which is run with Python 3.12 environments only.
+    """
+    data = db_dtypes.JSONArray._from_sequence(JSON_DATA.values())
+    expected = np.asarray(data)
+
+    result = data.to_numpy()
+    pd._testing.assert_equal(result, expected)
+
+    result = pd.Series(data).to_numpy()
+    pd._testing.assert_equal(result, expected)
+
+
+def test_as_numpy_array():
+    data = db_dtypes.JSONArray._from_sequence(JSON_DATA.values())
+    result = np.asarray(data)
+    expected = np.asarray(
+        [
+            json.dumps(value, sort_keys=True, separators=(",", ":"))
+            if value is not None
+            else pd.NA
+            for value in JSON_DATA.values()
+        ]
+    )
+    pd._testing.assert_equal(result, expected)
