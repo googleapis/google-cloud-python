@@ -29,7 +29,7 @@ __protobuf__ = proto.module(
 
 class LoggingConfig(proto.Message):
     r"""The configuration for Platform Telemetry logging for Eventarc
-    Avdvanced resources.
+    Advanced resources.
 
     Attributes:
         log_severity (google.cloud.eventarc_v1.types.LoggingConfig.LogSeverity):
