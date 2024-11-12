@@ -997,6 +997,83 @@ class GroupBy:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def head(self, n: int = 5):
+        """
+        Return last first n rows of each group
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame([[1, 2], [1, 4], [5, 6]],
+            ...                   columns=['A', 'B'])
+            >>> df.groupby('A').head(1)
+               A  B
+            0  1  2
+            2  5  6
+            [2 rows x 2 columns]
+
+        Args:
+            n (int):
+                If positive: number of entries to include from start of each group.
+                If negative: number of entries to exclude from end of each group.
+
+        Returns:
+            bigframes.pandas.DataFrame or bigframes.pandas.Series:
+                First n rows of the original DataFrame or Series
+
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def size(self):
+        """
+        Compute group sizes.
+
+        **Examples:**
+
+        For SeriesGroupBy:
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> lst = ['a', 'a', 'b']
+            >>> ser = bpd.Series([1, 2, 3], index=lst)
+            >>> ser
+            a     1
+            a     2
+            b     3
+            dtype: Int64
+            >>> ser.groupby(level=0).size()
+            a    2
+            b    1
+            dtype: Int64
+
+        For DataFrameGroupBy:
+
+            >>> data = [[1, 2, 3], [1, 5, 6], [7, 8, 9]]
+            >>> df = bpd.DataFrame(data, columns=["a", "b", "c"],
+            ...                   index=["owl", "toucan", "eagle"])
+            >>> df
+                    a  b  c
+            owl     1  2  3
+            toucan  1  5  6
+            eagle   7  8  9
+            [3 rows x 3 columns]
+            >>> df.groupby("a").size()
+            a
+            1    2
+            7    1
+            dtype: Int64
+
+        Returns:
+            bigframes.pandas.DataFrame or bigframes.pandas.Series:
+                Number of rows in each group as a Series if as_index is True
+                or a DataFrame if as_index is False.
+
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
 
 class SeriesGroupBy(GroupBy):
     def agg(self, func):
