@@ -425,3 +425,30 @@ def test_logistic_regression_customized_params_fit_score(
     assert reloaded_model.tol == 0.02
     assert reloaded_model.learning_rate_strategy == "CONSTANT"
     assert reloaded_model.learning_rate == 0.2
+
+
+def test_model_centroids_with_custom_index(penguins_df_default_index):
+    model = bigframes.ml.linear_model.LogisticRegression(
+        fit_intercept=False,
+        class_weight="balanced",
+        l2_reg=0.2,
+        tol=0.02,
+        l1_reg=0.2,
+        max_iterations=30,
+        optimize_strategy="batch_gradient_descent",
+        learning_rate_strategy="constant",
+        learning_rate=0.2,
+    )
+    df = penguins_df_default_index.dropna().set_index(["species", "island"])
+    X_train = df[
+        [
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+        ]
+    ]
+    y_train = df[["sex"]]
+    model.fit(X_train, y_train)
+
+    # If this line executes without errors, the model has correctly ignored the custom index columns
+    model.predict(X_train.reset_index(drop=True))

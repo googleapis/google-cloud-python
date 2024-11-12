@@ -154,3 +154,13 @@ def test_cluster_configure_fit_load_params(penguins_df_default_index, dataset_id
     assert reloaded_model.distance_type == "COSINE"
     assert reloaded_model.max_iter == 30
     assert reloaded_model.tol == 0.001
+
+
+def test_model_centroids_with_custom_index(penguins_df_default_index):
+    model = cluster.KMeans(n_clusters=3)
+    penguins = penguins_df_default_index.set_index(["species", "island", "sex"])
+    model.fit(penguins)
+
+    assert (
+        not model.cluster_centers_["feature"].isin(["species", "island", "sex"]).any()
+    )
