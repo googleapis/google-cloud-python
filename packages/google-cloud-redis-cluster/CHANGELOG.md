@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.9...google-cloud-redis-cluster-v0.1.10) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.8...google-cloud-redis-cluster-v0.1.9) (2024-10-24)
 
 

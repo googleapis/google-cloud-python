@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.13...google-cloud-recommendations-ai-v0.10.14) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
 ## [0.10.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.12...google-cloud-recommendations-ai-v0.10.13) (2024-10-24)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.8.0...google-cloud-vision-v3.8.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13246](https://github.com/googleapis/google-cloud-python/issues/13246)) ([bcad563](https://github.com/googleapis/google-cloud-python/commit/bcad563acea541bb51f9fbd005f18e9f32e381f0))
+
 ## [3.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.7.4...google-cloud-vision-v3.8.0) (2024-10-24)
 
 

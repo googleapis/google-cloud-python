@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.34.0...google-cloud-dialogflow-v2.35.0) (2024-11-11)
+
+
+### Features
+
+* add options of query_source, search_config and context_size (https://github.com/googleapis/google-cloud-python/pull/13242) ([e03cab6](https://github.com/googleapis/google-cloud-python/commit/e03cab6861998d36f4efacd694918b53656085e8))
+* add SipTrunks service (https://github.com/googleapis/google-cloud-python/pull/13242) ([e03cab6](https://github.com/googleapis/google-cloud-python/commit/e03cab6861998d36f4efacd694918b53656085e8))
+* added support for ALAW encoding (https://github.com/googleapis/google-cloud-python/pull/13242) ([e03cab6](https://github.com/googleapis/google-cloud-python/commit/e03cab6861998d36f4efacd694918b53656085e8))
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13238](https://github.com/googleapis/google-cloud-python/issues/13238)) ([cb14bda](https://github.com/googleapis/google-cloud-python/commit/cb14bda5e3d48df4f353a381a2e6fce878f83e78))
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
+
+### Documentation
+
+* update PyPI package link in CHANGELOG.md ([e03cab6](https://github.com/googleapis/google-cloud-python/commit/e03cab6861998d36f4efacd694918b53656085e8))
+
 ## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.33.0...google-cloud-dialogflow-v2.34.0) (2024-10-24)
 
 

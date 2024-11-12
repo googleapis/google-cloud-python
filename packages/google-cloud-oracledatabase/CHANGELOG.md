@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.1...google-cloud-oracledatabase-v0.1.2) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13244](https://github.com/googleapis/google-cloud-python/issues/13244)) ([ae1f471](https://github.com/googleapis/google-cloud-python/commit/ae1f47175bf3354f78cb558a844a9cab00317b95))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.0...google-cloud-oracledatabase-v0.1.1) (2024-10-24)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.13.0...google-cloud-private-ca-v1.13.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13244](https://github.com/googleapis/google-cloud-python/issues/13244)) ([ae1f471](https://github.com/googleapis/google-cloud-python/commit/ae1f47175bf3354f78cb558a844a9cab00317b95))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.12.2...google-cloud-private-ca-v1.13.0) (2024-10-24)
 
 

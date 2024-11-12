@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.14.0...google-cloud-scheduler-v2.14.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
 ## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.13.5...google-cloud-scheduler-v2.14.0) (2024-10-24)
 
 

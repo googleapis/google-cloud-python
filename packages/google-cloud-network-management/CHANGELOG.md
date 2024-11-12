@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.20.0...google-cloud-network-management-v1.21.0) (2024-11-11)
+
+
+### Features
+
+* add DNS endpoint of Google Kubernetes Engine cluster control plane ([826abc1](https://github.com/googleapis/google-cloud-python/commit/826abc1a079e84535922b796646da936a1aa4fed))
+* add more detailed drop causes to corresponding enum ([826abc1](https://github.com/googleapis/google-cloud-python/commit/826abc1a079e84535922b796646da936a1aa4fed))
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13244](https://github.com/googleapis/google-cloud-python/issues/13244)) ([ae1f471](https://github.com/googleapis/google-cloud-python/commit/ae1f47175bf3354f78cb558a844a9cab00317b95))
+
+
+### Documentation
+
+* update outdated comments ([826abc1](https://github.com/googleapis/google-cloud-python/commit/826abc1a079e84535922b796646da936a1aa4fed))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.19.0...google-cloud-network-management-v1.20.0) (2024-10-24)
 
 

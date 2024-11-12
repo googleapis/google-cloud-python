@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.13...google-cloud-life-sciences-v0.9.14) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13243](https://github.com/googleapis/google-cloud-python/issues/13243)) ([d794dec](https://github.com/googleapis/google-cloud-python/commit/d794dec5eff5f23a1ff926012bf9e6cad719e020))
+
 ## [0.9.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.12...google-cloud-life-sciences-v0.9.13) (2024-10-24)
 
 

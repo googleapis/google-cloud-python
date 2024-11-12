@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.54.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.53.0...google-cloud-container-v2.54.0) (2024-11-11)
+
+
+### Features
+
+* add desired_enterprise_config,desired_node_pool_auto_config_linux_node_config to ClusterUpdate. ([4fdf249](https://github.com/googleapis/google-cloud-python/commit/4fdf24960b3966193516d6f16900df1409165376))
+* add desired_tier to EnterpriseConfig. ([4fdf249](https://github.com/googleapis/google-cloud-python/commit/4fdf24960b3966193516d6f16900df1409165376))
+* add DesiredEnterpriseConfig proto message ([4fdf249](https://github.com/googleapis/google-cloud-python/commit/4fdf24960b3966193516d6f16900df1409165376))
+* add LinuxNodeConfig in NodePoolAutoConfig ([4fdf249](https://github.com/googleapis/google-cloud-python/commit/4fdf24960b3966193516d6f16900df1409165376))
+* add LocalSsdEncryptionMode in NodeConfig ([4fdf249](https://github.com/googleapis/google-cloud-python/commit/4fdf24960b3966193516d6f16900df1409165376))
+* add UpgradeInfoEvent proto message ([4fdf249](https://github.com/googleapis/google-cloud-python/commit/4fdf24960b3966193516d6f16900df1409165376))
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
+
+### Documentation
+
+* Minor documentation updates ([4fdf249](https://github.com/googleapis/google-cloud-python/commit/4fdf24960b3966193516d6f16900df1409165376))
+
 ## [2.53.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.52.0...google-cloud-container-v2.53.0) (2024-10-24)
 
 

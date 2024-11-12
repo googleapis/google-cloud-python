@@ -1,6 +1,25 @@
 # Changelog
 
 
+## [0.10.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.10...google-cloud-run-v0.10.11) (2024-11-11)
+
+
+### Features
+
+* support advanced configurations options for cloud storage volumes by setting mount_options in the GCSVolumeSource configuration ([97b9b6b](https://github.com/googleapis/google-cloud-python/commit/97b9b6b9f1092fc46545aa8f46d2cd3f6af46012))
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
+
+### Documentation
+
+* A comment for field `max_instance_request_concurrency` in message `.google.cloud.run.v2.RevisionTemplate` is changed ([97b9b6b](https://github.com/googleapis/google-cloud-python/commit/97b9b6b9f1092fc46545aa8f46d2cd3f6af46012))
+* For field `invoker_iam_disabled` in message `.google.cloud.run.v2.Service`, clarify that feature is available by invitation only ([97b9b6b](https://github.com/googleapis/google-cloud-python/commit/97b9b6b9f1092fc46545aa8f46d2cd3f6af46012))
+* Update docs for field `value` in message `.google.cloud.run.v2.EnvVar` to reflect Cloud Run product capabilities ([97b9b6b](https://github.com/googleapis/google-cloud-python/commit/97b9b6b9f1092fc46545aa8f46d2cd3f6af46012))
+
 ## [0.10.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.9...google-cloud-run-v0.10.10) (2024-10-24)
 
 

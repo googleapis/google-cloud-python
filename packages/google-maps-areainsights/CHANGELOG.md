@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.1...google-maps-areainsights-v0.1.2) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13247](https://github.com/googleapis/google-cloud-python/issues/13247)) ([5adc8b7](https://github.com/googleapis/google-cloud-python/commit/5adc8b7d2cc8ab9707ab5a65f15270c125cee051))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.0...google-maps-areainsights-v0.1.1) (2024-10-24)
 
 

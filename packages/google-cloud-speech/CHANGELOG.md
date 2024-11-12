@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.28.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.28.0...google-cloud-speech-v2.28.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13246](https://github.com/googleapis/google-cloud-python/issues/13246)) ([bcad563](https://github.com/googleapis/google-cloud-python/commit/bcad563acea541bb51f9fbd005f18e9f32e381f0))
+
 ## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.27.0...google-cloud-speech-v2.28.0) (2024-10-24)
 
 

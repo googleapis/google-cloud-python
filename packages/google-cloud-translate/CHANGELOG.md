@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
 
+## [3.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.17.0...google-cloud-translate-v3.18.0) (2024-11-11)
+
+
+### Features
+
+* Adds Contextual Glossary support for Translation and AdaptiveMt ([ae4acf3](https://github.com/googleapis/google-cloud-python/commit/ae4acf3d4bbc5941c72cf59e48aab0fbba7ef15d))
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13246](https://github.com/googleapis/google-cloud-python/issues/13246)) ([bcad563](https://github.com/googleapis/google-cloud-python/commit/bcad563acea541bb51f9fbd005f18e9f32e381f0))
+
 ## [3.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.16.0...google-cloud-translate-v3.17.0) (2024-10-24)
 
 
