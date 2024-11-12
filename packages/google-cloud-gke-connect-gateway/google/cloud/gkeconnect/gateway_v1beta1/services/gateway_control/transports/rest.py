@@ -14,28 +14,23 @@
 # limitations under the License.
 #
 
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-
-from requests import __version__ as requests_version
 import dataclasses
+import json  # type: ignore
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
-from google.cloud.gkeconnect.gateway_v1.types import control
+from google.cloud.gkeconnect.gateway_v1beta1.types import control
 
-
-from .rest_base import _BaseGatewayControlRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseGatewayControlRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -78,7 +73,12 @@ class GatewayControlRestInterceptor:
 
 
     """
-    def pre_generate_credentials(self, request: control.GenerateCredentialsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[control.GenerateCredentialsRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_generate_credentials(
+        self,
+        request: control.GenerateCredentialsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[control.GenerateCredentialsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for generate_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -86,7 +86,9 @@ class GatewayControlRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_credentials(self, response: control.GenerateCredentialsResponse) -> control.GenerateCredentialsResponse:
+    def post_generate_credentials(
+        self, response: control.GenerateCredentialsResponse
+    ) -> control.GenerateCredentialsResponse:
         """Post-rpc interceptor for generate_credentials
 
         Override in a subclass to manipulate the response
@@ -115,51 +117,56 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(self, *,
-            host: str = 'connectgateway.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            client_cert_source_for_mtls: Optional[Callable[[
-                ], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            interceptor: Optional[GatewayControlRestInterceptor] = None,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "connectgateway.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        interceptor: Optional[GatewayControlRestInterceptor] = None,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to (default: 'connectgateway.googleapis.com').
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
-                certificate to configure mutual TLS HTTP channel. It is ignored
-                if ``channel`` is provided.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
-                be used for service account credentials.
-            url_scheme: the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to (default: 'connectgateway.googleapis.com').
+             credentials (Optional[google.auth.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+
+             credentials_file (Optional[str]): A file with credentials that can
+                 be loaded with :func:`google.auth.load_credentials_from_file`.
+                 This argument is ignored if ``channel`` is provided.
+             scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                 ignored if ``channel`` is provided.
+             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                 certificate to configure mutual TLS HTTP channel. It is ignored
+                 if ``channel`` is provided.
+             quota_project_id (Optional[str]): An optional project to use for billing
+                 and quota.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                 be used for service account credentials.
+             url_scheme: the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -171,16 +178,20 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST)
+            self._credentials, default_host=self.DEFAULT_HOST
+        )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GatewayControlRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GenerateCredentials(_BaseGatewayControlRestTransport._BaseGenerateCredentials, GatewayControlRestStub):
+    class _GenerateCredentials(
+        _BaseGatewayControlRestTransport._BaseGenerateCredentials,
+        GatewayControlRestStub,
+    ):
         def __hash__(self):
             return hash("GatewayControlRestTransport.GenerateCredentials")
 
@@ -192,26 +203,28 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: control.GenerateCredentialsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> control.GenerateCredentialsResponse:
+        def __call__(
+            self,
+            request: control.GenerateCredentialsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> control.GenerateCredentialsResponse:
             r"""Call the generate credentials method over HTTP.
 
             Args:
@@ -231,15 +244,30 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
 
             """
 
-            http_options = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_http_options()
-            request, metadata = self._interceptor.pre_generate_credentials(request, metadata)
-            transcoded_request = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_transcoded_request(http_options, request)
+            http_options = (
+                _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_generate_credentials(
+                request, metadata
+            )
+            transcoded_request = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_query_params_json(transcoded_request)
+            query_params = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            response = GatewayControlRestTransport._GenerateCredentials._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = GatewayControlRestTransport._GenerateCredentials._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -255,12 +283,14 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
             return resp
 
     @property
-    def generate_credentials(self) -> Callable[
-            [control.GenerateCredentialsRequest],
-            control.GenerateCredentialsResponse]:
+    def generate_credentials(
+        self,
+    ) -> Callable[
+        [control.GenerateCredentialsRequest], control.GenerateCredentialsResponse
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateCredentials(self._session, self._host, self._interceptor) # type: ignore
+        return self._GenerateCredentials(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
@@ -270,6 +300,4 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
         self._session.close()
 
 
-__all__=(
-    'GatewayControlRestTransport',
-)
+__all__ = ("GatewayControlRestTransport",)
