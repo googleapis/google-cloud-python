@@ -2344,7 +2344,6 @@ class Blob(_PropertyMixin):
             "upload.checksum": f"{checksum}",
         }
         args = {"timeout": timeout}
-        # import pdb; pdb.set_trace()
         with create_trace_span(
             name="Storage.ResumableUpload/transmitNextChunk",
             attributes=extra_attributes,
