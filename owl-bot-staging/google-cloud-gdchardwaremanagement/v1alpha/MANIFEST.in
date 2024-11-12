@@ -1,2 +1,0 @@
-recursive-include google/cloud/gdchardwaremanagement *.py
-recursive-include google/cloud/gdchardwaremanagement_v1alpha *.py

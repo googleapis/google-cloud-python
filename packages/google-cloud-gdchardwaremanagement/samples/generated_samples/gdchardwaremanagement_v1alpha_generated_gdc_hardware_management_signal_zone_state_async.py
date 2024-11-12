@@ -41,7 +41,6 @@ async def sample_signal_zone_state():
     # Initialize request argument(s)
     request = gdchardwaremanagement_v1alpha.SignalZoneStateRequest(
         name="name_value",
-        state_signal="FACTORY_TURNUP_CHECKS_FAILED",
     )
 
     # Make the request
