@@ -237,12 +237,6 @@ class BlobWriter(io.BufferedIOBase):
         writes must be exactly a multiple of 256KiB as with other resumable
         uploads. The default is the chunk_size of the blob, or 40 MiB.
 
-    :type text_mode: bool
-    :param text_mode:
-        (Deprecated) A synonym for ignore_flush. For backwards-compatibility,
-        if True, sets ignore_flush to True. Use ignore_flush instead. This
-        parameter will be removed in a future release.
-
     :type ignore_flush: bool
     :param ignore_flush:
         Makes flush() do nothing instead of raise an error. flush() without
@@ -296,7 +290,6 @@ class BlobWriter(io.BufferedIOBase):
         self,
         blob,
         chunk_size=None,
-        text_mode=False,
         ignore_flush=False,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         **upload_kwargs,
@@ -312,8 +305,7 @@ class BlobWriter(io.BufferedIOBase):
         # Resumable uploads require a chunk size of a multiple of 256KiB.
         # self._chunk_size must not be changed after the upload is initiated.
         self._chunk_size = chunk_size or blob.chunk_size or DEFAULT_CHUNK_SIZE
-        # text_mode is a deprecated synonym for ignore_flush
-        self._ignore_flush = ignore_flush or text_mode
+        self._ignore_flush = ignore_flush
         self._retry = retry
         self._upload_kwargs = upload_kwargs
 
