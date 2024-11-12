@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-promotions-v0.1.3...google-shopping-merchant-promotions-v0.1.4) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13248](https://github.com/googleapis/google-cloud-python/issues/13248)) ([634f3e7](https://github.com/googleapis/google-cloud-python/commit/634f3e740926506654efa82a4f7a8d5f7e3cf6ba))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-promotions-v0.1.2...google-shopping-merchant-promotions-v0.1.3) (2024-10-24)
 
 

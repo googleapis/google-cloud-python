@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.13.0...google-cloud-resource-manager-v1.13.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.12.5...google-cloud-resource-manager-v1.13.0) (2024-10-24)
 
 

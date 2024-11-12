@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.15.0...google-cloud-containeranalysis-v2.15.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.14.5...google-cloud-containeranalysis-v2.15.0) (2024-10-24)
 
 

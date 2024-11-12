@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.7...google-cloud-servicehealth-v0.1.8) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
+
+### Documentation
+
+* [google-cloud-servicehealth] add missing doc comments ([#13254](https://github.com/googleapis/google-cloud-python/issues/13254)) ([483d1cd](https://github.com/googleapis/google-cloud-python/commit/483d1cd5445638a80cd5752fd61400e54f036f74))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.6...google-cloud-servicehealth-v0.1.7) (2024-10-24)
 
 

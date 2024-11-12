@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.11...google-maps-routing-v0.6.12) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13247](https://github.com/googleapis/google-cloud-python/issues/13247)) ([5adc8b7](https://github.com/googleapis/google-cloud-python/commit/5adc8b7d2cc8ab9707ab5a65f15270c125cee051))
+
 ## [0.6.11](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.10...google-maps-routing-v0.6.11) (2024-10-24)
 
 

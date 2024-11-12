@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-enterpriseknowledgegraph-v0.3.12...google-cloud-enterpriseknowledgegraph-v0.3.13) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
 ## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-enterpriseknowledgegraph-v0.3.11...google-cloud-enterpriseknowledgegraph-v0.3.12) (2024-10-24)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policytroubleshooter-iam-v0.1.8...google-cloud-policytroubleshooter-iam-v0.1.9) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13244](https://github.com/googleapis/google-cloud-python/issues/13244)) ([ae1f471](https://github.com/googleapis/google-cloud-python/commit/ae1f47175bf3354f78cb558a844a9cab00317b95))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policytroubleshooter-iam-v0.1.7...google-cloud-policytroubleshooter-iam-v0.1.8) (2024-10-24)
 
 

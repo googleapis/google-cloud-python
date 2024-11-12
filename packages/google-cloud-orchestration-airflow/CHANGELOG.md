@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.15.0...google-cloud-orchestration-airflow-v1.15.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13244](https://github.com/googleapis/google-cloud-python/issues/13244)) ([ae1f471](https://github.com/googleapis/google-cloud-python/commit/ae1f47175bf3354f78cb558a844a9cab00317b95))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.14.0...google-cloud-orchestration-airflow-v1.15.0) (2024-10-24)
 
 

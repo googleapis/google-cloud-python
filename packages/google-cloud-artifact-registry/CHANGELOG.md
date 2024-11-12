@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.13.0...google-cloud-artifact-registry-v1.13.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.12.0...google-cloud-artifact-registry-v1.13.0) (2024-10-28)
 
 

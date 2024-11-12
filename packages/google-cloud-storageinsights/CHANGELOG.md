@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.11...google-cloud-storageinsights-v0.1.12) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13246](https://github.com/googleapis/google-cloud-python/issues/13246)) ([bcad563](https://github.com/googleapis/google-cloud-python/commit/bcad563acea541bb51f9fbd005f18e9f32e381f0))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.10...google-cloud-storageinsights-v0.1.11) (2024-10-24)
 
 

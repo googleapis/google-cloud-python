@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.20](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.19...google-maps-places-v0.1.20) (2024-11-11)
+
+
+### Features
+
+* [google-maps-places] update attributes in Places API ([#13259](https://github.com/googleapis/google-cloud-python/issues/13259)) ([450fa0b](https://github.com/googleapis/google-cloud-python/commit/450fa0bbfc511c8532928925a24ae36c8ef4cd75))
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13247](https://github.com/googleapis/google-cloud-python/issues/13247)) ([5adc8b7](https://github.com/googleapis/google-cloud-python/commit/5adc8b7d2cc8ab9707ab5a65f15270c125cee051))
+
 ## [0.1.19](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.18...google-maps-places-v0.1.19) (2024-10-24)
 
 

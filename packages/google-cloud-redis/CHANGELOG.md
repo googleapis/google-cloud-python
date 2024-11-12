@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-v2.16.0...google-cloud-redis-v2.16.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13245](https://github.com/googleapis/google-cloud-python/issues/13245)) ([875f712](https://github.com/googleapis/google-cloud-python/commit/875f712265a36919409964f5ade218330f1d0147))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-v2.15.5...google-cloud-redis-v2.16.0) (2024-10-24)
 
 

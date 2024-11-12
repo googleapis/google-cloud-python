@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.0.0...google-cloud-documentai-v3.0.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation ([#13242](https://github.com/googleapis/google-cloud-python/issues/13242)) ([b479ff8](https://github.com/googleapis/google-cloud-python/commit/b479ff841ed93a18393a188ee1d72edf9fb729ec))
+
 ## [3.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.35.0...google-cloud-documentai-v3.0.0) (2024-10-28)
 
 

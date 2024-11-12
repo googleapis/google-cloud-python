@@ -228,11 +228,19 @@ class QuotaIncreaseEligibility(proto.Message):
             NO_VALID_BILLING_ACCOUNT (1):
                 The container is not linked with a valid
                 billing account.
+            NOT_SUPPORTED (3):
+                Quota increase is not supported for the
+                quota.
+            NOT_ENOUGH_USAGE_HISTORY (4):
+                There is not enough usage history to
+                determine the eligibility.
             OTHER (2):
                 Other reasons.
         """
         INELIGIBILITY_REASON_UNSPECIFIED = 0
         NO_VALID_BILLING_ACCOUNT = 1
+        NOT_SUPPORTED = 3
+        NOT_ENOUGH_USAGE_HISTORY = 4
         OTHER = 2
 
     is_eligible: bool = proto.Field(

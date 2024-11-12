@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.13...google-cloud-video-stitcher-v0.7.14) (2024-11-11)
+
+
+### Bug Fixes
+
+* disable universe-domain validation  ([#13246](https://github.com/googleapis/google-cloud-python/issues/13246)) ([bcad563](https://github.com/googleapis/google-cloud-python/commit/bcad563acea541bb51f9fbd005f18e9f32e381f0))
+
 ## [0.7.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.12...google-cloud-video-stitcher-v0.7.13) (2024-10-24)
 
 

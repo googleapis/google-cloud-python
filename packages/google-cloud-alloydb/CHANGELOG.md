@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.16...google-cloud-alloydb-v0.4.0) (2024-11-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* deprecated various PSC instance configuration fields
+
+### Features
+
+* add more observability options on the Instance level ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add new API to execute SQL statements ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add new API to perform a promotion or switchover on secondary instances ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add new API to upgrade a cluster ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add new CloudSQL backup resource ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add new cluster and instance level configurations to interact with Gemini ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add new PSC instance configuration setting and output the PSC DNS name ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add optional field to keep extra roles on a user if it already exists ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add support for Free Trials ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* add support to schedule maintenance ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* additional field to set tags on a backup or cluster ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+* support for obtaining the public ip addresses of an instance and enabling outbound public ip ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+
+
+### Bug Fixes
+
+* deprecated various PSC instance configuration fields ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+
+
+### Documentation
+
+* various typo fixes, correcting the formatting, and clarifications on the request_id and validate_only fields in API requests and on the page_size when listing the database ([68a04ad](https://github.com/googleapis/google-cloud-python/commit/68a04ad07c42eb9f64861feb55018922be7963da))
+
 ## [0.3.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.15...google-cloud-alloydb-v0.3.16) (2024-10-31)
 
 
