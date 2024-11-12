@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.66.0](https://github.com/googleapis/python-api-common-protos/compare/v1.65.0...v1.66.0) (2024-11-12)
+
+
+### Features
+
+* Add `MISSING_ORIGIN` and `OVERLOADED_CREDENTIALS` to `ErrorReason` enum ([d0478d8](https://github.com/googleapis/python-api-common-protos/commit/d0478d8beacb6c53aa29aa0ac14b949421de8112))
+* Add field `protobuf_pythonic_types_enabled` to `ExperimentalFeatures` message ([d0478d8](https://github.com/googleapis/python-api-common-protos/commit/d0478d8beacb6c53aa29aa0ac14b949421de8112))
+* Add field `selective_gapic_generation` to `CommonLanguageSettings` message ([d0478d8](https://github.com/googleapis/python-api-common-protos/commit/d0478d8beacb6c53aa29aa0ac14b949421de8112))
+* Add field `time_series_resource_hierarchy_level` to `MetricDescriptorMetadata` message ([d0478d8](https://github.com/googleapis/python-api-common-protos/commit/d0478d8beacb6c53aa29aa0ac14b949421de8112))
+* Add message `SelectiveGapicGeneration` ([d0478d8](https://github.com/googleapis/python-api-common-protos/commit/d0478d8beacb6c53aa29aa0ac14b949421de8112))
+
 ## [1.65.0](https://github.com/googleapis/python-api-common-protos/compare/v1.64.0...v1.65.0) (2024-08-27)
 
 
