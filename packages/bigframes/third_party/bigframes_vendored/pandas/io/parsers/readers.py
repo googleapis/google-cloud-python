@@ -237,5 +237,7 @@ class ReaderIOMixin:
             bigframes.exceptions.DefaultIndexWarning:
                 Using the default index is discouraged, such as with clustered
                 or partitioned tables without primary keys.
+            ValueError:
+                ``lines`` is only valid when ``orient`` is ``records``.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

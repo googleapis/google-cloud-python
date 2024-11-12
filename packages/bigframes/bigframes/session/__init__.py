@@ -500,7 +500,7 @@ class Session(
 
         Raises:
             ValueError:
-                When both columns (preferred) and col_order are specified.
+                When both ``columns`` and ``col_order`` are specified.
         """
         # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
         # these docstrings are inline.
@@ -552,7 +552,7 @@ class Session(
 
         Raises:
             ValueError:
-                When both columns (preferred) and col_order are specified.
+                When both ``columns`` and ``col_order`` are specified.
         """
         # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
         # these docstrings are inline.
