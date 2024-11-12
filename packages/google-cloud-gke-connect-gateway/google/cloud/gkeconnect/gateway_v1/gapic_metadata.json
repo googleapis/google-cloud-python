@@ -7,26 +7,6 @@
   "services": {
     "GatewayControl": {
       "clients": {
-        "grpc": {
-          "libraryClient": "GatewayControlClient",
-          "rpcs": {
-            "GenerateCredentials": {
-              "methods": [
-                "generate_credentials"
-              ]
-            }
-          }
-        },
-        "grpc-async": {
-          "libraryClient": "GatewayControlAsyncClient",
-          "rpcs": {
-            "GenerateCredentials": {
-              "methods": [
-                "generate_credentials"
-              ]
-            }
-          }
-        },
         "rest": {
           "libraryClient": "GatewayControlClient",
           "rpcs": {
