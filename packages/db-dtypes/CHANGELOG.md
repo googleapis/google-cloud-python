@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.3.0...v1.3.1) (2024-11-12)
+
+
+### Bug Fixes
+
+* Dbjson serialization with most compact JSON representation ([#299](https://github.com/googleapis/python-db-dtypes-pandas/issues/299)) ([c5e9a10](https://github.com/googleapis/python-db-dtypes-pandas/commit/c5e9a101022844e735099d5f2c645ce0cc46f7f8))
+* Support correct numpy construction for dbjson dtype in pandas 1.5 ([#297](https://github.com/googleapis/python-db-dtypes-pandas/issues/297)) ([f413f35](https://github.com/googleapis/python-db-dtypes-pandas/commit/f413f3527941fe52af7e19e2954a936bb3de8394))
+* Support dbjson type on pandas version 1.5 ([#295](https://github.com/googleapis/python-db-dtypes-pandas/issues/295)) ([4b84e4a](https://github.com/googleapis/python-db-dtypes-pandas/commit/4b84e4a6fada5ecfa7f910dca61e6de714abdb9d))
+
 ## [1.3.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.2.0...v1.3.0) (2024-08-08)
 
 
