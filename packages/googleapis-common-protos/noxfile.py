@@ -59,7 +59,7 @@ def unit(session, repository, package, prerelease, protobuf_implementation, work
         downstream_dir = f"{repository}/packages/{package}"
 
     # Install all test dependencies, then install this package in-place.
-    session.install("asyncmock", "pytest-asyncio")
+    session.install("asyncmock", "pytest-asyncio", "flaky")
 
     # Pin mock due to https://github.com/googleapis/python-pubsub/issues/840
     session.install("mock==5.0.0", "pytest", "pytest-cov")
