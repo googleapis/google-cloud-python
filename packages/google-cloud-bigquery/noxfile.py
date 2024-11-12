@@ -462,7 +462,7 @@ def blacken(session):
     session.run("black", *BLACK_PATHS)
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 @_calculate_duration
 def docs(session):
     """Build the docs."""
