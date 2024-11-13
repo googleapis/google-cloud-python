@@ -352,8 +352,14 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def astype(
         self,
         dtype: Union[bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype],
+        *,
+        errors: Literal["raise", "null"] = "raise",
     ) -> Series:
-        return self._apply_unary_op(bigframes.operations.AsTypeOp(to_type=dtype))
+        if errors not in ["raise", "null"]:
+            raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
+        return self._apply_unary_op(
+            bigframes.operations.AsTypeOp(to_type=dtype, safe=(errors == "null"))
+        )
 
     def to_pandas(
         self,

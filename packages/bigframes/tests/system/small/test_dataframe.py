@@ -3687,6 +3687,12 @@ def test_df_add_suffix(scalars_df_index, scalars_pandas_df_index, axis):
     )
 
 
+def test_df_astype_error_error(session):
+    input = pd.DataFrame(["hello", "world", "3.11", "4000"])
+    with pytest.raises(ValueError):
+        session.read_pandas(input).astype("Float64", errors="bad_value")
+
+
 def test_df_columns_filter_items(scalars_df_index, scalars_pandas_df_index):
     if pd.__version__.startswith("2.0") or pd.__version__.startswith("1."):
         pytest.skip("pandas filter items behavior different pre-2.1")

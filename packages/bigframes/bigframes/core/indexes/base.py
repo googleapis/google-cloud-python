@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import typing
-from typing import Hashable, Optional, Sequence, Union
+from typing import Hashable, Literal, Optional, Sequence, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
@@ -324,11 +324,17 @@ class Index(vendored_pandas_index.Index):
     def astype(
         self,
         dtype: Union[bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype],
+        *,
+        errors: Literal["raise", "null"] = "raise",
     ) -> Index:
+        if errors not in ["raise", "null"]:
+            raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'astype'")
         return self._apply_unary_expr(
-            ops.AsTypeOp(to_type=dtype).as_expr(ex.free_var("arg"))
+            ops.AsTypeOp(to_type=dtype, safe=(errors == "null")).as_expr(
+                ex.free_var("arg")
+            )
         )
 
     def all(self) -> bool:

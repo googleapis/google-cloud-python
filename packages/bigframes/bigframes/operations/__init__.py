@@ -494,6 +494,7 @@ class AsTypeOp(UnaryOp):
     name: typing.ClassVar[str] = "astype"
     # TODO: Convert strings to dtype earlier
     to_type: dtypes.DtypeString | dtypes.Dtype
+    safe: bool = False
 
     def output_type(self, *input_types):
         # TODO: We should do this conversion earlier

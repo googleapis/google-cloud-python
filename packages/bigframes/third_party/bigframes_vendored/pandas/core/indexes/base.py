@@ -106,6 +106,11 @@ class Index:
 
         Args:
             dtype (numpy dtype or pandas type):
+                A dtype supported by BigQuery DataFrames
+            errors ({'raise', 'null'}, default 'raise'):
+                Control raising of exceptions on invalid data for provided dtype.
+                If 'raise', allow exceptions to be raised if any value fails cast
+                If 'null', will assign null value if value fails cast
 
         Returns:
             Index: Index with values cast to specified dtype.

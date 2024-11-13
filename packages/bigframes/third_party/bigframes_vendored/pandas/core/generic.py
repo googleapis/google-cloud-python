@@ -180,6 +180,10 @@ class NDFrame(indexing.IndexingMixin):
                 ``pd.ArrowDtype(pa.time64("us"))``,
                 ``pd.ArrowDtype(pa.timestamp("us"))``,
                 ``pd.ArrowDtype(pa.timestamp("us", tz="UTC"))``.
+            errors ({'raise', 'null'}, default 'raise'):
+                Control raising of exceptions on invalid data for provided dtype.
+                If 'raise', allow exceptions to be raised if any value fails cast
+                If 'null', will assign null value if value fails cast
 
         Returns:
             bigframes.pandas.DataFrame:

@@ -365,8 +365,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def astype(
         self,
         dtype: Union[bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype],
+        *,
+        errors: Literal["raise", "null"] = "raise",
     ) -> DataFrame:
-        return self._apply_unary_op(ops.AsTypeOp(to_type=dtype))
+        if errors not in ["raise", "null"]:
+            raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
+        return self._apply_unary_op(
+            ops.AsTypeOp(to_type=dtype, safe=(errors == "null"))
+        )
 
     def _to_sql_query(
         self, include_index: bool, enable_cache: bool = True
