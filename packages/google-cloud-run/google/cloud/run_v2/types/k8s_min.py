@@ -456,8 +456,7 @@ class SecretVolumeSource(proto.Message):
             -  This is an integer representation of the mode bits. So,
                the octal integer value should look exactly as the chmod
                numeric notation with a leading zero. Some examples: for
-               chmod 777 (a=rwx), set to 0777 (octal) or 511 (base-10).
-               For chmod 640 (u=rw,g=r), set to 0640 (octal) or 416
+               chmod 640 (u=rw,g=r), set to 0640 (octal) or 416
                (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755
                (octal) or 493 (base-10).
             -  This might be in conflict with other options that affect
@@ -509,8 +508,7 @@ class VersionToPath(proto.Message):
             -  This is an integer representation of the mode bits. So,
                the octal integer value should look exactly as the chmod
                numeric notation with a leading zero. Some examples: for
-               chmod 777 (a=rwx), set to 0777 (octal) or 511 (base-10).
-               For chmod 640 (u=rw,g=r), set to 0640 (octal) or 416
+               chmod 640 (u=rw,g=r), set to 0640 (octal) or 416
                (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755
                (octal) or 493 (base-10).
             -  This might be in conflict with other options that affect
