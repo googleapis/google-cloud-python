@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.27.0](https://github.com/googleapis/python-bigtable/compare/v2.26.0...v2.27.0) (2024-11-12)
+
+
+### Features
+
+* Add support for Cloud Bigtable Node Scaling Factor for CBT Clusters ([#1023](https://github.com/googleapis/python-bigtable/issues/1023)) ([0809c6a](https://github.com/googleapis/python-bigtable/commit/0809c6ac274e909103ad160a8bcab95f8bb46f31))
+* Surface `retry` param to `Table.read_row` api ([#982](https://github.com/googleapis/python-bigtable/issues/982)) ([a8286d2](https://github.com/googleapis/python-bigtable/commit/a8286d2a510f654f9c270c3c761c02e4ab3817d4))
+
+
+### Bug Fixes
+
+* Registering duplicate instance ([#1033](https://github.com/googleapis/python-bigtable/issues/1033)) ([2bca8fb](https://github.com/googleapis/python-bigtable/commit/2bca8fb220eeb1906fc6a3cf1f879f3d41fbbff8))
+
 ## [2.26.0](https://github.com/googleapis/python-bigtable/compare/v2.25.0...v2.26.0) (2024-08-12)
 
 
