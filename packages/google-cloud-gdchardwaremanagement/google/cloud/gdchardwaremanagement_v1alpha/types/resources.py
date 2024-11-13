@@ -631,6 +631,10 @@ class Hardware(proto.Message):
             type_ (google.cloud.gdchardwaremanagement_v1alpha.types.Hardware.MacAddress.AddressType):
                 Output only. Address type for this MAC
                 address.
+            ipv4_address (str):
+                Output only. Static IP address (if used) that
+                is associated with the MAC address. Only
+                applicable for VIRTUAL MAC address type.
         """
 
         class AddressType(proto.Enum):
@@ -659,6 +663,10 @@ class Hardware(proto.Message):
             proto.ENUM,
             number=2,
             enum="Hardware.MacAddress.AddressType",
+        )
+        ipv4_address: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     class DiskInfo(proto.Message):
@@ -1069,6 +1077,9 @@ class Zone(proto.Message):
         subscription_configs (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.SubscriptionConfig]):
             Output only. Subscription configurations for
             this zone.
+        provisioning_state (google.cloud.gdchardwaremanagement_v1alpha.types.Zone.ProvisioningState):
+            Output only. Provisioning state for
+            configurations like MAC addresses.
     """
 
     class State(proto.Enum):
@@ -1101,6 +1112,25 @@ class Zone(proto.Message):
         CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED = 7
         ACTIVE = 3
         CANCELLED = 4
+
+    class ProvisioningState(proto.Enum):
+        r"""Valid provisioning states for configurations like MAC
+        addresses.
+
+        Values:
+            PROVISIONING_STATE_UNSPECIFIED (0):
+                Provisioning state is unspecified.
+            PROVISIONING_REQUIRED (1):
+                Provisioning is required. Set by Google.
+            PROVISIONING_IN_PROGRESS (2):
+                Provisioning is in progress. Set by customer.
+            PROVISIONING_COMPLETE (3):
+                Provisioning is complete. Set by customer.
+        """
+        PROVISIONING_STATE_UNSPECIFIED = 0
+        PROVISIONING_REQUIRED = 1
+        PROVISIONING_IN_PROGRESS = 2
+        PROVISIONING_COMPLETE = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -1152,6 +1182,11 @@ class Zone(proto.Message):
         proto.MESSAGE,
         number=13,
         message="SubscriptionConfig",
+    )
+    provisioning_state: ProvisioningState = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=ProvisioningState,
     )
 
 
@@ -1538,6 +1573,18 @@ class ZoneNetworkConfig(proto.Message):
             Optional. An IPv4 subnet for the kubernetes
             network. If unspecified, the kubernetes subnet
             will be the same as the management subnet.
+        dns_ipv4_addresses (MutableSequence[str]):
+            Optional. DNS nameservers.
+            The GDC Infrastructure will resolve DNS queries
+            via these IPs. If unspecified, Google DNS is
+            used.
+        kubernetes_primary_vlan_id (int):
+            Optional. Kubernetes VLAN ID.
+            By default, the kubernetes node, including the
+            primary kubernetes network, are in the same VLAN
+            as the machine management network. For network
+            segmentation purposes, these can optionally be
+            separated.
     """
 
     machine_mgmt_ipv4_range: str = proto.Field(
@@ -1561,6 +1608,14 @@ class ZoneNetworkConfig(proto.Message):
         proto.MESSAGE,
         number=5,
         message="Subnet",
+    )
+    dns_ipv4_addresses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    kubernetes_primary_vlan_id: int = proto.Field(
+        proto.INT32,
+        number=7,
     )
 
 

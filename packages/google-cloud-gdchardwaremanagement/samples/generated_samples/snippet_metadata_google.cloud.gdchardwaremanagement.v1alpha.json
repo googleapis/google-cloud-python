@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-gdchardwaremanagement",
-    "version": "0.1.7"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -4676,12 +4676,12 @@
       "regionTag": "gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_SignalZoneState_async",
       "segments": [
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -4691,18 +4691,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 47,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4760,12 +4760,12 @@
       "regionTag": "gdchardwaremanagement_v1alpha_generated_GDCHardwareManagement_SignalZoneState_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -4775,18 +4775,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 47,
+          "end": 52,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],

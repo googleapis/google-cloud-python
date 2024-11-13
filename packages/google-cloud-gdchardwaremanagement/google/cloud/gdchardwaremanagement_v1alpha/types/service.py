@@ -1477,8 +1477,13 @@ class SignalZoneStateRequest(proto.Message):
             Optional. An optional unique identifier for this request.
             See `AIP-155 <https://google.aip.dev/155>`__.
         state_signal (google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.StateSignal):
-            Required. The state signal to send for this
-            zone.
+            Optional. The state signal to send for this zone. Either
+            state_signal or provisioning_state_signal must be set, but
+            not both.
+        provisioning_state_signal (google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.ProvisioningStateSignal):
+            Optional. The provisioning state signal to send for this
+            zone. Either state_signal or provisioning_state_signal must
+            be set, but not both.
     """
 
     class StateSignal(proto.Enum):
@@ -1501,6 +1506,21 @@ class SignalZoneStateRequest(proto.Message):
         READY_FOR_SITE_TURNUP = 1
         FACTORY_TURNUP_CHECKS_FAILED = 2
 
+    class ProvisioningStateSignal(proto.Enum):
+        r"""Valid provisioning state signals for a zone.
+
+        Values:
+            PROVISIONING_STATE_SIGNAL_UNSPECIFIED (0):
+                Provisioning state signal is unspecified.
+            PROVISIONING_IN_PROGRESS (1):
+                Provisioning is in progress.
+            PROVISIONING_COMPLETE (2):
+                Provisioning is complete.
+        """
+        PROVISIONING_STATE_SIGNAL_UNSPECIFIED = 0
+        PROVISIONING_IN_PROGRESS = 1
+        PROVISIONING_COMPLETE = 2
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1513,6 +1533,11 @@ class SignalZoneStateRequest(proto.Message):
         proto.ENUM,
         number=3,
         enum=StateSignal,
+    )
+    provisioning_state_signal: ProvisioningStateSignal = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ProvisioningStateSignal,
     )
 
 
