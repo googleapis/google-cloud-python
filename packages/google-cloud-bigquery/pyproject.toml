@@ -1,0 +1,104 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "google-cloud-bigquery"
+authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
+license = { text = "Apache 2.0" }
+requires-python = ">=3.7"
+description = "Google BigQuery API client library"
+readme = "README.rst"
+classifiers = [
+  # Should be one of:
+  # "Development Status :: 3 - Alpha"
+  # "Development Status :: 4 - Beta"
+  # "Development Status :: 5 - Production/Stable"
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Topic :: Internet",
+]
+dependencies = [
+  "google-api-core[grpc] >= 2.11.1, < 3.0.0dev",
+  "google-auth >= 2.14.1, < 3.0.0dev",
+  "google-cloud-core >= 2.4.1, < 3.0.0dev",
+  "google-resumable-media >= 2.0.0, < 3.0dev",
+  "packaging >= 20.0.0",
+  "python-dateutil >= 2.7.3, < 3.0dev",
+  "requests >= 2.21.0, < 3.0.0dev",
+]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/googleapis/python-bigquery"
+
+[project.optional-dependencies]
+# bqstorage had a period where it was a required dependency, and has been
+# moved back to optional due to bloat.  See
+# https://github.com/googleapis/python-bigquery/issues/1196 for more background.
+bqstorage = [
+  "google-cloud-bigquery-storage >= 2.6.0, < 3.0.0dev",
+  # Due to an issue in pip's dependency resolver, the `grpc` extra is not
+  # installed, even though `google-cloud-bigquery-storage` specifies it
+  # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
+  # See: https://github.com/googleapis/python-bigquery/issues/83 The
+  # grpc.Channel.close() method isn't added until 1.32.0.
+  # https://github.com/grpc/grpc/pull/15254
+  "grpcio >= 1.47.0, < 2.0dev",
+  "grpcio >= 1.49.1, < 2.0dev; python_version >= '3.11'",
+  "pyarrow >= 3.0.0",
+]
+pandas = [
+  "pandas >= 1.1.0",
+  "pyarrow >= 3.0.0",
+  "db-dtypes >= 0.3.0, < 2.0.0dev",
+  "importlib_metadata >= 1.0.0; python_version < '3.8'",
+]
+ipywidgets = ["ipywidgets >= 7.7.0", "ipykernel >= 6.0.0"]
+geopandas = ["geopandas >= 0.9.0, < 1.0dev", "Shapely >= 1.8.4, < 3.0.0dev"]
+ipython = ["bigquery-magics >= 0.1.0"]
+tqdm = ["tqdm >= 4.7.4, < 5.0.0dev"]
+opentelemetry = [
+  "opentelemetry-api >= 1.1.0",
+  "opentelemetry-sdk >= 1.1.0",
+  "opentelemetry-instrumentation >= 0.20b0",
+]
+bigquery_v2 = [
+  "proto-plus >= 1.22.3, < 2.0.0dev",
+  "protobuf >= 3.20.2, < 6.0.0dev, != 4.21.0, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5", # For the legacy proto-based types.
+]
+all = [
+  "google-cloud-bigquery[bqstorage,pandas,ipywidgets,geopandas,ipython,tqdm,opentelemetry,bigquery_v2]",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "google.cloud.bigquery.version.__version__" }
+
+[tool.setuptools.packages.find]
+# Only include packages under the 'google' namespace. Do not include tests,
+# benchmarks, etc.
+include = ["google*"]

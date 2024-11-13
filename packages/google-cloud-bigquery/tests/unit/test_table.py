@@ -2011,7 +2011,7 @@ class TestRowIterator(unittest.TestCase):
         path=None,
         schema=None,
         table=None,
-        **kwargs
+        **kwargs,
     ):
         from google.cloud.bigquery.table import TableReference
 
