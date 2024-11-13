@@ -286,13 +286,13 @@ s.replace("noxfile.py",
 
 s.replace(
     "noxfile.py",
-    """\@nox.session\(python="3.12"\)
+    """\@nox.session\(python="3.13"\)
 \@nox.parametrize\(
     "protobuf_implementation",
     \[ "python", "upb", "cpp" \],
 \)
 def prerelease_deps\(session, protobuf_implementation\):""",
-    """@nox.session(python="3.12")
+    """@nox.session(python="3.13")
 @nox.parametrize(
     "protobuf_implementation,database_dialect",
     [
