@@ -30,3 +30,18 @@ def test_semantic_operators_set_true_shows_warning():
         options.semantic_operators = True
 
     assert options.semantic_operators is True
+
+
+def test_blob_default_false():
+    options = experiment_options.ExperimentOptions()
+
+    assert options.blob is False
+
+
+def test_blob_set_true_shows_warning():
+    options = experiment_options.ExperimentOptions()
+
+    with pytest.warns(UserWarning):
+        options.blob = True
+
+    assert options.blob is True
