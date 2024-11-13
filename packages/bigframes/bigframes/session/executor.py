@@ -379,11 +379,12 @@ class BigQueryCachingExecutor:
             job_config.maximum_bytes_billed = (
                 bigframes.options.compute.maximum_bytes_billed
             )
-        # Note: add_labels is global scope which may have unexpected effects
-        bq_io.add_labels(job_config, api_name=api_name)
 
         if not self.strictly_ordered:
             job_config.labels["bigframes-mode"] = "unordered"
+
+        # Note: add_labels is global scope which may have unexpected effects
+        bq_io.add_labels(job_config, api_name=api_name)
         try:
             query_job = self.bqclient.query(sql, job_config=job_config)
             return (
