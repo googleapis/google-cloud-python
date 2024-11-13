@@ -1126,17 +1126,46 @@ def test_read_pickle_gcs(session, penguins_pandas_df_default_index, gcs_folder):
 
 
 @pytest.mark.parametrize(
-    ("engine",),
+    ("engine", "filename"),
     (
-        ("auto",),
-        ("bigquery",),
+        pytest.param(
+            "auto",
+            "000000000000.parquet",
+            id="auto",
+        ),
+        pytest.param(
+            "pyarrow",
+            "000000000000.parquet",
+            id="pyarrow",
+        ),
+        pytest.param(
+            "bigquery",
+            "000000000000.parquet",
+            id="bigquery",
+        ),
+        pytest.param(
+            "bigquery",
+            "*.parquet",
+            id="bigquery_wildcard",
+        ),
+        pytest.param(
+            "auto",
+            "*.parquet",
+            id="auto_wildcard",
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+            ),
+        ),
     ),
 )
-def test_read_parquet_gcs(session: bigframes.Session, scalars_dfs, gcs_folder, engine):
+def test_read_parquet_gcs(
+    session: bigframes.Session, scalars_dfs, gcs_folder, engine, filename
+):
     scalars_df, _ = scalars_dfs
     # Include wildcard so that multiple files can be written/read if > 1 GB.
     # https://cloud.google.com/bigquery/docs/exporting-data#exporting_data_into_one_or_more_files
-    path = gcs_folder + test_read_parquet_gcs.__name__ + "*.parquet"
+    write_path = gcs_folder + test_read_parquet_gcs.__name__ + "*.parquet"
+    read_path = gcs_folder + test_read_parquet_gcs.__name__ + filename
 
     df_in: bigframes.dataframe.DataFrame = scalars_df.copy()
     # GEOGRAPHY not supported in parquet export.
@@ -1144,14 +1173,10 @@ def test_read_parquet_gcs(session: bigframes.Session, scalars_dfs, gcs_folder, e
     # Make sure we can also serialize the order.
     df_write = df_in.reset_index(drop=False)
     df_write.index.name = f"ordering_id_{random.randrange(1_000_000)}"
-    df_write.to_parquet(path, index=True)
-
-    # Only bigquery engine for reads supports wildcards in path name.
-    if engine != "bigquery":
-        path = utils.get_first_file_from_wildcard(path)
+    df_write.to_parquet(write_path, index=True)
 
     df_out = (
-        session.read_parquet(path, engine=engine)
+        session.read_parquet(read_path, engine=engine)
         # Restore order.
         .set_index(df_write.index.name).sort_index()
         # Restore index.
