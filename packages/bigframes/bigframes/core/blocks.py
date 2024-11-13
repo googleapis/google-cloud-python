@@ -2426,14 +2426,12 @@ class Block:
     def cached(self, *, force: bool = False, session_aware: bool = False) -> None:
         """Write the block to a session table."""
         # use a heuristic for whether something needs to be cached
-        if (not force) and self.session._executor._is_trivially_executable(self.expr):
-            return
-        elif session_aware:
-            self.session._executor._cache_with_session_awareness(self.expr)
-        else:
-            self.session._executor._cache_with_cluster_cols(
-                self.expr, cluster_cols=self.index_columns
-            )
+        self.session._executor.cached(
+            self.expr,
+            force=force,
+            use_session=session_aware,
+            cluster_cols=self.index_columns,
+        )
 
     def _is_monotonic(
         self, column_ids: typing.Union[str, Sequence[str]], increasing: bool
