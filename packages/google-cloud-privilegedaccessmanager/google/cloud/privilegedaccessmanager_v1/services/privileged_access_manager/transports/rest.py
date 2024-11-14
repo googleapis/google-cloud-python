@@ -860,11 +860,9 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             Returns:
                 ~.privilegedaccessmanager.Grant:
-                    This is to ensure that the ``Grants`` and
-                ``ProducerGrants`` proto are byte compatible. A grant
-                represents a request from a user for obtaining the
-                access specified in an entitlement they are eligible
-                for.
+                    A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
             """
 
@@ -1151,11 +1149,9 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             Returns:
                 ~.privilegedaccessmanager.Grant:
-                    This is to ensure that the ``Grants`` and
-                ``ProducerGrants`` proto are byte compatible. A grant
-                represents a request from a user for obtaining the
-                access specified in an entitlement they are eligible
-                for.
+                    A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
             """
 
@@ -1345,11 +1341,9 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             Returns:
                 ~.privilegedaccessmanager.Grant:
-                    This is to ensure that the ``Grants`` and
-                ``ProducerGrants`` proto are byte compatible. A grant
-                represents a request from a user for obtaining the
-                access specified in an entitlement they are eligible
-                for.
+                    A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
             """
 
@@ -1540,11 +1534,9 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             Returns:
                 ~.privilegedaccessmanager.Grant:
-                    This is to ensure that the ``Grants`` and
-                ``ProducerGrants`` proto are byte compatible. A grant
-                represents a request from a user for obtaining the
-                access specified in an entitlement they are eligible
-                for.
+                    A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
             """
 

@@ -311,10 +311,9 @@ class PrivilegedAccessManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> privilegedaccessmanager.CheckOnboardingStatusResponse:
-        r"""CheckOnboardingStatus reports the onboarding status
-        for a project/folder/organization. Any findings reported
-        by this API need to be fixed before PAM can be used on
-        the resource.
+        r"""``CheckOnboardingStatus`` reports the onboarding status for a
+        project/folder/organization. Any findings reported by this API
+        need to be fixed before PAM can be used on the resource.
 
         .. code-block:: python
 
@@ -886,9 +885,9 @@ class PrivilegedAccessManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a single entitlement. This method can only be
-        called when there are no in-progress
-        (ACTIVE/ACTIVATING/REVOKING) grants under the
+        r"""Deletes a single entitlement. This method can only be called
+        when there are no in-progress
+        (``ACTIVE``/``ACTIVATING``/``REVOKING``) grants under the
         entitlement.
 
         .. code-block:: python
@@ -1438,10 +1437,9 @@ class PrivilegedAccessManagerAsyncClient:
 
         Returns:
             google.cloud.privilegedaccessmanager_v1.types.Grant:
-                This is to ensure that the Grants and ProducerGrants proto are byte
-                   compatible. A grant represents a request from a user
-                   for obtaining the access specified in an entitlement
-                   they are eligible for.
+                A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
         """
         # Create or coerce a protobuf request object.
@@ -1502,7 +1500,8 @@ class PrivilegedAccessManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> privilegedaccessmanager.Grant:
-        r"""Creates a new grant in a given project and location.
+        r"""Creates a new grant in a given
+        project/folder/organization and location.
 
         .. code-block:: python
 
@@ -1554,10 +1553,9 @@ class PrivilegedAccessManagerAsyncClient:
 
         Returns:
             google.cloud.privilegedaccessmanager_v1.types.Grant:
-                This is to ensure that the Grants and ProducerGrants proto are byte
-                   compatible. A grant represents a request from a user
-                   for obtaining the access specified in an entitlement
-                   they are eligible for.
+                A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
         """
         # Create or coerce a protobuf request object.
@@ -1659,10 +1657,9 @@ class PrivilegedAccessManagerAsyncClient:
 
         Returns:
             google.cloud.privilegedaccessmanager_v1.types.Grant:
-                This is to ensure that the Grants and ProducerGrants proto are byte
-                   compatible. A grant represents a request from a user
-                   for obtaining the access specified in an entitlement
-                   they are eligible for.
+                A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
         """
         # Create or coerce a protobuf request object.
@@ -1746,10 +1743,9 @@ class PrivilegedAccessManagerAsyncClient:
 
         Returns:
             google.cloud.privilegedaccessmanager_v1.types.Grant:
-                This is to ensure that the Grants and ProducerGrants proto are byte
-                   compatible. A grant represents a request from a user
-                   for obtaining the access specified in an entitlement
-                   they are eligible for.
+                A grant represents a request from a
+                user for obtaining the access specified
+                in an entitlement they are eligible for.
 
         """
         # Create or coerce a protobuf request object.
@@ -1841,10 +1837,8 @@ class PrivilegedAccessManagerAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.privilegedaccessmanager_v1.types.Grant` This is to ensure that the Grants and ProducerGrants proto are byte
-                   compatible. A grant represents a request from a user
-                   for obtaining the access specified in an entitlement
-                   they are eligible for.
+                The result type for the operation will be :class:`google.cloud.privilegedaccessmanager_v1.types.Grant` A grant represents a request from a user for obtaining the access specified
+                   in an entitlement they are eligible for.
 
         """
         # Create or coerce a protobuf request object.
