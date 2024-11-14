@@ -24,6 +24,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.contactcenterinsights.v1",
     manifest={
+        "DatasetValidationWarning",
         "Conversation",
         "Analysis",
         "ConversationDataSource",
@@ -31,6 +32,7 @@ __protobuf__ = proto.module(
         "DialogflowSource",
         "AnalysisResult",
         "IssueModelResult",
+        "FeedbackLabel",
         "ConversationLevelSentiment",
         "ConversationLevelSilence",
         "IssueAssignment",
@@ -56,6 +58,7 @@ __protobuf__ = proto.module(
         "PhraseMatchRuleConfig",
         "ExactMatchConfig",
         "Settings",
+        "AnalysisRule",
         "EncryptionSpec",
         "RedactionConfig",
         "SpeechConfig",
@@ -70,8 +73,41 @@ __protobuf__ = proto.module(
         "ConversationParticipant",
         "View",
         "AnnotatorSelector",
+        "QaQuestion",
+        "QaScorecard",
+        "QaScorecardRevision",
+        "QaAnswer",
+        "QaScorecardResult",
     },
 )
+
+
+class DatasetValidationWarning(proto.Enum):
+    r"""Enum for the different types of issues a tuning dataset can
+    have. These warnings are currentlyraised when trying to validate
+    a dataset for tuning a scorecard.
+
+    Values:
+        DATASET_VALIDATION_WARNING_UNSPECIFIED (0):
+            Unspecified data validation warning.
+        TOO_MANY_INVALID_FEEDBACK_LABELS (1):
+            A non-trivial percentage of the feedback
+            labels are invalid.
+        INSUFFICIENT_FEEDBACK_LABELS (2):
+            The quantity of valid feedback labels
+            provided is less than the recommended minimum.
+        INSUFFICIENT_FEEDBACK_LABELS_PER_ANSWER (3):
+            One or more of the answers have less than the
+            recommended minimum of feedback labels.
+        ALL_FEEDBACK_LABELS_HAVE_THE_SAME_ANSWER (4):
+            All the labels in the dataset come from a
+            single answer choice.
+    """
+    DATASET_VALIDATION_WARNING_UNSPECIFIED = 0
+    TOO_MANY_INVALID_FEEDBACK_LABELS = 1
+    INSUFFICIENT_FEEDBACK_LABELS = 2
+    INSUFFICIENT_FEEDBACK_LABELS_PER_ANSWER = 3
+    ALL_FEEDBACK_LABELS_HAVE_THE_SAME_ANSWER = 4
 
 
 class Conversation(proto.Message):
@@ -125,17 +161,17 @@ class Conversation(proto.Message):
             the human agent who handled the conversation.
         labels (MutableMapping[str, str]):
             A map for the user to specify any custom
-            fields. A maximum of 20 labels per conversation
+            fields. A maximum of 100 labels per conversation
             is allowed, with a maximum of 256 characters per
             entry.
         quality_metadata (google.cloud.contact_center_insights_v1.types.Conversation.QualityMetadata):
             Conversation metadata related to quality
             management.
         metadata_json (str):
-            Input only. JSON Metadata encoded as a
+            Input only. JSON metadata encoded as a
             string. This field is primarily used by Insights
             integrations with various telphony systems and
-            must be in one of Insights' supported formats.
+            must be in one of Insight's supported formats.
         transcript (google.cloud.contact_center_insights_v1.types.Conversation.Transcript):
             Output only. The conversation transcript.
         medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
@@ -712,6 +748,8 @@ class AnalysisResult(proto.Message):
             issue_model_result (google.cloud.contact_center_insights_v1.types.IssueModelResult):
                 Overall conversation-level issue modeling
                 result.
+            qa_scorecard_results (MutableSequence[google.cloud.contact_center_insights_v1.types.QaScorecardResult]):
+                Results of scoring QaScorecards.
         """
 
         annotations: MutableSequence["CallAnnotation"] = proto.RepeatedField(
@@ -752,6 +790,13 @@ class AnalysisResult(proto.Message):
             number=8,
             message="IssueModelResult",
         )
+        qa_scorecard_results: MutableSequence[
+            "QaScorecardResult"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message="QaScorecardResult",
+        )
 
     call_analysis_metadata: CallAnalysisMetadata = proto.Field(
         proto.MESSAGE,
@@ -785,6 +830,68 @@ class IssueModelResult(proto.Message):
         proto.MESSAGE,
         number=2,
         message="IssueAssignment",
+    )
+
+
+class FeedbackLabel(proto.Message):
+    r"""Represents a conversation, resource, and label provided by
+    the user.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        label (str):
+            String label.
+
+            This field is a member of `oneof`_ ``label_type``.
+        qa_answer_label (google.cloud.contact_center_insights_v1.types.QaAnswer.AnswerValue):
+            QaAnswer label.
+
+            This field is a member of `oneof`_ ``label_type``.
+        name (str):
+            Immutable. Resource name of the FeedbackLabel. Format:
+            projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}
+        labeled_resource (str):
+            Resource name of the resource to be labeled.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Create time of the label.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Update time of the label.
+    """
+
+    label: str = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="label_type",
+    )
+    qa_answer_label: "QaAnswer.AnswerValue" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="label_type",
+        message="QaAnswer.AnswerValue",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    labeled_resource: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -1960,9 +2067,92 @@ class Settings(proto.Message):
     )
 
 
+class AnalysisRule(proto.Message):
+    r"""The CCAI Insights project wide analysis rule. This rule will
+    be applied to all conversations that match the filter defined in
+    the rule. For a conversation matches the filter, the annotators
+    specified in the rule will be run. If a conversation matches
+    multiple rules, a union of all the annotators will be run. One
+    project can have multiple analysis rules.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the analysis rule. Format:
+            projects/{project}/locations/{location}/analysisRules/{analysis_rule}
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this analysis
+            rule was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time at which
+            this analysis rule was updated.
+        display_name (str):
+            Display Name of the analysis rule.
+
+            This field is a member of `oneof`_ ``_display_name``.
+        conversation_filter (str):
+            Filter for the conversations that should
+            apply this analysis rule. An empty filter means
+            this analysis rule applies to all conversations.
+        annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
+            Selector of annotators to run and the phrase matchers to use
+            for conversations that matches the conversation_filter. If
+            not specified, NO annotators will be run.
+        analysis_percentage (float):
+            Percentage of conversations that we should apply this
+            analysis setting automatically, between [0, 1]. For example,
+            0.1 means 10%. Conversations are sampled in a determenestic
+            way. The original runtime_percentage & upload percentage
+            will be replaced by defining filters on the conversation.
+        active (bool):
+            If true, apply this rule to conversations.
+            Otherwise, this rule is inactive and saved as a
+            draft.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+        optional=True,
+    )
+    conversation_filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    annotator_selector: "AnnotatorSelector" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="AnnotatorSelector",
+    )
+    analysis_percentage: float = proto.Field(
+        proto.DOUBLE,
+        number=7,
+    )
+    active: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+
+
 class EncryptionSpec(proto.Message):
-    r"""A customer-managed encryption key specification that can be
-    applied to all created resources (e.g. Conversation).
+    r"""A customer-managed encryption key specification that can be applied
+    to all created resources (e.g. ``Conversation``).
 
     Attributes:
         name (str):
@@ -1973,9 +2163,9 @@ class EncryptionSpec(proto.Message):
         kms_key (str):
             Required. The name of customer-managed encryption key that
             is used to secure a resource and its sub-resources. If
-            empty, the resource is secured by the default Google
-            encryption key. Only the key in the same location as this
-            resource is allowed to be used for encryption. Format:
+            empty, the resource is secured by our default encryption
+            key. Only the key in the same location as this resource is
+            allowed to be used for encryption. Format:
             ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{key}``
     """
 
@@ -2685,6 +2875,10 @@ class AnnotatorSelector(proto.Message):
         summarization_config (google.cloud.contact_center_insights_v1.types.AnnotatorSelector.SummarizationConfig):
             Configuration for the summarization
             annotator.
+        run_qa_annotator (bool):
+            Whether to run the QA annotator.
+        qa_config (google.cloud.contact_center_insights_v1.types.AnnotatorSelector.QaConfig):
+            Configuration for the QA annotator.
     """
 
     class SummarizationConfig(proto.Message):
@@ -2737,6 +2931,38 @@ class AnnotatorSelector(proto.Message):
             enum="AnnotatorSelector.SummarizationConfig.SummarizationModel",
         )
 
+    class QaConfig(proto.Message):
+        r"""Configuration for the QA feature.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            scorecard_list (google.cloud.contact_center_insights_v1.types.AnnotatorSelector.QaConfig.ScorecardList):
+                A manual list of scorecards to score.
+
+                This field is a member of `oneof`_ ``scorecard_source``.
+        """
+
+        class ScorecardList(proto.Message):
+            r"""Container for a list of scorecards.
+
+            Attributes:
+                qa_scorecard_revisions (MutableSequence[str]):
+                    List of QaScorecardRevisions.
+            """
+
+            qa_scorecard_revisions: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        scorecard_list: "AnnotatorSelector.QaConfig.ScorecardList" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="scorecard_source",
+            message="AnnotatorSelector.QaConfig.ScorecardList",
+        )
+
     run_interruption_annotator: bool = proto.Field(
         proto.BOOL,
         number=1,
@@ -2781,6 +3007,762 @@ class AnnotatorSelector(proto.Message):
         proto.MESSAGE,
         number=11,
         message=SummarizationConfig,
+    )
+    run_qa_annotator: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    qa_config: QaConfig = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=QaConfig,
+    )
+
+
+class QaQuestion(proto.Message):
+    r"""A single question to be scored by the Insights QA feature.
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the question. Format:
+            projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}/qaQuestions/{qa_question}
+        abbreviation (str):
+            Short, descriptive string, used in the UI
+            where it's not practical to display the full
+            question body. E.g., "Greeting".
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this question
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time at which
+            the question was updated.
+        question_body (str):
+            Question text. E.g., "Did the agent greet the
+            customer?".
+        answer_instructions (str):
+            Instructions describing how to determine the
+            answer.
+        answer_choices (MutableSequence[google.cloud.contact_center_insights_v1.types.QaQuestion.AnswerChoice]):
+            A list of valid answers to the question,
+            which the LLM must choose from.
+        tags (MutableSequence[str]):
+            User-defined list of arbitrary tags for the
+            question. Used for grouping/organization and for
+            weighting the score of each question.
+        order (int):
+            Defines the order of the question within its
+            parent scorecard revision.
+        metrics (google.cloud.contact_center_insights_v1.types.QaQuestion.Metrics):
+            Metrics of the underlying tuned LLM over a
+            holdout/test set while fine tuning the
+            underlying LLM for the given question. This
+            field will only be populated if and only if the
+            question is part of a scorecard revision that
+            has been tuned.
+        tuning_metadata (google.cloud.contact_center_insights_v1.types.QaQuestion.TuningMetadata):
+            Metadata about the tuning operation for the
+            question.This field will only be populated if
+            and only if the question is part of a scorecard
+            revision that has been tuned.
+    """
+
+    class AnswerChoice(proto.Message):
+        r"""Message representing a possible answer to the question.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            str_value (str):
+                String value.
+
+                This field is a member of `oneof`_ ``value``.
+            num_value (float):
+                Numerical value.
+
+                This field is a member of `oneof`_ ``value``.
+            bool_value (bool):
+                Boolean value.
+
+                This field is a member of `oneof`_ ``value``.
+            na_value (bool):
+                A value of "Not Applicable (N/A)". If provided, this field
+                may only be set to ``true``. If a question receives this
+                answer, it will be excluded from any score calculations.
+
+                This field is a member of `oneof`_ ``value``.
+            key (str):
+                A short string used as an identifier.
+            score (float):
+                Numerical score of the answer, used for generating the
+                overall score of a QaScorecardResult. If the answer uses
+                na_value, this field is unused.
+
+                This field is a member of `oneof`_ ``_score``.
+        """
+
+        str_value: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="value",
+        )
+        num_value: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+            oneof="value",
+        )
+        bool_value: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            oneof="value",
+        )
+        na_value: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+            oneof="value",
+        )
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=6,
+            optional=True,
+        )
+
+    class Metrics(proto.Message):
+        r"""A wrapper representing metrics calculated against a test-set
+        on a LLM that was fine tuned for this question.
+
+        Attributes:
+            accuracy (float):
+                Output only. Accuracy of the model. Measures
+                the percentage of correct answers the model gave
+                on the test set.
+        """
+
+        accuracy: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+
+    class TuningMetadata(proto.Message):
+        r"""Metadata about the tuning operation for the question. Will
+        only be set if a scorecard containing this question has been
+        tuned.
+
+        Attributes:
+            total_valid_label_count (int):
+                Total number of valid labels provided for the
+                question at the time of tuining.
+            dataset_validation_warnings (MutableSequence[google.cloud.contact_center_insights_v1.types.DatasetValidationWarning]):
+                A list of any applicable data validation
+                warnings about the question's feedback labels.
+            tuning_error (str):
+                Error status of the tuning operation for the
+                question. Will only be set if the tuning
+                operation failed.
+        """
+
+        total_valid_label_count: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        dataset_validation_warnings: MutableSequence[
+            "DatasetValidationWarning"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum="DatasetValidationWarning",
+        )
+        tuning_error: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    abbreviation: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    question_body: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    answer_instructions: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    answer_choices: MutableSequence[AnswerChoice] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=AnswerChoice,
+    )
+    tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    order: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    metrics: Metrics = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=Metrics,
+    )
+    tuning_metadata: TuningMetadata = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=TuningMetadata,
+    )
+
+
+class QaScorecard(proto.Message):
+    r"""A QaScorecard represents a collection of questions to be
+    scored during analysis.
+
+    Attributes:
+        name (str):
+            Identifier. The scorecard name. Format:
+            projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}
+        display_name (str):
+            The user-specified display name of the
+            scorecard.
+        description (str):
+            A text description explaining the intent of
+            the scorecard.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this scorecard
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time at which
+            the scorecard was updated.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class QaScorecardRevision(proto.Message):
+    r"""A revision of a QaScorecard.
+
+    Modifying published scorecard fields would invalidate existing
+    scorecard results — the questions may have changed, or the score
+    weighting will make existing scores impossible to understand. So
+    changes must create a new revision, rather than modifying the
+    existing resource.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the scorecard revision. Format:
+            projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}
+        snapshot (google.cloud.contact_center_insights_v1.types.QaScorecard):
+            The snapshot of the scorecard at the time of
+            this revision's creation.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp that the revision
+            was created.
+        alternate_ids (MutableSequence[str]):
+            Output only. Alternative IDs for this revision of the
+            scorecard, e.g., ``latest``.
+        state (google.cloud.contact_center_insights_v1.types.QaScorecardRevision.State):
+            Output only. State of the scorecard revision,
+            indicating whether it's ready to be used in
+            analysis.
+    """
+
+    class State(proto.Enum):
+        r"""Enum representing the set of states a scorecard revision may
+        be in.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified.
+            EDITABLE (12):
+                The scorecard revision can be edited.
+            TRAINING (2):
+                Scorecard model training is in progress.
+            TRAINING_FAILED (9):
+                Scorecard revision model training failed.
+            READY (11):
+                The revision can be used in analysis.
+            DELETING (7):
+                Scorecard is being deleted.
+            TRAINING_CANCELLED (14):
+                Scorecard model training was explicitly
+                cancelled by the user.
+        """
+        STATE_UNSPECIFIED = 0
+        EDITABLE = 12
+        TRAINING = 2
+        TRAINING_FAILED = 9
+        READY = 11
+        DELETING = 7
+        TRAINING_CANCELLED = 14
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot: "QaScorecard" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QaScorecard",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    alternate_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+
+
+class QaAnswer(proto.Message):
+    r"""An answer to a QaQuestion.
+
+    Attributes:
+        qa_question (str):
+            The QaQuestion answered by this answer.
+        conversation (str):
+            The conversation the answer applies to.
+        question_body (str):
+            Question text. E.g., "Did the agent greet the
+            customer?".
+        answer_value (google.cloud.contact_center_insights_v1.types.QaAnswer.AnswerValue):
+            The main answer value, incorporating any
+            manual edits if they exist.
+        tags (MutableSequence[str]):
+            User-defined list of arbitrary tags. Matches
+            the value from
+            QaScorecard.ScorecardQuestion.tags. Used for
+            grouping/organization and for weighting the
+            score of each answer.
+        answer_sources (MutableSequence[google.cloud.contact_center_insights_v1.types.QaAnswer.AnswerSource]):
+            List of all individual answers given to the
+            question.
+    """
+
+    class AnswerValue(proto.Message):
+        r"""Message for holding the value of a
+        [QaAnswer][google.cloud.contactcenterinsights.v1.QaAnswer].
+        [QaQuestion.AnswerChoice][google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice]
+        defines the possible answer values for a question.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            str_value (str):
+                String value.
+
+                This field is a member of `oneof`_ ``value``.
+            num_value (float):
+                Numerical value.
+
+                This field is a member of `oneof`_ ``value``.
+            bool_value (bool):
+                Boolean value.
+
+                This field is a member of `oneof`_ ``value``.
+            na_value (bool):
+                A value of "Not Applicable (N/A)". Should only ever be
+                ``true``.
+
+                This field is a member of `oneof`_ ``value``.
+            key (str):
+                A short string used as an identifier. Matches
+                the value used in QaQuestion.AnswerChoice.key.
+            score (float):
+                Output only. Numerical score of the answer.
+
+                This field is a member of `oneof`_ ``_score``.
+            potential_score (float):
+                Output only. The maximum potential score of
+                the question.
+
+                This field is a member of `oneof`_ ``_potential_score``.
+            normalized_score (float):
+                Output only. Normalized score of the questions. Calculated
+                as score / potential_score.
+
+                This field is a member of `oneof`_ ``_normalized_score``.
+        """
+
+        str_value: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="value",
+        )
+        num_value: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+            oneof="value",
+        )
+        bool_value: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            oneof="value",
+        )
+        na_value: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+            oneof="value",
+        )
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=6,
+            optional=True,
+        )
+        potential_score: float = proto.Field(
+            proto.DOUBLE,
+            number=7,
+            optional=True,
+        )
+        normalized_score: float = proto.Field(
+            proto.DOUBLE,
+            number=8,
+            optional=True,
+        )
+
+    class AnswerSource(proto.Message):
+        r"""A question may have multiple answers from varying sources,
+        one of which becomes the "main" answer above. AnswerSource
+        represents each individual answer.
+
+        Attributes:
+            source_type (google.cloud.contact_center_insights_v1.types.QaAnswer.AnswerSource.SourceType):
+                What created the answer.
+            answer_value (google.cloud.contact_center_insights_v1.types.QaAnswer.AnswerValue):
+                The answer value from this source.
+        """
+
+        class SourceType(proto.Enum):
+            r"""What created the answer.
+
+            Values:
+                SOURCE_TYPE_UNSPECIFIED (0):
+                    Source type is unspecified.
+                SYSTEM_GENERATED (1):
+                    Answer was system-generated; created during
+                    an Insights analysis.
+                MANUAL_EDIT (2):
+                    Answer was created by a human via manual
+                    edit.
+            """
+            SOURCE_TYPE_UNSPECIFIED = 0
+            SYSTEM_GENERATED = 1
+            MANUAL_EDIT = 2
+
+        source_type: "QaAnswer.AnswerSource.SourceType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="QaAnswer.AnswerSource.SourceType",
+        )
+        answer_value: "QaAnswer.AnswerValue" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="QaAnswer.AnswerValue",
+        )
+
+    qa_question: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    conversation: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    question_body: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    answer_value: AnswerValue = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=AnswerValue,
+    )
+    tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    answer_sources: MutableSequence[AnswerSource] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=AnswerSource,
+    )
+
+
+class QaScorecardResult(proto.Message):
+    r"""The results of scoring a single conversation against a
+    QaScorecard. Contains a collection of QaAnswers and aggregate
+    score.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The name of the scorecard result. Format:
+            projects/{project}/locations/{location}/qaScorecardResults/{qa_scorecard_result}
+        qa_scorecard_revision (str):
+            The QaScorecardRevision scored by this
+            result.
+        conversation (str):
+            The conversation scored by this result.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp that the revision
+            was created.
+        agent_id (str):
+            ID of the agent that handled the
+            conversation.
+        qa_answers (MutableSequence[google.cloud.contact_center_insights_v1.types.QaAnswer]):
+            Set of QaAnswers represented in the result.
+        score (float):
+            The overall numerical score of the result,
+            incorporating any manual edits if they exist.
+
+            This field is a member of `oneof`_ ``_score``.
+        potential_score (float):
+            The maximum potential overall score of the scorecard. Any
+            questions answered using ``na_value`` are excluded from this
+            calculation.
+
+            This field is a member of `oneof`_ ``_potential_score``.
+        normalized_score (float):
+            The normalized score, which is the score
+            divided by the potential score. Any manual edits
+            are included if they exist.
+
+            This field is a member of `oneof`_ ``_normalized_score``.
+        qa_tag_results (MutableSequence[google.cloud.contact_center_insights_v1.types.QaScorecardResult.QaTagResult]):
+            Collection of tags and their scores.
+        score_sources (MutableSequence[google.cloud.contact_center_insights_v1.types.QaScorecardResult.ScoreSource]):
+            List of all individual score sets.
+    """
+
+    class QaTagResult(proto.Message):
+        r"""Tags and their corresponding results.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            tag (str):
+                The tag the score applies to.
+            score (float):
+                The score the tag applies to.
+
+                This field is a member of `oneof`_ ``_score``.
+            potential_score (float):
+                The potential score the tag applies to.
+
+                This field is a member of `oneof`_ ``_potential_score``.
+            normalized_score (float):
+                The normalized score the tag applies to.
+
+                This field is a member of `oneof`_ ``_normalized_score``.
+        """
+
+        tag: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+            optional=True,
+        )
+        potential_score: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+            optional=True,
+        )
+        normalized_score: float = proto.Field(
+            proto.DOUBLE,
+            number=4,
+            optional=True,
+        )
+
+    class ScoreSource(proto.Message):
+        r"""A scorecard result may have multiple sets of scores from
+        varying sources, one of which becomes the "main" answer above. A
+        ScoreSource represents each individual set of scores.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            source_type (google.cloud.contact_center_insights_v1.types.QaScorecardResult.ScoreSource.SourceType):
+                What created the score.
+            score (float):
+                The overall numerical score of the result.
+
+                This field is a member of `oneof`_ ``_score``.
+            potential_score (float):
+                The maximum potential overall score of the scorecard. Any
+                questions answered using ``na_value`` are excluded from this
+                calculation.
+
+                This field is a member of `oneof`_ ``_potential_score``.
+            normalized_score (float):
+                The normalized score, which is the score
+                divided by the potential score.
+
+                This field is a member of `oneof`_ ``_normalized_score``.
+            qa_tag_results (MutableSequence[google.cloud.contact_center_insights_v1.types.QaScorecardResult.QaTagResult]):
+                Collection of tags and their scores.
+        """
+
+        class SourceType(proto.Enum):
+            r"""What created the score.
+
+            Values:
+                SOURCE_TYPE_UNSPECIFIED (0):
+                    Source type is unspecified.
+                SYSTEM_GENERATED_ONLY (1):
+                    Score is derived only from system-generated
+                    answers.
+                INCLUDES_MANUAL_EDITS (2):
+                    Score is derived from both system-generated
+                    answers, and includes any manual edits if they
+                    exist.
+            """
+            SOURCE_TYPE_UNSPECIFIED = 0
+            SYSTEM_GENERATED_ONLY = 1
+            INCLUDES_MANUAL_EDITS = 2
+
+        source_type: "QaScorecardResult.ScoreSource.SourceType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="QaScorecardResult.ScoreSource.SourceType",
+        )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+            optional=True,
+        )
+        potential_score: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+            optional=True,
+        )
+        normalized_score: float = proto.Field(
+            proto.DOUBLE,
+            number=4,
+            optional=True,
+        )
+        qa_tag_results: MutableSequence[
+            "QaScorecardResult.QaTagResult"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="QaScorecardResult.QaTagResult",
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    qa_scorecard_revision: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    conversation: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    agent_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    qa_answers: MutableSequence["QaAnswer"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="QaAnswer",
+    )
+    score: float = proto.Field(
+        proto.DOUBLE,
+        number=7,
+        optional=True,
+    )
+    potential_score: float = proto.Field(
+        proto.DOUBLE,
+        number=8,
+        optional=True,
+    )
+    normalized_score: float = proto.Field(
+        proto.DOUBLE,
+        number=9,
+        optional=True,
+    )
+    qa_tag_results: MutableSequence[QaTagResult] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=QaTagResult,
+    )
+    score_sources: MutableSequence[ScoreSource] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=ScoreSource,
     )
 
 

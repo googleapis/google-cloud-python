@@ -20,6 +20,8 @@ from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
@@ -1266,6 +1268,145 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
         return self._stubs["update_settings"]
 
     @property
+    def create_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateAnalysisRuleRequest], resources.AnalysisRule
+    ]:
+        r"""Return a callable for the create analysis rule method over gRPC.
+
+        Creates a analysis rule.
+
+        Returns:
+            Callable[[~.CreateAnalysisRuleRequest],
+                    ~.AnalysisRule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_analysis_rule" not in self._stubs:
+            self._stubs["create_analysis_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateAnalysisRule",
+                request_serializer=contact_center_insights.CreateAnalysisRuleRequest.serialize,
+                response_deserializer=resources.AnalysisRule.deserialize,
+            )
+        return self._stubs["create_analysis_rule"]
+
+    @property
+    def get_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetAnalysisRuleRequest], resources.AnalysisRule
+    ]:
+        r"""Return a callable for the get analysis rule method over gRPC.
+
+        Get a analysis rule.
+
+        Returns:
+            Callable[[~.GetAnalysisRuleRequest],
+                    ~.AnalysisRule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_analysis_rule" not in self._stubs:
+            self._stubs["get_analysis_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetAnalysisRule",
+                request_serializer=contact_center_insights.GetAnalysisRuleRequest.serialize,
+                response_deserializer=resources.AnalysisRule.deserialize,
+            )
+        return self._stubs["get_analysis_rule"]
+
+    @property
+    def list_analysis_rules(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListAnalysisRulesRequest],
+        contact_center_insights.ListAnalysisRulesResponse,
+    ]:
+        r"""Return a callable for the list analysis rules method over gRPC.
+
+        Lists analysis rules.
+
+        Returns:
+            Callable[[~.ListAnalysisRulesRequest],
+                    ~.ListAnalysisRulesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_analysis_rules" not in self._stubs:
+            self._stubs["list_analysis_rules"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListAnalysisRules",
+                request_serializer=contact_center_insights.ListAnalysisRulesRequest.serialize,
+                response_deserializer=contact_center_insights.ListAnalysisRulesResponse.deserialize,
+            )
+        return self._stubs["list_analysis_rules"]
+
+    @property
+    def update_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateAnalysisRuleRequest], resources.AnalysisRule
+    ]:
+        r"""Return a callable for the update analysis rule method over gRPC.
+
+        Updates a analysis rule.
+
+        Returns:
+            Callable[[~.UpdateAnalysisRuleRequest],
+                    ~.AnalysisRule]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_analysis_rule" not in self._stubs:
+            self._stubs["update_analysis_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateAnalysisRule",
+                request_serializer=contact_center_insights.UpdateAnalysisRuleRequest.serialize,
+                response_deserializer=resources.AnalysisRule.deserialize,
+            )
+        return self._stubs["update_analysis_rule"]
+
+    @property
+    def delete_analysis_rule(
+        self,
+    ) -> Callable[[contact_center_insights.DeleteAnalysisRuleRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete analysis rule method over gRPC.
+
+        Deletes a analysis rule.
+
+        Returns:
+            Callable[[~.DeleteAnalysisRuleRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_analysis_rule" not in self._stubs:
+            self._stubs["delete_analysis_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteAnalysisRule",
+                request_serializer=contact_center_insights.DeleteAnalysisRuleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_analysis_rule"]
+
+    @property
     def get_encryption_spec(
         self,
     ) -> Callable[
@@ -1303,9 +1444,9 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
         r"""Return a callable for the initialize encryption spec method over gRPC.
 
         Initializes a location-level encryption key
-        specification.  An error will be thrown if the location
-        has resources already created before the initialization.
-        Once the encryption specification is initialized at a
+        specification. An error will result if the location has
+        resources already created before the initialization.
+        After the encryption specification is initialized at a
         location, it is immutable and all newly created
         resources under the location will be encrypted with the
         existing specification.
@@ -1460,6 +1601,744 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_view"]
+
+    @property
+    def query_metrics(
+        self,
+    ) -> Callable[
+        [contact_center_insights.QueryMetricsRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the query metrics method over gRPC.
+
+        Query metrics.
+
+        Returns:
+            Callable[[~.QueryMetricsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_metrics" not in self._stubs:
+            self._stubs["query_metrics"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/QueryMetrics",
+                request_serializer=contact_center_insights.QueryMetricsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["query_metrics"]
+
+    @property
+    def create_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaQuestionRequest], resources.QaQuestion
+    ]:
+        r"""Return a callable for the create qa question method over gRPC.
+
+        Create a QaQuestion.
+
+        Returns:
+            Callable[[~.CreateQaQuestionRequest],
+                    ~.QaQuestion]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_qa_question" not in self._stubs:
+            self._stubs["create_qa_question"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateQaQuestion",
+                request_serializer=contact_center_insights.CreateQaQuestionRequest.serialize,
+                response_deserializer=resources.QaQuestion.deserialize,
+            )
+        return self._stubs["create_qa_question"]
+
+    @property
+    def get_qa_question(
+        self,
+    ) -> Callable[[contact_center_insights.GetQaQuestionRequest], resources.QaQuestion]:
+        r"""Return a callable for the get qa question method over gRPC.
+
+        Gets a QaQuestion.
+
+        Returns:
+            Callable[[~.GetQaQuestionRequest],
+                    ~.QaQuestion]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_qa_question" not in self._stubs:
+            self._stubs["get_qa_question"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetQaQuestion",
+                request_serializer=contact_center_insights.GetQaQuestionRequest.serialize,
+                response_deserializer=resources.QaQuestion.deserialize,
+            )
+        return self._stubs["get_qa_question"]
+
+    @property
+    def update_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateQaQuestionRequest], resources.QaQuestion
+    ]:
+        r"""Return a callable for the update qa question method over gRPC.
+
+        Updates a QaQuestion.
+
+        Returns:
+            Callable[[~.UpdateQaQuestionRequest],
+                    ~.QaQuestion]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_qa_question" not in self._stubs:
+            self._stubs["update_qa_question"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateQaQuestion",
+                request_serializer=contact_center_insights.UpdateQaQuestionRequest.serialize,
+                response_deserializer=resources.QaQuestion.deserialize,
+            )
+        return self._stubs["update_qa_question"]
+
+    @property
+    def delete_qa_question(
+        self,
+    ) -> Callable[[contact_center_insights.DeleteQaQuestionRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete qa question method over gRPC.
+
+        Deletes a QaQuestion.
+
+        Returns:
+            Callable[[~.DeleteQaQuestionRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_qa_question" not in self._stubs:
+            self._stubs["delete_qa_question"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteQaQuestion",
+                request_serializer=contact_center_insights.DeleteQaQuestionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_qa_question"]
+
+    @property
+    def list_qa_questions(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaQuestionsRequest],
+        contact_center_insights.ListQaQuestionsResponse,
+    ]:
+        r"""Return a callable for the list qa questions method over gRPC.
+
+        Lists QaQuestions.
+
+        Returns:
+            Callable[[~.ListQaQuestionsRequest],
+                    ~.ListQaQuestionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_qa_questions" not in self._stubs:
+            self._stubs["list_qa_questions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListQaQuestions",
+                request_serializer=contact_center_insights.ListQaQuestionsRequest.serialize,
+                response_deserializer=contact_center_insights.ListQaQuestionsResponse.deserialize,
+            )
+        return self._stubs["list_qa_questions"]
+
+    @property
+    def create_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaScorecardRequest], resources.QaScorecard
+    ]:
+        r"""Return a callable for the create qa scorecard method over gRPC.
+
+        Create a QaScorecard.
+
+        Returns:
+            Callable[[~.CreateQaScorecardRequest],
+                    ~.QaScorecard]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_qa_scorecard" not in self._stubs:
+            self._stubs["create_qa_scorecard"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateQaScorecard",
+                request_serializer=contact_center_insights.CreateQaScorecardRequest.serialize,
+                response_deserializer=resources.QaScorecard.deserialize,
+            )
+        return self._stubs["create_qa_scorecard"]
+
+    @property
+    def get_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetQaScorecardRequest], resources.QaScorecard
+    ]:
+        r"""Return a callable for the get qa scorecard method over gRPC.
+
+        Gets a QaScorecard.
+
+        Returns:
+            Callable[[~.GetQaScorecardRequest],
+                    ~.QaScorecard]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_qa_scorecard" not in self._stubs:
+            self._stubs["get_qa_scorecard"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetQaScorecard",
+                request_serializer=contact_center_insights.GetQaScorecardRequest.serialize,
+                response_deserializer=resources.QaScorecard.deserialize,
+            )
+        return self._stubs["get_qa_scorecard"]
+
+    @property
+    def update_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateQaScorecardRequest], resources.QaScorecard
+    ]:
+        r"""Return a callable for the update qa scorecard method over gRPC.
+
+        Updates a QaScorecard.
+
+        Returns:
+            Callable[[~.UpdateQaScorecardRequest],
+                    ~.QaScorecard]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_qa_scorecard" not in self._stubs:
+            self._stubs["update_qa_scorecard"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateQaScorecard",
+                request_serializer=contact_center_insights.UpdateQaScorecardRequest.serialize,
+                response_deserializer=resources.QaScorecard.deserialize,
+            )
+        return self._stubs["update_qa_scorecard"]
+
+    @property
+    def delete_qa_scorecard(
+        self,
+    ) -> Callable[[contact_center_insights.DeleteQaScorecardRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete qa scorecard method over gRPC.
+
+        Deletes a QaScorecard.
+
+        Returns:
+            Callable[[~.DeleteQaScorecardRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_qa_scorecard" not in self._stubs:
+            self._stubs["delete_qa_scorecard"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteQaScorecard",
+                request_serializer=contact_center_insights.DeleteQaScorecardRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_qa_scorecard"]
+
+    @property
+    def list_qa_scorecards(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaScorecardsRequest],
+        contact_center_insights.ListQaScorecardsResponse,
+    ]:
+        r"""Return a callable for the list qa scorecards method over gRPC.
+
+        Lists QaScorecards.
+
+        Returns:
+            Callable[[~.ListQaScorecardsRequest],
+                    ~.ListQaScorecardsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_qa_scorecards" not in self._stubs:
+            self._stubs["list_qa_scorecards"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListQaScorecards",
+                request_serializer=contact_center_insights.ListQaScorecardsRequest.serialize,
+                response_deserializer=contact_center_insights.ListQaScorecardsResponse.deserialize,
+            )
+        return self._stubs["list_qa_scorecards"]
+
+    @property
+    def create_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        r"""Return a callable for the create qa scorecard revision method over gRPC.
+
+        Creates a QaScorecardRevision.
+
+        Returns:
+            Callable[[~.CreateQaScorecardRevisionRequest],
+                    ~.QaScorecardRevision]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_qa_scorecard_revision" not in self._stubs:
+            self._stubs["create_qa_scorecard_revision"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateQaScorecardRevision",
+                request_serializer=contact_center_insights.CreateQaScorecardRevisionRequest.serialize,
+                response_deserializer=resources.QaScorecardRevision.deserialize,
+            )
+        return self._stubs["create_qa_scorecard_revision"]
+
+    @property
+    def get_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        r"""Return a callable for the get qa scorecard revision method over gRPC.
+
+        Gets a QaScorecardRevision.
+
+        Returns:
+            Callable[[~.GetQaScorecardRevisionRequest],
+                    ~.QaScorecardRevision]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_qa_scorecard_revision" not in self._stubs:
+            self._stubs["get_qa_scorecard_revision"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetQaScorecardRevision",
+                request_serializer=contact_center_insights.GetQaScorecardRevisionRequest.serialize,
+                response_deserializer=resources.QaScorecardRevision.deserialize,
+            )
+        return self._stubs["get_qa_scorecard_revision"]
+
+    @property
+    def tune_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.TuneQaScorecardRevisionRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the tune qa scorecard revision method over gRPC.
+
+        Fine tune one or more QaModels.
+
+        Returns:
+            Callable[[~.TuneQaScorecardRevisionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "tune_qa_scorecard_revision" not in self._stubs:
+            self._stubs["tune_qa_scorecard_revision"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/TuneQaScorecardRevision",
+                request_serializer=contact_center_insights.TuneQaScorecardRevisionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["tune_qa_scorecard_revision"]
+
+    @property
+    def deploy_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeployQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        r"""Return a callable for the deploy qa scorecard revision method over gRPC.
+
+        Deploy a QaScorecardRevision.
+
+        Returns:
+            Callable[[~.DeployQaScorecardRevisionRequest],
+                    ~.QaScorecardRevision]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "deploy_qa_scorecard_revision" not in self._stubs:
+            self._stubs["deploy_qa_scorecard_revision"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeployQaScorecardRevision",
+                request_serializer=contact_center_insights.DeployQaScorecardRevisionRequest.serialize,
+                response_deserializer=resources.QaScorecardRevision.deserialize,
+            )
+        return self._stubs["deploy_qa_scorecard_revision"]
+
+    @property
+    def undeploy_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UndeployQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        r"""Return a callable for the undeploy qa scorecard revision method over gRPC.
+
+        Undeploy a QaScorecardRevision.
+
+        Returns:
+            Callable[[~.UndeployQaScorecardRevisionRequest],
+                    ~.QaScorecardRevision]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "undeploy_qa_scorecard_revision" not in self._stubs:
+            self._stubs[
+                "undeploy_qa_scorecard_revision"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UndeployQaScorecardRevision",
+                request_serializer=contact_center_insights.UndeployQaScorecardRevisionRequest.serialize,
+                response_deserializer=resources.QaScorecardRevision.deserialize,
+            )
+        return self._stubs["undeploy_qa_scorecard_revision"]
+
+    @property
+    def delete_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteQaScorecardRevisionRequest], empty_pb2.Empty
+    ]:
+        r"""Return a callable for the delete qa scorecard revision method over gRPC.
+
+        Deletes a QaScorecardRevision.
+
+        Returns:
+            Callable[[~.DeleteQaScorecardRevisionRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_qa_scorecard_revision" not in self._stubs:
+            self._stubs["delete_qa_scorecard_revision"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteQaScorecardRevision",
+                request_serializer=contact_center_insights.DeleteQaScorecardRevisionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_qa_scorecard_revision"]
+
+    @property
+    def list_qa_scorecard_revisions(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaScorecardRevisionsRequest],
+        contact_center_insights.ListQaScorecardRevisionsResponse,
+    ]:
+        r"""Return a callable for the list qa scorecard revisions method over gRPC.
+
+        Lists all revisions under the parent QaScorecard.
+
+        Returns:
+            Callable[[~.ListQaScorecardRevisionsRequest],
+                    ~.ListQaScorecardRevisionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_qa_scorecard_revisions" not in self._stubs:
+            self._stubs["list_qa_scorecard_revisions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListQaScorecardRevisions",
+                request_serializer=contact_center_insights.ListQaScorecardRevisionsRequest.serialize,
+                response_deserializer=contact_center_insights.ListQaScorecardRevisionsResponse.deserialize,
+            )
+        return self._stubs["list_qa_scorecard_revisions"]
+
+    @property
+    def create_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateFeedbackLabelRequest], resources.FeedbackLabel
+    ]:
+        r"""Return a callable for the create feedback label method over gRPC.
+
+        Create feedback label.
+
+        Returns:
+            Callable[[~.CreateFeedbackLabelRequest],
+                    ~.FeedbackLabel]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_feedback_label" not in self._stubs:
+            self._stubs["create_feedback_label"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateFeedbackLabel",
+                request_serializer=contact_center_insights.CreateFeedbackLabelRequest.serialize,
+                response_deserializer=resources.FeedbackLabel.deserialize,
+            )
+        return self._stubs["create_feedback_label"]
+
+    @property
+    def list_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListFeedbackLabelsRequest],
+        contact_center_insights.ListFeedbackLabelsResponse,
+    ]:
+        r"""Return a callable for the list feedback labels method over gRPC.
+
+        List feedback labels.
+
+        Returns:
+            Callable[[~.ListFeedbackLabelsRequest],
+                    ~.ListFeedbackLabelsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_feedback_labels" not in self._stubs:
+            self._stubs["list_feedback_labels"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListFeedbackLabels",
+                request_serializer=contact_center_insights.ListFeedbackLabelsRequest.serialize,
+                response_deserializer=contact_center_insights.ListFeedbackLabelsResponse.deserialize,
+            )
+        return self._stubs["list_feedback_labels"]
+
+    @property
+    def get_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetFeedbackLabelRequest], resources.FeedbackLabel
+    ]:
+        r"""Return a callable for the get feedback label method over gRPC.
+
+        Get feedback label.
+
+        Returns:
+            Callable[[~.GetFeedbackLabelRequest],
+                    ~.FeedbackLabel]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_feedback_label" not in self._stubs:
+            self._stubs["get_feedback_label"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetFeedbackLabel",
+                request_serializer=contact_center_insights.GetFeedbackLabelRequest.serialize,
+                response_deserializer=resources.FeedbackLabel.deserialize,
+            )
+        return self._stubs["get_feedback_label"]
+
+    @property
+    def update_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateFeedbackLabelRequest], resources.FeedbackLabel
+    ]:
+        r"""Return a callable for the update feedback label method over gRPC.
+
+        Update feedback label.
+
+        Returns:
+            Callable[[~.UpdateFeedbackLabelRequest],
+                    ~.FeedbackLabel]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_feedback_label" not in self._stubs:
+            self._stubs["update_feedback_label"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateFeedbackLabel",
+                request_serializer=contact_center_insights.UpdateFeedbackLabelRequest.serialize,
+                response_deserializer=resources.FeedbackLabel.deserialize,
+            )
+        return self._stubs["update_feedback_label"]
+
+    @property
+    def delete_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteFeedbackLabelRequest], empty_pb2.Empty
+    ]:
+        r"""Return a callable for the delete feedback label method over gRPC.
+
+        Delete feedback label.
+
+        Returns:
+            Callable[[~.DeleteFeedbackLabelRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_feedback_label" not in self._stubs:
+            self._stubs["delete_feedback_label"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteFeedbackLabel",
+                request_serializer=contact_center_insights.DeleteFeedbackLabelRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_feedback_label"]
+
+    @property
+    def list_all_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListAllFeedbackLabelsRequest],
+        contact_center_insights.ListAllFeedbackLabelsResponse,
+    ]:
+        r"""Return a callable for the list all feedback labels method over gRPC.
+
+        List all feedback labels by project number.
+
+        Returns:
+            Callable[[~.ListAllFeedbackLabelsRequest],
+                    ~.ListAllFeedbackLabelsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_all_feedback_labels" not in self._stubs:
+            self._stubs["list_all_feedback_labels"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListAllFeedbackLabels",
+                request_serializer=contact_center_insights.ListAllFeedbackLabelsRequest.serialize,
+                response_deserializer=contact_center_insights.ListAllFeedbackLabelsResponse.deserialize,
+            )
+        return self._stubs["list_all_feedback_labels"]
+
+    @property
+    def bulk_upload_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkUploadFeedbackLabelsRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the bulk upload feedback labels method over gRPC.
+
+        Upload feedback labels in bulk.
+
+        Returns:
+            Callable[[~.BulkUploadFeedbackLabelsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bulk_upload_feedback_labels" not in self._stubs:
+            self._stubs["bulk_upload_feedback_labels"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkUploadFeedbackLabels",
+                request_serializer=contact_center_insights.BulkUploadFeedbackLabelsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["bulk_upload_feedback_labels"]
+
+    @property
+    def bulk_download_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkDownloadFeedbackLabelsRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the bulk download feedback labels method over gRPC.
+
+        Download feedback labels in bulk.
+
+        Returns:
+            Callable[[~.BulkDownloadFeedbackLabelsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bulk_download_feedback_labels" not in self._stubs:
+            self._stubs[
+                "bulk_download_feedback_labels"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkDownloadFeedbackLabels",
+                request_serializer=contact_center_insights.BulkDownloadFeedbackLabelsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["bulk_download_feedback_labels"]
 
     def close(self):
         self.grpc_channel.close()

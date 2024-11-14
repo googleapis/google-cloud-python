@@ -22,6 +22,8 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -313,6 +315,31 @@ class ContactCenterInsightsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_analysis_rule: gapic_v1.method.wrap_method(
+                self.create_analysis_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_analysis_rule: gapic_v1.method.wrap_method(
+                self.get_analysis_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_analysis_rules: gapic_v1.method.wrap_method(
+                self.list_analysis_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_analysis_rule: gapic_v1.method.wrap_method(
+                self.update_analysis_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_analysis_rule: gapic_v1.method.wrap_method(
+                self.delete_analysis_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_encryption_spec: gapic_v1.method.wrap_method(
                 self.get_encryption_spec,
                 default_timeout=None,
@@ -345,6 +372,136 @@ class ContactCenterInsightsTransport(abc.ABC):
             ),
             self.delete_view: gapic_v1.method.wrap_method(
                 self.delete_view,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_metrics: gapic_v1.method.wrap_method(
+                self.query_metrics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_qa_question: gapic_v1.method.wrap_method(
+                self.create_qa_question,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_qa_question: gapic_v1.method.wrap_method(
+                self.get_qa_question,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_qa_question: gapic_v1.method.wrap_method(
+                self.update_qa_question,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_qa_question: gapic_v1.method.wrap_method(
+                self.delete_qa_question,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_qa_questions: gapic_v1.method.wrap_method(
+                self.list_qa_questions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_qa_scorecard: gapic_v1.method.wrap_method(
+                self.create_qa_scorecard,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_qa_scorecard: gapic_v1.method.wrap_method(
+                self.get_qa_scorecard,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_qa_scorecard: gapic_v1.method.wrap_method(
+                self.update_qa_scorecard,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_qa_scorecard: gapic_v1.method.wrap_method(
+                self.delete_qa_scorecard,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_qa_scorecards: gapic_v1.method.wrap_method(
+                self.list_qa_scorecards,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_qa_scorecard_revision: gapic_v1.method.wrap_method(
+                self.create_qa_scorecard_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_qa_scorecard_revision: gapic_v1.method.wrap_method(
+                self.get_qa_scorecard_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.tune_qa_scorecard_revision: gapic_v1.method.wrap_method(
+                self.tune_qa_scorecard_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.deploy_qa_scorecard_revision: gapic_v1.method.wrap_method(
+                self.deploy_qa_scorecard_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.undeploy_qa_scorecard_revision: gapic_v1.method.wrap_method(
+                self.undeploy_qa_scorecard_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_qa_scorecard_revision: gapic_v1.method.wrap_method(
+                self.delete_qa_scorecard_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_qa_scorecard_revisions: gapic_v1.method.wrap_method(
+                self.list_qa_scorecard_revisions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_feedback_label: gapic_v1.method.wrap_method(
+                self.create_feedback_label,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_feedback_labels: gapic_v1.method.wrap_method(
+                self.list_feedback_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_feedback_label: gapic_v1.method.wrap_method(
+                self.get_feedback_label,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_feedback_label: gapic_v1.method.wrap_method(
+                self.update_feedback_label,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_feedback_label: gapic_v1.method.wrap_method(
+                self.delete_feedback_label,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_all_feedback_labels: gapic_v1.method.wrap_method(
+                self.list_all_feedback_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.bulk_upload_feedback_labels: gapic_v1.method.wrap_method(
+                self.bulk_upload_feedback_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.bulk_download_feedback_labels: gapic_v1.method.wrap_method(
+                self.bulk_download_feedback_labels,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -725,6 +882,54 @@ class ContactCenterInsightsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateAnalysisRuleRequest],
+        Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetAnalysisRuleRequest],
+        Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_analysis_rules(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListAnalysisRulesRequest],
+        Union[
+            contact_center_insights.ListAnalysisRulesResponse,
+            Awaitable[contact_center_insights.ListAnalysisRulesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateAnalysisRuleRequest],
+        Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteAnalysisRuleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_encryption_spec(
         self,
     ) -> Callable[
@@ -787,6 +992,255 @@ class ContactCenterInsightsTransport(abc.ABC):
     ) -> Callable[
         [contact_center_insights.DeleteViewRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_metrics(
+        self,
+    ) -> Callable[
+        [contact_center_insights.QueryMetricsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaQuestionRequest],
+        Union[resources.QaQuestion, Awaitable[resources.QaQuestion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetQaQuestionRequest],
+        Union[resources.QaQuestion, Awaitable[resources.QaQuestion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateQaQuestionRequest],
+        Union[resources.QaQuestion, Awaitable[resources.QaQuestion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteQaQuestionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_qa_questions(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaQuestionsRequest],
+        Union[
+            contact_center_insights.ListQaQuestionsResponse,
+            Awaitable[contact_center_insights.ListQaQuestionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaScorecardRequest],
+        Union[resources.QaScorecard, Awaitable[resources.QaScorecard]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetQaScorecardRequest],
+        Union[resources.QaScorecard, Awaitable[resources.QaScorecard]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateQaScorecardRequest],
+        Union[resources.QaScorecard, Awaitable[resources.QaScorecard]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteQaScorecardRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_qa_scorecards(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaScorecardsRequest],
+        Union[
+            contact_center_insights.ListQaScorecardsResponse,
+            Awaitable[contact_center_insights.ListQaScorecardsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaScorecardRevisionRequest],
+        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetQaScorecardRevisionRequest],
+        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def tune_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.TuneQaScorecardRevisionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def deploy_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeployQaScorecardRevisionRequest],
+        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def undeploy_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UndeployQaScorecardRevisionRequest],
+        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteQaScorecardRevisionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_qa_scorecard_revisions(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaScorecardRevisionsRequest],
+        Union[
+            contact_center_insights.ListQaScorecardRevisionsResponse,
+            Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateFeedbackLabelRequest],
+        Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListFeedbackLabelsRequest],
+        Union[
+            contact_center_insights.ListFeedbackLabelsResponse,
+            Awaitable[contact_center_insights.ListFeedbackLabelsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetFeedbackLabelRequest],
+        Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateFeedbackLabelRequest],
+        Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteFeedbackLabelRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_all_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListAllFeedbackLabelsRequest],
+        Union[
+            contact_center_insights.ListAllFeedbackLabelsResponse,
+            Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bulk_upload_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkUploadFeedbackLabelsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bulk_download_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkDownloadFeedbackLabelsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
