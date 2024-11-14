@@ -51,8 +51,6 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.gkeconnect.gateway_v1.types import control
 
 from .transports.base import DEFAULT_CLIENT_INFO, GatewayControlTransport
-from .transports.grpc import GatewayControlGrpcTransport
-from .transports.grpc_asyncio import GatewayControlGrpcAsyncIOTransport
 from .transports.rest import GatewayControlRestTransport
 
 
@@ -67,8 +65,6 @@ class GatewayControlClientMeta(type):
     _transport_registry = (
         OrderedDict()
     )  # type: Dict[str, Type[GatewayControlTransport]]
-    _transport_registry["grpc"] = GatewayControlGrpcTransport
-    _transport_registry["grpc_asyncio"] = GatewayControlGrpcAsyncIOTransport
     _transport_registry["rest"] = GatewayControlRestTransport
 
     def get_transport_class(

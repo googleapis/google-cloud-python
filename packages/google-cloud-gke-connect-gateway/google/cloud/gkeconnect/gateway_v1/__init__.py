@@ -18,11 +18,10 @@ from google.cloud.gkeconnect.gateway_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.gateway_control import GatewayControlAsyncClient, GatewayControlClient
+from .services.gateway_control import GatewayControlClient
 from .types.control import GenerateCredentialsRequest, GenerateCredentialsResponse
 
 __all__ = (
-    "GatewayControlAsyncClient",
     "GatewayControlClient",
     "GenerateCredentialsRequest",
     "GenerateCredentialsResponse",
