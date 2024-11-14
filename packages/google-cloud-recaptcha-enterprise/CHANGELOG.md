@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.24.1...google-cloud-recaptcha-enterprise-v1.25.0) (2024-11-14)
+
+
+### Features
+
+* A new enum `Challenge` is added ([511d7cc](https://github.com/googleapis/google-cloud-python/commit/511d7cc4bf1bb5eec1709aab5a836d37b26ff029))
+* A new field `challenge` is added to message `.google.cloud.recaptchaenterprise.v1.RiskAnalysis` ([511d7cc](https://github.com/googleapis/google-cloud-python/commit/511d7cc4bf1bb5eec1709aab5a836d37b26ff029))
+
 ## [1.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.24.0...google-cloud-recaptcha-enterprise-v1.24.1) (2024-11-11)
 
 

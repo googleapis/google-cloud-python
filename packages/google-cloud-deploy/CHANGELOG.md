@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.3.0...google-cloud-deploy-v2.4.0) (2024-11-14)
+
+
+### Features
+
+* A new field `timed_promote_release_condition` is added to message `.google.cloud.deploy.v1.AutomationRuleCondition` ([f7470ad](https://github.com/googleapis/google-cloud-python/commit/f7470ad3e053ad29b3ea9956b04c64c796a94881))
+* A new field `timed_promote_release_operation` is added to message `.google.cloud.deploy.v1.AutomationRun` ([f7470ad](https://github.com/googleapis/google-cloud-python/commit/f7470ad3e053ad29b3ea9956b04c64c796a94881))
+* A new field `timed_promote_release_rule` is added to message `.google.cloud.deploy.v1.AutomationRule` ([f7470ad](https://github.com/googleapis/google-cloud-python/commit/f7470ad3e053ad29b3ea9956b04c64c796a94881))
+* A new message `TimedPromoteReleaseCondition` is added ([f7470ad](https://github.com/googleapis/google-cloud-python/commit/f7470ad3e053ad29b3ea9956b04c64c796a94881))
+* A new message `TimedPromoteReleaseOperation` is added ([f7470ad](https://github.com/googleapis/google-cloud-python/commit/f7470ad3e053ad29b3ea9956b04c64c796a94881))
+* A new message `TimedPromoteReleaseRule` is added ([f7470ad](https://github.com/googleapis/google-cloud-python/commit/f7470ad3e053ad29b3ea9956b04c64c796a94881))
+
+
+### Documentation
+
+* A comment for field `target_id` in message `.google.cloud.deploy.v1.AutomationRun` is changed ([f7470ad](https://github.com/googleapis/google-cloud-python/commit/f7470ad3e053ad29b3ea9956b04c64c796a94881))
+
 ## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.2.0...google-cloud-deploy-v2.3.0) (2024-10-31)
 
 

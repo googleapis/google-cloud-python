@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.21.1...google-cloud-datacatalog-v3.22.0) (2024-11-14)
+
+
+### Features
+
+* A new enum `DataplexTransferStatus` is added ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new field `dataplex_transfer_status` is added to message `.google.cloud.datacatalog.v1.TagTemplate` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new field `feature_online_store_spec` is added to message `.google.cloud.datacatalog.v1.Entry` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new message `FeatureOnlineStoreSpec` is added ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new value `CUSTOM_TEXT_EMBEDDING` is added to enum `ModelSourceType` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new value `FEATURE_GROUP` is added to enum `EntryType` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new value `FEATURE_ONLINE_STORE` is added to enum `EntryType` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new value `FEATURE_VIEW` is added to enum `EntryType` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new value `GENIE` is added to enum `ModelSourceType` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A new value `MARKETPLACE` is added to enum `ModelSourceType` ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.cloud.datacatalog.v1.Entry` is changed ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A comment for field `name` in message `.google.cloud.datacatalog.v1.EntryGroup` is changed ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A comment for field `name` in message `.google.cloud.datacatalog.v1.Tag` is changed ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A comment for field `name` in message `.google.cloud.datacatalog.v1.TagTemplate` is changed ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+* A comment for field `name` in message `.google.cloud.datacatalog.v1.TagTemplateField` is changed ([e0ea31c](https://github.com/googleapis/google-cloud-python/commit/e0ea31cf3bdb110297b8764bfe598250d6d00b6e))
+
 ## [3.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.21.0...google-cloud-datacatalog-v3.21.1) (2024-10-31)
 
 

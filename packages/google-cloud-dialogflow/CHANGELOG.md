@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.35.0...google-cloud-dialogflow-v2.36.0) (2024-11-14)
+
+
+### Features
+
+* add options of query_source, search_config, end_user_metadata and exact_search ([ede7d85](https://github.com/googleapis/google-cloud-python/commit/ede7d853aa30133dc2f8e3df28d85308dcff11e2))
+* add options of query_source, search_config, end_user_metadata and exact_search  ([28eb346](https://github.com/googleapis/google-cloud-python/commit/28eb346014b52f5e54c7b8ffa32499d60ab0ebe6))
+* expose metadata in AnswerSource ([28eb346](https://github.com/googleapis/google-cloud-python/commit/28eb346014b52f5e54c7b8ffa32499d60ab0ebe6))
+* expose metadata in AnswerSource ([ede7d85](https://github.com/googleapis/google-cloud-python/commit/ede7d853aa30133dc2f8e3df28d85308dcff11e2))
+
 ## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.34.0...google-cloud-dialogflow-v2.35.0) (2024-11-11)
 
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.7...google-cloud-gdchardwaremanagement-v0.1.8) (2024-11-14)
+
+
+### Features
+
+* add DNS address, Kubernetes primary VLAN ID, and provisioning state to the Zone resource ([3c1e8b8](https://github.com/googleapis/google-cloud-python/commit/3c1e8b8173df97e15f247a9fbc892e29643bcb7e))
+* add MAC address-associated IP address to the Hardware resource ([3c1e8b8](https://github.com/googleapis/google-cloud-python/commit/3c1e8b8173df97e15f247a9fbc892e29643bcb7e))
+* add provisioning_state_signal field in SignalZoneState method request ([3c1e8b8](https://github.com/googleapis/google-cloud-python/commit/3c1e8b8173df97e15f247a9fbc892e29643bcb7e))
+
+
+### Documentation
+
+* change state_signal field in SignalZoneState method request as optional ([3c1e8b8](https://github.com/googleapis/google-cloud-python/commit/3c1e8b8173df97e15f247a9fbc892e29643bcb7e))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.6...google-cloud-gdchardwaremanagement-v0.1.7) (2024-11-11)
 
 
