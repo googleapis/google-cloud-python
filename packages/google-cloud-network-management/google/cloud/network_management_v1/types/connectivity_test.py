@@ -132,6 +132,15 @@ class ConnectivityTest(proto.Message):
             creating a new test, updating an existing test,
             or triggering a one-time rerun of an existing
             test.
+        round_trip (bool):
+            Whether run analysis for the return path from
+            destination to source. Default value is false.
+        return_reachability_details (google.cloud.network_management_v1.types.ReachabilityDetails):
+            Output only. The reachability details of this
+            test from the latest run for the return path.
+            The details are updated when creating a new
+            test, updating an existing test, or triggering a
+            one-time rerun of an existing test.
         bypass_firewall_checks (bool):
             Whether the test should skip firewall
             checking. If not provided, we assume false.
@@ -191,6 +200,15 @@ class ConnectivityTest(proto.Message):
         proto.MESSAGE,
         number=14,
         message="ProbingDetails",
+    )
+    round_trip: bool = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    return_reachability_details: "ReachabilityDetails" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="ReachabilityDetails",
     )
     bypass_firewall_checks: bool = proto.Field(
         proto.BOOL,

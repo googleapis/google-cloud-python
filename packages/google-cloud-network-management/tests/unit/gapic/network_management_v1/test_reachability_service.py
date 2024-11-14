@@ -1726,6 +1726,7 @@ def test_get_connectivity_test(request_type, transport: str = "grpc"):
             protocol="protocol_value",
             related_projects=["related_projects_value"],
             display_name="display_name_value",
+            round_trip=True,
             bypass_firewall_checks=True,
         )
         response = client.get_connectivity_test(request)
@@ -1743,6 +1744,7 @@ def test_get_connectivity_test(request_type, transport: str = "grpc"):
     assert response.protocol == "protocol_value"
     assert response.related_projects == ["related_projects_value"]
     assert response.display_name == "display_name_value"
+    assert response.round_trip is True
     assert response.bypass_firewall_checks is True
 
 
@@ -1884,6 +1886,7 @@ async def test_get_connectivity_test_async(
                 protocol="protocol_value",
                 related_projects=["related_projects_value"],
                 display_name="display_name_value",
+                round_trip=True,
                 bypass_firewall_checks=True,
             )
         )
@@ -1902,6 +1905,7 @@ async def test_get_connectivity_test_async(
     assert response.protocol == "protocol_value"
     assert response.related_projects == ["related_projects_value"]
     assert response.display_name == "display_name_value"
+    assert response.round_trip is True
     assert response.bypass_firewall_checks is True
 
 
@@ -4855,6 +4859,7 @@ async def test_get_connectivity_test_empty_call_grpc_asyncio():
                 protocol="protocol_value",
                 related_projects=["related_projects_value"],
                 display_name="display_name_value",
+                round_trip=True,
                 bypass_firewall_checks=True,
             )
         )
@@ -5159,6 +5164,7 @@ def test_get_connectivity_test_rest_call_success(request_type):
             protocol="protocol_value",
             related_projects=["related_projects_value"],
             display_name="display_name_value",
+            round_trip=True,
             bypass_firewall_checks=True,
         )
 
@@ -5180,6 +5186,7 @@ def test_get_connectivity_test_rest_call_success(request_type):
     assert response.protocol == "protocol_value"
     assert response.related_projects == ["related_projects_value"]
     assert response.display_name == "display_name_value"
+    assert response.round_trip is True
     assert response.bypass_firewall_checks is True
 
 
@@ -5613,6 +5620,8 @@ def test_create_connectivity_test_rest_call_success(request_type):
                 "metropolitan_area": "metropolitan_area_value"
             },
         },
+        "round_trip": True,
+        "return_reachability_details": {},
         "bypass_firewall_checks": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6139,6 +6148,8 @@ def test_update_connectivity_test_rest_call_success(request_type):
                 "metropolitan_area": "metropolitan_area_value"
             },
         },
+        "round_trip": True,
+        "return_reachability_details": {},
         "bypass_firewall_checks": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
