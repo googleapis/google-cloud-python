@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [0.10.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.11...google-cloud-run-v0.10.12) (2024-11-14)
+
+
+### Features
+
+* add EncryptionKeyRevocationAction and shutdown duration configuration to Services ([579e338](https://github.com/googleapis/google-cloud-python/commit/579e3383972c29e991b319a674822e676376691f))
+
+
+### Documentation
+
+* fixed formatting of some documentation ([579e338](https://github.com/googleapis/google-cloud-python/commit/579e3383972c29e991b319a674822e676376691f))
+
 ## [0.10.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.10...google-cloud-run-v0.10.11) (2024-11-11)
 
 

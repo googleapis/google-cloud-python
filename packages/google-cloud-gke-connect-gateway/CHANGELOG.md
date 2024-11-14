@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.9.2...google-cloud-gke-connect-gateway-v0.10.0) (2024-11-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* gRPC support is being removed in favor of HTTP support, as gRPC is not currently supported by Connect Gateway
+* Remove async client which requires gRPC
+* [google-cloud-gke-connect-gateway] Update default transport type for Connect Gateway v1 client to "rest"
+
+### Features
+
+* [google-cloud-gke-connect-gateway] Update default transport type for Connect Gateway v1 client to "rest" ([fd8ae4b](https://github.com/googleapis/google-cloud-python/commit/fd8ae4b2563624d18d6ed9d9a8d8493b9725e777))
+
+
+### Bug Fixes
+
+* gRPC support is being removed in favor of HTTP support, as gRPC is not currently supported by Connect Gateway ([fd8ae4b](https://github.com/googleapis/google-cloud-python/commit/fd8ae4b2563624d18d6ed9d9a8d8493b9725e777))
+* Remove async client which requires gRPC ([fd8ae4b](https://github.com/googleapis/google-cloud-python/commit/fd8ae4b2563624d18d6ed9d9a8d8493b9725e777))
+
 ## [0.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.9.1...google-cloud-gke-connect-gateway-v0.9.2) (2024-11-11)
 
 

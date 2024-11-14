@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.12...google-cloud-quotas-v0.1.13) (2024-11-14)
+
+
+### Features
+
+* A new value `NOT_ENOUGH_USAGE_HISTORY` is added to enum `IneligibilityReason` ([1c9fcd9](https://github.com/googleapis/google-cloud-python/commit/1c9fcd9b38bc2f217bf6298c62c2c2a8ff4fdf16))
+* A new value `NOT_SUPPORTED` is added to enum `IneligibilityReason` ([1c9fcd9](https://github.com/googleapis/google-cloud-python/commit/1c9fcd9b38bc2f217bf6298c62c2c2a8ff4fdf16))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.11...google-cloud-quotas-v0.1.12) (2024-10-31)
 
 

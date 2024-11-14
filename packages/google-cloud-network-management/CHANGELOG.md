@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.21.0...google-cloud-network-management-v1.22.0) (2024-11-14)
+
+
+### Features
+
+* [google-cloud-network-management] add round-trip mode ([cef77c3](https://github.com/googleapis/google-cloud-python/commit/cef77c3870029a75b1196ca32ebf08d75f962093))
+* [google-cloud-network-management] add round-trip mode ([#13280](https://github.com/googleapis/google-cloud-python/issues/13280)) ([cef77c3](https://github.com/googleapis/google-cloud-python/commit/cef77c3870029a75b1196ca32ebf08d75f962093))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.20.0...google-cloud-network-management-v1.21.0) (2024-11-11)
 
 

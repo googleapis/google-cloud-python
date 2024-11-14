@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.13.1...google-cloud-eventarc-v1.13.2) (2024-11-14)
+
+
+### Documentation
+
+* Fixed typo in comments in Eventarc protos ([#13271](https://github.com/googleapis/google-cloud-python/issues/13271)) ([0dc1fc9](https://github.com/googleapis/google-cloud-python/commit/0dc1fc9a71a7f7ba3fe62abc7a13386e6b6c3be2))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.13.0...google-cloud-eventarc-v1.13.1) (2024-11-11)
 
 

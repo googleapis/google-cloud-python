@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-privilegedaccessmanager-v0.1.3...google-cloud-privilegedaccessmanager-v0.1.4) (2024-11-14)
+
+
+### Documentation
+
+* [google-cloud-privilegedaccessmanager] comment fixes ([#13278](https://github.com/googleapis/google-cloud-python/issues/13278)) ([03e1057](https://github.com/googleapis/google-cloud-python/commit/03e105728789b08f96d793ae6e699c34412cba2e))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-privilegedaccessmanager-v0.1.2...google-cloud-privilegedaccessmanager-v0.1.3) (2024-11-11)
 
 
