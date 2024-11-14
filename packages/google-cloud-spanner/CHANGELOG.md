@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.50.1](https://github.com/googleapis/python-spanner/compare/v3.50.0...v3.50.1) (2024-11-14)
+
+
+### Bug Fixes
+
+* Json data type for non object values ([#1236](https://github.com/googleapis/python-spanner/issues/1236)) ([0007be3](https://github.com/googleapis/python-spanner/commit/0007be37a65ff0d4b6b5a1c9ee53d884957c4942))
+* **spanner:** Multi_scm issue in python release ([#1230](https://github.com/googleapis/python-spanner/issues/1230)) ([6d64e9f](https://github.com/googleapis/python-spanner/commit/6d64e9f5ccc811600b5b51a27c19e84ad5957e2a))
+
 ## [3.50.0](https://github.com/googleapis/python-spanner/compare/v3.49.1...v3.50.0) (2024-11-11)
 
 
