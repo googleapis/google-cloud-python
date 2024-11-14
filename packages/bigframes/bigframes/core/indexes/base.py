@@ -328,7 +328,7 @@ class Index(vendored_pandas_index.Index):
         errors: Literal["raise", "null"] = "raise",
     ) -> Index:
         if errors not in ["raise", "null"]:
-            raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
+            raise ValueError("Argument 'errors' must be one of 'raise' or 'null'")
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'astype'")
         return self._apply_unary_expr(

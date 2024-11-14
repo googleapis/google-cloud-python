@@ -105,8 +105,21 @@ class Index:
         impossible, a TypeError exception is raised.
 
         Args:
-            dtype (numpy dtype or pandas type):
-                A dtype supported by BigQuery DataFrames
+            dtype (str or pandas.ExtensionDtype):
+                A dtype supported by BigQuery DataFrame include ``'boolean'``,
+                ``'Float64'``, ``'Int64'``, ``'int64\\[pyarrow\\]'``,
+                ``'string'``, ``'string\\[pyarrow\\]'``,
+                ``'timestamp\\[us, tz=UTC\\]\\[pyarrow\\]'``,
+                ``'timestamp\\[us\\]\\[pyarrow\\]'``,
+                ``'date32\\[day\\]\\[pyarrow\\]'``,
+                ``'time64\\[us\\]\\[pyarrow\\]'``.
+                A pandas.ExtensionDtype include ``pandas.BooleanDtype()``,
+                ``pandas.Float64Dtype()``, ``pandas.Int64Dtype()``,
+                ``pandas.StringDtype(storage="pyarrow")``,
+                ``pd.ArrowDtype(pa.date32())``,
+                ``pd.ArrowDtype(pa.time64("us"))``,
+                ``pd.ArrowDtype(pa.timestamp("us"))``,
+                ``pd.ArrowDtype(pa.timestamp("us", tz="UTC"))``.
             errors ({'raise', 'null'}, default 'raise'):
                 Control raising of exceptions on invalid data for provided dtype.
                 If 'raise', allow exceptions to be raised if any value fails cast

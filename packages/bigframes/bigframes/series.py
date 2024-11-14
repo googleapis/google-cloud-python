@@ -356,7 +356,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         errors: Literal["raise", "null"] = "raise",
     ) -> Series:
         if errors not in ["raise", "null"]:
-            raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
+            raise ValueError("Argument 'errors' must be one of 'raise' or 'null'")
         return self._apply_unary_op(
             bigframes.operations.AsTypeOp(to_type=dtype, safe=(errors == "null"))
         )
