@@ -1597,7 +1597,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                 # Initialize request argument(s)
                 entry = datacatalog_v1.Entry()
-                entry.type_ = "LOOK"
+                entry.type_ = "FEATURE_GROUP"
                 entry.integrated_system = "VERTEX_AI"
                 entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
 
@@ -1744,7 +1744,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                 # Initialize request argument(s)
                 entry = datacatalog_v1.Entry()
-                entry.type_ = "LOOK"
+                entry.type_ = "FEATURE_GROUP"
                 entry.integrated_system = "VERTEX_AI"
                 entry.gcs_fileset_spec.file_patterns = ['file_patterns_value1', 'file_patterns_value2']
 
