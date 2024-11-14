@@ -292,10 +292,9 @@ class PrivilegedAccessManagerGrpcAsyncIOTransport(PrivilegedAccessManagerTranspo
     ]:
         r"""Return a callable for the check onboarding status method over gRPC.
 
-        CheckOnboardingStatus reports the onboarding status
-        for a project/folder/organization. Any findings reported
-        by this API need to be fixed before PAM can be used on
-        the resource.
+        ``CheckOnboardingStatus`` reports the onboarding status for a
+        project/folder/organization. Any findings reported by this API
+        need to be fixed before PAM can be used on the resource.
 
         Returns:
             Callable[[~.CheckOnboardingStatusRequest],
@@ -443,9 +442,9 @@ class PrivilegedAccessManagerGrpcAsyncIOTransport(PrivilegedAccessManagerTranspo
     ]:
         r"""Return a callable for the delete entitlement method over gRPC.
 
-        Deletes a single entitlement. This method can only be
-        called when there are no in-progress
-        (ACTIVE/ACTIVATING/REVOKING) grants under the
+        Deletes a single entitlement. This method can only be called
+        when there are no in-progress
+        (``ACTIVE``/``ACTIVATING``/``REVOKING``) grants under the
         entitlement.
 
         Returns:
@@ -612,7 +611,8 @@ class PrivilegedAccessManagerGrpcAsyncIOTransport(PrivilegedAccessManagerTranspo
     ]:
         r"""Return a callable for the create grant method over gRPC.
 
-        Creates a new grant in a given project and location.
+        Creates a new grant in a given
+        project/folder/organization and location.
 
         Returns:
             Callable[[~.CreateGrantRequest],
