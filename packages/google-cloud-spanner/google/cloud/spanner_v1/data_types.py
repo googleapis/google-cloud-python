@@ -31,6 +31,7 @@ class JsonObject(dict):
     def __init__(self, *args, **kwargs):
         self._is_null = (args, kwargs) == ((), {}) or args == (None,)
         self._is_array = len(args) and isinstance(args[0], (list, tuple))
+        self._is_scalar_value = len(args) == 1 and not isinstance(args[0], (list, dict))
 
         # if the JSON object is represented with an array,
         # the value is contained separately
@@ -38,10 +39,18 @@ class JsonObject(dict):
             self._array_value = args[0]
             return
 
+        # If it's a scalar value, set _simple_value and return early
+        if self._is_scalar_value:
+            self._simple_value = args[0]
+            return
+
         if len(args) and isinstance(args[0], JsonObject):
             self._is_array = args[0]._is_array
+            self._is_scalar_value = args[0]._is_scalar_value
             if self._is_array:
                 self._array_value = args[0]._array_value
+            elif self._is_scalar_value:
+                self._simple_value = args[0]._simple_value
 
         if not self._is_null:
             super(JsonObject, self).__init__(*args, **kwargs)
@@ -49,6 +58,9 @@ class JsonObject(dict):
     def __repr__(self):
         if self._is_array:
             return str(self._array_value)
+
+        if self._is_scalar_value:
+            return str(self._simple_value)
 
         return super(JsonObject, self).__repr__()
 
@@ -75,6 +87,9 @@ class JsonObject(dict):
         """
         if self._is_null:
             return None
+
+        if self._is_scalar_value:
+            return json.dumps(self._simple_value)
 
         if self._is_array:
             return json.dumps(self._array_value, sort_keys=True, separators=(",", ":"))

@@ -43,3 +43,56 @@ class Test_JsonObject_serde(unittest.TestCase):
         expected = json.dumps(data, sort_keys=True, separators=(",", ":"))
         data_jsonobject = JsonObject(JsonObject(data))
         self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_simple_float_JsonData(self):
+        data = 1.1
+        expected = json.dumps(data)
+        data_jsonobject = JsonObject(data)
+        self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_simple_str_JsonData(self):
+        data = "foo"
+        expected = json.dumps(data)
+        data_jsonobject = JsonObject(data)
+        self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_empty_str_JsonData(self):
+        data = ""
+        expected = json.dumps(data)
+        data_jsonobject = JsonObject(data)
+        self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_None_JsonData(self):
+        data = None
+        data_jsonobject = JsonObject(data)
+        self.assertEqual(data_jsonobject.serialize(), None)
+
+    def test_w_list_of_simple_JsonData(self):
+        data = [1.1, "foo"]
+        expected = json.dumps(data, sort_keys=True, separators=(",", ":"))
+        data_jsonobject = JsonObject(data)
+        self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_empty_list(self):
+        data = []
+        expected = json.dumps(data)
+        data_jsonobject = JsonObject(data)
+        self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_empty_dict(self):
+        data = [{}]
+        expected = json.dumps(data)
+        data_jsonobject = JsonObject(data)
+        self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_JsonObject_of_simple_JsonData(self):
+        data = 1.1
+        expected = json.dumps(data)
+        data_jsonobject = JsonObject(JsonObject(data))
+        self.assertEqual(data_jsonobject.serialize(), expected)
+
+    def test_w_JsonObject_of_list_of_simple_JsonData(self):
+        data = [1.1, "foo"]
+        expected = json.dumps(data, sort_keys=True, separators=(",", ":"))
+        data_jsonobject = JsonObject(JsonObject(data))
+        self.assertEqual(data_jsonobject.serialize(), expected)
