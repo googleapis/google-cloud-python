@@ -94,6 +94,8 @@ class ConversationsAsyncClient:
     parse_cx_security_settings_path = staticmethod(
         ConversationsClient.parse_cx_security_settings_path
     )
+    data_store_path = staticmethod(ConversationsClient.data_store_path)
+    parse_data_store_path = staticmethod(ConversationsClient.parse_data_store_path)
     document_path = staticmethod(ConversationsClient.document_path)
     parse_document_path = staticmethod(ConversationsClient.parse_document_path)
     generator_path = staticmethod(ConversationsClient.generator_path)
