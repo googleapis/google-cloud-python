@@ -277,7 +277,7 @@ class Entitlement(proto.Message):
         )
 
     class AdditionalNotificationTargets(proto.Message):
-        r"""AdditionalNotificationTargets includes email addresses to be
+        r"""``AdditionalNotificationTargets`` includes email addresses to be
         notified.
 
         Attributes:
@@ -355,8 +355,7 @@ class Entitlement(proto.Message):
 
 
 class AccessControlEntry(proto.Message):
-    r"""AccessControlEntry is used to control who can do some
-    operation.
+    r"""``AccessControlEntry`` is used to control who can do some operation.
 
     Attributes:
         principals (MutableSequence[str]):
@@ -486,7 +485,7 @@ class PrivilegedAccess(proto.Message):
     """
 
     class GcpIamAccess(proto.Message):
-        r"""GcpIamAccess represents IAM based access control on a Google
+        r"""``GcpIamAccess`` represents IAM based access control on a Google
         Cloud resource. Refer to https://cloud.google.com/iam/docs to
         understand more about IAM.
 
@@ -501,7 +500,7 @@ class PrivilegedAccess(proto.Message):
         """
 
         class RoleBinding(proto.Message):
-            r"""IAM Role bindings that are created after a successful grant.
+            r"""IAM role bindings that are created after a successful grant.
 
             Attributes:
                 role (str):
@@ -772,7 +771,7 @@ class CreateEntitlementRequest(proto.Message):
             so, ignores the second request and returns the
             previous operation's response. This prevents
             clients from accidentally creating duplicate
-            commitments.
+            entitlements.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -817,9 +816,7 @@ class DeleteEntitlementRequest(proto.Message):
             you make the request again with the same request
             ID, the server can check if original operation
             with the same request ID was received, and if
-            so, ignores the second request. This prevents
-            clients from accidentally creating duplicate
-            commitments.
+            so, ignores the second request.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -879,10 +876,8 @@ class UpdateEntitlementRequest(proto.Message):
 
 
 class Grant(proto.Message):
-    r"""This is to ensure that the ``Grants`` and ``ProducerGrants`` proto
-    are byte compatible. A grant represents a request from a user for
-    obtaining the access specified in an entitlement they are eligible
-    for.
+    r"""A grant represents a request from a user for obtaining the
+    access specified in an entitlement they are eligible for.
 
     Attributes:
         name (str):
@@ -1643,7 +1638,7 @@ class CreateGrantRequest(proto.Message):
             with the same request ID was received, and if
             so, ignores the second request. This prevents
             clients from accidentally creating duplicate
-            commitments.
+            grants.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported

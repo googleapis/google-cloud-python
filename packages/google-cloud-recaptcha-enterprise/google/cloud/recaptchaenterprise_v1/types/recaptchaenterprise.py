@@ -1315,6 +1315,9 @@ class RiskAnalysis(proto.Message):
             Output only. Extended verdict reasons to be
             used for experimentation only. The set of
             possible reasons is subject to change.
+        challenge (google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.Challenge):
+            Output only. Challenge information for SCORE_AND_CHALLENGE
+            keys
     """
 
     class ClassificationReason(proto.Enum):
@@ -1355,6 +1358,25 @@ class RiskAnalysis(proto.Message):
         SUSPECTED_CARDING = 6
         SUSPECTED_CHARGEBACK = 7
 
+    class Challenge(proto.Enum):
+        r"""Challenge information for SCORE_AND_CHALLENGE keys
+
+        Values:
+            CHALLENGE_UNSPECIFIED (0):
+                Default unspecified type.
+            NOCAPTCHA (1):
+                No challenge was presented for solving.
+            PASSED (2):
+                A solution was submitted that was correct.
+            FAILED (3):
+                A solution was submitted that was incorrect
+                or otherwise deemed suspicious.
+        """
+        CHALLENGE_UNSPECIFIED = 0
+        NOCAPTCHA = 1
+        PASSED = 2
+        FAILED = 3
+
     score: float = proto.Field(
         proto.FLOAT,
         number=1,
@@ -1367,6 +1389,11 @@ class RiskAnalysis(proto.Message):
     extended_verdict_reasons: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    challenge: Challenge = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Challenge,
     )
 
 

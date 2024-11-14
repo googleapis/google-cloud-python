@@ -46,8 +46,9 @@ class Tag(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the tag in URL format
-            where tag ID is a system-generated identifier.
+            Identifier. The resource name of the tag in
+            URL format where tag ID is a system-generated
+            identifier.
 
             Note: The tag itself might not be stored in the
             location specified in its name.
@@ -234,8 +235,8 @@ class TagTemplate(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the tag template in URL
-            format.
+            Identifier. The resource name of the tag
+            template in URL format.
             Note: The tag template itself and its child
             resources might not be stored in the location
             specified in its name.
@@ -268,7 +269,28 @@ class TagTemplate(proto.Message):
             -  Must be at least 1 character and at most 64 characters
                long.
             -  Must start with a letter or underscore.
+        dataplex_transfer_status (google.cloud.datacatalog_v1.types.TagTemplate.DataplexTransferStatus):
+            Optional. Transfer status of the TagTemplate
     """
+
+    class DataplexTransferStatus(proto.Enum):
+        r"""This enum describes TagTemplate transfer status to Dataplex
+        service.
+
+        Values:
+            DATAPLEX_TRANSFER_STATUS_UNSPECIFIED (0):
+                Default value. TagTemplate and its tags are
+                only visible and editable in DataCatalog.
+            MIGRATED (1):
+                TagTemplate and its tags are auto-copied to
+                Dataplex service. Visible in both services.
+                Editable in DataCatalog, read-only in Dataplex.
+                Deprecated: Individual TagTemplate migration is
+                deprecated in favor of organization or project
+                wide TagTemplate migration opt-in.
+        """
+        DATAPLEX_TRANSFER_STATUS_UNSPECIFIED = 0
+        MIGRATED = 1
 
     name: str = proto.Field(
         proto.STRING,
@@ -288,6 +310,11 @@ class TagTemplate(proto.Message):
         number=3,
         message="TagTemplateField",
     )
+    dataplex_transfer_status: DataplexTransferStatus = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=DataplexTransferStatus,
+    )
 
 
 class TagTemplateField(proto.Message):
@@ -295,7 +322,7 @@ class TagTemplateField(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the tag template field in
+            Identifier. The resource name of the tag template field in
             URL format. Example:
 
             ``projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}``

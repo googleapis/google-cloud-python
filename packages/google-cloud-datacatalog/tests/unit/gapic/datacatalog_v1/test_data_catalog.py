@@ -6062,6 +6062,7 @@ def test_create_tag_template(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             is_publicly_readable=True,
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
         )
         response = client.create_tag_template(request)
 
@@ -6076,6 +6077,10 @@ def test_create_tag_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_publicly_readable is True
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_create_tag_template_non_empty_request_with_auto_populated_field():
@@ -6214,6 +6219,7 @@ async def test_create_tag_template_async(
                 name="name_value",
                 display_name="display_name_value",
                 is_publicly_readable=True,
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.create_tag_template(request)
@@ -6229,6 +6235,10 @@ async def test_create_tag_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_publicly_readable is True
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
@@ -6427,6 +6437,7 @@ def test_get_tag_template(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             is_publicly_readable=True,
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
         )
         response = client.get_tag_template(request)
 
@@ -6441,6 +6452,10 @@ def test_get_tag_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_publicly_readable is True
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_get_tag_template_non_empty_request_with_auto_populated_field():
@@ -6571,6 +6586,7 @@ async def test_get_tag_template_async(
                 name="name_value",
                 display_name="display_name_value",
                 is_publicly_readable=True,
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.get_tag_template(request)
@@ -6586,6 +6602,10 @@ async def test_get_tag_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_publicly_readable is True
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
@@ -6758,6 +6778,7 @@ def test_update_tag_template(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             is_publicly_readable=True,
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
         )
         response = client.update_tag_template(request)
 
@@ -6772,6 +6793,10 @@ def test_update_tag_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_publicly_readable is True
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_update_tag_template_non_empty_request_with_auto_populated_field():
@@ -6904,6 +6929,7 @@ async def test_update_tag_template_async(
                 name="name_value",
                 display_name="display_name_value",
                 is_publicly_readable=True,
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.update_tag_template(request)
@@ -6919,6 +6945,10 @@ async def test_update_tag_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_publicly_readable is True
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
@@ -14129,6 +14159,7 @@ async def test_create_tag_template_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 is_publicly_readable=True,
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         await client.create_tag_template(request=None)
@@ -14158,6 +14189,7 @@ async def test_get_tag_template_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 is_publicly_readable=True,
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         await client.get_tag_template(request=None)
@@ -14189,6 +14221,7 @@ async def test_update_tag_template_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 is_publicly_readable=True,
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         await client.update_tag_template(request=None)

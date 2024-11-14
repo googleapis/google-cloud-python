@@ -162,6 +162,7 @@ __protobuf__ = proto.module(
         "Automation",
         "AutomationResourceSelector",
         "AutomationRule",
+        "TimedPromoteReleaseRule",
         "PromoteReleaseRule",
         "AdvanceRolloutRule",
         "RepairRolloutRule",
@@ -169,6 +170,7 @@ __protobuf__ = proto.module(
         "Retry",
         "Rollback",
         "AutomationRuleCondition",
+        "TimedPromoteReleaseCondition",
         "CreateAutomationRequest",
         "UpdateAutomationRequest",
         "DeleteAutomationRequest",
@@ -179,6 +181,7 @@ __protobuf__ = proto.module(
         "PromoteReleaseOperation",
         "AdvanceRolloutOperation",
         "RepairRolloutOperation",
+        "TimedPromoteReleaseOperation",
         "RepairPhase",
         "RetryPhase",
         "RetryAttempt",
@@ -6518,6 +6521,12 @@ class AutomationRule(proto.Message):
             repair a failed rollout.
 
             This field is a member of `oneof`_ ``rule``.
+        timed_promote_release_rule (google.cloud.deploy_v1.types.TimedPromoteReleaseRule):
+            Optional. The ``TimedPromoteReleaseRule`` will automatically
+            promote a release from the current target(s) to the
+            specified target(s) on a configured schedule.
+
+            This field is a member of `oneof`_ ``rule``.
     """
 
     promote_release_rule: "PromoteReleaseRule" = proto.Field(
@@ -6537,6 +6546,73 @@ class AutomationRule(proto.Message):
         number=3,
         oneof="rule",
         message="RepairRolloutRule",
+    )
+    timed_promote_release_rule: "TimedPromoteReleaseRule" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="rule",
+        message="TimedPromoteReleaseRule",
+    )
+
+
+class TimedPromoteReleaseRule(proto.Message):
+    r"""The ``TimedPromoteReleaseRule`` will automatically promote a release
+    from the current target(s) to the specified target(s) on a
+    configured schedule.
+
+    Attributes:
+        id (str):
+            Required. ID of the rule. This ID must be unique in the
+            ``Automation`` resource to which this rule belongs. The
+            format is ``[a-z]([a-z0-9-]{0,61}[a-z0-9])?``.
+        destination_target_id (str):
+            Optional. The ID of the stage in the pipeline to which this
+            ``Release`` is deploying. If unspecified, default it to the
+            next stage in the promotion flow. The value of this field
+            could be one of the following:
+
+            -  The last segment of a target name
+            -  "@next", the next target in the promotion sequence
+        schedule (str):
+            Required. Schedule in crontab format. e.g. "0 9 \* \* 1" for
+            every Monday at 9am.
+        time_zone (str):
+            Required. The time zone in IANA format `IANA Time Zone
+            Database <https://www.iana.org/time-zones>`__ (e.g.
+            America/New_York).
+        condition (google.cloud.deploy_v1.types.AutomationRuleCondition):
+            Output only. Information around the state of
+            the Automation rule.
+        destination_phase (str):
+            Optional. The starting phase of the rollout
+            created by this rule. Default to the first
+            phase.
+    """
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    destination_target_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    schedule: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    condition: "AutomationRuleCondition" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="AutomationRuleCondition",
+    )
+    destination_phase: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -6791,16 +6867,76 @@ class AutomationRuleCondition(proto.Message):
     r"""``AutomationRuleCondition`` contains conditions relevant to an
     ``Automation`` rule.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         targets_present_condition (google.cloud.deploy_v1.types.TargetsPresentCondition):
             Optional. Details around targets enumerated
             in the rule.
+        timed_promote_release_condition (google.cloud.deploy_v1.types.TimedPromoteReleaseCondition):
+            Optional. TimedPromoteReleaseCondition
+            contains rule conditions specific to a an
+            Automation with a timed promote release rule
+            defined.
+
+            This field is a member of `oneof`_ ``rule_type_condition``.
     """
 
     targets_present_condition: "TargetsPresentCondition" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="TargetsPresentCondition",
+    )
+    timed_promote_release_condition: "TimedPromoteReleaseCondition" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="rule_type_condition",
+        message="TimedPromoteReleaseCondition",
+    )
+
+
+class TimedPromoteReleaseCondition(proto.Message):
+    r"""``TimedPromoteReleaseCondition`` contains conditions specific to an
+    Automation with a Timed Promote Release rule defined.
+
+    Attributes:
+        next_promotion_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. When the next scheduled
+            promotion(s) will occur.
+        targets_list (MutableSequence[google.cloud.deploy_v1.types.TimedPromoteReleaseCondition.Targets]):
+            Output only. A list of targets involved in
+            the upcoming timed promotion(s).
+    """
+
+    class Targets(proto.Message):
+        r"""The targets involved in a single timed promotion.
+
+        Attributes:
+            source_target_id (str):
+                Optional. The source target ID.
+            destination_target_id (str):
+                Optional. The destination target ID.
+        """
+
+        source_target_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        destination_target_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    next_promotion_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    targets_list: MutableSequence[Targets] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Targets,
     )
 
 
@@ -7131,9 +7267,9 @@ class AutomationRun(proto.Message):
             Output only. Snapshot of the Automation taken
             at AutomationRun creation time.
         target_id (str):
-            Output only. The ID of the target that represents the
-            promotion stage that initiates the ``AutomationRun``. The
-            value of this field is the last segment of a target name.
+            Output only. The ID of the source target that initiates the
+            ``AutomationRun``. The value of this field is the last
+            segment of a target name.
         state (google.cloud.deploy_v1.types.AutomationRun.State):
             Output only. Current state of the ``AutomationRun``.
         state_description (str):
@@ -7165,6 +7301,12 @@ class AutomationRun(proto.Message):
             This field is a member of `oneof`_ ``operation``.
         repair_rollout_operation (google.cloud.deploy_v1.types.RepairRolloutOperation):
             Output only. Repairs a failed 'Rollout'.
+
+            This field is a member of `oneof`_ ``operation``.
+        timed_promote_release_operation (google.cloud.deploy_v1.types.TimedPromoteReleaseOperation):
+            Output only. Promotes a release to a
+            specified 'Target' as defined in a Timed Promote
+            Release rule.
 
             This field is a member of `oneof`_ ``operation``.
         wait_until_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -7275,6 +7417,12 @@ class AutomationRun(proto.Message):
         number=17,
         oneof="operation",
         message="RepairRolloutOperation",
+    )
+    timed_promote_release_operation: "TimedPromoteReleaseOperation" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        oneof="operation",
+        message="TimedPromoteReleaseOperation",
     )
     wait_until_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -7404,6 +7552,38 @@ class RepairRolloutOperation(proto.Message):
     job_id: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class TimedPromoteReleaseOperation(proto.Message):
+    r"""Contains the information of an automated timed
+    promote-release operation.
+
+    Attributes:
+        target_id (str):
+            Output only. The ID of the target that
+            represents the promotion stage to which the
+            release will be promoted. The value of this
+            field is the last segment of a target name.
+        release (str):
+            Output only. The name of the release to be
+            promoted.
+        phase (str):
+            Output only. The starting phase of the
+            rollout created by this operation.
+    """
+
+    target_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    release: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    phase: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

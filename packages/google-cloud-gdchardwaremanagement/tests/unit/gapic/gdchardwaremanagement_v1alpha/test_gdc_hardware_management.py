@@ -12996,6 +12996,7 @@ def test_get_zone(request_type, transport: str = "grpc"):
             state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
             ciq_uri="ciq_uri_value",
             globally_unique_id="globally_unique_id_value",
+            provisioning_state=resources.Zone.ProvisioningState.PROVISIONING_REQUIRED,
         )
         response = client.get_zone(request)
 
@@ -13012,6 +13013,10 @@ def test_get_zone(request_type, transport: str = "grpc"):
     assert response.state == resources.Zone.State.ADDITIONAL_INFO_NEEDED
     assert response.ciq_uri == "ciq_uri_value"
     assert response.globally_unique_id == "globally_unique_id_value"
+    assert (
+        response.provisioning_state
+        == resources.Zone.ProvisioningState.PROVISIONING_REQUIRED
+    )
 
 
 def test_get_zone_non_empty_request_with_auto_populated_field():
@@ -13140,6 +13145,7 @@ async def test_get_zone_async(
                 state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
                 ciq_uri="ciq_uri_value",
                 globally_unique_id="globally_unique_id_value",
+                provisioning_state=resources.Zone.ProvisioningState.PROVISIONING_REQUIRED,
             )
         )
         response = await client.get_zone(request)
@@ -13157,6 +13163,10 @@ async def test_get_zone_async(
     assert response.state == resources.Zone.State.ADDITIONAL_INFO_NEEDED
     assert response.ciq_uri == "ciq_uri_value"
     assert response.globally_unique_id == "globally_unique_id_value"
+    assert (
+        response.provisioning_state
+        == resources.Zone.ProvisioningState.PROVISIONING_REQUIRED
+    )
 
 
 @pytest.mark.asyncio
@@ -21668,15 +21678,7 @@ def test_signal_zone_state_rest_unset_required_fields():
     )
 
     unset_fields = transport.signal_zone_state._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "stateSignal",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_signal_zone_state_rest_flattened():
@@ -23471,6 +23473,7 @@ async def test_get_zone_empty_call_grpc_asyncio():
                 state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
                 ciq_uri="ciq_uri_value",
                 globally_unique_id="globally_unique_id_value",
+                provisioning_state=resources.Zone.ProvisioningState.PROVISIONING_REQUIRED,
             )
         )
         await client.get_zone(request=None)
@@ -26459,7 +26462,13 @@ def test_create_hardware_rest_call_success(request_type):
         "machine_infos": [
             {
                 "service_tag": "service_tag_value",
-                "mac_addresses": [{"address": "address_value", "type_": 1}],
+                "mac_addresses": [
+                    {
+                        "address": "address_value",
+                        "type_": 1,
+                        "ipv4_address": "ipv4_address_value",
+                    }
+                ],
                 "name": "name_value",
                 "disk_infos": [
                     {
@@ -26697,7 +26706,13 @@ def test_update_hardware_rest_call_success(request_type):
         "machine_infos": [
             {
                 "service_tag": "service_tag_value",
-                "mac_addresses": [{"address": "address_value", "type_": 1}],
+                "mac_addresses": [
+                    {
+                        "address": "address_value",
+                        "type_": 1,
+                        "ipv4_address": "ipv4_address_value",
+                    }
+                ],
                 "name": "name_value",
                 "disk_infos": [
                     {
@@ -28181,6 +28196,7 @@ def test_get_zone_rest_call_success(request_type):
             state=resources.Zone.State.ADDITIONAL_INFO_NEEDED,
             ciq_uri="ciq_uri_value",
             globally_unique_id="globally_unique_id_value",
+            provisioning_state=resources.Zone.ProvisioningState.PROVISIONING_REQUIRED,
         )
 
         # Wrap the value into a proper Response obj
@@ -28201,6 +28217,10 @@ def test_get_zone_rest_call_success(request_type):
     assert response.state == resources.Zone.State.ADDITIONAL_INFO_NEEDED
     assert response.ciq_uri == "ciq_uri_value"
     assert response.globally_unique_id == "globally_unique_id_value"
+    assert (
+        response.provisioning_state
+        == resources.Zone.ProvisioningState.PROVISIONING_REQUIRED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -28331,6 +28351,11 @@ def test_create_zone_rest_call_success(request_type):
                 "default_gateway_ip_address": "default_gateway_ip_address_value",
             },
             "kubernetes_ipv4_subnet": {},
+            "dns_ipv4_addresses": [
+                "dns_ipv4_addresses_value1",
+                "dns_ipv4_addresses_value2",
+            ],
+            "kubernetes_primary_vlan_id": 2775,
         },
         "globally_unique_id": "globally_unique_id_value",
         "subscription_configs": [
@@ -28340,6 +28365,7 @@ def test_create_zone_rest_call_success(request_type):
                 "state": 1,
             }
         ],
+        "provisioning_state": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -28561,6 +28587,11 @@ def test_update_zone_rest_call_success(request_type):
                 "default_gateway_ip_address": "default_gateway_ip_address_value",
             },
             "kubernetes_ipv4_subnet": {},
+            "dns_ipv4_addresses": [
+                "dns_ipv4_addresses_value1",
+                "dns_ipv4_addresses_value2",
+            ],
+            "kubernetes_primary_vlan_id": 2775,
         },
         "globally_unique_id": "globally_unique_id_value",
         "subscription_configs": [
@@ -28570,6 +28601,7 @@ def test_update_zone_rest_call_success(request_type):
                 "state": 1,
             }
         ],
+        "provisioning_state": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

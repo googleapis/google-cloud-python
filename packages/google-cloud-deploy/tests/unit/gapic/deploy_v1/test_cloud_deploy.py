@@ -36229,7 +36229,16 @@ def test_create_automation_rest_call_success(request_type):
                                 "missing_targets_value2",
                             ],
                             "update_time": {},
-                        }
+                        },
+                        "timed_promote_release_condition": {
+                            "next_promotion_time": {},
+                            "targets_list": [
+                                {
+                                    "source_target_id": "source_target_id_value",
+                                    "destination_target_id": "destination_target_id_value",
+                                }
+                            ],
+                        },
                     },
                     "destination_phase": "destination_phase_value",
                 },
@@ -36253,6 +36262,14 @@ def test_create_automation_rest_call_success(request_type):
                             },
                         }
                     ],
+                },
+                "timed_promote_release_rule": {
+                    "id": "id_value",
+                    "destination_target_id": "destination_target_id_value",
+                    "schedule": "schedule_value",
+                    "time_zone": "time_zone_value",
+                    "condition": {},
+                    "destination_phase": "destination_phase_value",
                 },
             }
         ],
@@ -36473,7 +36490,16 @@ def test_update_automation_rest_call_success(request_type):
                                 "missing_targets_value2",
                             ],
                             "update_time": {},
-                        }
+                        },
+                        "timed_promote_release_condition": {
+                            "next_promotion_time": {},
+                            "targets_list": [
+                                {
+                                    "source_target_id": "source_target_id_value",
+                                    "destination_target_id": "destination_target_id_value",
+                                }
+                            ],
+                        },
                     },
                     "destination_phase": "destination_phase_value",
                 },
@@ -36497,6 +36523,14 @@ def test_update_automation_rest_call_success(request_type):
                             },
                         }
                     ],
+                },
+                "timed_promote_release_rule": {
+                    "id": "id_value",
+                    "destination_target_id": "destination_target_id_value",
+                    "schedule": "schedule_value",
+                    "time_zone": "time_zone_value",
+                    "condition": {},
+                    "destination_phase": "destination_phase_value",
                 },
             }
         ],

@@ -4619,7 +4619,6 @@ class GDCHardwareManagementAsyncClient:
                 # Initialize request argument(s)
                 request = gdchardwaremanagement_v1alpha.SignalZoneStateRequest(
                     name="name_value",
-                    state_signal="FACTORY_TURNUP_CHECKS_FAILED",
                 )
 
                 # Make the request
@@ -4644,8 +4643,9 @@ class GDCHardwareManagementAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             state_signal (:class:`google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.StateSignal`):
-                Required. The state signal to send
-                for this zone.
+                Optional. The state signal to send for this zone. Either
+                state_signal or provisioning_state_signal must be set,
+                but not both.
 
                 This corresponds to the ``state_signal`` field
                 on the ``request`` instance; if ``request`` is provided, this

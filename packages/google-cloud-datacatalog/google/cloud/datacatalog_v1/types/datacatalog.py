@@ -62,6 +62,7 @@ __protobuf__ = proto.module(
         "VertexModelSpec",
         "VertexDatasetSpec",
         "ModelSpec",
+        "FeatureOnlineStoreSpec",
         "BusinessContext",
         "EntryOverview",
         "Contacts",
@@ -161,6 +162,15 @@ class EntryType(proto.Enum):
 
             For more information, see [Looker Look API]
             (https://developers.looker.com/api/explorer/4.0/methods/Look).
+        FEATURE_ONLINE_STORE (19):
+            Feature Online Store resource in Vertex AI
+            Feature Store.
+        FEATURE_VIEW (20):
+            Feature View resource in Vertex AI Feature
+            Store.
+        FEATURE_GROUP (21):
+            Feature Group resource in Vertex AI Feature
+            Store.
     """
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
@@ -178,6 +188,9 @@ class EntryType(proto.Enum):
     DASHBOARD = 16
     EXPLORE = 17
     LOOK = 18
+    FEATURE_ONLINE_STORE = 19
+    FEATURE_VIEW = 20
+    FEATURE_GROUP = 21
 
 
 class SearchCatalogRequest(proto.Message):
@@ -807,8 +820,8 @@ class Entry(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of an entry in
-            URL format.
+            Output only. Identifier. The resource name of
+            an entry in URL format.
             Note: The entry itself and its child resources
             might not be stored in the location specified in
             its name.
@@ -952,6 +965,11 @@ class Entry(proto.Message):
             This field is a member of `oneof`_ ``spec``.
         model_spec (google.cloud.datacatalog_v1.types.ModelSpec):
             Model specification.
+
+            This field is a member of `oneof`_ ``spec``.
+        feature_online_store_spec (google.cloud.datacatalog_v1.types.FeatureOnlineStoreSpec):
+            FeatureonlineStore spec for Vertex AI Feature
+            Store.
 
             This field is a member of `oneof`_ ``spec``.
         display_name (str):
@@ -1111,6 +1129,12 @@ class Entry(proto.Message):
         number=43,
         oneof="spec",
         message="ModelSpec",
+    )
+    feature_online_store_spec: "FeatureOnlineStoreSpec" = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        oneof="spec",
+        message="FeatureOnlineStoreSpec",
     )
     display_name: str = proto.Field(
         proto.STRING,
@@ -1644,12 +1668,22 @@ class VertexModelSourceInfo(proto.Message):
             MODEL_GARDEN (4):
                 The Model is saved or tuned from Model
                 Garden.
+            GENIE (5):
+                The Model is saved or tuned from Genie.
+            CUSTOM_TEXT_EMBEDDING (6):
+                The Model is uploaded by text embedding
+                finetuning pipeline.
+            MARKETPLACE (7):
+                The Model is saved or tuned from Marketplace.
         """
         MODEL_SOURCE_TYPE_UNSPECIFIED = 0
         AUTOML = 1
         CUSTOM = 2
         BQML = 3
         MODEL_GARDEN = 4
+        GENIE = 5
+        CUSTOM_TEXT_EMBEDDING = 6
+        MARKETPLACE = 7
 
     source_type: ModelSourceType = proto.Field(
         proto.ENUM,
@@ -1805,6 +1839,39 @@ class ModelSpec(proto.Message):
     )
 
 
+class FeatureOnlineStoreSpec(proto.Message):
+    r"""Detail description of the source information of a Vertex
+    Feature Online Store.
+
+    Attributes:
+        storage_type (google.cloud.datacatalog_v1.types.FeatureOnlineStoreSpec.StorageType):
+            Output only. Type of underelaying storage for
+            the FeatureOnlineStore.
+    """
+
+    class StorageType(proto.Enum):
+        r"""Type of underlaying storage type.
+
+        Values:
+            STORAGE_TYPE_UNSPECIFIED (0):
+                Should not be used.
+            BIGTABLE (1):
+                Underlsying storgae is Bigtable.
+            OPTIMIZED (2):
+                Underlaying is optimized online server
+                (Lightning).
+        """
+        STORAGE_TYPE_UNSPECIFIED = 0
+        BIGTABLE = 1
+        OPTIMIZED = 2
+
+    storage_type: StorageType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=StorageType,
+    )
+
+
 class BusinessContext(proto.Message):
     r"""Business Context of the entry.
 
@@ -1894,8 +1961,8 @@ class EntryGroup(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the entry group in URL
-            format.
+            Identifier. The resource name of the entry
+            group in URL format.
             Note: The entry group itself and its child
             resources might not be stored in the location
             specified in its name.

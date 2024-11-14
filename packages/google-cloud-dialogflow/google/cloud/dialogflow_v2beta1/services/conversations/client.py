@@ -307,6 +307,30 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def data_store_path(
+        project: str,
+        location: str,
+        collection: str,
+        data_store: str,
+    ) -> str:
+        """Returns a fully-qualified data_store string."""
+        return "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}".format(
+            project=project,
+            location=location,
+            collection=collection,
+            data_store=data_store,
+        )
+
+    @staticmethod
+    def parse_data_store_path(path: str) -> Dict[str, str]:
+        """Parses a data_store path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)/dataStores/(?P<data_store>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def document_path(
         project: str,
         knowledge_base: str,

@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -208,9 +209,9 @@ class CreateConversationRequest(proto.Message):
             the response to return a auto-generated one to you.
 
             The conversation ID must be compliant with the regression
-            fomula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters length
-            in range of [3,64]. If the field is provided, the caller is
-            resposible for
+            formula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters
+            length in range of [3,64]. If the field is provided, the
+            caller is responsible for
 
             1. the uniqueness of the ID, otherwise the request will be
                rejected.
@@ -861,7 +862,307 @@ class SearchKnowledgeRequest(proto.Message):
             Optional. The name of the latest conversation message when
             the request is triggered. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        query_source (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.QuerySource):
+            Optional. The source of the query in the
+            request.
+        end_user_metadata (google.protobuf.struct_pb2.Struct):
+            Optional. Information about the end-user to improve the
+            relevance and accuracy of generative answers.
+
+            This will be interpreted and used by a language model, so,
+            for good results, the data should be self-descriptive, and
+            in a simple structure.
+
+            Example:
+
+            .. code:: json
+
+               {
+                 "subscription plan": "Business Premium Plus",
+                 "devices owned": [
+                   {"model": "Google Pixel 7"},
+                   {"model": "Google Pixel Tablet"}
+                 ]
+               }
+        search_config (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig):
+            Optional. Configuration specific to search
+            queries with data stores.
+        exact_search (bool):
+            Optional. Whether to search the query exactly
+            without query rewrite.
     """
+
+    class QuerySource(proto.Enum):
+        r"""The source of the query. We use QuerySource to distinguish queries
+        directly entered by agents and suggested queries from
+        [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2beta1.Participants.SuggestKnowledgeAssist].
+        If SUGGESTED_QUERY source is specified, we will treat it as a
+        continuation of a SuggestKnowledgeAssist call.
+
+        Values:
+            QUERY_SOURCE_UNSPECIFIED (0):
+                Unknown query source.
+            AGENT_QUERY (1):
+                The query is from agents.
+            SUGGESTED_QUERY (2):
+                The query is a suggested query from
+                [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2beta1.Participants.SuggestKnowledgeAssist].
+        """
+        QUERY_SOURCE_UNSPECIFIED = 0
+        AGENT_QUERY = 1
+        SUGGESTED_QUERY = 2
+
+    class SearchConfig(proto.Message):
+        r"""Configuration specific to search queries with data stores.
+
+        Attributes:
+            boost_specs (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs]):
+                Optional. Boost specifications for data
+                stores.
+            filter_specs (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.FilterSpecs]):
+                Optional. Filter specification for data store
+                queries.
+        """
+
+        class BoostSpecs(proto.Message):
+            r"""Boost specifications for data stores.
+
+            Attributes:
+                data_stores (MutableSequence[str]):
+                    Optional. Data Stores where the boosting configuration is
+                    applied. The full names of the referenced data stores.
+                    Formats:
+                    ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
+                    ``projects/{project}/locations/{location}/dataStores/{data_store}``
+                spec (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec]):
+                    Optional. A list of boosting specifications.
+            """
+
+            class BoostSpec(proto.Message):
+                r"""Boost specification to boost certain documents.
+                A copy of google.cloud.discoveryengine.v1main.BoostSpec, field
+                documentation is available at
+                https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1alpha/BoostSpec
+
+                Attributes:
+                    condition_boost_specs (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec]):
+                        Optional. Condition boost specifications. If
+                        a document matches multiple conditions in the
+                        specifictions, boost scores from these
+                        specifications are all applied and combined in a
+                        non-linear way. Maximum number of specifications
+                        is 20.
+                """
+
+                class ConditionBoostSpec(proto.Message):
+                    r"""Boost applies to documents which match a condition.
+
+                    Attributes:
+                        condition (str):
+                            Optional. An expression which specifies a boost condition.
+                            The syntax and supported fields are the same as a filter
+                            expression. Examples:
+
+                            -  To boost documents with document ID "doc_1" or "doc_2",
+                               and color "Red" or "Blue":
+
+                               -  (id: ANY("doc_1", "doc_2")) AND (color:
+                                  ANY("Red","Blue"))
+                        boost (float):
+                            Optional. Strength of the condition boost, which should be
+                            in [-1, 1]. Negative boost means demotion. Default is 0.0.
+
+                            Setting to 1.0 gives the document a big promotion. However,
+                            it does not necessarily mean that the boosted document will
+                            be the top result at all times, nor that other documents
+                            will be excluded. Results could still be shown even when
+                            none of them matches the condition. And results that are
+                            significantly more relevant to the search query can still
+                            trump your heavily favored but irrelevant documents.
+
+                            Setting to -1.0 gives the document a big demotion. However,
+                            results that are deeply relevant might still be shown. The
+                            document will have an upstream battle to get a fairly high
+                            ranking, but it is not blocked out completely.
+
+                            Setting to 0.0 means no boost applied. The boosting
+                            condition is ignored.
+                        boost_control_spec (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec):
+                            Optional. Complex specification for custom
+                            ranking based on customer defined attribute
+                            value.
+                    """
+
+                    class BoostControlSpec(proto.Message):
+                        r"""Specification for custom ranking based on customer specified
+                        attribute
+                        value. It provides more controls for customized ranking than the
+                        simple (condition, boost) combination above.
+
+                        Attributes:
+                            field_name (str):
+                                Optional. The name of the field whose value
+                                will be used to determine the boost amount.
+                            attribute_type (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
+                                Optional. The attribute type to be used to determine the
+                                boost amount. The attribute value can be derived from the
+                                field value of the specified field_name. In the case of
+                                numerical it is straightforward i.e. attribute_value =
+                                numerical_field_value. In the case of freshness however,
+                                attribute_value = (time.now() - datetime_field_value).
+                            interpolation_type (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
+                                Optional. The interpolation type to be
+                                applied to connect the control points listed
+                                below.
+                            control_points (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
+                                Optional. The control points used to define the curve. The
+                                monotonic function (defined through the interpolation_type
+                                above) passes through the control points listed here.
+                        """
+
+                        class AttributeType(proto.Enum):
+                            r"""The attribute(or function) for which the custom ranking is to
+                            be applied.
+
+                            Values:
+                                ATTRIBUTE_TYPE_UNSPECIFIED (0):
+                                    Unspecified AttributeType.
+                                NUMERICAL (1):
+                                    The value of the numerical field will be used to dynamically
+                                    update the boost amount. In this case, the attribute_value
+                                    (the x value) of the control point will be the actual value
+                                    of the numerical field for which the boost_amount is
+                                    specified.
+                                FRESHNESS (2):
+                                    For the freshness use case the attribute value will be the
+                                    duration between the current time and the date in the
+                                    datetime field specified. The value must be formatted as an
+                                    XSD ``dayTimeDuration`` value (a restricted subset of an ISO
+                                    8601 duration value). The pattern for this is:
+                                    ``[nD][T[nH][nM][nS]]``. E.g. ``5D``, ``3DT12H30M``,
+                                    ``T24H``.
+                            """
+                            ATTRIBUTE_TYPE_UNSPECIFIED = 0
+                            NUMERICAL = 1
+                            FRESHNESS = 2
+
+                        class InterpolationType(proto.Enum):
+                            r"""The interpolation type to be applied. Default will be linear
+                            (Piecewise Linear).
+
+                            Values:
+                                INTERPOLATION_TYPE_UNSPECIFIED (0):
+                                    Interpolation type is unspecified. In this
+                                    case, it defaults to Linear.
+                                LINEAR (1):
+                                    Piecewise linear interpolation will be
+                                    applied.
+                            """
+                            INTERPOLATION_TYPE_UNSPECIFIED = 0
+                            LINEAR = 1
+
+                        class ControlPoint(proto.Message):
+                            r"""The control points used to define the curve. The curve
+                            defined through these control points can only be monotonically
+                            increasing or decreasing(constant values are acceptable).
+
+                            """
+
+                        field_name: str = proto.Field(
+                            proto.STRING,
+                            number=1,
+                        )
+                        attribute_type: "SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType" = proto.Field(
+                            proto.ENUM,
+                            number=2,
+                            enum="SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType",
+                        )
+                        interpolation_type: "SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType" = proto.Field(
+                            proto.ENUM,
+                            number=3,
+                            enum="SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType",
+                        )
+                        control_points: MutableSequence[
+                            "SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"
+                        ] = proto.RepeatedField(
+                            proto.MESSAGE,
+                            number=4,
+                            message="SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint",
+                        )
+
+                    condition: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    boost: float = proto.Field(
+                        proto.FLOAT,
+                        number=2,
+                    )
+                    boost_control_spec: "SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec" = proto.Field(
+                        proto.MESSAGE,
+                        number=4,
+                        message="SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec",
+                    )
+
+                condition_boost_specs: MutableSequence[
+                    "SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec",
+                )
+
+            data_stores: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            spec: MutableSequence[
+                "SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec",
+            )
+
+        class FilterSpecs(proto.Message):
+            r"""Filter specification for data store queries.
+
+            Attributes:
+                data_stores (MutableSequence[str]):
+                    Optional. The data store where the filter
+                    configuration is applied. Full resource name of
+                    data store, such as
+                    projects/{project}/locations/{location}/collections/{collectionId}/
+                    dataStores/{dataStoreId}.
+                filter (str):
+                    Optional. The filter expression to be
+                    applied. Expression syntax is documented at
+                    https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata#filter-expression-syntax
+            """
+
+            data_stores: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            filter: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        boost_specs: MutableSequence[
+            "SearchKnowledgeRequest.SearchConfig.BoostSpecs"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SearchKnowledgeRequest.SearchConfig.BoostSpecs",
+        )
+        filter_specs: MutableSequence[
+            "SearchKnowledgeRequest.SearchConfig.FilterSpecs"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="SearchKnowledgeRequest.SearchConfig.FilterSpecs",
+        )
 
     parent: str = proto.Field(
         proto.STRING,
@@ -887,6 +1188,25 @@ class SearchKnowledgeRequest(proto.Message):
     latest_message: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    query_source: QuerySource = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=QuerySource,
+    )
+    end_user_metadata: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=struct_pb2.Struct,
+    )
+    search_config: SearchConfig = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=SearchConfig,
+    )
+    exact_search: bool = proto.Field(
+        proto.BOOL,
+        number=14,
     )
 
 
@@ -958,6 +1278,8 @@ class SearchKnowledgeAnswer(proto.Message):
                 The URI of the article.
             snippet (str):
                 The relevant snippet of the article.
+            metadata (google.protobuf.struct_pb2.Struct):
+                Metadata associated with the article.
         """
 
         title: str = proto.Field(
@@ -971,6 +1293,11 @@ class SearchKnowledgeAnswer(proto.Message):
         snippet: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        metadata: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=struct_pb2.Struct,
         )
 
     answer: str = proto.Field(
