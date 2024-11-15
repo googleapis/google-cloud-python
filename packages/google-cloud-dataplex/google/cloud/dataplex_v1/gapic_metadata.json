@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "CatalogServiceClient",
           "rpcs": {
+            "CancelMetadataJob": {
+              "methods": [
+                "cancel_metadata_job"
+              ]
+            },
             "CreateAspectType": {
               "methods": [
                 "create_aspect_type"
@@ -28,6 +33,11 @@
             "CreateEntryType": {
               "methods": [
                 "create_entry_type"
+              ]
+            },
+            "CreateMetadataJob": {
+              "methods": [
+                "create_metadata_job"
               ]
             },
             "DeleteAspectType": {
@@ -70,6 +80,11 @@
                 "get_entry_type"
               ]
             },
+            "GetMetadataJob": {
+              "methods": [
+                "get_metadata_job"
+              ]
+            },
             "ListAspectTypes": {
               "methods": [
                 "list_aspect_types"
@@ -88,6 +103,11 @@
             "ListEntryTypes": {
               "methods": [
                 "list_entry_types"
+              ]
+            },
+            "ListMetadataJobs": {
+              "methods": [
+                "list_metadata_jobs"
               ]
             },
             "LookupEntry": {
@@ -125,6 +145,11 @@
         "grpc-async": {
           "libraryClient": "CatalogServiceAsyncClient",
           "rpcs": {
+            "CancelMetadataJob": {
+              "methods": [
+                "cancel_metadata_job"
+              ]
+            },
             "CreateAspectType": {
               "methods": [
                 "create_aspect_type"
@@ -143,6 +168,11 @@
             "CreateEntryType": {
               "methods": [
                 "create_entry_type"
+              ]
+            },
+            "CreateMetadataJob": {
+              "methods": [
+                "create_metadata_job"
               ]
             },
             "DeleteAspectType": {
@@ -185,6 +215,11 @@
                 "get_entry_type"
               ]
             },
+            "GetMetadataJob": {
+              "methods": [
+                "get_metadata_job"
+              ]
+            },
             "ListAspectTypes": {
               "methods": [
                 "list_aspect_types"
@@ -203,6 +238,11 @@
             "ListEntryTypes": {
               "methods": [
                 "list_entry_types"
+              ]
+            },
+            "ListMetadataJobs": {
+              "methods": [
+                "list_metadata_jobs"
               ]
             },
             "LookupEntry": {

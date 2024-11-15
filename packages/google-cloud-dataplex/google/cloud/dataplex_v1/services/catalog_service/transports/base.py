@@ -27,6 +27,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dataplex_v1 import gapic_version as package_version
 from google.cloud.dataplex_v1.types import catalog
@@ -352,6 +353,26 @@ class CatalogServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_metadata_job: gapic_v1.method.wrap_method(
+                self.create_metadata_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_metadata_job: gapic_v1.method.wrap_method(
+                self.get_metadata_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_metadata_jobs: gapic_v1.method.wrap_method(
+                self.list_metadata_jobs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_metadata_job: gapic_v1.method.wrap_method(
+                self.cancel_metadata_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -594,6 +615,45 @@ class CatalogServiceTransport(abc.ABC):
     ) -> Callable[
         [catalog.SearchEntriesRequest],
         Union[catalog.SearchEntriesResponse, Awaitable[catalog.SearchEntriesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_metadata_job(
+        self,
+    ) -> Callable[
+        [catalog.CreateMetadataJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_metadata_job(
+        self,
+    ) -> Callable[
+        [catalog.GetMetadataJobRequest],
+        Union[catalog.MetadataJob, Awaitable[catalog.MetadataJob]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_metadata_jobs(
+        self,
+    ) -> Callable[
+        [catalog.ListMetadataJobsRequest],
+        Union[
+            catalog.ListMetadataJobsResponse,
+            Awaitable[catalog.ListMetadataJobsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_metadata_job(
+        self,
+    ) -> Callable[
+        [catalog.CancelMetadataJobRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

@@ -472,7 +472,7 @@ class DataQualityDimension(proto.Message):
         name (str):
             The dimension name a rule belongs to. Supported dimensions
             are ["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY",
-            "UNIQUENESS", "INTEGRITY"]
+            "UNIQUENESS", "FRESHNESS", "VOLUME"]
     """
 
     name: str = proto.Field(
@@ -557,7 +557,7 @@ class DataQualityRule(proto.Message):
             Required. The dimension a rule belongs to. Results are also
             aggregated at the dimension level. Supported dimensions are
             **["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY",
-            "UNIQUENESS", "INTEGRITY"]**
+            "UNIQUENESS", "FRESHNESS", "VOLUME"]**
         threshold (float):
             Optional. The minimum ratio of **passing_rows / total_rows**
             required to pass this rule, with a range of [0.0, 1.0].
@@ -577,6 +577,9 @@ class DataQualityRule(proto.Message):
             Optional. Description of the rule.
 
             -  The maximum length is 1,024 characters.
+        suspended (bool):
+            Optional. Whether the Rule is active or
+            suspended. Default is false.
     """
 
     class RangeExpectation(proto.Message):
@@ -874,6 +877,10 @@ class DataQualityRule(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=505,
+    )
+    suspended: bool = proto.Field(
+        proto.BOOL,
+        number=506,
     )
 
 

@@ -104,10 +104,10 @@ class CatalogServiceClientMeta(type):
 
 class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
     """The primary resources offered by this service are
-    EntryGroups, EntryTypes, AspectTypes, Entry and Aspect which
-    collectively allow a data administrator to organize, manage,
-    secure and catalog data across their organization located across
-    cloud projects in a variety of storage systems including Cloud
+    EntryGroups, EntryTypes, AspectTypes, and Entries. They
+    collectively let data administrators organize, manage, secure,
+    and catalog data located across cloud projects in their
+    organization in a variety of storage systems, including Cloud
     Storage and BigQuery.
     """
 
@@ -287,6 +287,30 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         """Parses a entry_type path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entryTypes/(?P<entry_type>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def metadata_job_path(
+        project: str,
+        location: str,
+        metadataJob: str,
+    ) -> str:
+        """Returns a fully-qualified metadata_job string."""
+        return (
+            "projects/{project}/locations/{location}/metadataJobs/{metadataJob}".format(
+                project=project,
+                location=location,
+                metadataJob=metadataJob,
+            )
+        )
+
+    @staticmethod
+    def parse_metadata_job_path(path: str) -> Dict[str, str]:
+        """Parses a metadata_job path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/metadataJobs/(?P<metadataJob>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -740,7 +764,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates an EntryType
+        r"""Creates an EntryType.
 
         .. code-block:: python
 
@@ -775,17 +799,17 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateEntryTypeRequest, dict]):
-                The request object. Create EntryType Request
+                The request object. Create EntryType Request.
             parent (str):
                 Required. The resource name of the EntryType, of the
                 form: projects/{project_number}/locations/{location_id}
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             entry_type (google.cloud.dataplex_v1.types.EntryType):
-                Required. EntryType Resource
+                Required. EntryType Resource.
                 This corresponds to the ``entry_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -874,7 +898,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Updates a EntryType resource.
+        r"""Updates an EntryType.
 
         .. code-block:: python
 
@@ -907,9 +931,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateEntryTypeRequest, dict]):
-                The request object. Update EntryType Request
+                The request object. Update EntryType Request.
             entry_type (google.cloud.dataplex_v1.types.EntryType):
-                Required. EntryType Resource
+                Required. EntryType Resource.
                 This corresponds to the ``entry_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -997,7 +1021,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Deletes a EntryType resource.
+        r"""Deletes an EntryType.
 
         .. code-block:: python
 
@@ -1031,7 +1055,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteEntryTypeRequest, dict]):
-                The request object. Delele EntryType Request
+                The request object. Delele EntryType Request.
             name (str):
                 Required. The resource name of the EntryType:
                 ``projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}``.
@@ -1157,7 +1181,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Required. The resource name of the EntryType location,
                 of the form:
                 ``projects/{project_number}/locations/{location_id}``
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1170,7 +1194,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Returns:
             google.cloud.dataplex_v1.services.catalog_service.pagers.ListEntryTypesPager:
-                List EntryTypes response
+                List EntryTypes response.
 
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -1240,7 +1264,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.EntryType:
-        r"""Retrieves a EntryType resource.
+        r"""Gets an EntryType.
 
         .. code-block:: python
 
@@ -1270,7 +1294,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetEntryTypeRequest, dict]):
-                The request object. Get EntryType request
+                The request object. Get EntryType request.
             name (str):
                 Required. The resource name of the EntryType:
                 ``projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}``.
@@ -1344,7 +1368,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates an AspectType
+        r"""Creates an AspectType.
 
         .. code-block:: python
 
@@ -1384,17 +1408,17 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateAspectTypeRequest, dict]):
-                The request object. Create AspectType Request
+                The request object. Create AspectType Request.
             parent (str):
                 Required. The resource name of the AspectType, of the
                 form: projects/{project_number}/locations/{location_id}
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             aspect_type (google.cloud.dataplex_v1.types.AspectType):
-                Required. AspectType Resource
+                Required. AspectType Resource.
                 This corresponds to the ``aspect_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1413,9 +1437,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.AspectType` Aspect Type is a template for creating Aspects, and represents the
-                   JSON-schema for a given Entry, e.g., BigQuery Table
-                   Schema.
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.AspectType` AspectType is a template for creating Aspects, and represents the
+                   JSON-schema for a given Entry, for example, BigQuery
+                   Table Schema.
 
         """
         # Create or coerce a protobuf request object.
@@ -1483,7 +1507,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Updates a AspectType resource.
+        r"""Updates an AspectType.
 
         .. code-block:: python
 
@@ -1542,9 +1566,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.AspectType` Aspect Type is a template for creating Aspects, and represents the
-                   JSON-schema for a given Entry, e.g., BigQuery Table
-                   Schema.
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.AspectType` AspectType is a template for creating Aspects, and represents the
+                   JSON-schema for a given Entry, for example, BigQuery
+                   Table Schema.
 
         """
         # Create or coerce a protobuf request object.
@@ -1611,7 +1635,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Deletes a AspectType resource.
+        r"""Deletes an AspectType.
 
         .. code-block:: python
 
@@ -1645,7 +1669,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteAspectTypeRequest, dict]):
-                The request object. Delele AspectType Request
+                The request object. Delele AspectType Request.
             name (str):
                 Required. The resource name of the AspectType:
                 ``projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}``.
@@ -1766,12 +1790,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListAspectTypesRequest, dict]):
-                The request object. List AspectTypes request
+                The request object. List AspectTypes request.
             parent (str):
                 Required. The resource name of the AspectType location,
                 of the form:
                 ``projects/{project_number}/locations/{location_id}``
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1784,7 +1808,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Returns:
             google.cloud.dataplex_v1.services.catalog_service.pagers.ListAspectTypesPager:
-                List AspectTypes response
+                List AspectTypes response.
 
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -1854,7 +1878,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.AspectType:
-        r"""Retrieves a AspectType resource.
+        r"""Gets an AspectType.
 
         .. code-block:: python
 
@@ -1884,7 +1908,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetAspectTypeRequest, dict]):
-                The request object. Get AspectType request
+                The request object. Get AspectType request.
             name (str):
                 Required. The resource name of the AspectType:
                 ``projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}``.
@@ -1900,10 +1924,10 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Returns:
             google.cloud.dataplex_v1.types.AspectType:
-                Aspect Type is a template for
-                creating Aspects, and represents the
-                JSON-schema for a given Entry, e.g.,
-                BigQuery Table Schema.
+                AspectType is a template for creating
+                Aspects, and represents the JSON-schema
+                for a given Entry, for example, BigQuery
+                Table Schema.
 
         """
         # Create or coerce a protobuf request object.
@@ -1960,7 +1984,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates an EntryGroup
+        r"""Creates an EntryGroup.
 
         .. code-block:: python
 
@@ -1995,7 +2019,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateEntryGroupRequest, dict]):
-                The request object. Create EntryGroup Request
+                The request object. Create EntryGroup Request.
             parent (str):
                 Required. The resource name of the entryGroup, of the
                 form: projects/{project_number}/locations/{location_id}
@@ -2005,7 +2029,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             entry_group (google.cloud.dataplex_v1.types.EntryGroup):
-                Required. EntryGroup Resource
+                Required. EntryGroup Resource.
                 This corresponds to the ``entry_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2095,7 +2119,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Updates a EntryGroup resource.
+        r"""Updates an EntryGroup.
 
         .. code-block:: python
 
@@ -2128,9 +2152,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateEntryGroupRequest, dict]):
-                The request object. Update EntryGroup Request
+                The request object. Update EntryGroup Request.
             entry_group (google.cloud.dataplex_v1.types.EntryGroup):
-                Required. EntryGroup Resource
+                Required. EntryGroup Resource.
                 This corresponds to the ``entry_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2219,7 +2243,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Deletes a EntryGroup resource.
+        r"""Deletes an EntryGroup.
 
         .. code-block:: python
 
@@ -2253,7 +2277,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteEntryGroupRequest, dict]):
-                The request object. Delele EntryGroup Request
+                The request object. Delete EntryGroup Request.
             name (str):
                 Required. The resource name of the EntryGroup:
                 ``projects/{project_number}/locations/{location_id}/entryGroups/{entry_group_id}``.
@@ -2379,7 +2403,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Required. The resource name of the entryGroup location,
                 of the form:
                 ``projects/{project_number}/locations/{location_id}``
-                where ``location_id`` refers to a GCP region.
+                where ``location_id`` refers to a Google Cloud region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2392,7 +2416,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Returns:
             google.cloud.dataplex_v1.services.catalog_service.pagers.ListEntryGroupsPager:
-                List ListEntryGroups response.
+                List entry groups response.
 
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -2462,7 +2486,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.EntryGroup:
-        r"""Retrieves a EntryGroup resource.
+        r"""Gets an EntryGroup.
 
         .. code-block:: python
 
@@ -2601,7 +2625,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateEntryRequest, dict]):
-                The request object.
+                The request object. Create Entry request.
             parent (str):
                 Required. The resource name of the parent Entry Group:
                 ``projects/{project}/locations/{location}/entryGroups/{entry_group}``.
@@ -2618,22 +2642,23 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Required. Entry identifier. It has to be unique within
                 an Entry Group.
 
-                Entries corresponding to Google Cloud resources use
-                Entry ID format based on Full Resource Names
-                (https://cloud.google.com/apis/design/resource_names#full_resource_name).
-                The format is a Full Resource Name of the resource
-                without the prefix double slashes in the API Service
-                Name part of Full Resource Name. This allows retrieval
-                of entries using their associated resource name.
+                Entries corresponding to Google Cloud resources use an
+                Entry ID format based on `full resource
+                names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__.
+                The format is a full resource name of the resource
+                without the prefix double slashes in the API service
+                name part of the full resource name. This allows
+                retrieval of entries using their associated resource
+                name.
 
-                For example if the Full Resource Name of a resource is
+                For example, if the full resource name of a resource is
                 ``//library.googleapis.com/shelves/shelf1/books/book2``,
                 then the suggested entry_id is
                 ``library.googleapis.com/shelves/shelf1/books/book2``.
 
                 It is also suggested to follow the same convention for
-                entries corresponding to resources from other providers
-                or systems than Google Cloud.
+                entries corresponding to resources from providers or
+                systems other than Google Cloud.
 
                 The maximum size of the field is 4000 characters.
 
@@ -2649,7 +2674,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.types.Entry:
                 An entry is a representation of a
-                data asset which can be described by
+                data resource that can be described by
                 various metadata.
 
         """
@@ -2743,7 +2768,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateEntryRequest, dict]):
-                The request object.
+                The request object. Update Entry request.
             entry (google.cloud.dataplex_v1.types.Entry):
                 Required. Entry resource.
                 This corresponds to the ``entry`` field
@@ -2753,8 +2778,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 Optional. Mask of fields to update. To update Aspects,
                 the update_mask must contain the value "aspects".
 
-                If the update_mask is empty, all modifiable fields
-                present in the request will be updated.
+                If the update_mask is empty, the service will update all
+                modifiable fields present in the request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2768,7 +2793,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.types.Entry:
                 An entry is a representation of a
-                data asset which can be described by
+                data resource that can be described by
                 various metadata.
 
         """
@@ -2858,7 +2883,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteEntryRequest, dict]):
-                The request object.
+                The request object. Delete Entry request.
             name (str):
                 Required. The resource name of the Entry:
                 ``projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}``.
@@ -2875,7 +2900,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.types.Entry:
                 An entry is a representation of a
-                data asset which can be described by
+                data resource that can be described by
                 various metadata.
 
         """
@@ -2931,7 +2956,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntriesPager:
-        r"""Lists entries within an entry group.
+        r"""Lists Entries within an EntryGroup.
 
         .. code-block:: python
 
@@ -2962,7 +2987,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListEntriesRequest, dict]):
-                The request object.
+                The request object. List Entries request.
             parent (str):
                 Required. The resource name of the parent Entry Group:
                 ``projects/{project}/locations/{location}/entryGroups/{entry_group}``.
@@ -2978,6 +3003,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Returns:
             google.cloud.dataplex_v1.services.catalog_service.pagers.ListEntriesPager:
+                List Entries response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3046,7 +3073,12 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.Entry:
-        r"""Gets a single entry.
+        r"""Gets an Entry.
+
+        **Caution**: The BigQuery metadata that is stored in Dataplex
+        Catalog is changing. For more information, see `Changes to
+        BigQuery metadata stored in Dataplex
+        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
 
         .. code-block:: python
 
@@ -3076,7 +3108,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetEntryRequest, dict]):
-                The request object.
+                The request object. Get Entry request.
             name (str):
                 Required. The resource name of the Entry:
                 ``projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}``.
@@ -3093,7 +3125,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.types.Entry:
                 An entry is a representation of a
-                data asset which can be described by
+                data resource that can be described by
                 various metadata.
 
         """
@@ -3148,7 +3180,13 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.Entry:
-        r"""Looks up a single entry.
+        r"""Looks up a single Entry by name using the permission on the
+        source system.
+
+        **Caution**: The BigQuery metadata that is stored in Dataplex
+        Catalog is changing. For more information, see `Changes to
+        BigQuery metadata stored in Dataplex
+        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
 
         .. code-block:: python
 
@@ -3179,7 +3217,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.LookupEntryRequest, dict]):
-                The request object.
+                The request object. Lookup Entry request using
+                permissions in the source system.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -3189,7 +3228,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.types.Entry:
                 An entry is a representation of a
-                data asset which can be described by
+                data resource that can be described by
                 various metadata.
 
         """
@@ -3233,7 +3272,8 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchEntriesPager:
-        r"""Searches for entries matching given query and scope.
+        r"""Searches for Entries matching the given query and
+        scope.
 
         .. code-block:: python
 
@@ -3349,6 +3389,467 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
         # Done; return the response.
         return response
+
+    def create_metadata_job(
+        self,
+        request: Optional[Union[catalog.CreateMetadataJobRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        metadata_job: Optional[catalog.MetadataJob] = None,
+        metadata_job_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates a metadata job. For example, use a metadata
+        job to import Dataplex Catalog entries and aspects from
+        a third-party system into Dataplex.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_create_metadata_job():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                metadata_job = dataplex_v1.MetadataJob()
+                metadata_job.import_spec.scope.entry_groups = ['entry_groups_value1', 'entry_groups_value2']
+                metadata_job.import_spec.scope.entry_types = ['entry_types_value1', 'entry_types_value2']
+                metadata_job.import_spec.entry_sync_mode = "INCREMENTAL"
+                metadata_job.import_spec.aspect_sync_mode = "INCREMENTAL"
+                metadata_job.type_ = "IMPORT"
+
+                request = dataplex_v1.CreateMetadataJobRequest(
+                    parent="parent_value",
+                    metadata_job=metadata_job,
+                )
+
+                # Make the request
+                operation = client.create_metadata_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CreateMetadataJobRequest, dict]):
+                The request object. Create metadata job request.
+            parent (str):
+                Required. The resource name of the parent location, in
+                the format
+                ``projects/{project_id_or_number}/locations/{location_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            metadata_job (google.cloud.dataplex_v1.types.MetadataJob):
+                Required. The metadata job resource.
+                This corresponds to the ``metadata_job`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            metadata_job_id (str):
+                Optional. The metadata job ID. If not provided, a unique
+                ID is generated with the prefix ``metadata-job-``.
+
+                This corresponds to the ``metadata_job_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.dataplex_v1.types.MetadataJob` A
+                metadata job resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, metadata_job, metadata_job_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.CreateMetadataJobRequest):
+            request = catalog.CreateMetadataJobRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if metadata_job is not None:
+                request.metadata_job = metadata_job
+            if metadata_job_id is not None:
+                request.metadata_job_id = metadata_job_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_metadata_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            catalog.MetadataJob,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_metadata_job(
+        self,
+        request: Optional[Union[catalog.GetMetadataJobRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog.MetadataJob:
+        r"""Gets a metadata job.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_get_metadata_job():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetMetadataJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_metadata_job(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.GetMetadataJobRequest, dict]):
+                The request object. Get metadata job request.
+            name (str):
+                Required. The resource name of the metadata job, in the
+                format
+                ``projects/{project_id_or_number}/locations/{location_id}/metadataJobs/{metadata_job_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.types.MetadataJob:
+                A metadata job resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.GetMetadataJobRequest):
+            request = catalog.GetMetadataJobRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_metadata_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_metadata_jobs(
+        self,
+        request: Optional[Union[catalog.ListMetadataJobsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListMetadataJobsPager:
+        r"""Lists metadata jobs.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_list_metadata_jobs():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListMetadataJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_metadata_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.ListMetadataJobsRequest, dict]):
+                The request object. List metadata jobs request.
+            parent (str):
+                Required. The resource name of the parent location, in
+                the format
+                ``projects/{project_id_or_number}/locations/{location_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.services.catalog_service.pagers.ListMetadataJobsPager:
+                List metadata jobs response.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.ListMetadataJobsRequest):
+            request = catalog.ListMetadataJobsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_metadata_jobs]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListMetadataJobsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def cancel_metadata_job(
+        self,
+        request: Optional[Union[catalog.CancelMetadataJobRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Cancels a metadata job.
+
+        If you cancel a metadata import job that is in progress,
+        the changes in the job might be partially applied. We
+        recommend that you reset the state of the entry groups
+        in your project by running another metadata job that
+        reverts the changes from the canceled job.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataplex_v1
+
+            def sample_cancel_metadata_job():
+                # Create a client
+                client = dataplex_v1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.CancelMetadataJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.cancel_metadata_job(request=request)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CancelMetadataJobRequest, dict]):
+                The request object. Cancel metadata job request.
+            name (str):
+                Required. The resource name of the job, in the format
+                ``projects/{project_id_or_number}/locations/{location_id}/metadataJobs/{metadata_job_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, catalog.CancelMetadataJobRequest):
+            request = catalog.CancelMetadataJobRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.cancel_metadata_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     def __enter__(self) -> "CatalogServiceClient":
         return self

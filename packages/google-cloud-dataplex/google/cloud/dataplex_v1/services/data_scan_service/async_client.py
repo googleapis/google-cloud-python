@@ -54,6 +54,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.data_scan_service import pagers
 from google.cloud.dataplex_v1.types import (
+    data_discovery,
     data_profile,
     data_quality,
     datascans,
@@ -83,12 +84,16 @@ class DataScanServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = DataScanServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DataScanServiceClient._DEFAULT_UNIVERSE
 
+    connection_path = staticmethod(DataScanServiceClient.connection_path)
+    parse_connection_path = staticmethod(DataScanServiceClient.parse_connection_path)
     data_scan_path = staticmethod(DataScanServiceClient.data_scan_path)
     parse_data_scan_path = staticmethod(DataScanServiceClient.parse_data_scan_path)
     data_scan_job_path = staticmethod(DataScanServiceClient.data_scan_job_path)
     parse_data_scan_job_path = staticmethod(
         DataScanServiceClient.parse_data_scan_job_path
     )
+    dataset_path = staticmethod(DataScanServiceClient.dataset_path)
+    parse_dataset_path = staticmethod(DataScanServiceClient.parse_dataset_path)
     entity_path = staticmethod(DataScanServiceClient.entity_path)
     parse_entity_path = staticmethod(DataScanServiceClient.parse_entity_path)
     common_billing_account_path = staticmethod(

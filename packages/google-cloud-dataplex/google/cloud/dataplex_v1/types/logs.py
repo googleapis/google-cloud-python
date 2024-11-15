@@ -55,6 +55,9 @@ class DiscoveryEvent(proto.Message):
             The id of the associated asset.
         data_location (str):
             The data location associated with the event.
+        datascan_id (str):
+            The id of the associated datascan for
+            standalone discovery.
         type_ (google.cloud.dataplex_v1.types.DiscoveryEvent.EventType):
             The type of the event being logged.
         config (google.cloud.dataplex_v1.types.DiscoveryEvent.ConfigDetails):
@@ -75,6 +78,11 @@ class DiscoveryEvent(proto.Message):
         action (google.cloud.dataplex_v1.types.DiscoveryEvent.ActionDetails):
             Details about the action associated with the
             event.
+
+            This field is a member of `oneof`_ ``details``.
+        table (google.cloud.dataplex_v1.types.DiscoveryEvent.TableDetails):
+            Details about the BigQuery table publishing
+            associated with the event.
 
             This field is a member of `oneof`_ ``details``.
     """
@@ -106,6 +114,16 @@ class DiscoveryEvent(proto.Message):
             PARTITION_DELETED (7):
                 An event representing a partition being
                 deleted.
+            TABLE_PUBLISHED (10):
+                An event representing a table being
+                published.
+            TABLE_UPDATED (11):
+                An event representing a table being updated.
+            TABLE_IGNORED (12):
+                An event representing a table being skipped
+                in publishing.
+            TABLE_DELETED (13):
+                An event representing a table being deleted.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         CONFIG = 1
@@ -115,6 +133,10 @@ class DiscoveryEvent(proto.Message):
         PARTITION_CREATED = 5
         PARTITION_UPDATED = 6
         PARTITION_DELETED = 7
+        TABLE_PUBLISHED = 10
+        TABLE_UPDATED = 11
+        TABLE_IGNORED = 12
+        TABLE_DELETED = 13
 
     class EntityType(proto.Enum):
         r"""The type of the entity.
@@ -130,6 +152,24 @@ class DiscoveryEvent(proto.Message):
         ENTITY_TYPE_UNSPECIFIED = 0
         TABLE = 1
         FILESET = 2
+
+    class TableType(proto.Enum):
+        r"""The type of the published table.
+
+        Values:
+            TABLE_TYPE_UNSPECIFIED (0):
+                An unspecified table type.
+            EXTERNAL_TABLE (1):
+                External table type.
+            BIGLAKE_TABLE (2):
+                BigLake table type.
+            OBJECT_TABLE (3):
+                Object table type for unstructured data.
+        """
+        TABLE_TYPE_UNSPECIFIED = 0
+        EXTERNAL_TABLE = 1
+        BIGLAKE_TABLE = 2
+        OBJECT_TABLE = 3
 
     class ConfigDetails(proto.Message):
         r"""Details about configuration events.
@@ -168,6 +208,27 @@ class DiscoveryEvent(proto.Message):
             proto.ENUM,
             number=2,
             enum="DiscoveryEvent.EntityType",
+        )
+
+    class TableDetails(proto.Message):
+        r"""Details about the published table.
+
+        Attributes:
+            table (str):
+                The fully-qualified resource name of the
+                table resource.
+            type_ (google.cloud.dataplex_v1.types.DiscoveryEvent.TableType):
+                The type of the table resource.
+        """
+
+        table: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: "DiscoveryEvent.TableType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="DiscoveryEvent.TableType",
         )
 
     class PartitionDetails(proto.Message):
@@ -213,11 +274,18 @@ class DiscoveryEvent(proto.Message):
             type_ (str):
                 The type of action.
                 Eg. IncompatibleDataSchema, InvalidDataFormat
+            issue (str):
+                The human readable issue associated with the
+                action.
         """
 
         type_: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        issue: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     message: str = proto.Field(
@@ -239,6 +307,10 @@ class DiscoveryEvent(proto.Message):
     data_location: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    datascan_id: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
     type_: EventType = proto.Field(
         proto.ENUM,
@@ -268,6 +340,12 @@ class DiscoveryEvent(proto.Message):
         number=23,
         oneof="details",
         message=ActionDetails,
+    )
+    table: TableDetails = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        oneof="details",
+        message=TableDetails,
     )
 
 
@@ -699,7 +777,6 @@ class GovernanceEvent(proto.Message):
 class DataScanEvent(proto.Message):
     r"""These messages contain information about the execution of a
     datascan. The monitored resource is 'DataScan'
-    Next ID: 13
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -770,10 +847,13 @@ class DataScanEvent(proto.Message):
                 Data scan for data profile.
             DATA_QUALITY (2):
                 Data scan for data quality.
+            DATA_DISCOVERY (4):
+                Data scan for data discovery.
         """
         SCAN_TYPE_UNSPECIFIED = 0
         DATA_PROFILE = 1
         DATA_QUALITY = 2
+        DATA_DISCOVERY = 4
 
     class State(proto.Enum):
         r"""The job state of the data scan.

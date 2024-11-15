@@ -71,6 +71,7 @@ from google.cloud.dataplex_v1.services.data_scan_service import (
     transports,
 )
 from google.cloud.dataplex_v1.types import (
+    data_discovery,
     data_profile,
     data_quality,
     datascans,
@@ -5508,10 +5509,38 @@ def test_data_scan_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_data_scan_path():
+def test_connection_path():
     project = "squid"
     location = "clam"
-    dataScan = "whelk"
+    connection = "whelk"
+    expected = (
+        "projects/{project}/locations/{location}/connections/{connection}".format(
+            project=project,
+            location=location,
+            connection=connection,
+        )
+    )
+    actual = DataScanServiceClient.connection_path(project, location, connection)
+    assert expected == actual
+
+
+def test_parse_connection_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "connection": "nudibranch",
+    }
+    path = DataScanServiceClient.connection_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataScanServiceClient.parse_connection_path(path)
+    assert expected == actual
+
+
+def test_data_scan_path():
+    project = "cuttlefish"
+    location = "mussel"
+    dataScan = "winkle"
     expected = "projects/{project}/locations/{location}/dataScans/{dataScan}".format(
         project=project,
         location=location,
@@ -5523,9 +5552,9 @@ def test_data_scan_path():
 
 def test_parse_data_scan_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "dataScan": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "dataScan": "abalone",
     }
     path = DataScanServiceClient.data_scan_path(**expected)
 
@@ -5535,10 +5564,10 @@ def test_parse_data_scan_path():
 
 
 def test_data_scan_job_path():
-    project = "cuttlefish"
-    location = "mussel"
-    dataScan = "winkle"
-    job = "nautilus"
+    project = "squid"
+    location = "clam"
+    dataScan = "whelk"
+    job = "octopus"
     expected = "projects/{project}/locations/{location}/dataScans/{dataScan}/jobs/{job}".format(
         project=project,
         location=location,
@@ -5551,10 +5580,10 @@ def test_data_scan_job_path():
 
 def test_parse_data_scan_job_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "dataScan": "squid",
-        "job": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "dataScan": "cuttlefish",
+        "job": "mussel",
     }
     path = DataScanServiceClient.data_scan_job_path(**expected)
 
@@ -5563,12 +5592,35 @@ def test_parse_data_scan_job_path():
     assert expected == actual
 
 
+def test_dataset_path():
+    project = "winkle"
+    dataset = "nautilus"
+    expected = "projects/{project}/datasets/{dataset}".format(
+        project=project,
+        dataset=dataset,
+    )
+    actual = DataScanServiceClient.dataset_path(project, dataset)
+    assert expected == actual
+
+
+def test_parse_dataset_path():
+    expected = {
+        "project": "scallop",
+        "dataset": "abalone",
+    }
+    path = DataScanServiceClient.dataset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataScanServiceClient.parse_dataset_path(path)
+    assert expected == actual
+
+
 def test_entity_path():
-    project = "whelk"
-    location = "octopus"
-    lake = "oyster"
-    zone = "nudibranch"
-    entity = "cuttlefish"
+    project = "squid"
+    location = "clam"
+    lake = "whelk"
+    zone = "octopus"
+    entity = "oyster"
     expected = "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}".format(
         project=project,
         location=location,
@@ -5582,11 +5634,11 @@ def test_entity_path():
 
 def test_parse_entity_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "lake": "nautilus",
-        "zone": "scallop",
-        "entity": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "lake": "mussel",
+        "zone": "winkle",
+        "entity": "nautilus",
     }
     path = DataScanServiceClient.entity_path(**expected)
 
@@ -5596,7 +5648,7 @@ def test_parse_entity_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5606,7 +5658,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "abalone",
     }
     path = DataScanServiceClient.common_billing_account_path(**expected)
 
@@ -5616,7 +5668,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5626,7 +5678,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "clam",
     }
     path = DataScanServiceClient.common_folder_path(**expected)
 
@@ -5636,7 +5688,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5646,7 +5698,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "octopus",
     }
     path = DataScanServiceClient.common_organization_path(**expected)
 
@@ -5656,7 +5708,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5666,7 +5718,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nudibranch",
     }
     path = DataScanServiceClient.common_project_path(**expected)
 
@@ -5676,8 +5728,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5688,8 +5740,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = DataScanServiceClient.common_location_path(**expected)
 
