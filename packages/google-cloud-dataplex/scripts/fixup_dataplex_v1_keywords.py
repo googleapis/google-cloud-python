@@ -40,6 +40,7 @@ class dataplexCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'cancel_job': ('name', ),
+        'cancel_metadata_job': ('name', ),
         'create_aspect_type': ('parent', 'aspect_type_id', 'aspect_type', 'validate_only', ),
         'create_asset': ('parent', 'asset_id', 'asset', 'validate_only', ),
         'create_content': ('parent', 'content', 'validate_only', ),
@@ -53,6 +54,7 @@ class dataplexCallTransformer(cst.CSTTransformer):
         'create_entry_type': ('parent', 'entry_type_id', 'entry_type', 'validate_only', ),
         'create_environment': ('parent', 'environment_id', 'environment', 'validate_only', ),
         'create_lake': ('parent', 'lake_id', 'lake', 'validate_only', ),
+        'create_metadata_job': ('parent', 'metadata_job', 'metadata_job_id', 'validate_only', ),
         'create_partition': ('parent', 'partition', 'validate_only', ),
         'create_task': ('parent', 'task_id', 'task', 'validate_only', ),
         'create_zone': ('parent', 'zone_id', 'zone', 'validate_only', ),
@@ -89,6 +91,7 @@ class dataplexCallTransformer(cst.CSTTransformer):
         'get_iam_policy': ('resource', 'options', ),
         'get_job': ('name', ),
         'get_lake': ('name', ),
+        'get_metadata_job': ('name', ),
         'get_partition': ('name', ),
         'get_task': ('name', ),
         'get_zone': ('name', ),
@@ -109,6 +112,7 @@ class dataplexCallTransformer(cst.CSTTransformer):
         'list_jobs': ('parent', 'page_size', 'page_token', ),
         'list_lake_actions': ('parent', 'page_size', 'page_token', ),
         'list_lakes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_metadata_jobs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_partitions': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_sessions': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_tasks': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),

@@ -19,12 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.dataplex.v1',
+    package="google.cloud.dataplex.v1",
     manifest={
-        'DataDiscoverySpec',
-        'DataDiscoveryResult',
+        "DataDiscoverySpec",
+        "DataDiscoveryResult",
     },
 )
 
@@ -57,6 +56,7 @@ class DataDiscoverySpec(proto.Message):
                 tables. Must be in the form
                 ``projects/{project_id}/locations/{location_id}/connections/{connection_id}``
         """
+
         class TableType(proto.Enum):
             r"""Determines how discovered tables are published.
 
@@ -78,10 +78,12 @@ class DataDiscoverySpec(proto.Message):
             EXTERNAL = 1
             BIGLAKE = 2
 
-        table_type: 'DataDiscoverySpec.BigQueryPublishingConfig.TableType' = proto.Field(
-            proto.ENUM,
-            number=2,
-            enum='DataDiscoverySpec.BigQueryPublishingConfig.TableType',
+        table_type: "DataDiscoverySpec.BigQueryPublishingConfig.TableType" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="DataDiscoverySpec.BigQueryPublishingConfig.TableType",
+            )
         )
         connection: str = proto.Field(
             proto.STRING,
@@ -192,15 +194,15 @@ class DataDiscoverySpec(proto.Message):
             proto.STRING,
             number=2,
         )
-        csv_options: 'DataDiscoverySpec.StorageConfig.CsvOptions' = proto.Field(
+        csv_options: "DataDiscoverySpec.StorageConfig.CsvOptions" = proto.Field(
             proto.MESSAGE,
             number=3,
-            message='DataDiscoverySpec.StorageConfig.CsvOptions',
+            message="DataDiscoverySpec.StorageConfig.CsvOptions",
         )
-        json_options: 'DataDiscoverySpec.StorageConfig.JsonOptions' = proto.Field(
+        json_options: "DataDiscoverySpec.StorageConfig.JsonOptions" = proto.Field(
             proto.MESSAGE,
             number=4,
-            message='DataDiscoverySpec.StorageConfig.JsonOptions',
+            message="DataDiscoverySpec.StorageConfig.JsonOptions",
         )
 
     bigquery_publishing_config: BigQueryPublishingConfig = proto.Field(
@@ -211,7 +213,7 @@ class DataDiscoverySpec(proto.Message):
     storage_config: StorageConfig = proto.Field(
         proto.MESSAGE,
         number=100,
-        oneof='resource_config',
+        oneof="resource_config",
         message=StorageConfig,
     )
 

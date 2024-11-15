@@ -60,6 +60,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.data_scan_service import pagers
 from google.cloud.dataplex_v1.types import (
+    data_discovery,
     data_profile,
     data_quality,
     datascans,
@@ -203,6 +204,30 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def connection_path(
+        project: str,
+        location: str,
+        connection: str,
+    ) -> str:
+        """Returns a fully-qualified connection string."""
+        return (
+            "projects/{project}/locations/{location}/connections/{connection}".format(
+                project=project,
+                location=location,
+                connection=connection,
+            )
+        )
+
+    @staticmethod
+    def parse_connection_path(path: str) -> Dict[str, str]:
+        """Parses a connection path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connections/(?P<connection>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def data_scan_path(
         project: str,
         location: str,
@@ -246,6 +271,23 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataScans/(?P<dataScan>.+?)/jobs/(?P<job>.+?)$",
             path,
         )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def dataset_path(
+        project: str,
+        dataset: str,
+    ) -> str:
+        """Returns a fully-qualified dataset string."""
+        return "projects/{project}/datasets/{dataset}".format(
+            project=project,
+            dataset=dataset,
+        )
+
+    @staticmethod
+    def parse_dataset_path(path: str) -> Dict[str, str]:
+        """Parses a dataset path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/datasets/(?P<dataset>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod

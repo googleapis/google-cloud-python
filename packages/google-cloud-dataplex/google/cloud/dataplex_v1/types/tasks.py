@@ -406,10 +406,9 @@ class Task(proto.Message):
 
                 This field is a member of `oneof`_ ``driver``.
             sql_script_file (str):
-                A reference to a query file. This can be the Cloud Storage
-                URI of the query file or it can the path to a SqlScript
-                Content. The execution args are used to declare a set of
-                script variables (``set key="value";``).
+                A reference to a query file. This should be the Cloud
+                Storage URI of the query file. The execution args are used
+                to declare a set of script variables (``set key="value";``).
 
                 This field is a member of `oneof`_ ``driver``.
             sql_script (str):

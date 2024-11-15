@@ -209,15 +209,17 @@ class DataProfileResult(proto.Message):
                     distinct_ratio (float):
                         Ratio of rows with distinct values against
                         total scanned rows. Not available for complex
-                        non-groupable field type RECORD and fields with
-                        REPEATABLE mode.
+                        non-groupable field type, including RECORD,
+                        ARRAY, GEOGRAPHY, and JSON, as well as fields
+                        with REPEATABLE mode.
                     top_n_values (MutableSequence[google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.TopNValue]):
                         The list of top N non-null values, frequency
                         and ratio with which they occur in the scanned
                         data. N is 10 or equal to the number of distinct
                         values in the field, whichever is smaller. Not
-                        available for complex non-groupable field type
-                        RECORD and fields with REPEATABLE mode.
+                        available for complex non-groupable field type,
+                        including RECORD, ARRAY, GEOGRAPHY, and JSON, as
+                        well as fields with REPEATABLE mode.
                     string_profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo):
                         String type field information.
 

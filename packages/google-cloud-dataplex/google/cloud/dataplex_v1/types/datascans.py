@@ -22,6 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataplex_v1.types import (
+    data_discovery,
     data_profile,
     data_quality,
     processing,
@@ -52,19 +53,22 @@ __protobuf__ = proto.module(
 
 
 class DataScanType(proto.Enum):
-    r"""The type of DataScan.
+    r"""The type of data scan.
 
     Values:
         DATA_SCAN_TYPE_UNSPECIFIED (0):
-            The DataScan type is unspecified.
+            The data scan type is unspecified.
         DATA_QUALITY (1):
-            Data Quality scan.
+            Data quality scan.
         DATA_PROFILE (2):
-            Data Profile scan.
+            Data profile scan.
+        DATA_DISCOVERY (3):
+            Data discovery scan.
     """
     DATA_SCAN_TYPE_UNSPECIFIED = 0
     DATA_QUALITY = 1
     DATA_PROFILE = 2
+    DATA_DISCOVERY = 3
 
 
 class CreateDataScanRequest(proto.Message):
@@ -543,20 +547,29 @@ class DataScan(proto.Message):
         type_ (google.cloud.dataplex_v1.types.DataScanType):
             Output only. The type of DataScan.
         data_quality_spec (google.cloud.dataplex_v1.types.DataQualitySpec):
-            DataQualityScan related setting.
+            Settings for a data quality scan.
 
             This field is a member of `oneof`_ ``spec``.
         data_profile_spec (google.cloud.dataplex_v1.types.DataProfileSpec):
-            DataProfileScan related setting.
+            Settings for a data profile scan.
+
+            This field is a member of `oneof`_ ``spec``.
+        data_discovery_spec (google.cloud.dataplex_v1.types.DataDiscoverySpec):
+            Settings for a data discovery scan.
 
             This field is a member of `oneof`_ ``spec``.
         data_quality_result (google.cloud.dataplex_v1.types.DataQualityResult):
-            Output only. The result of the data quality
+            Output only. The result of a data quality
             scan.
 
             This field is a member of `oneof`_ ``result``.
         data_profile_result (google.cloud.dataplex_v1.types.DataProfileResult):
-            Output only. The result of the data profile
+            Output only. The result of a data profile
+            scan.
+
+            This field is a member of `oneof`_ ``result``.
+        data_discovery_result (google.cloud.dataplex_v1.types.DataDiscoveryResult):
+            Output only. The result of a data discovery
             scan.
 
             This field is a member of `oneof`_ ``result``.
@@ -694,6 +707,12 @@ class DataScan(proto.Message):
         oneof="spec",
         message=data_profile.DataProfileSpec,
     )
+    data_discovery_spec: data_discovery.DataDiscoverySpec = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="spec",
+        message=data_discovery.DataDiscoverySpec,
+    )
     data_quality_result: data_quality.DataQualityResult = proto.Field(
         proto.MESSAGE,
         number=200,
@@ -705,6 +724,12 @@ class DataScan(proto.Message):
         number=201,
         oneof="result",
         message=data_profile.DataProfileResult,
+    )
+    data_discovery_result: data_discovery.DataDiscoveryResult = proto.Field(
+        proto.MESSAGE,
+        number=202,
+        oneof="result",
+        message=data_discovery.DataDiscoveryResult,
     )
 
 
@@ -728,6 +753,9 @@ class DataScanJob(proto.Message):
         uid (str):
             Output only. System generated globally unique
             ID for the DataScanJob.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the DataScanJob
+            was created.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the DataScanJob
             was started.
@@ -743,20 +771,32 @@ class DataScanJob(proto.Message):
         type_ (google.cloud.dataplex_v1.types.DataScanType):
             Output only. The type of the parent DataScan.
         data_quality_spec (google.cloud.dataplex_v1.types.DataQualitySpec):
-            Output only. DataQualityScan related setting.
+            Output only. Settings for a data quality
+            scan.
 
             This field is a member of `oneof`_ ``spec``.
         data_profile_spec (google.cloud.dataplex_v1.types.DataProfileSpec):
-            Output only. DataProfileScan related setting.
+            Output only. Settings for a data profile
+            scan.
+
+            This field is a member of `oneof`_ ``spec``.
+        data_discovery_spec (google.cloud.dataplex_v1.types.DataDiscoverySpec):
+            Output only. Settings for a data discovery
+            scan.
 
             This field is a member of `oneof`_ ``spec``.
         data_quality_result (google.cloud.dataplex_v1.types.DataQualityResult):
-            Output only. The result of the data quality
+            Output only. The result of a data quality
             scan.
 
             This field is a member of `oneof`_ ``result``.
         data_profile_result (google.cloud.dataplex_v1.types.DataProfileResult):
-            Output only. The result of the data profile
+            Output only. The result of a data profile
+            scan.
+
+            This field is a member of `oneof`_ ``result``.
+        data_discovery_result (google.cloud.dataplex_v1.types.DataDiscoveryResult):
+            Output only. The result of a data discovery
             scan.
 
             This field is a member of `oneof`_ ``result``.
@@ -799,6 +839,11 @@ class DataScanJob(proto.Message):
         proto.STRING,
         number=2,
     )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -835,6 +880,12 @@ class DataScanJob(proto.Message):
         oneof="spec",
         message=data_profile.DataProfileSpec,
     )
+    data_discovery_spec: data_discovery.DataDiscoverySpec = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="spec",
+        message=data_discovery.DataDiscoverySpec,
+    )
     data_quality_result: data_quality.DataQualityResult = proto.Field(
         proto.MESSAGE,
         number=200,
@@ -846,6 +897,12 @@ class DataScanJob(proto.Message):
         number=201,
         oneof="result",
         message=data_profile.DataProfileResult,
+    )
+    data_discovery_result: data_discovery.DataDiscoveryResult = proto.Field(
+        proto.MESSAGE,
+        number=202,
+        oneof="result",
+        message=data_discovery.DataDiscoveryResult,
     )
 
 

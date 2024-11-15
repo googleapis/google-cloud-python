@@ -26,6 +26,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
@@ -39,10 +40,10 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     """gRPC AsyncIO backend transport for CatalogService.
 
     The primary resources offered by this service are
-    EntryGroups, EntryTypes, AspectTypes, Entry and Aspect which
-    collectively allow a data administrator to organize, manage,
-    secure and catalog data across their organization located across
-    cloud projects in a variety of storage systems including Cloud
+    EntryGroups, EntryTypes, AspectTypes, and Entries. They
+    collectively let data administrators organize, manage, secure,
+    and catalog data located across cloud projects in their
+    organization in a variety of storage systems, including Cloud
     Storage and BigQuery.
 
     This class defines the same methods as the primary client, so the
@@ -276,7 +277,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the create entry type method over gRPC.
 
-        Creates an EntryType
+        Creates an EntryType.
 
         Returns:
             Callable[[~.CreateEntryTypeRequest],
@@ -304,7 +305,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the update entry type method over gRPC.
 
-        Updates a EntryType resource.
+        Updates an EntryType.
 
         Returns:
             Callable[[~.UpdateEntryTypeRequest],
@@ -332,7 +333,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the delete entry type method over gRPC.
 
-        Deletes a EntryType resource.
+        Deletes an EntryType.
 
         Returns:
             Callable[[~.DeleteEntryTypeRequest],
@@ -386,7 +387,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.GetEntryTypeRequest], Awaitable[catalog.EntryType]]:
         r"""Return a callable for the get entry type method over gRPC.
 
-        Retrieves a EntryType resource.
+        Gets an EntryType.
 
         Returns:
             Callable[[~.GetEntryTypeRequest],
@@ -414,7 +415,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the create aspect type method over gRPC.
 
-        Creates an AspectType
+        Creates an AspectType.
 
         Returns:
             Callable[[~.CreateAspectTypeRequest],
@@ -442,7 +443,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the update aspect type method over gRPC.
 
-        Updates a AspectType resource.
+        Updates an AspectType.
 
         Returns:
             Callable[[~.UpdateAspectTypeRequest],
@@ -470,7 +471,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the delete aspect type method over gRPC.
 
-        Deletes a AspectType resource.
+        Deletes an AspectType.
 
         Returns:
             Callable[[~.DeleteAspectTypeRequest],
@@ -524,7 +525,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.GetAspectTypeRequest], Awaitable[catalog.AspectType]]:
         r"""Return a callable for the get aspect type method over gRPC.
 
-        Retrieves a AspectType resource.
+        Gets an AspectType.
 
         Returns:
             Callable[[~.GetAspectTypeRequest],
@@ -552,7 +553,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the create entry group method over gRPC.
 
-        Creates an EntryGroup
+        Creates an EntryGroup.
 
         Returns:
             Callable[[~.CreateEntryGroupRequest],
@@ -580,7 +581,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the update entry group method over gRPC.
 
-        Updates a EntryGroup resource.
+        Updates an EntryGroup.
 
         Returns:
             Callable[[~.UpdateEntryGroupRequest],
@@ -608,7 +609,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the delete entry group method over gRPC.
 
-        Deletes a EntryGroup resource.
+        Deletes an EntryGroup.
 
         Returns:
             Callable[[~.DeleteEntryGroupRequest],
@@ -662,7 +663,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.GetEntryGroupRequest], Awaitable[catalog.EntryGroup]]:
         r"""Return a callable for the get entry group method over gRPC.
 
-        Retrieves a EntryGroup resource.
+        Gets an EntryGroup.
 
         Returns:
             Callable[[~.GetEntryGroupRequest],
@@ -766,7 +767,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.ListEntriesRequest], Awaitable[catalog.ListEntriesResponse]]:
         r"""Return a callable for the list entries method over gRPC.
 
-        Lists entries within an entry group.
+        Lists Entries within an EntryGroup.
 
         Returns:
             Callable[[~.ListEntriesRequest],
@@ -792,7 +793,12 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.GetEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the get entry method over gRPC.
 
-        Gets a single entry.
+        Gets an Entry.
+
+        **Caution**: The BigQuery metadata that is stored in Dataplex
+        Catalog is changing. For more information, see `Changes to
+        BigQuery metadata stored in Dataplex
+        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
 
         Returns:
             Callable[[~.GetEntryRequest],
@@ -818,7 +824,13 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.LookupEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the lookup entry method over gRPC.
 
-        Looks up a single entry.
+        Looks up a single Entry by name using the permission on the
+        source system.
+
+        **Caution**: The BigQuery metadata that is stored in Dataplex
+        Catalog is changing. For more information, see `Changes to
+        BigQuery metadata stored in Dataplex
+        Catalog <https://cloud.google.com/dataplex/docs/biqquery-metadata-changes>`__.
 
         Returns:
             Callable[[~.LookupEntryRequest],
@@ -846,7 +858,8 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ]:
         r"""Return a callable for the search entries method over gRPC.
 
-        Searches for entries matching given query and scope.
+        Searches for Entries matching the given query and
+        scope.
 
         Returns:
             Callable[[~.SearchEntriesRequest],
@@ -865,6 +878,122 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                 response_deserializer=catalog.SearchEntriesResponse.deserialize,
             )
         return self._stubs["search_entries"]
+
+    @property
+    def create_metadata_job(
+        self,
+    ) -> Callable[
+        [catalog.CreateMetadataJobRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create metadata job method over gRPC.
+
+        Creates a metadata job. For example, use a metadata
+        job to import Dataplex Catalog entries and aspects from
+        a third-party system into Dataplex.
+
+        Returns:
+            Callable[[~.CreateMetadataJobRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_metadata_job" not in self._stubs:
+            self._stubs["create_metadata_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/CreateMetadataJob",
+                request_serializer=catalog.CreateMetadataJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_metadata_job"]
+
+    @property
+    def get_metadata_job(
+        self,
+    ) -> Callable[[catalog.GetMetadataJobRequest], Awaitable[catalog.MetadataJob]]:
+        r"""Return a callable for the get metadata job method over gRPC.
+
+        Gets a metadata job.
+
+        Returns:
+            Callable[[~.GetMetadataJobRequest],
+                    Awaitable[~.MetadataJob]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_metadata_job" not in self._stubs:
+            self._stubs["get_metadata_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/GetMetadataJob",
+                request_serializer=catalog.GetMetadataJobRequest.serialize,
+                response_deserializer=catalog.MetadataJob.deserialize,
+            )
+        return self._stubs["get_metadata_job"]
+
+    @property
+    def list_metadata_jobs(
+        self,
+    ) -> Callable[
+        [catalog.ListMetadataJobsRequest], Awaitable[catalog.ListMetadataJobsResponse]
+    ]:
+        r"""Return a callable for the list metadata jobs method over gRPC.
+
+        Lists metadata jobs.
+
+        Returns:
+            Callable[[~.ListMetadataJobsRequest],
+                    Awaitable[~.ListMetadataJobsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_metadata_jobs" not in self._stubs:
+            self._stubs["list_metadata_jobs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/ListMetadataJobs",
+                request_serializer=catalog.ListMetadataJobsRequest.serialize,
+                response_deserializer=catalog.ListMetadataJobsResponse.deserialize,
+            )
+        return self._stubs["list_metadata_jobs"]
+
+    @property
+    def cancel_metadata_job(
+        self,
+    ) -> Callable[[catalog.CancelMetadataJobRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the cancel metadata job method over gRPC.
+
+        Cancels a metadata job.
+
+        If you cancel a metadata import job that is in progress,
+        the changes in the job might be partially applied. We
+        recommend that you reset the state of the entry groups
+        in your project by running another metadata job that
+        reverts the changes from the canceled job.
+
+        Returns:
+            Callable[[~.CancelMetadataJobRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_metadata_job" not in self._stubs:
+            self._stubs["cancel_metadata_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/CancelMetadataJob",
+                request_serializer=catalog.CancelMetadataJobRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["cancel_metadata_job"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
@@ -1087,6 +1216,26 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_metadata_job: self._wrap_method(
+                self.create_metadata_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_metadata_job: self._wrap_method(
+                self.get_metadata_job,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_metadata_jobs: self._wrap_method(
+                self.list_metadata_jobs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_metadata_job: self._wrap_method(
+                self.cancel_metadata_job,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(
