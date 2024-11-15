@@ -1,5 +1,44 @@
 # Changelog
 
+## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.3.1...google-cloud-dataplex-v2.4.0) (2024-11-15)
+
+
+### Features
+
+* A new enum `TableType` is added ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* A new field `datascan_id` is added to message `.google.cloud.dataplex.v1.DiscoveryEvent` ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* A new field `suspended` is added to DataScans ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* A new field `table` is added to message `.google.cloud.dataplex.v1.DiscoveryEvent` ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* A new message `TableDetails` is added ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add a DATA_DISCOVERY enum type in DataScanEvent ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add a DataDiscoveryAppliedConfigs message ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add a TABLE_DELETED field in DiscoveryEvent ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add a TABLE_IGNORED field in DiscoveryEvent ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add a TABLE_PUBLISHED field in DiscoveryEvent ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add a TABLE_UPDATED field in DiscoveryEvent ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add an Issue field to DiscoveryEvent.ActionDetails to output the action message in Cloud Logs ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* add annotations in CreateMetadataJob, GetMetadataJob, ListMetaDataJobs and CancelMetadataJob for cloud audit logging ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add data_version field to AspectSource ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add new Data Discovery scan type in Datascan ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* expose create time in DataScanJobAPI ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* expose create time to customers ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* release metadata export in private preview ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* release MetadataJob APIs and related resources in GA ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+
+
+### Documentation
+
+* A comment for message `DataScanEvent` is changed ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add comment for field `status` in message `.google.cloud.dataplex.v1.MetadataJob` ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add comment for field `type` in message `.google.cloud.dataplex.v1.MetadataJob` ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add Identifier for `name` in message `.google.cloud.dataplex.v1.MetadataJob` ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* add info about schema changes for BigQuery metadata in Dataplex Catalog ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Add link to fully qualified names documentation ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* correct API documentation ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* correct the dimensions for data quality rules ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Dataplex Tasks do not support Dataplex Content path as a direct input anymore ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+* Scrub descriptions for standalone discovery scans ([fffe7a5](https://github.com/googleapis/google-cloud-python/commit/fffe7a51c3b295e668426e103d523294787dff89))
+
 ## [2.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.3.0...google-cloud-dataplex-v2.3.1) (2024-10-31)
 
 

@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.19.1...google-cloud-contact-center-insights-v1.20.0) (2024-11-15)
+
+
+### Features
+
+* Add AnalysisRules resource and APIs ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* Add FeedbackLabel resource and APIs ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* Add Quality AI resources and APIs ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* Add QueryMetrics API ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+
+
+### Documentation
+
+* A comment for field `custom_metadata_keys` in message `.google.cloud.contactcenterinsights.v1.IngestConversationsRequest` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* A comment for field `encryption_spec` in message `.google.cloud.contactcenterinsights.v1.InitializeEncryptionSpecRequest` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* A comment for field `kms_key` in message `.google.cloud.contactcenterinsights.v1.EncryptionSpec` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* A comment for field `labels` in message `.google.cloud.contactcenterinsights.v1.Conversation` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* A comment for field `metadata_json` in message `.google.cloud.contactcenterinsights.v1.Conversation` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* A comment for field `partial_errors` in message `.google.cloud.contactcenterinsights.v1.InitializeEncryptionSpecMetadata` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* A comment for message `EncryptionSpec` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+* A comment for method `InitializeEncryptionSpec` in service `ContactCenterInsights` is changed ([cfb62c9](https://github.com/googleapis/google-cloud-python/commit/cfb62c9e959df32d30f6e66561164951f3d5c1ad))
+
 ## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.19.0...google-cloud-contact-center-insights-v1.19.1) (2024-10-31)
 
 
