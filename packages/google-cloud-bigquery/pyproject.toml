@@ -79,7 +79,7 @@ pandas = [
   "importlib_metadata >= 1.0.0; python_version < '3.8'",
 ]
 ipywidgets = ["ipywidgets >= 7.7.0", "ipykernel >= 6.0.0"]
-geopandas = ["geopandas >= 0.9.0, < 1.0dev", "Shapely >= 1.8.4, < 3.0.0dev"]
+geopandas = ["geopandas >= 0.9.0, < 2.0dev", "Shapely >= 1.8.4, < 3.0.0dev"]
 ipython = ["bigquery-magics >= 0.1.0"]
 tqdm = ["tqdm >= 4.7.4, < 5.0.0dev"]
 opentelemetry = [
